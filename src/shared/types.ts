@@ -13,7 +13,14 @@ export type EpistemicStatus =
   | "filed"
   | "disclosed"
   | "estimated"
+  | "reported"
   | "undisclosed";
+
+export type CatalogTier = "flagship" | "registry" | "provisional";
+
+export type FootprintCoverage = "verified_polygons" | "point_only";
+
+export type ActivityWindow = "24h" | "7d" | "30d" | "90d" | "all";
 
 export type IsoRegion =
   | "PJM"
@@ -87,8 +94,25 @@ export interface FacilitySource {
     | "environmental_permit"
     | "operator_disclosure"
     | "utility_iso_record"
-    | "municipal_or_court_record";
+    | "municipal_or_court_record"
+    | "registry_census"
+    | "public_reporting";
   url: string;
+}
+
+export interface RegistryMetadata {
+  peeringDbFacId?: number | null;
+  peeringDbCampusId?: number | null;
+  netCount?: number | null;
+  ixCount?: number | null;
+  carrierCount?: number | null;
+  clli?: string | null;
+  epaRegistryId?: string | null;
+  airIds?: string | null;
+  npdesIds?: string | null;
+  im3SqFt?: number | null;
+  mappedPolygonCount?: number;
+  sourceTags?: string[];
 }
 
 export interface FacilityRecord {
@@ -101,6 +125,9 @@ export interface FacilityRecord {
   isoRegion: IsoRegion;
   coordinates: [number, number]; // [lon, lat] WGS84
   lifecycleStatus: LifecycleStatus;
+  catalogTier?: CatalogTier;
+  footprintCoverage?: FootprintCoverage;
+  registryMetadata?: RegistryMetadata;
   summary: string;
   parcel: {
     acreage: MetricValue;
@@ -152,6 +179,58 @@ export interface FacilityRecord {
   };
   sources: FacilitySource[];
   lastVerified: string;
+  lastUpdated?: string;
+}
+
+export interface FacilityIndexItem {
+  id: string;
+  name: string;
+  marketCluster: string;
+  city: string;
+  county: string;
+  state: string;
+  isoRegion: IsoRegion;
+  coordinates: [number, number]; // [lon, lat] WGS84
+  lifecycleStatus: LifecycleStatus;
+  catalogTier: CatalogTier;
+  footprintCoverage: FootprintCoverage;
+  developer: string;
+  operator: string;
+  utilityProvider: string;
+  interconnectionStatus: FacilityRecord["power"]["interconnectionStatus"];
+  operationalMw: number | null;
+  operationalMwEpistemic: EpistemicStatus;
+  totalPlannedMw: number | null;
+  totalPlannedMwEpistemic: EpistemicStatus;
+  coolingArchitecture: CoolingArchitecture;
+  peakOrAvgWaterMgd: number | null;
+  annualWaterMgy: number | null;
+  waterEpistemic: EpistemicStatus;
+  watershedStress: WatershedStress;
+  moratoriumOrLitigationActive: boolean;
+  usgsGaugeSiteId: string;
+  nwsStationId: string;
+  grossSqFt: number | null;
+  mappedPolygonCount: number;
+  sourceTags: string[];
+  lastVerified: string;
+  lastUpdated: string;
+}
+
+export interface FleetSummaryMetadata {
+  totalFacilities: number;
+  statesCovered: number;
+  byTier: Record<CatalogTier, number>;
+  byFootprintCoverage: Record<FootprintCoverage, number>;
+  byIso: Partial<Record<IsoRegion, number>>;
+  byStatus: Partial<Record<LifecycleStatus, number>>;
+  verifiedOperationalMwTotal: number;
+  verifiedPlannedMwTotal: number;
+  reportedOrProposedMwTotal: number;
+  disclosedWaterFacilityCount: number;
+  undisclosedWaterFacilityCount: number;
+  contestedOrMoratoriumCount: number;
+  censusGeneratedAt: string;
 }
 
 export interface CampusFootprintProps {
@@ -161,9 +240,12 @@ export interface CampusFootprintProps {
     | "operational_hall"
     | "planned_expansion"
     | "substation_yard"
-    | "cooling_yard";
+    | "cooling_yard"
+    | "building"
+    | "campus";
   label: string;
   mwLabel?: string;
+  sqft?: number | null;
   status: LifecycleStatus;
 }
 
@@ -211,6 +293,43 @@ export interface LiveFacilityTelemetry {
   hydrology: LiveBasinHydrology;
 }
 
+export type GridFuelCategory =
+  | "nuclear"
+  | "gas"
+  | "coal"
+  | "wind"
+  | "solar"
+  | "hydro"
+  | "other";
+
+export interface GridFuelMixItem {
+  fuel: GridFuelCategory;
+  label: string;
+  mw: number;
+  sharePct: number;
+}
+
+export interface LiveIsoGridSnapshot {
+  isoRegion: IsoRegion;
+  eiaRespondent: string;
+  observedAt: string | null;
+  demandMw: number | null;
+  netGenerationMw: number | null;
+  interchangeMw: number | null;
+  fuelMix: GridFuelMixItem[];
+  sourceUrl: string;
+  status: "live" | "stale" | "degraded";
+  error?: string;
+}
+
+export interface LiveGridFeed {
+  fetchedAt: string;
+  status: "live" | "stale" | "degraded";
+  sourceUrl: string;
+  regions: Partial<Record<IsoRegion, LiveIsoGridSnapshot>>;
+  error?: string;
+}
+
 export interface LiveRegulatoryItem {
   documentNumber: string;
   title: string;
@@ -230,16 +349,58 @@ export interface LiveRegulatoryFeed {
   error?: string;
 }
 
+export type PulseStream = "federal_register" | "sec_edgar" | "peeringdb";
+
+export interface LivePulseSignal {
+  id: string;
+  stream: PulseStream;
+  title: string;
+  publisher: string;
+  publishedAt: string;
+  summary: string;
+  url: string;
+  pdfUrl?: string | null;
+  isoRegions?: IsoRegion[];
+  states?: string[];
+  matchedFacilityIds?: string[];
+  epistemic: EpistemicStatus;
+  documentNumber?: string;
+  tickerOrCik?: string;
+  peeringDbFacId?: number | null;
+}
+
+export interface LivePulseFeed {
+  fetchedAt: string;
+  window: ActivityWindow;
+  status: "live" | "stale" | "degraded";
+  streamStatus: Record<PulseStream, "live" | "stale" | "degraded">;
+  items: LivePulseSignal[];
+  error?: string;
+}
+
 export interface FacilitiesApiResponse {
   facilities: FacilityRecord[];
   footprints: GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps>;
-  isoRegions: GeoJSON.FeatureCollection<GeoJSON.Polygon | GeoJSON.MultiPolygon, IsoRegionProps>;
+  isoRegions: GeoJSON.FeatureCollection<
+    GeoJSON.Polygon | GeoJSON.MultiPolygon,
+    IsoRegionProps
+  >;
+}
+
+export interface FacilitiesIndexApiResponse {
+  facilities: FacilityIndexItem[];
+  summary: FleetSummaryMetadata;
+  isoRegions: GeoJSON.FeatureCollection<
+    GeoJSON.Polygon | GeoJSON.MultiPolygon,
+    IsoRegionProps
+  >;
 }
 
 export interface FacilityDetailApiResponse {
   facility: FacilityRecord;
   footprints: GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps>;
   telemetry: LiveFacilityTelemetry;
+  gridSnapshot?: LiveIsoGridSnapshot | null;
 }
 
 export interface TelemetrySummaryApiResponse {

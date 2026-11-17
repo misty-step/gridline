@@ -127,6 +127,7 @@ export const EPISTEMIC_LABELS: Record<EpistemicStatus, string> = {
   filed: "Filed",
   disclosed: "Disclosed",
   estimated: "Estimated",
+  reported: "Reported",
   undisclosed: "Undisclosed",
 };
 
@@ -185,6 +186,8 @@ export const SOURCE_KIND_LABELS: Record<FacilitySource["kind"], string> = {
   operator_disclosure: "Operator Disclosure",
   utility_iso_record: "Utility / ISO Record",
   municipal_or_court_record: "Municipal / Court Record",
+  registry_census: "Registry Census",
+  public_reporting: "Public Reporting",
 };
 
 export const ZONE_KIND_LABELS: Record<string, string> = {
@@ -193,6 +196,8 @@ export const ZONE_KIND_LABELS: Record<string, string> = {
   planned_expansion: "Planned Expansion Zone",
   substation_yard: "Dedicated Substation Yard",
   cooling_yard: "Cooling & Water Plant Yard",
+  building: "Surveyed Building",
+  campus: "Surveyed Campus",
 };
 
 const CLUSTER_SHORT_NAMES: Record<string, string> = {

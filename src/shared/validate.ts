@@ -1,12 +1,17 @@
 import type {
   CampusFootprintProps,
+  CatalogTier,
   CoolingArchitecture,
   EpistemicStatus,
+  FacilityIndexItem,
   FacilityRecord,
+  FacilitySource,
+  FootprintCoverage,
   IsoRegion,
   IsoRegionProps,
   LifecycleStatus,
   MetricValue,
+  PerspectivePoint,
   WatershedStress,
 } from "./types.ts";
 
@@ -31,7 +36,19 @@ const EPISTEMIC_STATUSES = new Set<EpistemicStatus>([
   "filed",
   "disclosed",
   "estimated",
+  "reported",
   "undisclosed",
+]);
+
+const CATALOG_TIERS = new Set<CatalogTier>([
+  "flagship",
+  "registry",
+  "provisional",
+]);
+
+const FOOTPRINT_COVERAGES = new Set<FootprintCoverage>([
+  "verified_polygons",
+  "point_only",
 ]);
 
 const ISO_REGIONS = new Set<IsoRegion>([
@@ -79,12 +96,14 @@ const TENANT_ROLES = new Set([
   "reported_tenant",
 ]);
 
-const SOURCE_KINDS = new Set([
+const SOURCE_KINDS = new Set<FacilitySource["kind"]>([
   "regulatory_filing",
   "environmental_permit",
   "operator_disclosure",
   "utility_iso_record",
   "municipal_or_court_record",
+  "registry_census",
+  "public_reporting",
 ]);
 
 const ZONE_KINDS = new Set<CampusFootprintProps["zoneKind"]>([
@@ -93,6 +112,8 @@ const ZONE_KINDS = new Set<CampusFootprintProps["zoneKind"]>([
   "planned_expansion",
   "substation_yard",
   "cooling_yard",
+  "building",
+  "campus",
 ]);
 
 const USGS_SITE_RE = /^\d{8}$/;
@@ -124,6 +145,26 @@ export function isValidUsCoord(lon: number, lat: number): boolean {
   );
 }
 
+function validateScalarMetric(
+  label: string,
+  value: number | null,
+  epistemic: EpistemicStatus,
+  errors: string[],
+): void {
+  if (!EPISTEMIC_STATUSES.has(epistemic)) {
+    errors.push(`${label}: invalid epistemic "${epistemic}"`);
+  }
+  if (epistemic === "undisclosed") {
+    if (value !== null) {
+      errors.push(`${label}: epistemic "undisclosed" requires value === null`);
+    }
+  } else if (typeof value !== "number" || !Number.isFinite(value)) {
+    errors.push(
+      `${label}: non-undisclosed epistemic "${epistemic}" requires numeric value`,
+    );
+  }
+}
+
 function validateMetric(
   facilityId: string,
   fieldPath: string,
@@ -135,18 +176,12 @@ function validateMetric(
     errors.push(`${facilityId}.${fieldPath}: missing MetricValue object`);
     return;
   }
-  if (!EPISTEMIC_STATUSES.has(metric.epistemic)) {
-    errors.push(`${facilityId}.${fieldPath}: invalid epistemic "${metric.epistemic}"`);
-  }
-  if (metric.epistemic === "undisclosed") {
-    if (metric.value !== null) {
-      errors.push(`${facilityId}.${fieldPath}: epistemic "undisclosed" requires value === null`);
-    }
-  } else if (typeof metric.value !== "number" || !Number.isFinite(metric.value)) {
-    errors.push(
-      `${facilityId}.${fieldPath}: non-undisclosed epistemic "${metric.epistemic}" requires numeric value`,
-    );
-  }
+  validateScalarMetric(
+    `${facilityId}.${fieldPath}`,
+    metric.value,
+    metric.epistemic,
+    errors,
+  );
   if (!metric.unit || typeof metric.unit !== "string") {
     errors.push(`${facilityId}.${fieldPath}: missing unit`);
   }
@@ -158,6 +193,35 @@ function validateMetric(
   }
   if (!metric.sourceId || !sourceIds.has(metric.sourceId)) {
     errors.push(`${facilityId}.${fieldPath}: unknown sourceId "${metric.sourceId}"`);
+  }
+}
+
+function validatePerspectiveList(
+  facilityLabel: string,
+  side: "proponent" | "critic",
+  points: PerspectivePoint[] | undefined,
+  requireNonEmpty: boolean,
+  sourceIds: Set<string>,
+  errors: string[],
+): void {
+  if (!Array.isArray(points)) {
+    errors.push(`${facilityLabel}.perspectives.${side}: must be an array`);
+    return;
+  }
+  if (requireNonEmpty && points.length === 0) {
+    errors.push(`${facilityLabel}.perspectives.${side}: must be non-empty`);
+    return;
+  }
+  for (let idx = 0; idx < points.length; idx += 1) {
+    const pt = points[idx];
+    if (!pt || !pt.claim?.trim() || !pt.evidence?.trim()) {
+      errors.push(`${facilityLabel}.perspectives.${side}[${idx}]: claim and evidence required`);
+    }
+    if (!pt || !sourceIds.has(pt.sourceId)) {
+      errors.push(
+        `${facilityLabel}.perspectives.${side}[${idx}]: unknown sourceId "${pt?.sourceId}"`,
+      );
+    }
   }
 }
 
@@ -219,6 +283,36 @@ export function validateFacilities(facilities: FacilityRecord[]): ValidationResu
     if (!LIFECYCLE_STATUSES.has(f.lifecycleStatus)) {
       errors.push(`${label}: invalid lifecycleStatus "${f.lifecycleStatus}"`);
     }
+
+    const tier: CatalogTier = f.catalogTier ?? "flagship";
+    if (f.catalogTier !== undefined && !CATALOG_TIERS.has(f.catalogTier)) {
+      errors.push(`${label}: invalid catalogTier "${f.catalogTier}"`);
+    }
+    if (f.footprintCoverage !== undefined && !FOOTPRINT_COVERAGES.has(f.footprintCoverage)) {
+      errors.push(`${label}: invalid footprintCoverage "${f.footprintCoverage}"`);
+    }
+    if (f.registryMetadata !== undefined) {
+      if (typeof f.registryMetadata !== "object" || f.registryMetadata === null || Array.isArray(f.registryMetadata)) {
+        errors.push(`${label}.registryMetadata: must be an object`);
+      } else {
+        if (
+          f.registryMetadata.mappedPolygonCount !== undefined &&
+          (typeof f.registryMetadata.mappedPolygonCount !== "number" ||
+            !Number.isFinite(f.registryMetadata.mappedPolygonCount) ||
+            f.registryMetadata.mappedPolygonCount < 0)
+        ) {
+          errors.push(`${label}.registryMetadata.mappedPolygonCount: must be a non-negative finite number`);
+        }
+        if (
+          f.registryMetadata.sourceTags !== undefined &&
+          (!Array.isArray(f.registryMetadata.sourceTags) ||
+            f.registryMetadata.sourceTags.some((t) => typeof t !== "string" || !t.trim()))
+        ) {
+          errors.push(`${label}.registryMetadata.sourceTags: must be an array of non-empty strings`);
+        }
+      }
+    }
+
     if (!Array.isArray(f.coordinates) || f.coordinates.length !== 2) {
       errors.push(`${label}: coordinates must be [lon, lat]`);
     } else if (!isValidUsCoord(f.coordinates[0], f.coordinates[1])) {
@@ -342,33 +436,116 @@ export function validateFacilities(facilities: FacilityRecord[]): ValidationResu
       }
     }
 
-    if (!Array.isArray(f.perspectives?.proponent) || f.perspectives.proponent.length === 0) {
-      errors.push(`${label}.perspectives.proponent: must be non-empty`);
+    const requirePerspectives = tier === "flagship";
+    validatePerspectiveList(
+      label,
+      "proponent",
+      f.perspectives?.proponent,
+      requirePerspectives,
+      sourceIds,
+      errors,
+    );
+    validatePerspectiveList(
+      label,
+      "critic",
+      f.perspectives?.critic,
+      requirePerspectives,
+      sourceIds,
+      errors,
+    );
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+
+export function validateFacilityIndex(items: FacilityIndexItem[]): ValidationResult {
+  const errors: string[] = [];
+  const seenIds = new Set<string>();
+
+  if (!Array.isArray(items) || items.length === 0) {
+    return { valid: false, errors: ["facility index array must be non-empty"] };
+  }
+
+  for (let idx = 0; idx < items.length; idx += 1) {
+    const item = items[idx];
+    const label = item?.id || `index[${idx}]`;
+
+    if (!item || typeof item !== "object") {
+      errors.push(`${label}: facility index item must be an object`);
+      continue;
+    }
+    if (!item.id || typeof item.id !== "string" || item.id.trim().length === 0) {
+      errors.push(`${label}: facility id must be a non-empty string`);
+    } else if (seenIds.has(item.id)) {
+      errors.push(`${item.id}: duplicate facility id`);
     } else {
-      for (let pIdx = 0; pIdx < f.perspectives.proponent.length; pIdx += 1) {
-        const pt = f.perspectives.proponent[pIdx];
-        if (!pt.claim?.trim() || !pt.evidence?.trim()) {
-          errors.push(`${label}.perspectives.proponent[${pIdx}]: claim and evidence required`);
-        }
-        if (!sourceIds.has(pt.sourceId)) {
-          errors.push(
-            `${label}.perspectives.proponent[${pIdx}]: unknown sourceId "${pt.sourceId}"`,
-          );
-        }
-      }
+      seenIds.add(item.id);
     }
 
-    if (!Array.isArray(f.perspectives?.critic) || f.perspectives.critic.length === 0) {
-      errors.push(`${label}.perspectives.critic: must be non-empty`);
+    if (!item.name?.trim()) errors.push(`${label}: missing name`);
+    if (!item.marketCluster?.trim()) errors.push(`${label}: missing marketCluster`);
+    if (!item.city?.trim()) errors.push(`${label}: missing city`);
+    if (!item.county?.trim()) errors.push(`${label}: missing county`);
+    if (!item.state?.trim()) errors.push(`${label}: missing state`);
+    if (!ISO_REGIONS.has(item.isoRegion)) {
+      errors.push(`${label}: invalid isoRegion "${item.isoRegion}"`);
+    }
+    if (!LIFECYCLE_STATUSES.has(item.lifecycleStatus)) {
+      errors.push(`${label}: invalid lifecycleStatus "${item.lifecycleStatus}"`);
+    }
+    if (!CATALOG_TIERS.has(item.catalogTier)) {
+      errors.push(`${label}: invalid catalogTier "${item.catalogTier}"`);
+    }
+    if (!FOOTPRINT_COVERAGES.has(item.footprintCoverage)) {
+      errors.push(`${label}: invalid footprintCoverage "${item.footprintCoverage}"`);
+    }
+    if (!Array.isArray(item.coordinates) || item.coordinates.length !== 2) {
+      errors.push(`${label}: coordinates must be [lon, lat]`);
+    } else if (!isValidUsCoord(item.coordinates[0], item.coordinates[1])) {
+      errors.push(
+        `${label}: coordinates [${item.coordinates[0]}, ${item.coordinates[1]}] out of US bounds`,
+      );
+    }
+
+    if (!INTERCONNECTION_STATUSES.has(item.interconnectionStatus)) {
+      errors.push(`${label}.interconnectionStatus: invalid value "${item.interconnectionStatus}"`);
+    }
+    if (!COOLING_ARCHITECTURES.has(item.coolingArchitecture)) {
+      errors.push(`${label}.coolingArchitecture: invalid value "${item.coolingArchitecture}"`);
+    }
+    if (!WATERSHED_STRESS.has(item.watershedStress)) {
+      errors.push(`${label}.watershedStress: invalid value "${item.watershedStress}"`);
+    }
+    if (!USGS_SITE_RE.test(item.usgsGaugeSiteId ?? "")) {
+      errors.push(`${label}.usgsGaugeSiteId: "${item.usgsGaugeSiteId}" must match ^\\d{8}$`);
+    }
+    if (!NWS_STATION_RE.test(item.nwsStationId ?? "")) {
+      errors.push(`${label}.nwsStationId: "${item.nwsStationId}" must match ^[A-Z0-9]{4}$`);
+    }
+
+    validateScalarMetric(
+      `${label}.operationalMw`,
+      item.operationalMw,
+      item.operationalMwEpistemic,
+      errors,
+    );
+    validateScalarMetric(
+      `${label}.totalPlannedMw`,
+      item.totalPlannedMw,
+      item.totalPlannedMwEpistemic,
+      errors,
+    );
+    if (!EPISTEMIC_STATUSES.has(item.waterEpistemic)) {
+      errors.push(`${label}.waterEpistemic: invalid epistemic "${item.waterEpistemic}"`);
+    } else if (item.waterEpistemic === "undisclosed") {
+      if (item.peakOrAvgWaterMgd !== null || item.annualWaterMgy !== null) {
+        errors.push(`${label}.waterEpistemic: "undisclosed" requires null water values`);
+      }
     } else {
-      for (let cIdx = 0; cIdx < f.perspectives.critic.length; cIdx += 1) {
-        const pt = f.perspectives.critic[cIdx];
-        if (!pt.claim?.trim() || !pt.evidence?.trim()) {
-          errors.push(`${label}.perspectives.critic[${cIdx}]: claim and evidence required`);
-        }
-        if (!sourceIds.has(pt.sourceId)) {
-          errors.push(`${label}.perspectives.critic[${cIdx}]: unknown sourceId "${pt.sourceId}"`);
-        }
+      const hasPeak = typeof item.peakOrAvgWaterMgd === "number" && Number.isFinite(item.peakOrAvgWaterMgd);
+      const hasAnnual = typeof item.annualWaterMgy === "number" && Number.isFinite(item.annualWaterMgy);
+      if (!hasPeak && !hasAnnual) {
+        errors.push(`${label}.waterEpistemic: non-undisclosed water requires numeric MGD or MGY value`);
       }
     }
   }
@@ -381,7 +558,10 @@ export function validateFootprints(
   facilities: FacilityRecord[],
 ): ValidationResult {
   const errors: string[] = [];
-  const facilityIds = new Set(facilities.map((f) => f.id));
+  const coverageById = new Map<string, FootprintCoverage>();
+  for (const f of facilities) {
+    coverageById.set(f.id, f.footprintCoverage ?? "verified_polygons");
+  }
 
   if (!footprints || footprints.type !== "FeatureCollection" || !Array.isArray(footprints.features)) {
     return { valid: false, errors: ["footprints must be a GeoJSON FeatureCollection"] };
@@ -398,7 +578,7 @@ export function validateFootprints(
       errors.push(`${label}: feature must have type "Feature"`);
       continue;
     }
-    if (!props || !facilityIds.has(props.facilityId)) {
+    if (!props || !coverageById.has(props.facilityId)) {
       errors.push(`${label}: facilityId "${props?.facilityId}" does not match any facility`);
     } else {
       coveredFacilities.add(props.facilityId);
@@ -412,6 +592,13 @@ export function validateFootprints(
     if (!props?.label?.trim()) {
       errors.push(`${label}: missing label`);
     }
+    if (
+      props?.sqft !== undefined &&
+      props?.sqft !== null &&
+      (typeof props.sqft !== "number" || !Number.isFinite(props.sqft) || props.sqft < 0)
+    ) {
+      errors.push(`${label}: sqft must be a non-negative finite number or null`);
+    }
     if (feat.geometry?.type !== "Polygon" || !Array.isArray(feat.geometry.coordinates)) {
       errors.push(`${label}: geometry must be a Polygon`);
       continue;
@@ -421,10 +608,13 @@ export function validateFootprints(
       continue;
     }
     validateRingClosed(label, feat.geometry.coordinates[0], errors);
+    for (let ringIdx = 1; ringIdx < feat.geometry.coordinates.length; ringIdx += 1) {
+      validateRingClosed(`${label}:hole[${ringIdx}]`, feat.geometry.coordinates[ringIdx], errors);
+    }
   }
 
-  for (const id of facilityIds) {
-    if (!coveredFacilities.has(id)) {
+  for (const [id, coverage] of coverageById.entries()) {
+    if (coverage === "verified_polygons" && !coveredFacilities.has(id)) {
       errors.push(`facility "${id}" has no footprint features`);
     }
   }

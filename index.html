@@ -1,23 +1,23 @@
 <!doctype html>
-<html lang="en" data-theme="system" data-resolved-theme="dark">
+<html lang="en" data-theme="dark" data-resolved-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gridline — US Data Center Infrastructure &amp; Telemetry Atlas</title>
     <meta
       name="description"
-      content="Cartographic intelligence atlas tracking US hyperscale data center power load, water consumption, cooling architecture, permitting, and live NOAA/USGS/FERC telemetry."
+      content="Cartographic intelligence observatory tracking US data center power load, water consumption, cooling architecture, permitting, and live ISO/NOAA/USGS/FERC/SEC telemetry."
     />
     <link
       rel="icon"
       type="image/svg+xml"
-      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23090d14'/%3E%3Cpath d='M7 16h4l3-7 4 14 3-7h4' fill='none' stroke='%2310b981' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='2' fill='%23060508'/%3E%3Crect x='2' y='2' width='28' height='28' rx='1' fill='none' stroke='%23ff7b00' stroke-width='1.5'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23ff7b00' stroke-width='1.4'/%3E%3Cpath d='M16 4v5M16 23v5M4 16h5M23 16h5' stroke='%23ff7b00' stroke-width='1.5' stroke-linecap='square'/%3E%3Cpath d='M9 16h3.5l2-4.5 3 9 2-4.5H23' fill='none' stroke='%2339ff88' stroke-width='1.8' stroke-linecap='square' stroke-linejoin='miter'/%3E%3C/svg%3E"
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wdth,wght@0,75,700;0,75,900;0,87.5,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     />
     <script>
       (function () {
@@ -30,7 +30,7 @@
               ? urlTheme
               : stored === "light" || stored === "dark" || stored === "system"
                 ? stored
-                : "system";
+                : "dark";
           var prefersDark =
             window.matchMedia &&
             window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -39,7 +39,7 @@
           document.documentElement.setAttribute("data-theme", mode);
           document.documentElement.setAttribute("data-resolved-theme", resolved);
         } catch (_err) {
-          document.documentElement.setAttribute("data-theme", "system");
+          document.documentElement.setAttribute("data-theme", "dark");
           document.documentElement.setAttribute("data-resolved-theme", "dark");
         }
       })();
