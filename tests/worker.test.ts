@@ -12,6 +12,7 @@ import type {
   LivePulseFeed,
   TelemetrySummaryApiResponse,
 } from "../src/shared/types.ts";
+import { recordToIndexItem } from "../src/worker/dataset.ts";
 import { handleRequest, runScheduledIngest, type DatasetBundle } from "../src/worker/index.ts";
 import { stripHtmlTags } from "../src/worker/regulatory.ts";
 import { fetchTelemetrySummary } from "../src/worker/telemetry.ts";
@@ -966,5 +967,185 @@ describe("Worker API endpoints", () => {
     );
     expect(res.status).toBe(200);
     expect(await res.text()).toBe("<html>ok</html>");
+  });
+
+  test("fetchStationWeather skips null top-of-hour NOAA stub observations in FeatureCollection", async () => {
+    const mockFetch = (async () =>
+      new Response(
+        JSON.stringify({
+          type: "FeatureCollection",
+          features: [
+            {
+              properties: {
+                timestamp: "2026-11-17T06:55:00+00:00",
+                temperature: { value: null, unitCode: "wmoUnit:degC" },
+                relativeHumidity: { value: null },
+              },
+            },
+            {
+              properties: {
+                timestamp: "2026-11-17T06:50:00+00:00",
+                temperature: { value: 18.5, unitCode: "wmoUnit:degC" },
+                relativeHumidity: { value: 64.2 },
+              },
+            },
+          ],
+        }),
+        { status: 200, headers: { "Content-Type": "application/geo+json" } },
+      )) as unknown as typeof fetch;
+
+    const dataset = buildTestDataset();
+    const targetId = dataset.facilities[0].id;
+    const res = await handleRequest(
+      new Request(
+        `https://example.com/api/telemetry/live?facilityId=${encodeURIComponent(targetId)}&refresh=1`,
+      ),
+      {},
+      { dataset, fetchFn: mockFetch },
+    );
+    expect(res.status).toBe(200);
+    const json = (await res.json()) as {
+      weather: { status: string; tempC: number | null; relativeHumidityPct: number | null; observedAt: string | null };
+    };
+    expect(json.weather.status).toBe("live");
+    expect(json.weather.tempC).toBe(18.5);
+    expect(json.weather.relativeHumidityPct).toBe(64.2);
+    expect(json.weather.observedAt).toBe("2026-11-17T06:50:00+00:00");
+  });
+
+  test("pulse facility matching rejects generic 'Data Center' names and bare city/state HQ matches", async () => {
+    const base = buildTestDataset();
+    const genericCampus = makeFixtureFacility({
+      id: "im3-or-data-center",
+      name: "Data Center",
+      city: "Washington",
+      state: "OR",
+      isoRegion: "WECC",
+    });
+    genericCampus.stakeholders.developer = "Registry Colocation / Enterprise Operator";
+    genericCampus.stakeholders.operator = "Registry Colocation / Enterprise Operator";
+
+    const registryGenericNy = makeFixtureFacility({
+      id: "im3-ny-32-avenue-of-the-americas",
+      name: "32 Avenue of the Americas",
+      city: "New York",
+      state: "NY",
+      isoRegion: "NYISO",
+    });
+    registryGenericNy.stakeholders.developer = "Registry Colocation / Enterprise Operator";
+    registryGenericNy.stakeholders.operator = "Registry Colocation / Enterprise Operator";
+
+    const bareHqCampus = makeFixtureFacility({
+      id: "unrelated-arlington-campus",
+      name: "Cloud Campus Alpha",
+      city: "Arlington",
+      state: "VA",
+      isoRegion: "PJM",
+    });
+    bareHqCampus.stakeholders.developer = "Acme Realty";
+    bareHqCampus.stakeholders.operator = "Acme Realty";
+
+    const brandedCampus = makeFixtureFacility({
+      id: "equinix-ashburn",
+      name: "Equinix Ashburn Campus",
+      city: "Ashburn",
+      state: "VA",
+      isoRegion: "PJM",
+    });
+    brandedCampus.stakeholders.developer = "Equinix, Inc.";
+    brandedCampus.stakeholders.operator = "Equinix, Inc.";
+
+    const dataset: DatasetBundle = {
+      ...base,
+      facilities: [genericCampus, registryGenericNy, bareHqCampus, brandedCampus],
+      indexItems: [
+        recordToIndexItem(genericCampus),
+        recordToIndexItem(registryGenericNy),
+        recordToIndexItem(bareHqCampus),
+        recordToIndexItem(brandedCampus),
+      ],
+    };
+
+    const customFetch = (async (input: string | URL | Request, init?: RequestInit) => {
+      const url =
+        typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+      if (url.startsWith("https://www.peeringdb.com/")) {
+        return new Response(
+          JSON.stringify({
+            data: [
+              {
+                id: 16052,
+                name: "Test Carrier Hotel",
+                org_name: "Telehouse America",
+                city: "New York",
+                state: "NY",
+                updated: new Date().toISOString(),
+                net_count: 10,
+                ix_count: 1,
+              },
+            ],
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      if (url.startsWith("https://efts.sec.gov/")) {
+        return new Response(
+          JSON.stringify({
+            hits: {
+              hits: [
+                {
+                  _id: "0001111111-26-000101",
+                  _source: {
+                    form: "8-K",
+                    file_date: new Date().toISOString().slice(0, 10),
+                    ciks: ["0001111111"],
+                    display_names: ["Soluna Power Corp (SLNA) (CIK 0001111111)"],
+                    adsh: "0001111111-26-000101",
+                    biz_states: ["VA"],
+                    biz_locations: ["Arlington, VA"],
+                    file_description: "DATA CENTER EXPANSION",
+                  },
+                },
+                {
+                  _id: "0002222222-26-000202",
+                  _source: {
+                    form: "10-Q",
+                    file_date: new Date().toISOString().slice(0, 10),
+                    ciks: ["0002222222"],
+                    display_names: ["Equinix, Inc. (EQIX) (CIK 0002222222)"],
+                    adsh: "0002222222-26-000202",
+                    biz_states: ["VA"],
+                    biz_locations: ["Ashburn, VA"],
+                    file_description: "QUARTERLY REPORT",
+                  },
+                },
+              ],
+            },
+          }),
+          { status: 200, headers: { "Content-Type": "application/json" } },
+        );
+      }
+      return makeMockFetch()(input, init);
+    }) as unknown as typeof fetch;
+
+    const { db } = createTestD1Database();
+    const res = await handleRequest(
+      new Request("https://example.com/api/pulse/live?refresh=1"),
+      { DB: db },
+      { dataset, fetchFn: customFetch },
+    );
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as LivePulseFeed;
+    const soluna = body.items.find((i) => i.documentNumber === "0001111111-26-000101");
+    const equinix = body.items.find((i) => i.documentNumber === "0002222222-26-000202");
+    const pdb = body.items.find((i) => i.id === "pdb:16052");
+
+    expect(soluna).toBeDefined();
+    expect(soluna?.matchedFacilityIds ?? []).toEqual([]);
+    expect(equinix).toBeDefined();
+    expect(equinix?.matchedFacilityIds).toContain("equinix-ashburn");
+    expect(equinix?.matchedFacilityIds).not.toContain("im3-or-data-center");
+    expect(pdb).toBeDefined();
+    expect(pdb?.matchedFacilityIds ?? []).not.toContain("im3-ny-32-avenue-of-the-americas");
   });
 });

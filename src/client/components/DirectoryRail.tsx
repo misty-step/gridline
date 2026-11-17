@@ -272,6 +272,8 @@ export function DirectoryRail({
               filters.verifiedOnly ? " filter-toggle-chip--verified" : ""
             }`}
             aria-pressed={filters.verifiedOnly}
+            aria-label="Show verified registries and filings only (exclude reported and unpermitted proposals)"
+            title="Show verified registries & filings only (exclude reported/unpermitted proposals)"
             onClick={() =>
               onFiltersChange({
                 ...filters,
@@ -280,7 +282,7 @@ export function DirectoryRail({
               })
             }
           >
-            Verified Only
+            Verified
           </button>
           <button
             type="button"

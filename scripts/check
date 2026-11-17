@@ -64,13 +64,20 @@ cmd_doctor() {
     AGENTS.md
     README.md
     docs/decisions/0001-stack-and-architecture.md
+    docs/decisions/0002-comprehensive-census-and-live-observatory.md
+    migrations/0001_live_observatory.sql
     src/shared/types.ts
+    src/shared/fleet.ts
     src/shared/wetbulb.ts
     src/shared/validate.ts
     src/worker/index.ts
+    src/worker/dataset.ts
+    src/worker/grid.ts
+    src/worker/pulse.ts
     src/worker/telemetry.ts
     src/worker/regulatory.ts
     src/data/index.ts
+    public/data/footprints-us.geojson
     index.html
     src/client/styles/tokens.css
   )
@@ -116,6 +123,8 @@ cmd_verify() {
   bun run cli list --limit 5
   bun run cli get "$first_id"
   bun run cli live "$first_id"
+  bun run cli grid --iso PJM
+  bun run cli pulse --limit 5
 
   echo "--- [7/7] Local wrangler dev HTTP smoke test"
   local port=8799
@@ -127,11 +136,11 @@ cmd_verify() {
   local worker_pid=$!
 
   cleanup_worker() {
-    if kill -0 "$worker_pid" >/dev/null 2>&1; then
+    if [[ -n "${worker_pid:-}" ]] && kill -0 "$worker_pid" >/dev/null 2>&1; then
       kill "$worker_pid" >/dev/null 2>&1 || true
       wait "$worker_pid" >/dev/null 2>&1 || true
     fi
-    rm -f "$log_file"
+    rm -f "${log_file:-}"
   }
   trap cleanup_worker EXIT
 
@@ -150,13 +159,17 @@ cmd_verify() {
   fi
 
   local base="http://127.0.0.1:${port}"
-  curl -fsS "${base}/api/health" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.status !== "ok" || d.facilityCount < 1) process.exit(1); console.log("GET /api/health OK:", d.facilityCount, "facilities");'
-  curl -fsS "${base}/api/facilities" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.facilities) || !d.footprints?.features?.length || !d.isoRegions?.features?.length) process.exit(1); console.log("GET /api/facilities OK:", d.facilities.length, "facilities");'
-  curl -fsS "${base}/api/facilities?format=geojson" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.type !== "FeatureCollection" || !d.features.length) process.exit(1); console.log("GET /api/facilities?format=geojson OK:", d.features.length, "features");'
-  curl -fsS "${base}/api/facilities?format=csv" | head -n 2
+  curl -fsS "${base}/api/health" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.status !== "ok" || d.release !== "1.0.0" || d.facilityCount < 2200 || d.statesCovered !== 51) process.exit(1); console.log("GET /api/health OK:", d.facilityCount, "facilities,", d.statesCovered, "jurisdictions, d1Bound=", d.d1Bound);'
+  curl -fsS "${base}/api/facilities" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.facilities) || (d.summary?.totalFacilities ?? 0) < 2200 || d.isoRegions?.features?.length !== 9) process.exit(1); console.log("GET /api/facilities OK:", d.facilities.length, "index items, summary=", d.summary.totalFacilities);'
+  curl -fsS "${base}/api/facilities?view=legacy&tier=flagship" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.facilities) || !d.footprints?.features?.length || d.isoRegions?.features?.length !== 9) process.exit(1); console.log("GET /api/facilities?view=legacy&tier=flagship OK:", d.facilities.length, "flagships,", d.footprints.features.length, "footprints");'
+  curl -fsS "${base}/api/facilities?format=geojson" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.type !== "FeatureCollection" || d.features.length < 2200) process.exit(1); console.log("GET /api/facilities?format=geojson OK:", d.features.length, "features");'
+  curl -fsS "${base}/api/facilities?format=csv" | bun -e 'const lines = (await Bun.stdin.text()).trim().split("\n"); if (lines.length < 2201 || !lines[0].includes("catalogTier")) process.exit(1); console.log("GET /api/facilities?format=csv OK:", lines.length - 1, "rows");'
   curl -fsS "${base}/api/facilities/${first_id}" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.facility?.id !== "'"$first_id"'") process.exit(1); console.log("GET /api/facilities/:id OK:", d.facility.id);'
+  curl -fsS "${base}/api/grid/live" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!d.regions || Object.keys(d.regions).length !== 9) process.exit(1); console.log("GET /api/grid/live OK:", d.status, Object.keys(d.regions).length, "ISOs");'
+  curl -fsS "${base}/api/pulse/live" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.items) || !d.streamStatus) process.exit(1); console.log("GET /api/pulse/live OK:", d.status, d.items.length, "signals");'
   curl -fsS "${base}/api/telemetry/live?facilityId=${first_id}" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.facilityId !== "'"$first_id"'") process.exit(1); console.log("GET /api/telemetry/live OK:", d.weather.status, d.hydrology.status);'
   curl -fsS "${base}/api/regulatory/live" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.items)) process.exit(1); console.log("GET /api/regulatory/live OK:", d.status, d.items.length, "items");'
+  curl -fsS "${base}/data/footprints-us.geojson" | bun -e 'const txt = await Bun.stdin.text(); if (/<!doctype html/i.test(txt)) process.exit(1); const d = JSON.parse(txt); if (d.type !== "FeatureCollection" || (d.features?.length ?? 0) < 1500) process.exit(1); console.log("GET /data/footprints-us.geojson OK:", d.features.length, "polygons");'
   curl -fsS "${base}/" | grep -qi "<!doctype html" && echo "GET / (SPA ASSETS) OK"
 
   cleanup_worker

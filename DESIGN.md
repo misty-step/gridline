@@ -75,7 +75,7 @@ All design tokens in this document match [src/client/styles/tokens.css](src/clie
 | `--bg-surface-active` | `#dfd7c5` | `#271f36` |
 | `--bg-inset` | `#e4decb` | `#09070d` |
 | `--border-subtle` | `rgba(20, 16, 24, 0.12)` | `rgba(255, 145, 0, 0.16)` |
-| `--border-default` | `rgba(20, 16, 24, 0.28)` | `rgba(255, 145, 0, 0.34)` |
+| `--border-default` | `rgba(20, 16, 24, 0.48)` | `rgba(255, 145, 0, 0.34)` |
 | `--border-strong` | `rgba(20, 16, 24, 0.60)` | `rgba(255, 152, 0, 0.72)` |
 | `--border-focus` | `#c2410c` | `#ff9800` |
 | `--text-primary` | `#141018` | `#f6f1e7` |

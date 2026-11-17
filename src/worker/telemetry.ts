@@ -89,12 +89,56 @@ interface NwsObservationPayload {
   };
 }
 
+interface NwsObservationCollectionPayload extends NwsObservationPayload {
+  features?: NwsObservationPayload[];
+}
+
+function parseNwsObservation(obs: NwsObservationPayload): {
+  observedAt: string | null;
+  tempC: number | null;
+  tempF: number | null;
+  relativeHumidityPct: number | null;
+  wetBulbC: number | null;
+  wetBulbF: number | null;
+  thermalRegime: LiveStationWeather["thermalRegime"];
+} {
+  const props = obs?.properties;
+  const observedAt = typeof props?.timestamp === "string" ? props.timestamp : null;
+
+  let tempC: number | null = null;
+  const rawTemp = props?.temperature?.value;
+  if (typeof rawTemp === "number" && Number.isFinite(rawTemp)) {
+    const unitCode = props?.temperature?.unitCode ?? "";
+    const c = unitCode.includes("degF") ? ((rawTemp - 32) * 5) / 9 : rawTemp;
+    tempC = round1(c);
+  }
+
+  const rawRh = props?.relativeHumidity?.value;
+  const relativeHumidityPct =
+    typeof rawRh === "number" && Number.isFinite(rawRh) ? round1(rawRh) : null;
+
+  const tempF = tempC !== null ? celsiusToFahrenheit(tempC) : null;
+  const wetBulbC = computeWetBulbC(tempC, relativeHumidityPct);
+  const wetBulbF = wetBulbC !== null ? celsiusToFahrenheit(wetBulbC) : null;
+  const thermalRegime = classifyThermalRegime(wetBulbC);
+
+  return {
+    observedAt,
+    tempC,
+    tempF,
+    relativeHumidityPct,
+    wetBulbC,
+    wetBulbF,
+    thermalRegime,
+  };
+}
+
 export async function fetchStationWeather(
   stationId: string,
   opts: TelemetryFetchOptions = {},
 ): Promise<LiveStationWeather> {
   const normalized = stationId.trim().toUpperCase();
-  const sourceUrl = `https://api.weather.gov/stations/${encodeURIComponent(normalized)}/observations/latest`;
+  const sourceUrl = `https://api.weather.gov/stations/${encodeURIComponent(normalized)}/observations?limit=5`;
   const cacheKey = `https://gridline-cache.internal/v1/weather/${encodeURIComponent(normalized)}`;
 
   if (!opts.refresh) {
@@ -134,37 +178,33 @@ export async function fetchStationWeather(
       };
     }
 
-    const body = (await res.json()) as NwsObservationPayload;
-    const props = body?.properties;
-    const observedAt = typeof props?.timestamp === "string" ? props.timestamp : null;
+    const body = (await res.json()) as NwsObservationCollectionPayload;
+    // NOAA /observations/latest emits transient null-temp/RH pre-METAR stubs around top-of-hour;
+    // scanning recent observations in one single request avoids failing on empty boundary entries.
+    const candidates: NwsObservationPayload[] = Array.isArray(body?.features)
+      ? body.features
+      : body?.properties
+        ? [body]
+        : [];
+    const parsedCandidates = candidates.map(parseNwsObservation);
+    const complete = parsedCandidates.find(
+      (obs) =>
+        obs.tempC !== null &&
+        obs.relativeHumidityPct !== null &&
+        obs.wetBulbC !== null,
+    );
 
-    let tempC: number | null = null;
-    const rawTemp = props?.temperature?.value;
-    if (typeof rawTemp === "number" && Number.isFinite(rawTemp)) {
-      const unitCode = props?.temperature?.unitCode ?? "";
-      const c = unitCode.includes("degF") ? ((rawTemp - 32) * 5) / 9 : rawTemp;
-      tempC = round1(c);
-    }
-
-    const rawRh = props?.relativeHumidity?.value;
-    const relativeHumidityPct =
-      typeof rawRh === "number" && Number.isFinite(rawRh) ? round1(rawRh) : null;
-
-    const tempF = tempC !== null ? celsiusToFahrenheit(tempC) : null;
-    const wetBulbC = computeWetBulbC(tempC, relativeHumidityPct);
-    const wetBulbF = wetBulbC !== null ? celsiusToFahrenheit(wetBulbC) : null;
-    const thermalRegime = classifyThermalRegime(wetBulbC);
-
-    if (tempC === null || relativeHumidityPct === null || wetBulbC === null) {
+    if (!complete) {
+      const latest = parsedCandidates[0];
       return {
         stationId: normalized,
-        observedAt,
-        tempC,
-        tempF,
-        relativeHumidityPct,
-        wetBulbC,
-        wetBulbF,
-        thermalRegime,
+        observedAt: latest?.observedAt ?? null,
+        tempC: latest?.tempC ?? null,
+        tempF: latest?.tempF ?? null,
+        relativeHumidityPct: latest?.relativeHumidityPct ?? null,
+        wetBulbC: latest?.wetBulbC ?? null,
+        wetBulbF: latest?.wetBulbF ?? null,
+        thermalRegime: latest?.thermalRegime ?? "unavailable",
         sourceUrl,
         status: "degraded",
         error: "Latest NOAA observation is missing temperature or relative humidity",
@@ -173,13 +213,13 @@ export async function fetchStationWeather(
 
     const result: LiveStationWeather = {
       stationId: normalized,
-      observedAt,
-      tempC,
-      tempF,
-      relativeHumidityPct,
-      wetBulbC,
-      wetBulbF,
-      thermalRegime,
+      observedAt: complete.observedAt,
+      tempC: complete.tempC,
+      tempF: complete.tempF,
+      relativeHumidityPct: complete.relativeHumidityPct,
+      wetBulbC: complete.wetBulbC,
+      wetBulbF: complete.wetBulbF,
+      thermalRegime: complete.thermalRegime,
       sourceUrl,
       status: "live",
     };
@@ -569,7 +609,7 @@ export async function fetchTelemetrySummary(
         wetBulbC: null,
         wetBulbF: null,
         thermalRegime: "unavailable",
-        sourceUrl: `https://api.weather.gov/stations/${encodeURIComponent(stationId)}/observations/latest`,
+        sourceUrl: `https://api.weather.gov/stations/${encodeURIComponent(stationId)}/observations?limit=5`,
         status: "degraded",
         error:
           entry.reason instanceof Error

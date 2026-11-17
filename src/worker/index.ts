@@ -28,6 +28,7 @@ import {
   countFootprintsByFacility,
   getFacilityRecordById,
   getFootprintsForFacility,
+  isProposalFacilityItem,
   isVerifiedFacilityItem,
   recordToIndexItem,
 } from "./dataset.ts";
@@ -301,6 +302,7 @@ export function filterFacilityIndex(
   }
 
   const verifiedOnly = isTruthyParam(params.get("verifiedOnly"));
+  const proposalsOnly = isTruthyParam(params.get("proposalsOnly"));
   const windowRaw = params.get("window");
   let activityWindow: ActivityWindow | null = null;
   if (windowRaw !== null && windowRaw.trim() !== "") {
@@ -357,6 +359,7 @@ export function filterFacilityIndex(
     statusFilter ||
       tierFilter ||
       verifiedOnly ||
+      proposalsOnly ||
       (activityWindow && activityWindow !== "all") ||
       isoFilter ||
       stateFilter ||
@@ -373,6 +376,7 @@ export function filterFacilityIndex(
     if (statusFilter && !statusFilter.has(item.lifecycleStatus)) return false;
     if (tierFilter && !tierFilter.has(item.catalogTier)) return false;
     if (verifiedOnly && !isVerifiedFacilityItem(item)) return false;
+    if (proposalsOnly && !isProposalFacilityItem(item)) return false;
     if (activityWindow && activityWindow !== "all") {
       if (!isWithinActivityWindow(item.lastUpdated || item.lastVerified, activityWindow, nowMs)) {
         return false;

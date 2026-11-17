@@ -172,7 +172,11 @@ export function App() {
   );
   const [compareIds, setCompareIds] = useState<string[]>(initial.compareIds);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
-  const [railOpen, setRailOpen] = useState<boolean>(() => !isMobileViewport());
+  const [railOpen, setRailOpen] = useState<boolean>(
+    () =>
+      !isMobileViewport() &&
+      !(Boolean(initial.facilityId) && isSinglePanelViewport()),
+  );
   const [mobileDetent, setMobileDetent] = useState<"peek" | "expanded">(
     "expanded",
   );
@@ -194,7 +198,7 @@ export function App() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // Sync rail collapse on narrow viewports
+  // Sync rail collapse on narrow viewports & single-panel drawer mode (< 1280px)
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
     const mqMobile = window.matchMedia("(max-width: 768px)");
@@ -206,6 +210,20 @@ export function App() {
     mqMobile.addEventListener("change", onMobileChange);
     return () => mqMobile.removeEventListener("change", onMobileChange);
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const syncSinglePanel = () => {
+      if (selectedFacilityId && isSinglePanelViewport()) {
+        setRailOpen(false);
+      }
+    };
+    syncSinglePanel();
+    if (!window.matchMedia) return;
+    const mqSingle = window.matchMedia("(max-width: 1279px)");
+    mqSingle.addEventListener("change", syncSinglePanel);
+    return () => mqSingle.removeEventListener("change", syncSinglePanel);
+  }, [selectedFacilityId]);
 
   // Sync theme attributes to <html> & localStorage
   useEffect(() => {

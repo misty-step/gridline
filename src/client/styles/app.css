@@ -3688,9 +3688,41 @@ button {
   }
 }
 
+@media (max-width: 1240px) {
+  .workspace--drawer-open .map-collapsed-stats {
+    display: none;
+  }
+}
+
+@media (max-width: 1140px) {
+  .topbar {
+    gap: 6px;
+    padding: 0 10px;
+  }
+  .topbar-left {
+    gap: 8px;
+  }
+  .brand-sub {
+    display: none;
+  }
+  .omnibox {
+    flex: 1 1 128px;
+    min-width: 112px;
+  }
+  .seg-btn {
+    padding: 0 7px;
+    gap: 4px;
+  }
+  .topbar-action-btn {
+    padding: 0 7px;
+    gap: 5px;
+  }
+}
+
 @media (max-width: 1024px) {
   .omnibox {
-    flex: 1 1 160px;
+    flex: 1 1 128px;
+    min-width: 112px;
   }
   .iso-dispatch-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -68,9 +68,14 @@ async function checkSingleUrl(url: string, timeoutMs = 8000): Promise<UrlCheckOu
   };
 
   try {
-    let res = await attempt("HEAD");
-    if (res.status === 405 || res.status === 403 || res.status === 400 || res.status === 406) {
-      await res.body?.cancel();
+    let res: Response;
+    try {
+      res = await attempt("HEAD");
+      if (res.status === 405 || res.status === 403 || res.status === 400 || res.status === 406) {
+        await res.body?.cancel();
+        res = await attempt("GET");
+      }
+    } catch {
       res = await attempt("GET");
     }
     const status = res.status;

@@ -1,3 +1,8 @@
+import {
+  classifyFacilityMwSplit,
+  isProposalFacilityItem,
+  isVerifiedFacilityItem,
+} from "@shared/fleet";
 import type {
   ActivityWindow,
   CatalogTier,
@@ -47,13 +52,9 @@ export function isVerifiedEpistemic(epistemic: EpistemicStatus): boolean {
   );
 }
 
-export function isVerifiedFacility(f: FacilityIndexItem): boolean {
-  return f.catalogTier !== "provisional" && f.lifecycleStatus !== "proposed";
-}
+export const isVerifiedFacility = isVerifiedFacilityItem;
 
-export function isProposalFacility(f: FacilityIndexItem): boolean {
-  return f.catalogTier === "provisional" || f.lifecycleStatus === "proposed";
-}
+export const isProposalFacility = isProposalFacilityItem;
 
 export function isContestedOrMoratorium(f: FacilityIndexItem): boolean {
   return (
@@ -259,24 +260,14 @@ export function computeViewportMetrics(
 
     if (isVerifiedFacility(f)) {
       verifiedFacilityCount += 1;
-      if (f.operationalMw !== null && isVerifiedEpistemic(f.operationalMwEpistemic)) {
-        verifiedOperationalMw += f.operationalMw;
-      }
-      const planVal = f.totalPlannedMw ?? f.operationalMw;
-      const planEp =
-        f.totalPlannedMw !== null ? f.totalPlannedMwEpistemic : f.operationalMwEpistemic;
-      if (planVal !== null) {
-        if (isVerifiedEpistemic(planEp)) {
-          verifiedPlannedMw += planVal;
-        } else {
-          reportedOrProposedMw += planVal;
-        }
-      }
-    } else {
-      proposedFacilityCount += 1;
-      const propMw = f.totalPlannedMw ?? f.operationalMw ?? 0;
-      reportedOrProposedMw += propMw;
     }
+    if (isProposalFacility(f)) {
+      proposedFacilityCount += 1;
+    }
+    const mwSplit = classifyFacilityMwSplit(f);
+    verifiedOperationalMw += mwSplit.verifiedOperationalMw;
+    verifiedPlannedMw += mwSplit.verifiedPlannedMw;
+    reportedOrProposedMw += mwSplit.reportedOrProposedMw;
 
     if (isContestedOrMoratorium(f)) {
       contestedOrMoratoriumCount += 1;
@@ -395,22 +386,11 @@ export function buildMarketClusters(
 
       if (isVerifiedFacility(f)) {
         verifiedCount += 1;
-        if (f.operationalMw !== null && isVerifiedEpistemic(f.operationalMwEpistemic)) {
-          operationalMw += f.operationalMw;
-        }
-        const planVal = f.totalPlannedMw ?? f.operationalMw;
-        const planEp =
-          f.totalPlannedMw !== null ? f.totalPlannedMwEpistemic : f.operationalMwEpistemic;
-        if (planVal !== null) {
-          if (isVerifiedEpistemic(planEp)) {
-            plannedMw += planVal;
-          } else {
-            reportedOrProposedMw += planVal;
-          }
-        }
-      } else {
-        reportedOrProposedMw += f.totalPlannedMw ?? f.operationalMw ?? 0;
       }
+      const mwSplit = classifyFacilityMwSplit(f);
+      operationalMw += mwSplit.verifiedOperationalMw;
+      plannedMw += mwSplit.verifiedPlannedMw;
+      reportedOrProposedMw += mwSplit.reportedOrProposedMw;
 
       if (isContestedOrMoratorium(f)) contestedCount += 1;
       if (isUndisclosedWater(f)) {
@@ -627,8 +607,9 @@ export function buildFacilityExportUrl(
   params.set("format", format);
   if (filters.statuses.length > 0) {
     params.set("status", filters.statuses.join(","));
-  } else if (filters.proposalsOnly) {
-    params.set("status", "proposed");
+  }
+  if (filters.proposalsOnly) {
+    params.set("proposalsOnly", "1");
   }
   if (filters.tiers.length > 0) {
     params.set("tier", filters.tiers.join(","));

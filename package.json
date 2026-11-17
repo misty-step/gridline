@@ -1,6 +1,6 @@
 {
   "name": "gridline",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "Gridline — US Data Center Infrastructure, Water/Power Footprint & Live Telemetry Atlas",
@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "cli": "bun run scripts/cli.ts",
+    "ingest": "bun run scripts/ingest-us-census.ts",
     "deploy": "bun run build && wrangler deploy",
     "video:plates": "bun run video/capture-plates.ts",
     "video:audio": "bun run video/audio.ts",

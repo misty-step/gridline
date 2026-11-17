@@ -2,6 +2,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, resolve } from "node:path";
+import { computeFleetSummary } from "../src/shared/fleet.ts";
 import type {
   CampusFootprintProps,
   CatalogTier,
@@ -1943,75 +1944,7 @@ async function main(): Promise<void> {
   });
 
   // 13. Compute FleetSummaryMetadata (strict separation of verified vs reported/proposed MW)
-  const statesSet = new Set<string>();
-  const byTier: Record<CatalogTier, number> = { flagship: 0, registry: 0, provisional: 0 };
-  const byFootprintCoverage: Record<FootprintCoverage, number> = {
-    verified_polygons: 0,
-    point_only: 0,
-  };
-  const byIso: FleetSummaryMetadata["byIso"] = {};
-  const byStatus: FleetSummaryMetadata["byStatus"] = {};
-  let verifiedOperationalMwTotal = 0;
-  let verifiedPlannedMwTotal = 0;
-  let reportedOrProposedMwTotal = 0;
-  let disclosedWaterFacilityCount = 0;
-  let undisclosedWaterFacilityCount = 0;
-  let contestedOrMoratoriumCount = 0;
-
-  for (const item of indexItems) {
-    statesSet.add(item.state.toUpperCase());
-    byTier[item.catalogTier] += 1;
-    byFootprintCoverage[item.footprintCoverage] += 1;
-    byIso[item.isoRegion] = (byIso[item.isoRegion] ?? 0) + 1;
-    byStatus[item.lifecycleStatus] = (byStatus[item.lifecycleStatus] ?? 0) + 1;
-
-    if (item.operationalMw !== null && item.operationalMwEpistemic !== "reported") {
-      verifiedOperationalMwTotal += item.operationalMw;
-    }
-
-    const plannedVal = item.totalPlannedMw ?? item.operationalMw;
-    const plannedEp = item.totalPlannedMw !== null ? item.totalPlannedMwEpistemic : item.operationalMwEpistemic;
-    const isSpeculative =
-      plannedEp === "reported" ||
-      (item.lifecycleStatus === "proposed" && plannedEp !== "permitted");
-
-    if (plannedVal !== null) {
-      if (isSpeculative) {
-        reportedOrProposedMwTotal += plannedVal;
-      } else {
-        verifiedPlannedMwTotal += plannedVal;
-      }
-    }
-
-    if (item.waterEpistemic === "undisclosed") {
-      undisclosedWaterFacilityCount += 1;
-    } else {
-      disclosedWaterFacilityCount += 1;
-    }
-    if (
-      item.lifecycleStatus === "contested" ||
-      item.lifecycleStatus === "moratorium" ||
-      item.moratoriumOrLitigationActive
-    ) {
-      contestedOrMoratoriumCount += 1;
-    }
-  }
-
-  const fleetSummary: FleetSummaryMetadata = {
-    totalFacilities: indexItems.length,
-    statesCovered: statesSet.size,
-    byTier,
-    byFootprintCoverage,
-    byIso,
-    byStatus,
-    verifiedOperationalMwTotal: Math.round(verifiedOperationalMwTotal),
-    verifiedPlannedMwTotal: Math.round(verifiedPlannedMwTotal),
-    reportedOrProposedMwTotal: Math.round(reportedOrProposedMwTotal),
-    disclosedWaterFacilityCount,
-    undisclosedWaterFacilityCount,
-    contestedOrMoratoriumCount,
-    censusGeneratedAt: startedAt,
-  };
+  const fleetSummary: FleetSummaryMetadata = computeFleetSummary(indexItems, startedAt);
 
   const footprintsCollection: GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps> = {
     type: "FeatureCollection",

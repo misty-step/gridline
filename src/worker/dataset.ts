@@ -1,4 +1,10 @@
 import * as dataModule from "../data/index.ts";
+import {
+  classifyFacilityMwSplit,
+  computeFleetSummary,
+  isProposalFacilityItem,
+  isVerifiedFacilityItem,
+} from "../shared/fleet.ts";
 import type {
   CampusFootprintProps,
   CatalogTier,
@@ -7,9 +13,7 @@ import type {
   FacilityRecord,
   FleetSummaryMetadata,
   FootprintCoverage,
-  IsoRegion,
   IsoRegionProps,
-  LifecycleStatus,
 } from "../shared/types.ts";
 
 interface DataModuleAdapter {
@@ -122,107 +126,12 @@ export function recordToIndexItem(
   };
 }
 
-export function isVerifiedFacilityItem(item: FacilityIndexItem): boolean {
-  return (
-    item.catalogTier !== "provisional" &&
-    item.lifecycleStatus !== "proposed" &&
-    item.operationalMwEpistemic !== "reported" &&
-    item.totalPlannedMwEpistemic !== "reported"
-  );
-}
-
-export function computeFleetSummary(
-  items: FacilityIndexItem[],
-  censusGeneratedAt = new Date().toISOString(),
-): FleetSummaryMetadata {
-  const states = new Set<string>();
-  const byTier: Record<CatalogTier, number> = {
-    flagship: 0,
-    registry: 0,
-    provisional: 0,
-  };
-  const byFootprintCoverage: Record<FootprintCoverage, number> = {
-    verified_polygons: 0,
-    point_only: 0,
-  };
-  const byIso: Partial<Record<IsoRegion, number>> = {};
-  const byStatus: Partial<Record<LifecycleStatus, number>> = {};
-
-  let verifiedOperationalMwTotal = 0;
-  let verifiedPlannedMwTotal = 0;
-  let reportedOrProposedMwTotal = 0;
-  let disclosedWaterFacilityCount = 0;
-  let undisclosedWaterFacilityCount = 0;
-  let contestedOrMoratoriumCount = 0;
-
-  for (const item of items) {
-    if (item.state) {
-      states.add(item.state.trim().toUpperCase());
-    }
-    byTier[item.catalogTier] += 1;
-    byFootprintCoverage[item.footprintCoverage] += 1;
-    byIso[item.isoRegion] = (byIso[item.isoRegion] ?? 0) + 1;
-    byStatus[item.lifecycleStatus] = (byStatus[item.lifecycleStatus] ?? 0) + 1;
-
-    const isSpeculativeStatus =
-      item.lifecycleStatus === "proposed" || item.catalogTier === "provisional";
-
-    if (
-      typeof item.operationalMw === "number" &&
-      Number.isFinite(item.operationalMw)
-    ) {
-      if (!isSpeculativeStatus && item.operationalMwEpistemic !== "reported") {
-        verifiedOperationalMwTotal += item.operationalMw;
-      } else if (item.totalPlannedMw === null) {
-        reportedOrProposedMwTotal += item.operationalMw;
-      }
-    }
-
-    if (
-      typeof item.totalPlannedMw === "number" &&
-      Number.isFinite(item.totalPlannedMw)
-    ) {
-      if (isSpeculativeStatus || item.totalPlannedMwEpistemic === "reported") {
-        reportedOrProposedMwTotal += item.totalPlannedMw;
-      } else {
-        verifiedPlannedMwTotal += item.totalPlannedMw;
-      }
-    }
-
-    if (
-      item.waterEpistemic !== "undisclosed" &&
-      (item.peakOrAvgWaterMgd !== null || item.annualWaterMgy !== null)
-    ) {
-      disclosedWaterFacilityCount += 1;
-    } else {
-      undisclosedWaterFacilityCount += 1;
-    }
-
-    if (
-      item.lifecycleStatus === "contested" ||
-      item.lifecycleStatus === "moratorium" ||
-      item.moratoriumOrLitigationActive
-    ) {
-      contestedOrMoratoriumCount += 1;
-    }
-  }
-
-  return {
-    totalFacilities: items.length,
-    statesCovered: states.size,
-    byTier,
-    byFootprintCoverage,
-    byIso,
-    byStatus,
-    verifiedOperationalMwTotal: Math.round(verifiedOperationalMwTotal),
-    verifiedPlannedMwTotal: Math.round(verifiedPlannedMwTotal),
-    reportedOrProposedMwTotal: Math.round(reportedOrProposedMwTotal),
-    disclosedWaterFacilityCount,
-    undisclosedWaterFacilityCount,
-    contestedOrMoratoriumCount,
-    censusGeneratedAt,
-  };
-}
+export {
+  classifyFacilityMwSplit,
+  computeFleetSummary,
+  isProposalFacilityItem,
+  isVerifiedFacilityItem,
+};
 
 const defaultFootprintCounts = countFootprintsByFacility(ALL_FOOTPRINTS);
 

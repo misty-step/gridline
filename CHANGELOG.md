@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0 — 2026-11-16
+
+### Added
+- **50-State + DC National Census & Real Footprint Fusion (`scripts/ingest-us-census.ts`, `src/data/`)**: Fused audited flagship dossiers (`75` flagships) and `21` provisional 2025–2026 proposals with DOE/PNNL `IM3` (`IMMM-SFA/datacenter-atlas`), PeeringDB US (`country=US`), and EPA ECHO NAICS `518210` into `2,266` deduplicated campuses across all `51` US jurisdictions (`50` states + `DC`) and all `9` ISO/RTO territories (`PJM: 731`, `WECC: 439`, `SERC: 252`, `MISO: 229`, `ERCOT: 207`, `CAISO: 155`, `SPP: 95`, `ISO-NE: 84`, `NYISO: 74`), with nearest verified 4-char ICAO NOAA NWS stations and active 8-digit USGS `00060` streamgauges.
+- **Zero Synthetic Rectangles & Segregated Fleet Accounting**: Deleted legacy synthetic 5-vertex footprint boxes (`footprints-east.json`, `footprints-west.json`); replaced with `1,915` real traced/IM3 building and campus polygons (`1,271` `verified_polygons`, `995` honest `point_only`) served lazily at `/data/footprints-us.geojson`, alongside strictly separated capacity accounting (`7,992 MW` verified operational, `36,493 MW` verified planned, and `30,885 MW` reported/proposed pipeline).
+- **Live EIA Electric Grid Dispatch (`src/worker/grid.ts`, `GET /api/grid/live`)**: Polls EIA v2 `region-data` and `fuel-type-data` across all 9 US ISO/RTO regions with fuel-mix share calculation, `caches.default` + Cloudflare D1 `grid_snapshots` persistence, and explicit `live`/`stale`/`degraded` states.
+- **Multi-Stream Live Infrastructure Pulse & D1 Persistence (`src/worker/pulse.ts`, `migrations/0001_live_observatory.sql`, `GET /api/pulse/live`)**: Aggregates Federal Register (`DOE`, `FERC`, `EPA`, `NRC` with normalized `<INF>`/`<SUP>`/`<E>` chemistry tags), SEC EDGAR (`efts.sec.gov`), and PeeringDB US facility deltas into Cloudflare D1 (`gridline-observatory`: `live_signals`, `grid_snapshots`, `ingest_runs`) with `stream` and `window` (`24h|7d|30d|90d|all`) filters.
+- **50-Subrequest-Safe Observatory API & CLI (`src/worker/`, `scripts/cli.ts`)**: Added compact `FacilitiesIndexApiResponse` default on `GET /api/facilities` (`?view=legacy` preserved), `tier`/`verifiedOnly`/`window`/`state` filters, `gridSnapshot` hydration on `GET /api/facilities/:id`, <= 20-subrequest `/api/telemetry/summary` (top <= 18 NOAA + 1 batched USGS OGC call), and `bun run cli grid` / `pulse` commands.
+- **NERV // MAGI Tactical Cartography UI (`src/client/`, `DESIGN.md`, `src/client/styles/tokens.css`)**: Upgraded to 135 design tokens across `NERV CRT` (dark default) and `GEHIRN Technical Schematic Paper` (light), 4 analytical lenses (`Capacity`, `Water`, `Grid`, `Activity`) with `New England (ISO-NE)` and `NY / NJ Metro` corridors, 50-state WebGL constellation with `<= 22` collision-culled corridor pills, NERV optical reticle on `point_only` campuses, `92px`-pitch virtualized `DirectoryRail`, adaptive `FacilityDrawer` with PeeringDB/EPA registry signals, and `LivePulseModal` replacing `RegulatoryModal`.
+
 ## 0.2.0 — 2026-11-16
 
 ### Changed

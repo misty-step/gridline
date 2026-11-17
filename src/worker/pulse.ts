@@ -22,7 +22,7 @@ import {
 } from "./http.ts";
 import { fetchRegulatoryFeed, stripHtmlTags } from "./regulatory.ts";
 
-const PULSE_CACHE_KEY = "https://gridline-cache.internal/v1/pulse/live";
+const PULSE_CACHE_KEY = "https://gridline-cache.internal/v2/pulse/live";
 const PULSE_CACHE_TTL_SECONDS = 1800; // 30 minutes
 const PULSE_SLA_MS = 24 * 60 * 60 * 1000;
 const PULSE_FRESH_D1_MS = 30 * 60 * 1000;
@@ -79,6 +79,72 @@ interface CachedPulseBundle {
   error?: string;
 }
 
+const STATE_CODE_TO_NAME: Record<string, string> = Object.fromEntries(
+  Object.entries(STATE_NAME_TO_CODE).map(([name, code]) => [code, name]),
+);
+
+const GENERIC_FACILITY_NAME_RE =
+  /^(data\s*cent(er|re)s?|colocation|telecom|server\s*farm|carrier\s*hotel|facility|building|campus)(\s+\d+|\s*\(\d+\))?$/i;
+
+const GENERIC_PLACEHOLDER_PARTY = "Registry Colocation / Enterprise Operator";
+
+const GENERIC_BRAND_STOPWORDS = new Set([
+  "data", "center", "centre", "centers", "centres", "datacenter", "colocation",
+  "colo", "campus", "facility", "facilities", "building", "buildings", "telecom",
+  "server", "servers", "cloud", "digital", "holdings", "holding", "group",
+  "energy", "power", "electric", "electricity", "corp", "corporation",
+  "company", "incorporated", "inc", "llc", "ltd", "limited", "partners",
+  "properties", "property", "technologies", "technology", "services",
+  "network", "networks", "systems", "realty", "capital", "ventures",
+  "venture", "north", "south", "east", "west", "central", "metro",
+  "american", "united", "states", "national", "global", "industrial",
+  "undisclosed", "unknown", "project", "phase", "clean", "green",
+  "registry", "enterprise", "operator", "infrastructure", "solutions",
+  "management", "internet", "exchange", "communications", "associates",
+  "development", "developers", "trust", "reit",
+]);
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function isSpecificFacilityName(name: string): boolean {
+  const normalized = name.trim().replace(/\s+/g, " ");
+  return normalized.length >= 14 && !GENERIC_FACILITY_NAME_RE.test(normalized);
+}
+
+function extractDistinctBrandTokens(
+  fac: FacilityIndexItem | FacilityRecord,
+  cityLower: string,
+  stateLower: string,
+): string[] {
+  const rawOperator =
+    "stakeholders" in fac ? fac.stakeholders.operator : fac.operator;
+  const rawDeveloper =
+    "stakeholders" in fac ? fac.stakeholders.developer : fac.developer;
+  const operator =
+    rawOperator === GENERIC_PLACEHOLDER_PARTY ? "" : (rawOperator ?? "");
+  const developer =
+    rawDeveloper === GENERIC_PLACEHOLDER_PARTY ? "" : (rawDeveloper ?? "");
+  const nameForBrand = isSpecificFacilityName(fac.name ?? "")
+    ? (fac.name ?? "")
+    : "";
+  const raw = `${operator} ${developer} ${nameForBrand}`;
+  const tokens = raw.toLowerCase().match(/[a-z0-9]{5,}/g) ?? [];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const tok of tokens) {
+    if (GENERIC_BRAND_STOPWORDS.has(tok)) continue;
+    if (tok === cityLower || tok === stateLower) continue;
+    if (/^\d+$/.test(tok)) continue;
+    if (!seen.has(tok)) {
+      seen.add(tok);
+      out.push(tok);
+    }
+  }
+  return out;
+}
+
 function inferMetadataFromText(
   text: string,
   explicitStates: string[] = [],
@@ -118,12 +184,42 @@ function inferMetadataFromText(
   const matchedIds: string[] = [];
   for (const fac of facilities) {
     if (matchedIds.length >= 5) break;
-    const facName = fac.name.toLowerCase();
-    const cityStateMatch =
-      fac.city.length >= 4 &&
-      lower.includes(fac.city.toLowerCase()) &&
-      (stateSet.has(fac.state.toUpperCase()) || lower.includes(fac.state.toLowerCase()));
-    if ((facName.length >= 6 && lower.includes(facName)) || cityStateMatch) {
+    const facName = fac.name.trim().replace(/\s+/g, " ");
+    const facNameLower = facName.toLowerCase();
+    if (isSpecificFacilityName(facName) && lower.includes(facNameLower)) {
+      matchedIds.push(fac.id);
+      continue;
+    }
+
+    const cityTrim = fac.city.trim();
+    const stateCode = fac.state.trim().toUpperCase();
+    if (cityTrim.length < 4 || !stateCode) continue;
+
+    const cityLower = cityTrim.toLowerCase();
+    if (!lower.includes(cityLower)) continue;
+    if (!new RegExp(`\\b${escapeRegex(cityLower)}\\b`, "i").test(lower)) {
+      continue;
+    }
+
+    const stateName = STATE_CODE_TO_NAME[stateCode];
+    const hasState =
+      stateSet.has(stateCode) ||
+      new RegExp(`\\b${escapeRegex(stateCode)}\\b`).test(text) ||
+      (Boolean(stateName) &&
+        new RegExp(`\\b${escapeRegex(stateName)}\\b`, "i").test(lower));
+    if (!hasState) continue;
+
+    const brandTokens = extractDistinctBrandTokens(
+      fac,
+      cityLower,
+      stateCode.toLowerCase(),
+    );
+    const hasBrandCooccurrence = brandTokens.some(
+      (tok) =>
+        lower.includes(tok) &&
+        new RegExp(`\\b${escapeRegex(tok)}\\b`, "i").test(lower),
+    );
+    if (hasBrandCooccurrence) {
       matchedIds.push(fac.id);
     }
   }
@@ -704,6 +800,16 @@ export async function fetchLivePulseFeed(
   const liveToPersist: LivePulseSignal[] = [];
   const allSignals: LivePulseSignal[] = [];
   const errors: string[] = [];
+
+  if (opts.refresh && env.DB) {
+    try {
+      await env.DB.prepare(
+        "UPDATE live_signals SET matched_facility_ids_json = '[]' WHERE stream = 'sec_edgar' OR matched_facility_ids_json LIKE '%im3-or-data-center%'",
+      ).run();
+    } catch {
+      // Best-effort cleanup of stale entity matches on forced refresh.
+    }
+  }
 
   for (const stream of ALL_PULSE_STREAMS) {
     const res = streamResults[stream];

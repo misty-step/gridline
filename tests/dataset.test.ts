@@ -1,9 +1,21 @@
 import { describe, expect, test } from "bun:test";
 import {
+  buildFacilityExportUrl,
+  computeViewportMetrics,
+  filterFacilities,
+} from "../src/client/lib/filters.ts";
+import { DEFAULT_FILTERS } from "../src/client/lib/constants.ts";
+import {
   ALL_FACILITIES,
   ALL_FOOTPRINTS,
+  FLEET_SUMMARY,
   ISO_REGIONS,
 } from "../src/data/index.ts";
+import {
+  computeFleetSummary,
+  isProposalFacilityItem,
+  isVerifiedFacilityItem,
+} from "../src/shared/fleet.ts";
 import {
   validateFacilities,
   validateFacilityIndex,
@@ -99,5 +111,60 @@ describe("bundled US data center dataset", () => {
     expect(csvLines.length).toBe(ALL_INDEX_ITEMS.length + 1);
     expect(csvLines[0]).toContain("catalogTier");
     expect(csvLines[0]).toContain("footprintCoverage");
+  });
+
+  test("client filters, fleet-summary.json, and Worker API stay in 1:1 parity", async () => {
+    expect(FLEET_SUMMARY).toEqual(
+      computeFleetSummary(ALL_INDEX_ITEMS, FLEET_SUMMARY.censusGeneratedAt),
+    );
+
+    const fullMetrics = computeViewportMetrics(ALL_INDEX_ITEMS);
+    expect(fullMetrics.verifiedOperationalMw).toBe(
+      FLEET_SUMMARY.verifiedOperationalMwTotal,
+    );
+    expect(fullMetrics.verifiedPlannedMw).toBe(
+      FLEET_SUMMARY.verifiedPlannedMwTotal,
+    );
+    expect(fullMetrics.reportedOrProposedMw).toBe(
+      FLEET_SUMMARY.reportedOrProposedMwTotal,
+    );
+
+    const clientVerified = filterFacilities(ALL_INDEX_ITEMS, {
+      ...DEFAULT_FILTERS,
+      verifiedOnly: true,
+    });
+    const workerVerifiedRes = await handleRequest(
+      new Request("https://example.com/api/facilities?verifiedOnly=1"),
+    );
+    expect(workerVerifiedRes.status).toBe(200);
+    const workerVerified = (await workerVerifiedRes.json()) as {
+      facilities: typeof ALL_INDEX_ITEMS;
+      summary: typeof FLEET_SUMMARY;
+    };
+    expect(clientVerified.length).toBe(workerVerified.facilities.length);
+    expect(workerVerified.summary.reportedOrProposedMwTotal).toBe(0);
+    expect(clientVerified.every((f) => isVerifiedFacilityItem(f))).toBe(true);
+    expect(computeViewportMetrics(clientVerified).reportedOrProposedMw).toBe(0);
+
+    const clientProposals = filterFacilities(ALL_INDEX_ITEMS, {
+      ...DEFAULT_FILTERS,
+      proposalsOnly: true,
+    });
+    const exportUrl = buildFacilityExportUrl("csv", {
+      ...DEFAULT_FILTERS,
+      proposalsOnly: true,
+    });
+    expect(exportUrl).toContain("proposalsOnly=1");
+    expect(exportUrl).not.toContain("status=proposed");
+
+    const workerProposalsRes = await handleRequest(
+      new Request("https://example.com/api/facilities?proposalsOnly=1"),
+    );
+    expect(workerProposalsRes.status).toBe(200);
+    const workerProposals = (await workerProposalsRes.json()) as {
+      facilities: typeof ALL_INDEX_ITEMS;
+    };
+    expect(clientProposals.length).toBe(workerProposals.facilities.length);
+    expect(clientProposals.every((f) => isProposalFacilityItem(f))).toBe(true);
   });
 });
