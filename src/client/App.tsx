@@ -284,6 +284,13 @@ export function App() {
     [compareIds, facilities],
   );
 
+  // Close comparison modal whenever fewer than 2 facilities remain pinned
+  useEffect(() => {
+    if (compareIds.length < 2 && compareModalOpen) {
+      setCompareModalOpen(false);
+    }
+  }, [compareIds.length, compareModalOpen]);
+
   const triggerFly = useCallback((req: Omit<MapFlyRequest, "nonce">) => {
     flyNonceRef.current += 1;
     setFlyRequest({ ...req, nonce: flyNonceRef.current });

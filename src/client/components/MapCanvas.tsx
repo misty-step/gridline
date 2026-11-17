@@ -1120,13 +1120,13 @@ export function MapCanvas({
     if (!map) return;
     if (currentStyleKeyRef.current === styleKey) return;
     currentStyleKeyRef.current = styleKey;
-    map.setStyle(getMapStyleSpec(basemap, resolvedTheme));
+    map.setStyle(getMapStyleSpec(basemap, resolvedTheme), { diff: false });
   }, [basemap, resolvedTheme, styleKey]);
 
   // Update GeoJSON data & dynamic paint expressions when data/lens/selection changes
   useEffect(() => {
     const map = mapRef.current;
-    if (!map || !map.isStyleLoaded()) return;
+    if (!map || !map.getSource("facilities")) return;
 
     const isoSrc = map.getSource("iso-regions") as maplibregl.GeoJSONSource | undefined;
     if (isoSrc) isoSrc.setData(isoRegions);

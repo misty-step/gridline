@@ -47,8 +47,8 @@ function parseFlags(args: string[]): {
   return { positional, flags };
 }
 
-function fmtNum(value: number | null, unit = ""): string {
-  if (value === null) return "Undisclosed";
+function fmtNum(value: number | null, unit = "", nullLabel = "Undisclosed"): string {
+  if (value === null) return nullLabel;
   return unit ? `${value} ${unit}` : String(value);
 }
 
@@ -213,11 +213,11 @@ async function main(): Promise<void> {
     const h = telemetry.hydrology;
     console.log(`Live Telemetry for ${facility.name} (${facility.id})`);
     console.log(
-      `NOAA ${w.stationId} [${w.status}]: Temp ${fmtNum(w.tempC, "°C")} (${fmtNum(w.tempF, "°F")}) | RH ${fmtNum(w.relativeHumidityPct, "%")} | Wet-Bulb ${fmtNum(w.wetBulbC, "°C")} (${fmtNum(w.wetBulbF, "°F")}) | Regime: ${w.thermalRegime}`,
+      `NOAA ${w.stationId} [${w.status}]: Temp ${fmtNum(w.tempC, "°C", "Unavailable")} (${fmtNum(w.tempF, "°F", "Unavailable")}) | RH ${fmtNum(w.relativeHumidityPct, "%", "Unavailable")} | Wet-Bulb ${fmtNum(w.wetBulbC, "°C", "Unavailable")} (${fmtNum(w.wetBulbF, "°F", "Unavailable")}) | Regime: ${w.thermalRegime}`,
     );
     if (w.error) console.log(`  Weather error: ${w.error}`);
     console.log(
-      `USGS ${h.siteId} [${h.status}]: Discharge ${fmtNum(h.dischargeCfs, h.unit)} | Observed: ${h.observedAt ?? "unavailable"}`,
+      `USGS ${h.siteId} [${h.status}]: Discharge ${fmtNum(h.dischargeCfs, h.unit, "Unavailable")} | Observed: ${h.observedAt ?? "Unavailable"}`,
     );
     if (h.error) console.log(`  Hydrology error: ${h.error}`);
     return;
