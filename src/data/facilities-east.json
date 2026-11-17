@@ -1,0 +1,4306 @@
+[
+  {
+    "id": "equinix-ashburn",
+    "name": "Equinix Ashburn Campus",
+    "marketCluster": "Northern Virginia",
+    "city": "Ashburn",
+    "county": "Loudoun",
+    "state": "VA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -77.459069,
+      39.016389
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Core interconnection hub of Northern Virginia's Data Center Alley spanning DC1 through DC21 across Filigree Court, Beaumeade Circle, and Performance Circle, serving multi-cloud on-ramps via Dominion Energy and Loudoun Water reclaimed cooling supply.",
+    "parcel": {
+      "acreage": {
+        "value": 120,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "Estimated aggregate parcel footprint across Filigree Ct, Beaumeade Cir, and Performance Cir IBX sites",
+        "sourceId": "src-eqx-dc11"
+      },
+      "grossSqFt": {
+        "value": 1850000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "Estimated combined gross building area across Equinix Ashburn IBX facilities (DC1\u2013DC21)",
+        "sourceId": "src-eqx-dc21"
+      },
+      "dataHallCount": 15,
+      "zoningDesignation": "PD-IP / GI (Loudoun County; SPEX required post-March 2025 CPAM/ZOAM)",
+      "parcelNote": "Centered on 21715 Filigree Ct (DC2) and adjacent DC1/DC11 campuses, linked by dark fiber to Beaumeade Circle (DC21)."
+    },
+    "stakeholders": {
+      "developer": "Equinix, Inc.",
+      "operator": "Equinix, Inc.",
+      "anchorTenants": [
+        {
+          "name": "AWS Direct Connect & Multi-Cloud On-Ramps",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-eqx-dc21"
+        },
+        {
+          "name": "Carrier-Neutral Network & Peering Ecosystem",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-eqx-dc11"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 320,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "Estimated energized critical IT load across Ashburn IBX campus buildings; Equinix discloses per-building allocations rather than a single campus total",
+        "sourceId": "src-eqx-dc11"
+      },
+      "totalPlannedMw": {
+        "value": 420,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "Estimated total campus capacity including high-density AI liquid-cooling retrofits and phased Ashburn expansions",
+        "sourceId": "src-eqx-sustain"
+      },
+      "utilityProvider": "Dominion Energy Virginia",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "230 kV / 34.5 kV Dominion Energy Ashburn feeds",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Ultra-low-sulfur diesel backup generators under VA DEQ Article 6 minor NSR permits; new applications after July 2026 require Tier 4-equivalent controls under HB 507 / APG-576.",
+      "cleanPowerAndTariffSummary": "96% global renewable energy coverage via utility green tariffs and regional PPAs; served under Dominion Energy GS-4 large general service schedules."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-10-01",
+        "basis": "Equinix publishes global portfolio WUE (0.95 L/kWh) and Loudoun reclaimed water integration, but withholds campus-level Ashburn MGD totals",
+        "sourceId": "src-eqx-sustain"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-10-01",
+        "basis": "Annual campus water volume is not disaggregated publicly for Ashburn IBX buildings",
+        "sourceId": "src-eqx-sustain"
+      },
+      "pue": {
+        "value": 1.37,
+        "unit": "ratio",
+        "epistemic": "disclosed",
+        "asOf": "2026-10-01",
+        "basis": "Equinix global portfolio annual average PUE disclosed in sustainability reporting; Ashburn site-level PUE is not broken out separately",
+        "sourceId": "src-eqx-sustain"
+      },
+      "waterSource": "Loudoun Water reclaimed non-potable water ('purple pipe' from Broad Run Water Reclamation Facility) supplemented by potable supply",
+      "watershedName": "Broad Run / Potomac River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "01644280",
+      "nwsStationId": "KIAD"
+    },
+    "regulatory": {
+      "permittingStage": "Operational IBX campus; new Ashburn builds subject to Loudoun Phase 1 Special Exception (CPAM-2024-0001 / ZOAM-2024-0001)",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Loudoun County eliminated by-right data center zoning in March 2025 via CPAM-2024-0001 and ZOAM-2024-0001 and launched Phase 2 standards covering noise, backup generators, and substations.",
+      "permits": [
+        {
+          "title": "Data Center Standards Phase 1 Zoning Overhaul",
+          "agency": "Loudoun County Board of Supervisors",
+          "docketOrPermitId": "CPAM-2024-0001 / ZOAM-2024-0001",
+          "date": "2025-03-18",
+          "status": "Adopted",
+          "url": "https://www.loudoun.gov/6221/Phase-1-Project-Plan-for-Data-Center-Sta"
+        },
+        {
+          "title": "Reclaimed Water Distribution Program (Broad Run WRF)",
+          "agency": "Loudoun Water",
+          "docketOrPermitId": "LW-BRWRF-CIP",
+          "date": "2026-01-15",
+          "status": "Active",
+          "url": "https://www.loudounwater.org/water-reclamation"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Primary east-coast cloud and network interconnection backbone",
+          "evidence": "Equinix Ashburn hosts dense multi-cloud on-ramps (AWS Direct Connect, Azure, Google) and carrier peering across 15+ facilities, anchoring Virginia's digital tax base.",
+          "sourceId": "src-eqx-dc21"
+        },
+        {
+          "claim": "Non-potable reclaimed water reduces municipal drinking water strain",
+          "evidence": "Loudoun Water's reclaimed 'purple pipe' system from Broad Run Water Reclamation Facility supplies non-potable cooling water directly to Ashburn campuses.",
+          "sourceId": "src-loudoun-water"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Cumulative Ashburn buildout triggered county-wide zoning restrictions",
+          "evidence": "Grid pinch points, substation proliferation, and noise led Loudoun County in March 2025 to strip data centers of by-right industrial zoning and mandate legislative Special Exceptions.",
+          "sourceId": "src-loudoun-cpam"
+        },
+        {
+          "claim": "Site-level Ashburn water MGD remains undisclosed amid regional drought planning",
+          "evidence": "While Loudoun County tracks countywide potable vs. reclaimed cooling splits, operator disclosures report only global WUE rather than Ashburn building-level MGD.",
+          "sourceId": "src-loudoun-water-gov"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-eqx-dc11",
+        "title": "Equinix DC11 Ashburn IBX Data Center Specifications",
+        "publisher": "Equinix",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers/dc11"
+      },
+      {
+        "id": "src-eqx-dc21",
+        "title": "Equinix Washington, D.C. / Ashburn Metro Data Centers",
+        "publisher": "Equinix",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/washington-dc-data-centers"
+      },
+      {
+        "id": "src-eqx-sustain",
+        "title": "Equinix Environmental Sustainability & PUE/WUE Disclosures",
+        "publisher": "Equinix",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.equinix.com/about/sustainability/environmental"
+      },
+      {
+        "id": "src-loudoun-water",
+        "title": "Water Reclamation & Broad Run Reclaimed Water System",
+        "publisher": "Loudoun Water",
+        "date": "2026-01-15",
+        "kind": "utility_iso_record",
+        "url": "https://www.loudounwater.org/water-reclamation"
+      },
+      {
+        "id": "src-loudoun-water-gov",
+        "title": "Loudoun County Water Considerations for Data Centers",
+        "publisher": "Loudoun County Government",
+        "date": "2025-11-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.loudoun.gov/6402/Water-Considerations"
+      },
+      {
+        "id": "src-loudoun-cpam",
+        "title": "Phase 1 Project Plan for Data Center Standards & Locations",
+        "publisher": "Loudoun County Government",
+        "date": "2025-03-18",
+        "kind": "regulatory_filing",
+        "url": "https://www.loudoun.gov/6221/Phase-1-Project-Plan-for-Data-Center-Sta"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "digital-realty-dulles",
+    "name": "Digital Realty Digital Dulles Campus",
+    "marketCluster": "Northern Virginia",
+    "city": "Sterling",
+    "county": "Loudoun",
+    "state": "VA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -77.4885,
+      38.95945
+    ],
+    "lifecycleStatus": "under_construction",
+    "summary": "1 GW master-planned multi-building data center campus on the 424-acre former MWAA 'Western Lands' parcel adjacent to Dulles Airport, featuring up to six dedicated substations and active USACE/DEQ wetland mitigation oversight.",
+    "parcel": {
+      "acreage": {
+        "value": 424,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-02-24",
+        "basis": "424-acre Sterling/Dulles parcel acquired from Metropolitan Washington Airports Authority (MWAA) in 2018",
+        "sourceId": "src-dlr-10k"
+      },
+      "grossSqFt": {
+        "value": 11700000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2025-02-24",
+        "basis": "Master-planned up to 11.7 million gross sq ft across 14 multi-story data center buildings",
+        "sourceId": "src-dlr-10k"
+      },
+      "dataHallCount": 14,
+      "zoningDesignation": "GI / PD-IP (Loudoun County; grandfathered pre-2025 site plans subject to Phase 2 standards)",
+      "parcelNote": "Located west of Washington Dulles International Airport off Old Ox Rd (Route 606) in the Broad Run / Stallion Branch watershed."
+    },
+    "stakeholders": {
+      "developer": "Digital Realty (Digital Western Lands, LLC)",
+      "operator": "Digital Realty",
+      "anchorTenants": [
+        {
+          "name": "Confidential Hyperscale & Cloud Platform Tenants",
+          "role": "colocation_platform",
+          "epistemic": "undisclosed",
+          "sourceId": "src-dlr-10k"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 120,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Estimated energized initial phases supported by early on-site substation steel prior to broader Dominion loop upgrades",
+        "sourceId": "src-dlr-10k"
+      },
+      "totalPlannedMw": {
+        "value": 1000,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-02-24",
+        "basis": "1,000 MW (1 GW) master-planned critical IT buildout across up to 6 dedicated on-site substations",
+        "sourceId": "src-dlr-10k"
+      },
+      "utilityProvider": "Dominion Energy Virginia",
+      "interconnectionStatus": "transmission_upgrade_pending",
+      "substationVoltage": "230 kV / 500 kV Dominion transmission tie-ins (up to 6 substations)",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Phased emergency diesel generator permitting under VA DEQ air rules and Loudoun County Phase 2 generator/noise standards.",
+      "cleanPowerAndTariffSummary": "Supported by Digital Realty's North American renewable PPA portfolio and Ecolab AI water optimization; relies on Dominion Energy's constrained Northern Virginia 230/500 kV transmission corridor."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "air_chiller_zero_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Digital Realty reports portfolio-wide WUE in ESG disclosures and withholds site-level MGD for Digital Dulles",
+        "sourceId": "src-dlr-esg"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Annual water consumption is not broken out at campus level in Digital Realty's ESG report",
+        "sourceId": "src-dlr-esg"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Campus-specific PUE is withheld for individual Northern Virginia hyperscale builds",
+        "sourceId": "src-dlr-esg"
+      },
+      "waterSource": "Loudoun Water municipal/reclaimed supply (Broad Run / Stallion Branch watershed)",
+      "watershedName": "Broad Run / Stallion Branch (Potomac Basin)",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "01656903",
+      "nwsStationId": "KIAD"
+    },
+    "regulatory": {
+      "permittingStage": "Phased construction; USACE Norfolk District Public Notice NAO-2006-07410 & Loudoun Phase 2 review",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Campus buildout involves USACE wetland/stream permitting (NAO-2006-07410) near Stallion Branch while neighboring Sterling residents and PEC scrutinize diesel backup air quality and Dominion 230/500 kV transmission routes.",
+      "permits": [
+        {
+          "title": "USACE Wetland / Waters Permit Public Notice (Dulles Digital)",
+          "agency": "U.S. Army Corps of Engineers Norfolk District",
+          "docketOrPermitId": "NAO-2006-07410",
+          "date": "2025-12-01",
+          "status": "Pending / Public Notice",
+          "url": "https://www.nao.usace.army.mil/Media/Public-Notices/Article/4371433/nao-2006-07410-dulles-digital-loudoun-county-virginia/"
+        },
+        {
+          "title": "Loudoun Phase 2 Data Center Standards (Generators & Noise)",
+          "agency": "Loudoun County Government",
+          "docketOrPermitId": "LOUD-PHASE2-2025",
+          "date": "2025-06-01",
+          "status": "Active Review",
+          "url": "https://www.loudoun.gov/6222/Phase-2-Data-Center-Standards-Locations"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Early substation steel mitigates Northern Virginia queue bottlenecks",
+          "evidence": "Digital Realty's 424-acre Western Lands master plan pre-positioned substation infrastructure adjacent to Dulles Airport, securing land and power runway for 1 GW of multi-tenant capacity.",
+          "sourceId": "src-dlr-10k"
+        },
+        {
+          "claim": "Portfolio-wide sustainability and AI water optimization programs",
+          "evidence": "Digital Realty tracks monthly facility PUE/WUE and partners with Ecolab Nalco Water across U.S. sites to minimize evaporative water loss.",
+          "sourceId": "src-dlr-esg"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Wetland and stream impacts in Stallion Branch / Broad Run watershed",
+          "evidence": "USACE Public Notice NAO-2006-07410 documents proposed wetland and stream crossings across the 424-acre Dulles perimeter requiring federal compensatory mitigation.",
+          "sourceId": "src-usace-dulles"
+        },
+        {
+          "claim": "Cumulative air emissions and transmission pressure in Sterling",
+          "evidence": "Piedmont Environmental Council and Sterling community groups raised air-quality monitoring concerns over dense backup diesel generator arrays and new Dominion 500/230 kV transmission lines.",
+          "sourceId": "src-pec-sterling"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-dlr-10k",
+        "title": "Digital Realty Trust Form 10-K Annual Report (FY2024)",
+        "publisher": "U.S. SEC EDGAR",
+        "date": "2025-02-24",
+        "kind": "regulatory_filing",
+        "url": "https://www.sec.gov/Archives/edgar/data/1297996/000155837025001424/dlr-20241231x10k.htm"
+      },
+      {
+        "id": "src-dlr-esg",
+        "title": "Digital Realty Sustainability & Water Efficiency Program",
+        "publisher": "Digital Realty",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.digitalrealty.com/about/sustainability"
+      },
+      {
+        "id": "src-usace-dulles",
+        "title": "Public Notice NAO-2006-07410: Dulles Digital, Loudoun County, VA",
+        "publisher": "U.S. Army Corps of Engineers",
+        "date": "2025-12-01",
+        "kind": "environmental_permit",
+        "url": "https://www.nao.usace.army.mil/Media/Public-Notices/Article/4371433/nao-2006-07410-dulles-digital-loudoun-county-virginia/"
+      },
+      {
+        "id": "src-pec-sterling",
+        "title": "Sterling Data Center Air Quality Monitoring & Community Impact",
+        "publisher": "Piedmont Environmental Council",
+        "date": "2025-09-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.pecva.org/region/loudoun/sterling-air-quality-study-event/"
+      },
+      {
+        "id": "src-loudoun-p2",
+        "title": "Phase 2 Data Center Standards & Locations",
+        "publisher": "Loudoun County Government",
+        "date": "2025-06-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.loudoun.gov/6222/Phase-2-Data-Center-Standards-Locations"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "aws-haymarket-warrenton",
+    "name": "AWS Haymarket / Warrenton Corridor Campus",
+    "marketCluster": "Northern Virginia",
+    "city": "Haymarket / Warrenton",
+    "county": "Prince William / Fauquier",
+    "state": "VA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -77.6487,
+      38.815
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Western Prince William operational AWS campus along John Marshall Hwy (IAD55) paired with the contested 41.8-acre Blackwell Road expansion in Warrenton, Fauquier County, where a narrow 4-3 Special Use Permit approval and 230 kV Dominion transmission line remain under Circuit Court litigation.",
+    "parcel": {
+      "acreage": {
+        "value": 142,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Combined ~100-acre Haymarket IAD55 operational site and 41.8-acre Blackwell Rd Warrenton expansion parcel",
+        "sourceId": "src-warrenton-faq"
+      },
+      "grossSqFt": {
+        "value": 720000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2024-06-01",
+        "basis": "Combined ~500,000 sq ft Haymarket buildings plus 220,000 sq ft filed under Warrenton SUP-22-3",
+        "sourceId": "src-warrenton-faq"
+      },
+      "dataHallCount": 4,
+      "zoningDesignation": "M-1 / I-1 Industrial (Prince William County & Town of Warrenton SUP-22-3)",
+      "parcelNote": "Anchored at Haymarket IAD55 corridor off John Marshall Hwy; Warrenton Blackwell Rd parcel sits 14 km southwest near US-29/17."
+    },
+    "stakeholders": {
+      "developer": "Amazon Data Services, Inc.",
+      "operator": "Amazon Web Services (AWS)",
+      "anchorTenants": [
+        {
+          "name": "Amazon Web Services (us-east-1)",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-aws-va"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 120,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Estimated energized critical capacity across operational Haymarket IAD55 corridor buildings",
+        "sourceId": "src-aws-va"
+      },
+      "totalPlannedMw": {
+        "value": 240,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Estimated combined capacity including Warrenton Blackwell Rd 230 kV substation expansion",
+        "sourceId": "src-dominion-bw"
+      },
+      "utilityProvider": "Dominion Energy Virginia / NOVEC",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "230 kV Dominion Energy transmission & on-site substation",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Emergency diesel generation subject to VA DEQ minor NSR limits; Warrenton neighbors challenged generator noise and exhaust.",
+      "cleanPowerAndTariffSummary": "Amazon matches Virginia operations with 100% renewable PPAs, while Dominion Energy's proposed 230 kV transmission feeder to Blackwell Rd faces routing scrutiny."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Amazon reports aggregate Virginia non-water cooling percentage and global WUE (0.12 L/kWh) but withholds facility-level MGD",
+        "sourceId": "src-aws-va"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Campus-level annual water draw is not disclosed by AWS",
+        "sourceId": "src-aws-va"
+      },
+      "pue": {
+        "value": 1.15,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "AWS North American hyperscale fleet PUE benchmark; individual campus PUE withheld",
+        "sourceId": "src-aws-va"
+      },
+      "waterSource": "Prince William County Service Authority / Town of Warrenton municipal water",
+      "watershedName": "Occoquan / Cedar Run Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "01656000",
+      "nwsStationId": "KIAD"
+    },
+    "regulatory": {
+      "permittingStage": "Haymarket operational; Warrenton SUP-22-3 approved 4-3 (Feb 2023), challenged in Fauquier Circuit Court (2026 trial)",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Citizens for Fauquier County v. Town of Warrenton challenges the 2021 zoning text amendment enabling SUP-22-3; Dominion Energy's 230 kV transmission corridor into Warrenton remains fiercely contested by preservation groups.",
+      "permits": [
+        {
+          "title": "Amazon Data Center Special Use Permit (Blackwell Road)",
+          "agency": "Town of Warrenton Town Council",
+          "docketOrPermitId": "SUP-22-3",
+          "date": "2023-02-15",
+          "status": "Approved (Litigated in Circuit Court)",
+          "url": "https://www.warrentonva.gov/500/Frequently-Asked-Questions-FAQs"
+        },
+        {
+          "title": "Blackwell Road 230 kV Electric Transmission Project",
+          "agency": "Dominion Energy / VA SCC",
+          "docketOrPermitId": "DOM-BLACKWELL-230KV",
+          "date": "2025-05-01",
+          "status": "Route Evaluation",
+          "url": "https://www.dominionenergy.com/blackwellroad"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Major local tax base and digital infrastructure investment",
+          "evidence": "AWS cites over $119 billion invested across Virginia since 2006, generating substantial local property tax revenue for schools and infrastructure while using direct air cooling most of the year.",
+          "sourceId": "src-aws-va"
+        },
+        {
+          "claim": "Town-approved site plan includes buffer and substation conditions",
+          "evidence": "Warrenton Town Council approved SUP-22-3 on a 4-3 vote with conditions governing setbacks, stormwater, and Dominion Energy transmission alignment.",
+          "sourceId": "src-warrenton-faq"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "High-voltage 230 kV lines industrialize Warrenton's historic gateway",
+          "evidence": "PEC and Dominion filings confirm the site requires a dedicated 230 kV transmission line and substation with ~110-foot towers near residential neighborhoods and Route 29/17 corridors.",
+          "sourceId": "src-pec-warrenton"
+        },
+        {
+          "claim": "Procedural zoning challenge remains active in Fauquier Circuit Court",
+          "evidence": "Citizens for Fauquier County sued the Town of Warrenton over improper adoption of the 2021 data center zoning amendment, with Circuit Court oral arguments continuing into 2026.",
+          "sourceId": "src-cffc-warrenton"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-aws-va",
+        "title": "Amazon in Virginia: Economic Impact & Water Stewardship",
+        "publisher": "Amazon",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.aboutamazon.com/impact/amazon-virginia"
+      },
+      {
+        "id": "src-warrenton-faq",
+        "title": "Town of Warrenton Amazon Data Center Frequently Asked Questions",
+        "publisher": "Town of Warrenton",
+        "date": "2024-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.warrentonva.gov/500/Frequently-Asked-Questions-FAQs"
+      },
+      {
+        "id": "src-dominion-bw",
+        "title": "Dominion Energy Blackwell Road Transmission Project",
+        "publisher": "Dominion Energy",
+        "date": "2025-05-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.dominionenergy.com/blackwellroad"
+      },
+      {
+        "id": "src-pec-warrenton",
+        "title": "Warrenton Transmission Line & Amazon Data Center Review",
+        "publisher": "Piedmont Environmental Council",
+        "date": "2025-02-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.pecva.org/warrenton-transmission-line/"
+      },
+      {
+        "id": "src-cffc-warrenton",
+        "title": "The Battle to Protect Warrenton from the Amazon Data Center",
+        "publisher": "Citizens for Fauquier County",
+        "date": "2024-03-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.citizensforfauquier.org/post/one-year-later-the-battle-to-protect-warrenton-from-the-amazon-data-center"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "prince-william-digital-gateway",
+    "name": "Prince William Digital Gateway \u2014 QTS / Compass",
+    "marketCluster": "Northern Virginia",
+    "city": "Gainesville",
+    "county": "Prince William",
+    "state": "VA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -77.573289,
+      38.806071
+    ],
+    "lifecycleStatus": "contested",
+    "summary": "Proposed 2,139-acre data center corridor along Pageland Lane adjacent to Manassas National Battlefield Park; Virginia Court of Appeals voided all three rezonings in March 2026 over defective public notice, and QTS dropped its final VA Supreme Court appeal in July 2026.",
+    "parcel": {
+      "acreage": {
+        "value": 2139,
+        "unit": "acres",
+        "epistemic": "filed",
+        "asOf": "2023-12-12",
+        "basis": "2,139 acres spanning 194 parcels along Pageland Lane in Prince William County CPA/rezoning filings",
+        "sourceId": "src-pwc-gw"
+      },
+      "grossSqFt": {
+        "value": 22000000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2023-12-12",
+        "basis": "Up to ~22 million sq ft (37 buildings) proposed across Digital Gateway rezoning applications before court voiding",
+        "sourceId": "src-pec-pwc"
+      },
+      "dataHallCount": 37,
+      "zoningDesignation": "A-1 Agricultural (Reverted after VA Court of Appeals voided Dec 2023 M-T rezoning)",
+      "parcelNote": "Linear corridor running north along Pageland Lane from US-29 toward Sudley Rd, bordering Manassas National Battlefield Park and Conway-Robinson State Forest."
+    },
+    "stakeholders": {
+      "developer": "QTS Realty Trust & Compass Datacenters",
+      "operator": "Project Halted (Rezonings Voided)",
+      "anchorTenants": [
+        {
+          "name": "QTS Realty Trust (Proposed Developer \u2014 Appeal Withdrawn Jul 2026)",
+          "role": "colocation_platform",
+          "epistemic": "filed",
+          "sourceId": "src-fox5-pwc"
+        },
+        {
+          "name": "Compass Datacenters (Proposed Co-Developer)",
+          "role": "colocation_platform",
+          "epistemic": "filed",
+          "sourceId": "src-protect-pwc"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 0,
+        "unit": "MW",
+        "epistemic": "measured",
+        "asOf": "2026-07-02",
+        "basis": "Zero energized MW; all rezoning approvals were ruled void ab initio before construction",
+        "sourceId": "src-fox5-pwc"
+      },
+      "totalPlannedMw": {
+        "value": 2500,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "Estimated 2,000\u20133,000 MW peak corridor demand projected across full 2,139-acre buildout prior to court termination",
+        "sourceId": "src-pec-pwc"
+      },
+      "utilityProvider": "Dominion Energy Virginia / NOVEC",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "500 kV / 230 kV proposed corridor substations (unbuilt)",
+      "backupGeneratorsPermitted": 0,
+      "backupFuelNote": "Zero generator air permits issued; project halted at zoning stage.",
+      "cleanPowerAndTariffSummary": "Multi-gigawatt corridor load projections spurred major PJM/Dominion cost-allocation disputes and rural transmission opposition."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "undisclosed",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-07-02",
+        "basis": "No site-plan water allocations approved; project halted after VA Court of Appeals voided rezonings",
+        "sourceId": "src-pwc-gw"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-07-02",
+        "basis": "Annual water demand unpermitted due to project termination",
+        "sourceId": "src-pwc-gw"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-07-02",
+        "basis": "No engineering PUE disclosed prior to rezoning voiding",
+        "sourceId": "src-pwc-gw"
+      },
+      "waterSource": "Proposed Prince William County Service Authority / Occoquan watershed (unbuilt)",
+      "watershedName": "Bull Run / Occoquan Reservoir Watershed",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "01656903",
+      "nwsStationId": "KIAD"
+    },
+    "regulatory": {
+      "permittingStage": "Terminated / Voided \u2014 VA Court of Appeals ruled rezonings void (Mar 31, 2026); QTS withdrew Supreme Court petition (Jul 2, 2026)",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Following a 4-3 marathon vote in Dec 2023, Oak Valley HOA, local residents, and the American Battlefield Trust won Circuit Court and unanimous VA Court of Appeals rulings voiding the rezonings for statutory public-notice violations (Va. Code \u00a7 15.2-2204).",
+      "permits": [
+        {
+          "title": "Digital Gateway Comprehensive Plan Amendment & Rezonings",
+          "agency": "Prince William County Board of Supervisors / VA Court of Appeals",
+          "docketOrPermitId": "CPA2021-00004 / REZ2022-00022",
+          "date": "2026-03-31",
+          "status": "Voided by Court of Appeals",
+          "url": "https://www.pwcva.gov/department/planning-office/pw-digital-gateway"
+        },
+        {
+          "title": "QTS Withdrawal of Supreme Court of Virginia Petition",
+          "agency": "Supreme Court of Virginia",
+          "docketOrPermitId": "VA-SCV-PWDG-2026",
+          "date": "2026-07-02",
+          "status": "Appeal Withdrawn / Closed",
+          "url": "https://www.fox5dc.com/news/qts-drops-appeal-ending-plans-massive-prince-william-county-data-center"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Projected $20B+ capital investment and county tax revenue diversification",
+          "evidence": "Developers and county proponents projected over $20B in private investment and hundreds of millions in annual commercial tax revenue to offset residential property taxes.",
+          "sourceId": "src-pwc-gw"
+        },
+        {
+          "claim": "Consolidating hyperscale growth inside designated corridor",
+          "evidence": "Proponents argued co-locating campuses along Pageland Lane near existing transmission easements would meet Northern Virginia cloud demand.",
+          "sourceId": "src-fox5-pwc"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Unlawful public notice voided all three rezonings ab initio",
+          "evidence": "On March 31, 2026, the Virginia Court of Appeals unanimously upheld lower court rulings that Prince William County violated Va. Code \u00a7 15.2-2204 notice mandates.",
+          "sourceId": "src-protect-pwc"
+        },
+        {
+          "claim": "Severe encroachment on Manassas Battlefield and Occoquan watershed",
+          "evidence": "American Battlefield Trust, PEC, and local residents demonstrated massive visual, stormwater, and multi-GW grid impacts immediately beside historic Civil War parkland and the Occoquan drinking water basin.",
+          "sourceId": "src-pec-pwc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-pwc-gw",
+        "title": "Prince William Digital Gateway Planning & Case Record",
+        "publisher": "Prince William County Planning Office",
+        "date": "2026-04-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.pwcva.gov/department/planning-office/pw-digital-gateway"
+      },
+      {
+        "id": "src-protect-pwc",
+        "title": "Digital Gateway Litigation Timeline & Appeals Rulings",
+        "publisher": "Coalition to Protect Prince William County",
+        "date": "2026-07-02",
+        "kind": "municipal_or_court_record",
+        "url": "https://protectpwc.org/issues/data-centers/digital-gateway/"
+      },
+      {
+        "id": "src-fox5-pwc",
+        "title": "QTS Drops Appeal, Ending Plans for Massive Prince William County Data Center",
+        "publisher": "FOX 5 DC",
+        "date": "2026-07-02",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.fox5dc.com/news/qts-drops-appeal-ending-plans-massive-prince-william-county-data-center"
+      },
+      {
+        "id": "src-pec-pwc",
+        "title": "Massive Digital Gateway Data Center Project Has Been Halted",
+        "publisher": "Piedmont Environmental Council",
+        "date": "2026-07-03",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.pecva.org/region/regional-state-national-region/prince-william/massive-digital-gateway-data-center-project-has-been-halted/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-boydton",
+    "name": "Microsoft Boydton Mega-Campus",
+    "marketCluster": "Southern Virginia",
+    "city": "Boydton",
+    "county": "Mecklenburg",
+    "state": "VA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -78.3875,
+      36.6676
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Flagship rural Virginia Azure East US hyperscale campus established in 2010 at 101 Herbert Drive and expanded across over $2B in cumulative investment and adjacent Mecklenburg County parcels in the Roanoke River Basin.",
+    "parcel": {
+      "acreage": {
+        "value": 360,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-10-01",
+        "basis": "360-acre core Boydton campus; Microsoft holds 1,000+ additional acres across Mecklenburg County expansion parcels",
+        "sourceId": "src-vedp-msft"
+      },
+      "grossSqFt": {
+        "value": 1100000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-10-01",
+        "basis": "Over 1.1 million sq ft across multi-phase Boydton data center buildings",
+        "sourceId": "src-vedp-msft"
+      },
+      "dataHallCount": 8,
+      "zoningDesignation": "I-2 Heavy Industrial (Lakeside Commerce Park, Mecklenburg County)",
+      "parcelNote": "Located at 101 Herbert Dr off US-58 in Boydton, backed by Mid-Atlantic Broadband Cooperative fiber and Roanoke River Service Authority water."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Azure (East US / East US 2)",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-msft-sova"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 200,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated energized critical capacity across Boydton core campus phases",
+        "sourceId": "src-vedp-msft"
+      },
+      "totalPlannedMw": {
+        "value": 300,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated combined Boydton/Mecklenburg regional expansion allocation",
+        "sourceId": "src-vedp-msft"
+      },
+      "utilityProvider": "Dominion Energy Virginia / Mecklenburg Electric Cooperative",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "230 kV / 115 kV Dominion Energy & MEC substations",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Title V and minor NSR diesel generator permits held with VA DEQ for Microsoft East Coast Data Center phases.",
+      "cleanPowerAndTariffSummary": "Anchored by long-term Virginia solar PPAs and Dominion Energy industrial service schedules; expansions trigger new Mecklenburg transmission planning."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2025-10-01",
+        "basis": "Microsoft Virginia factsheet reports direct evaporative cooling duty cycle (<15% of hours above 85\u00b0F) without publishing daily MGD",
+        "sourceId": "src-msft-va-pdf"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2025-10-01",
+        "basis": "Facility-specific annual MGY is not broken out in public Virginia brochure",
+        "sourceId": "src-msft-va-pdf"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2025-10-01",
+        "basis": "Campus-specific PUE is not publicly itemized",
+        "sourceId": "src-msft-va-pdf"
+      },
+      "waterSource": "Roanoke River Service Authority / Town of Clarksville municipal water",
+      "watershedName": "Roanoke River / Kerr Reservoir Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "02079640",
+      "nwsStationId": "KAVC"
+    },
+    "regulatory": {
+      "permittingStage": "Operational Title V / minor NSR permitted campus with ongoing Mecklenburg County expansions",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Supported by county development authorities and VEDP incentives since 2010, though statewide environmental groups scrutinize Virginia data center cumulative grid, gas generation, and Roanoke basin demands.",
+      "permits": [
+        {
+          "title": "VA DEQ Air Permitting & Tier 4-Equivalent Standards Guidance",
+          "agency": "Virginia Department of Environmental Quality",
+          "docketOrPermitId": "APG-576 / HB507",
+          "date": "2026-07-01",
+          "status": "Active Regulatory Standard",
+          "url": "https://www.deq.virginia.gov/news-info/shortcuts/topics-of-interest/data-centers"
+        },
+        {
+          "title": "Microsoft Southern Virginia Community & Infrastructure Program",
+          "agency": "Microsoft Local / VEDP",
+          "docketOrPermitId": "VEDP-MECK-MSFT",
+          "date": "2025-10-01",
+          "status": "Operational",
+          "url": "https://www.vedp.org/success-story/microsoft-corporations-expanding-virginia-footprint"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Transformative rural economic anchor and workforce training pipeline",
+          "evidence": "Since 2010 Microsoft has invested over $2B in Mecklenburg County and established the Microsoft Datacenter Academy with Southside Virginia Community College.",
+          "sourceId": "src-msft-sova"
+        },
+        {
+          "claim": "Outside-air economizers restrict water cooling to peak summer days",
+          "evidence": "Microsoft reports its Virginia campuses operate without evaporative cooling water below 85\u00b0F (roughly >85% of the year), keeping fleet WUE around 0.27 L/kWh.",
+          "sourceId": "src-msft-va-pdf"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Cumulative load growth drives fossil generation extensions across Virginia",
+          "evidence": "Piedmont Environmental Council and energy watchdogs warn that rapid hyperscale expansion across Dominion's Virginia grid drives new transmission and fossil generation proposals while raising residential costs.",
+          "sourceId": "src-pec-va-dc"
+        },
+        {
+          "claim": "Diesel backup arrays require stricter Tier 4 emissions enforcement",
+          "evidence": "VA DEQ adopted APG-576 / HB 507 Tier 4-equivalent BACT mandates effective July 2026 in response to rising cumulative generator emissions.",
+          "sourceId": "src-vadeq-dc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-msft-va-pdf",
+        "title": "Microsoft Datacenters in Virginia (Water & Energy Overview)",
+        "publisher": "Microsoft",
+        "date": "2025-10-01",
+        "kind": "operator_disclosure",
+        "url": "https://local.microsoft.com/wp-content/uploads/2025/10/Microsoft-datacenters-in-Virginia.pdf"
+      },
+      {
+        "id": "src-msft-sova",
+        "title": "Microsoft Southern Virginia Datacenter Community Portal",
+        "publisher": "Microsoft",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://local.microsoft.com/communities/americas/southern-virginia/"
+      },
+      {
+        "id": "src-vedp-msft",
+        "title": "Microsoft Corporation's Expanding Virginia Footprint",
+        "publisher": "Virginia Economic Development Partnership",
+        "date": "2024-06-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.vedp.org/success-story/microsoft-corporations-expanding-virginia-footprint"
+      },
+      {
+        "id": "src-pec-va-dc",
+        "title": "Data Centers & Energy Demand in Virginia",
+        "publisher": "Piedmont Environmental Council",
+        "date": "2026-01-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.pecva.org/our-work/energy-matters/data-centers-energy-demand/data-center-news/"
+      },
+      {
+        "id": "src-vadeq-dc",
+        "title": "Virginia DEQ Data Center Backup Generator Permitting",
+        "publisher": "Virginia DEQ",
+        "date": "2026-07-01",
+        "kind": "environmental_permit",
+        "url": "https://www.deq.virginia.gov/news-info/shortcuts/topics-of-interest/data-centers"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-henrico",
+    "name": "Meta Henrico Data Center",
+    "marketCluster": "Central Virginia",
+    "city": "Sandston",
+    "county": "Henrico",
+    "state": "VA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -77.2371,
+      37.485
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "2.5 million sq ft five-building 'H'-configuration LEED Gold hyperscale campus on 130 acres at White Oak Technology Park in eastern Henrico County, paired with 700 MW of contracted Virginia solar capacity.",
+    "parcel": {
+      "acreage": {
+        "value": 130,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-09-01",
+        "basis": "130-acre site inside White Oak Technology Park, Sandston, VA",
+        "sourceId": "src-meta-henrico"
+      },
+      "grossSqFt": {
+        "value": 2500000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2026-09-01",
+        "basis": "2.4\u20132.5 million sq ft five-building campus completed across 2017\u20132023 phases",
+        "sourceId": "src-vedp-meta"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "M-2 General Industrial (White Oak Technology Park, Henrico County)",
+      "parcelNote": "Located along Technology Blvd at White Oak Technology Park with dual-feed 230 kV Dominion transmission and county water/sewer mains."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc.",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta Platforms Production & AI Services",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-henrico"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 187.5,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-12-01",
+        "basis": "Estimated critical campus load across 2.5M sq ft 5-building complex; Meta discloses 700 MW of enabling Virginia solar PPAs",
+        "sourceId": "src-meta-henrico"
+      },
+      "totalPlannedMw": {
+        "value": 187.5,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-12-01",
+        "basis": "Completed multi-phase White Oak buildout",
+        "sourceId": "src-meta-henrico"
+      },
+      "utilityProvider": "Dominion Energy Virginia",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "230 kV dual-feed White Oak substations",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted emergency diesel generators governed by VA DEQ minor NSR runtime caps.",
+      "cleanPowerAndTariffSummary": "100% matched by renewable energy via Dominion Energy partnerships enabling ~700 MW of new Virginia solar projects."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": 2.14,
+        "unit": "MGD",
+        "epistemic": "estimated",
+        "asOf": "2025-12-01",
+        "basis": "Estimated baseline municipal draw (~2.14 MGD) for full 2.5M sq ft campus; Meta's Environmental Data Index reports partial megaliter figures during ramp",
+        "sourceId": "src-meta-edi"
+      },
+      "annualWaterMgy": {
+        "value": 781,
+        "unit": "MGY",
+        "epistemic": "estimated",
+        "asOf": "2025-12-01",
+        "basis": "Annualized from 2.14 MGD baseline cooling estimate using Henrico County water/reuse systems",
+        "sourceId": "src-meta-edi"
+      },
+      "pue": {
+        "value": 1.1,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2025-10-01",
+        "basis": "Aligned with Meta's fleet-wide LEED Gold PUE (~1.08\u20131.10)",
+        "sourceId": "src-meta-edi"
+      },
+      "waterSource": "Henrico County municipal water & wastewater reuse + on-site rainwater capture",
+      "watershedName": "Chickahominy / James River Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "02042500",
+      "nwsStationId": "KRIC"
+    },
+    "regulatory": {
+      "permittingStage": "Fully built and operational; Henrico County planning staff conducting countywide data center infrastructure review",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "While Meta's White Oak buildout faced minimal site litigation, adjacent Henrico data center expansions prompted Henrico County Planning to publish comprehensive water, power, and zoning analyses.",
+      "permits": [
+        {
+          "title": "Henrico County Data Center Planning Staff Analysis",
+          "agency": "Henrico County Planning Department",
+          "docketOrPermitId": "HENRICO-DC-STUDY",
+          "date": "2025-01-01",
+          "status": "Published Guidance",
+          "url": "https://henrico.gov/pdfs/planning/DataCenterStaffAnalysis.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "100% renewable matching drove 700 MW of Virginia solar",
+          "evidence": "Meta's Henrico campus enabled ~700 MW of new Virginia solar projects via Dominion Energy green tariff partnerships while funding full municipal water infrastructure costs.",
+          "sourceId": "src-meta-henrico"
+        },
+        {
+          "claim": "LEED Gold design with rainwater harvesting and water restoration goal",
+          "evidence": "All five H-configuration buildings integrate high-efficiency cooling, water-reuse loops, and Meta's 2030 water-positive commitment.",
+          "sourceId": "src-vedp-meta"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Rapid White Oak park buildout strains regional water and 230 kV capacity",
+          "evidence": "Henrico County Planning staff analysis flags multi-MGD industrial water demand and cumulative 230 kV transmission needs as competing hyperscalers cluster at White Oak.",
+          "sourceId": "src-henrico-plan"
+        },
+        {
+          "claim": "Facility-level water reporting lags real-time AI expansion ramps",
+          "evidence": "Meta's Environmental Data Index reports historical megaliter metrics with lag periods rather than real-time daily municipal draw.",
+          "sourceId": "src-meta-edi"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-henrico",
+        "title": "Meta's Henrico Data Center Community Overview",
+        "publisher": "Meta",
+        "date": "2026-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/wp-content/uploads/2026/09/Meta_s-Henrico-Data-Center.pdf"
+      },
+      {
+        "id": "src-vedp-meta",
+        "title": "Meta Builds Hyperscale Campus in Henrico County",
+        "publisher": "Virginia Economic Development Partnership",
+        "date": "2024-01-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.vedp.org/success-story/meta-friends-virginia"
+      },
+      {
+        "id": "src-henrico-plan",
+        "title": "Henrico County Data Center Staff Analysis",
+        "publisher": "Henrico County Planning",
+        "date": "2025-01-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://henrico.gov/pdfs/planning/DataCenterStaffAnalysis.pdf"
+      },
+      {
+        "id": "src-meta-edi",
+        "title": "Meta 2025 Environmental Data Index",
+        "publisher": "Meta Sustainability",
+        "date": "2025-10-01",
+        "kind": "operator_disclosure",
+        "url": "https://sustainability.atmeta.com/wp-content/uploads/2025/10/Meta_2025-Environmental-Data-Index.pdf"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "aws-susquehanna-cumulus",
+    "name": "Cumulus / AWS Susquehanna Nuclear Campus",
+    "marketCluster": "NE Pennsylvania",
+    "city": "Berwick",
+    "county": "Luzerne",
+    "state": "PA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -76.143375,
+      41.083991
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "1,200-acre behind-the-meter nuclear data center campus acquired by AWS from Talen Energy adjacent to the 2.5 GW Susquehanna nuclear plant; epicenter of FERC Docket ER24-2172 rejecting PJM's 480 MW co-located ISA amendment in a 2-1 decision.",
+    "parcel": {
+      "acreage": {
+        "value": 1200,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-03-04",
+        "basis": "1,200-acre campus parcel in Salem Township adjacent to Susquehanna Steam Electric Station",
+        "sourceId": "src-talen-aws"
+      },
+      "grossSqFt": {
+        "value": 300000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2024-03-04",
+        "basis": "300,000 sq ft initial energized Phase 1 hall at 1125 Electron Ave with multi-building expansion runway",
+        "sourceId": "src-aws-summit"
+      },
+      "dataHallCount": 1,
+      "zoningDesignation": "I-2 Heavy Industrial (Salem Township, Luzerne County)",
+      "parcelNote": "Centered on 1125 Electron Ave (Amazon AWS PHL) directly south of the Susquehanna nuclear switchyard."
+    },
+    "stakeholders": {
+      "developer": "Talen Energy / Amazon Data Services, Inc.",
+      "operator": "Amazon Web Services (AWS)",
+      "anchorTenants": [
+        {
+          "name": "Amazon Web Services (Co-Located AI/Cloud Campus)",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-pjm-er24"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 48,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2024-11-01",
+        "basis": "48 MW initial energized building (with 300 MW pre-existing grandfathered co-located ISA ceiling)",
+        "sourceId": "src-pjm-er24"
+      },
+      "totalPlannedMw": {
+        "value": 960,
+        "unit": "MW",
+        "epistemic": "filed",
+        "asOf": "2025-06-01",
+        "basis": "960 MW target campus capacity; Talen-AWS nuclear PPA subsequently expanded up to 1,920 MW regional front-of-meter transition",
+        "sourceId": "src-talen-aws"
+      },
+      "utilityProvider": "Talen Energy (Susquehanna Nuclear) / PPL Electric Utilities (PJM)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "230 kV / 500 kV Susquehanna switchyard & private co-located tie",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Dual nuclear unit behind-the-meter feed plus PPL PJM grid backup subject to FERC co-location tariff proceeding.",
+      "cleanPowerAndTariffSummary": "FERC rejected the 480 MW behind-the-meter ISA amendment (189 FERC \u00b6 61,078) over PJM transmission cost-shifting concerns; Talen and AWS later pivoted toward front-of-meter PJM PPA structures up to 1,920 MW."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "AWS does not publicly separate campus MGD from municipal connections and Susquehanna nuclear host SRBC water permits",
+        "sourceId": "src-aws-summit"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Annual campus data hall cooling water consumption is not disclosed",
+        "sourceId": "src-aws-summit"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Campus PUE withheld by AWS",
+        "sourceId": "src-aws-summit"
+      },
+      "waterSource": "Salem Township / Susquehanna River Basin municipal & industrial supply",
+      "watershedName": "North Branch Susquehanna River Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "01538000",
+      "nwsStationId": "KHZL"
+    },
+    "regulatory": {
+      "permittingStage": "FERC Docket ER24-2172 rejected 480 MW ISA (Nov 1, 2024); PJM generic co-location Section 206 proceeding active",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Exelon, AEP, and PJM's Independent Market Monitor protested the behind-the-meter co-location arrangement, prompting FERC's landmark 2-1 rejection order and a sweeping FERC review of co-located data centers across PJM.",
+      "permits": [
+        {
+          "title": "FERC Order Rejecting Amended Susquehanna Co-Location ISA",
+          "agency": "Federal Energy Regulatory Commission (FERC)",
+          "docketOrPermitId": "ER24-2172-000 (189 FERC \u00b6 61,078)",
+          "date": "2024-11-01",
+          "status": "Amended ISA Rejected (2-1)",
+          "url": "https://www.pjm.com/-/media/DotCom/documents/ferc/orders/2024/20241101-er24-2172-000-et-al.pdf"
+        },
+        {
+          "title": "Independent Market Monitor Protest Answer on Co-Located Load",
+          "agency": "Monitoring Analytics / FERC",
+          "docketOrPermitId": "ER24-2172",
+          "date": "2024-07-10",
+          "status": "Filed",
+          "url": "https://www.monitoringanalytics.com/filings/2024/IMM_Answer_to_Protest_Comments_Docket_No_ER24-2172_20240710.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "24/7 zero-carbon nuclear baseload bypasses PJM interconnection queues",
+          "evidence": "Co-locating at the 2.5 GW Susquehanna nuclear plant delivers immediate carbon-free baseload energy for AI infrastructure while sustaining Pennsylvania nuclear economics and jobs.",
+          "sourceId": "src-aws-summit"
+        },
+        {
+          "claim": "Dissent warned FERC rejection chills critical national AI infrastructure",
+          "evidence": "Then-Chairman Willie Phillips dissented in ER24-2172, arguing the ruling created regulatory uncertainty for clean baseload co-location.",
+          "sourceId": "src-ferc-er24"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Behind-the-meter bypass risks shifting transmission costs onto PJM ratepayers",
+          "evidence": "FERC majority (Christie & See) and protesting utilities (Exelon, AEP) concluded the 480 MW co-located ISA failed to prove retail customers wouldn't subsidize grid reliability and transmission.",
+          "sourceId": "src-pjm-er24"
+        },
+        {
+          "claim": "Market Monitor warned removing baseload nuclear worsens PJM capacity tightness",
+          "evidence": "Monitoring Analytics filed that carving 480\u2013960 MW out of PJM capacity markets tightens regional reserve margins and spikes capacity clearing prices.",
+          "sourceId": "src-imm-er24"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-pjm-er24",
+        "title": "FERC Order 189 FERC \u00b6 61,078 Rejecting PJM ER24-2172 Susquehanna ISA",
+        "publisher": "PJM Interconnection / FERC",
+        "date": "2024-11-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.pjm.com/-/media/DotCom/documents/ferc/orders/2024/20241101-er24-2172-000-et-al.pdf"
+      },
+      {
+        "id": "src-ferc-er24",
+        "title": "FERC Media Brief: ER24-2172 PJM Susquehanna Co-Location Proposal",
+        "publisher": "Federal Energy Regulatory Commission",
+        "date": "2024-11-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.ferc.gov/media/er24-2172-pjms-susquehanna-co-location-proposal"
+      },
+      {
+        "id": "src-imm-er24",
+        "title": "IMM Answer to Protest Comments in Docket No. ER24-2172",
+        "publisher": "Monitoring Analytics",
+        "date": "2024-07-10",
+        "kind": "utility_iso_record",
+        "url": "https://www.monitoringanalytics.com/filings/2024/IMM_Answer_to_Protest_Comments_Docket_No_ER24-2172_20240710.pdf"
+      },
+      {
+        "id": "src-talen-aws",
+        "title": "Talen Energy Expands Nuclear Energy Relationship with Amazon",
+        "publisher": "Talen Energy Investor Relations",
+        "date": "2025-06-11",
+        "kind": "operator_disclosure",
+        "url": "https://ir.talenenergy.com/news-releases/news-release-details/talen-energy-expands-nuclear-energy-relationship-amazon"
+      },
+      {
+        "id": "src-aws-summit",
+        "title": "Amazon Energy & AI Infrastructure Investment in Pennsylvania",
+        "publisher": "Amazon",
+        "date": "2025-07-15",
+        "kind": "operator_disclosure",
+        "url": "https://www.aboutamazon.com/news/aws/amazon-aws-trump-summit-ai-energy-future"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "constellation-crane-tmi",
+    "name": "Constellation Crane Clean Energy / Microsoft PPA",
+    "marketCluster": "Central Pennsylvania",
+    "city": "Londonderry Township",
+    "county": "Dauphin",
+    "state": "PA",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -76.7248,
+      40.1539
+    ],
+    "lifecycleStatus": "permitted",
+    "summary": "835 MW restart of Three Mile Island Unit 1 (Crane Clean Energy Center) backed by a 20-year Microsoft PPA to supply carbon-free baseload power for Microsoft PJM data centers; received NRC FONSI, DOE loan financing, and SRBC Docket 20260607 water approval toward a 2027 restart.",
+    "parcel": {
+      "acreage": {
+        "value": 814,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-09-20",
+        "basis": "814-acre Three Mile Island nuclear station parcel in Londonderry Township supplying Microsoft PJM load",
+        "sourceId": "src-constellation"
+      },
+      "grossSqFt": {
+        "value": 500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2024-09-20",
+        "basis": "Estimated Unit 1 nuclear generation & switchyard footprint; associated Microsoft data centers sit across PJM",
+        "sourceId": "src-nrc-ccec"
+      },
+      "dataHallCount": null,
+      "zoningDesignation": "Industrial / Nuclear Utility Generation Zone (Londonderry Township)",
+      "parcelNote": "Northern half of Three Mile Island in the Susquehanna River upstream of York Haven Dam (Unit 1 only; separate from retired Unit 2)."
+    },
+    "stakeholders": {
+      "developer": "Constellation Energy Generation, LLC",
+      "operator": "Constellation Energy (20-Yr Microsoft PPA)",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Corporation (835 MW 20-Yr Clean Energy PPA)",
+          "role": "anchor_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-constellation"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 0,
+        "unit": "MW",
+        "epistemic": "measured",
+        "asOf": "2026-11-01",
+        "basis": "Unit 1 shut down in Sept 2019; currently undergoing NRC restart inspection and component refurbishment ahead of 2027 energization",
+        "sourceId": "src-nrc-ccec"
+      },
+      "totalPlannedMw": {
+        "value": 835,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2024-09-20",
+        "basis": "835 MW carbon-free nuclear baseload capacity dedicated under 20-year PPA to match Microsoft PJM data center load",
+        "sourceId": "src-constellation"
+      },
+      "utilityProvider": "PJM Interconnection / MAIT & PPL Transmission",
+      "interconnectionStatus": "transmission_upgrade_pending",
+      "substationVoltage": "230 kV / 500 kV Three Mile Island switchyard",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Nuclear safety-related emergency diesel generators governed by NRC 10 CFR 50 licensing; associated data center loads connect across PJM.",
+      "cleanPowerAndTariffSummary": "Front-of-the-meter PJM interconnection and 20-year corporate PPA adding 835 MW of dispatchable zero-carbon capacity rather than behind-the-meter islanding."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": 21.0,
+        "unit": "MGD",
+        "epistemic": "permitted",
+        "asOf": "2026-06-04",
+        "basis": "SRBC Docket No. 20260607 approved June 4, 2026 for 21.000 MGD peak consumptive cooling tower evaporation (out of 73.200 MGD river withdrawal)",
+        "sourceId": "src-srbc-docket"
+      },
+      "annualWaterMgy": {
+        "value": 7665,
+        "unit": "MGY",
+        "epistemic": "estimated",
+        "asOf": "2026-06-04",
+        "basis": "Annualized maximum envelope at 21.0 MGD SRBC consumptive limit; actual evaporation varies by capacity factor and river temperature",
+        "sourceId": "src-srbc-docket"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-06-04",
+        "basis": "Host asset is an 835 MW nuclear generation source; associated Microsoft PJM data center PUE varies by campus",
+        "sourceId": "src-constellation"
+      },
+      "waterSource": "Susquehanna River (York Haven Dam pool: 73.2 MGD withdrawal / 21.0 MGD consumptive limit; Cowanesque Lake storage mitigation)",
+      "watershedName": "Lower Susquehanna River Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "01573660",
+      "nwsStationId": "KMDT"
+    },
+    "regulatory": {
+      "permittingStage": "SRBC Docket 20260607 approved (Jun 2026); NRC Restart Panel & Environmental FONSI issued; final NRC restart authorization pending",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Cleared SRBC consumptive water review and NRC Environmental Assessment (FONSI) with DOE financing support, while Food & Water Watch and regional critics challenge dedicating 73.2 MGD of river withdrawal to corporate AI power demand.",
+      "permits": [
+        {
+          "title": "SRBC Surface Water Withdrawal & Consumptive Use Approval",
+          "agency": "Susquehanna River Basin Commission",
+          "docketOrPermitId": "Docket No. 20260607",
+          "date": "2026-06-04",
+          "status": "Approved",
+          "url": "https://www.srbc.gov/waav/Search/getdocket?projectnumber=20260607&documenttype=Approval&isabre=False"
+        },
+        {
+          "title": "NRC Crane Clean Energy Center Restart Oversight & FONSI",
+          "agency": "U.S. Nuclear Regulatory Commission",
+          "docketOrPermitId": "NRC-CCEC-TMI1",
+          "date": "2026-03-01",
+          "status": "Environmental Assessment Cleared",
+          "url": "https://www.nrc.gov/facilities-safety/facility-finder/reactors/ccec"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Restores 835 MW of zero-carbon baseload power onto PJM without bypassing grid tariffs",
+          "evidence": "Unlike behind-the-meter co-location, Constellation's front-of-the-meter PJM PPA adds 835 MW of clean baseload energy, backed by DOE financing and 3,400+ direct/indirect jobs.",
+          "sourceId": "src-doe-crane"
+        },
+        {
+          "claim": "River consumptive use is offset by Cowanesque Lake low-flow storage",
+          "evidence": "SRBC Docket 20260607 permits 21.0 MGD consumptive use\u2014well below historical 122.8 MGD withdrawal\u2014with mandatory low-flow augmentation from Cowanesque Lake.",
+          "sourceId": "src-srbc-fact"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "73.2 MGD river withdrawal and 21 MGD evaporation tie Susquehanna flows to AI growth",
+          "evidence": "Food & Water Watch criticized SRBC's approval increasing consumptive use from 6 MGD (decommissioning) to 21 MGD strictly to support Microsoft's data center expansion.",
+          "sourceId": "src-fww-tmi"
+        },
+        {
+          "claim": "Federal loan subsidies and restart complexity carry public financial and safety scrutiny",
+          "evidence": "Restarting an idled nuclear reactor requires multi-year NRC component verification, emergency planning drills, and federal loan guarantees for private hyperscale power procurement.",
+          "sourceId": "src-nrc-ccec"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-constellation",
+        "title": "Constellation to Launch Crane Clean Energy Center with 20-Year Microsoft PPA",
+        "publisher": "Constellation Energy",
+        "date": "2024-09-20",
+        "kind": "operator_disclosure",
+        "url": "https://www.constellationenergy.com/news/2024/Constellation-to-Launch-Crane-Clean-Energy-Center-Restoring-Jobs-and-Carbon-Free-Power-to-The-Grid.html"
+      },
+      {
+        "id": "src-nrc-ccec",
+        "title": "NRC Christopher M. Crane Clean Energy Center Restart Oversight",
+        "publisher": "U.S. Nuclear Regulatory Commission",
+        "date": "2026-03-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.nrc.gov/facilities-safety/facility-finder/reactors/ccec"
+      },
+      {
+        "id": "src-srbc-docket",
+        "title": "SRBC Docket No. 20260607 Final Approval Record",
+        "publisher": "Susquehanna River Basin Commission",
+        "date": "2026-06-04",
+        "kind": "environmental_permit",
+        "url": "https://www.srbc.gov/waav/Search/getdocket?projectnumber=20260607&documenttype=Approval&isabre=False"
+      },
+      {
+        "id": "src-srbc-fact",
+        "title": "SRBC Crane Clean Energy Center Fact Sheet",
+        "publisher": "Susquehanna River Basin Commission",
+        "date": "2026-04-01",
+        "kind": "environmental_permit",
+        "url": "https://www.srbc.gov/regulatory/public-participation/docs/crane-clean-energy-center-fact-sheet.pdf"
+      },
+      {
+        "id": "src-doe-crane",
+        "title": "DOE Energy Dominance Financing: Crane Restart Overview",
+        "publisher": "U.S. Department of Energy",
+        "date": "2025-11-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.energy.gov/edf/crane-restart"
+      },
+      {
+        "id": "src-fww-tmi",
+        "title": "Three Mile Island Seeking 73M Gallons of Water Daily for Data Center Use",
+        "publisher": "Food & Water Watch",
+        "date": "2026-04-23",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.foodandwaterwatch.org/press/2026/04/23/three-mile-island-seeking-73m-gallons-of-water-daily-for-data-center-use/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-new-albany",
+    "name": "Meta New Albany Campus (Prometheus AI)",
+    "marketCluster": "Central Ohio",
+    "city": "New Albany",
+    "county": "Licking",
+    "state": "OH",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -82.745332,
+      40.088972
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "1,540-acre flagship Meta hyperscale campus and 1 GW 'Prometheus' AI supercluster in New Albany International Business Park, central to the landmark PUCO AEP Ohio Data Center Tariff settlement requiring 85% minimum demand billing.",
+    "parcel": {
+      "acreage": {
+        "value": 1540,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-10-01",
+        "basis": "Over 1,540 acres across New Albany International Business Park (Sidecat LLC / Licking County)",
+        "sourceId": "src-meta-na-blog"
+      },
+      "grossSqFt": {
+        "value": 3500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "Combined multi-building LCO data halls (~2.25M+ sq ft) and ~1.25M sq ft Prometheus AI modular halls",
+        "sourceId": "src-meta-na-blog"
+      },
+      "dataHallCount": 9,
+      "zoningDesignation": "L-GE General Employment / Tech District (New Albany International Business Park)",
+      "parcelNote": "Centered at Innovation Campus Way & Beech Rd NW in Licking County with dual City of New Albany/Columbus water & sewer upgrades."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc. (Sidecat, LLC)",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta AI / Prometheus Frontier Training Cluster",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-na-blog"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "Estimated energized load across legacy LCO buildings and initial Prometheus AI cluster phases",
+        "sourceId": "src-meta-na-blog"
+      },
+      "totalPlannedMw": {
+        "value": 1000,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2026-10-01",
+        "basis": "1,000 MW (1 GW) Prometheus AI cluster buildout under AEP Ohio Schedule DCT contracts",
+        "sourceId": "src-aep-tariff"
+      },
+      "utilityProvider": "AEP Ohio (Ohio Power Company)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "345 kV / 138 kV AEP Ohio New Albany substations",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Ohio EPA air permits for emergency diesel backup units; adjacent natural gas power projects scrutinized in regional buildout.",
+      "cleanPowerAndTariffSummary": "Subject to PUCO's July 2025 Schedule DCT (85% minimum billing demand for 12 years on >=25 MW loads), now challenged at the Ohio Supreme Court (Case No. 2025-1458)."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-10-01",
+        "basis": "Legacy LCO buildings reported 33\u201337 ML (~9.8 MGY) before Prometheus; full 1 GW closed-loop AI cooling MGD is not publicly itemized",
+        "sourceId": "src-meta-na"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-10-01",
+        "basis": "Full Prometheus AI cluster annual water consumption is undisclosed under local utility agreements",
+        "sourceId": "src-meta-na"
+      },
+      "pue": {
+        "value": 1.09,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2026-10-01",
+        "basis": "LEED Gold high-density closed-loop AI campus PUE benchmark",
+        "sourceId": "src-meta-na"
+      },
+      "waterSource": "City of New Albany / City of Columbus municipal water & reclaimed wastewater upgrades",
+      "watershedName": "Big Walnut Creek / Scioto River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "03228500",
+      "nwsStationId": "KCMH"
+    },
+    "regulatory": {
+      "permittingStage": "PUCO Data Center Tariff (Schedule DCT) effective July 23, 2025; appealed to Supreme Court of Ohio (Case No. 2025-1458)",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "AEP Ohio's 30,000 MW Central Ohio interconnection queue triggered a 2023 moratorium, culminating in PUCO's July 2025 Schedule DCT requiring 85% minimum demand billing and exit fees; manufacturers and tech coalitions appealed to the Ohio Supreme Court.",
+      "permits": [
+        {
+          "title": "AEP Ohio Data Center Tariff Order (Schedule DCT)",
+          "agency": "Public Utilities Commission of Ohio (PUCO)",
+          "docketOrPermitId": "PUCO-24-0508-EL-ATA",
+          "date": "2025-07-09",
+          "status": "Adopted (Appealed to Ohio Supreme Court 2025-1458)",
+          "url": "https://puco.ohio.gov/news/puco-orders-aep-ohio-to-create-data-center-specific-tariff"
+        },
+        {
+          "title": "AEP Ohio Large-Load Data Center Tariff Framework",
+          "agency": "AEP Ohio",
+          "docketOrPermitId": "Schedule DCT",
+          "date": "2025-07-23",
+          "status": "Effective",
+          "url": "https://www.aepohio.com/company/about/rates/data-center-tariff/"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Multi-billion-dollar AI infrastructure hub funding grid and water upgrades",
+          "evidence": "Meta's $1.5B+ New Albany campus (LEED Gold) funded millions in local water/wastewater expansions and high-density closed-loop cooling for Prometheus AI training.",
+          "sourceId": "src-meta-na"
+        },
+        {
+          "claim": "PUCO Schedule DCT shields ordinary ratepayers from stranded transmission",
+          "evidence": "AEP Ohio and PUCO designed the 85% minimum billing demand and 12-year commitment to weed out speculative load and guarantee cost recovery.",
+          "sourceId": "src-puco-dct"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "30 GW Central Ohio load surge drives transmission riders and gas buildouts",
+          "evidence": "Consumer advocates and local coalitions warn that massive Licking County AI clusters force multibillion-dollar BTCR transmission hikes and new local gas plants.",
+          "sourceId": "src-stop-ohio"
+        },
+        {
+          "claim": "Tariff terms sparked Supreme Court litigation over industrial rate discrimination",
+          "evidence": "Ohio Manufacturers' Association Energy Group and tech stakeholders appealed PUCO's Schedule DCT to the Ohio Supreme Court (Case No. 2025-1458).",
+          "sourceId": "src-aep-tariff"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-na",
+        "title": "Meta New Albany Data Center Overview",
+        "publisher": "Meta",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/ohio-new-albany/"
+      },
+      {
+        "id": "src-meta-na-blog",
+        "title": "New Albany: Where Ohio's Community Spirit Meets the Frontier of AI",
+        "publisher": "Meta",
+        "date": "2026-10-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/2026/10/new-albany-where-ohios-community-spirit-meets-the-frontier-of-ai/"
+      },
+      {
+        "id": "src-puco-dct",
+        "title": "PUCO Orders AEP Ohio to Create Data Center-Specific Tariff",
+        "publisher": "Public Utilities Commission of Ohio",
+        "date": "2025-07-09",
+        "kind": "regulatory_filing",
+        "url": "https://puco.ohio.gov/news/puco-orders-aep-ohio-to-create-data-center-specific-tariff"
+      },
+      {
+        "id": "src-aep-tariff",
+        "title": "AEP Ohio Data Center Tariff (Schedule DCT) Overview",
+        "publisher": "AEP Ohio",
+        "date": "2025-07-23",
+        "kind": "utility_iso_record",
+        "url": "https://www.aepohio.com/company/about/rates/data-center-tariff/"
+      },
+      {
+        "id": "src-stop-ohio",
+        "title": "Data Center Electric Bill & Transmission Cost Scrutiny in Ohio",
+        "publisher": "Stop Ohio Data Centers",
+        "date": "2025-11-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://stopohiodatacenters.org/data-center-electric-bill-ohio"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "aws-central-ohio",
+    "name": "AWS Central Ohio New Albany / Dublin Campus",
+    "marketCluster": "Central Ohio",
+    "city": "Dublin / New Albany",
+    "county": "Franklin / Licking",
+    "state": "OH",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -83.198879,
+      40.104872
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Core AWS us-east-2 Central Ohio cloud region spanning established Dublin/Hilliard nodes in Franklin County and $3.5B multi-building expansions on 439+ acres along Beech Road NW in New Albany / Licking County under AEP Ohio's Schedule DCT.",
+    "parcel": {
+      "acreage": {
+        "value": 439,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-08-01",
+        "basis": "439-acre primary New Albany Beech/Miller Rd expansion campus plus established Franklin County Dublin/Hilliard sites",
+        "sourceId": "src-newalbany-oh"
+      },
+      "grossSqFt": {
+        "value": 1250000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-08-01",
+        "basis": "1.25 million sq ft across five initial Beech Rd expansion buildings, plus legacy Dublin CMH data halls",
+        "sourceId": "src-newalbany-oh"
+      },
+      "dataHallCount": 8,
+      "zoningDesignation": "Industrial / Planned Technology District (Dublin & New Albany / Jersey Twp)",
+      "parcelNote": "Anchored at Dublin Crosby Ct node in Franklin County with major expansion sites along Beech Rd NW and Miller Rd in Licking County."
+    },
+    "stakeholders": {
+      "developer": "Amazon Data Services, Inc.",
+      "operator": "Amazon Web Services (AWS)",
+      "anchorTenants": [
+        {
+          "name": "Amazon Web Services (us-east-2 Ohio Region)",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-aws-us"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 180,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated energized load across Dublin/Hilliard and initial New Albany CMH buildings",
+        "sourceId": "src-aep-contracts"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated combined capacity including $3.5B Beech/Miller Rd five-facility expansion under AEP Ohio Schedule DCT",
+        "sourceId": "src-aep-contracts"
+      },
+      "utilityProvider": "AEP Ohio (Ohio Power Company)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "138 kV / 345 kV AEP Ohio Central Ohio transmission",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Ohio EPA air-permitted diesel backup generators supplemented at constrained sites by fuel-cell bridging deployments.",
+      "cleanPowerAndTariffSummary": "Part of Amazon's $10B+ Ohio commitment; subject to AEP Ohio's binding large-load capacity allocation contracts under Schedule DCT."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "AWS keeps Central Ohio campus water MGD confidential under municipal utility agreements (citing fleet 0.12 L/kWh WUE and ~90% free air cooling)",
+        "sourceId": "src-aws-us"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Site-specific annual MGY withheld by AWS",
+        "sourceId": "src-aws-us"
+      },
+      "pue": {
+        "value": 1.15,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated from AWS North American hyperscale fleet PUE benchmark",
+        "sourceId": "src-aws-us"
+      },
+      "waterSource": "City of Columbus / New Albany municipal water & reclaimed wastewater infrastructure",
+      "watershedName": "Scioto River / Big Walnut Creek Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "03221000",
+      "nwsStationId": "KOSU"
+    },
+    "regulatory": {
+      "permittingStage": "Operational Dublin nodes & phased New Albany construction under AEP Ohio Schedule DCT binding contract regime",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "AEP Ohio transitioned Central Ohio queues into binding Schedule DCT contracts in 2025\u20132026, while Ohio legislators debated extending data center tariff protections statewide.",
+      "permits": [
+        {
+          "title": "AEP Ohio Binding Large-Load Contract Allocation",
+          "agency": "AEP Ohio / PUCO",
+          "docketOrPermitId": "AEP-DCT-2026",
+          "date": "2026-02-01",
+          "status": "Active Tariff Implementation",
+          "url": "https://www.aepohio.com/company/news/view?releaseID=10753"
+        },
+        {
+          "title": "Ohio House Statewide Data Center Tariff Proposal",
+          "agency": "Ohio House of Representatives",
+          "docketOrPermitId": "OH-HB-DCT-2025",
+          "date": "2025-11-01",
+          "status": "Legislative Proposal",
+          "url": "https://ohiohouse.gov/members/tristan-rader/in-the-news/ohio-house-bill-would-extend-data-center-tariff-to-rest-of-state-6644"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Multi-billion-dollar anchor for Central Ohio tech jobs and tax revenue",
+          "evidence": "AWS's $3.5B New Albany expansion (part of $10B+ Ohio commitment) adds 5 data halls and long-term technical employment while using free air cooling most of the year.",
+          "sourceId": "src-newalbany-oh"
+        },
+        {
+          "claim": "Binding Schedule DCT contracts filter speculative load",
+          "evidence": "AEP Ohio reports billions of watts in signed, collateral-backed agreements under Schedule DCT pacing grid buildout through 2035.",
+          "sourceId": "src-aep-contracts"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "PJM transmission upgrades drive steep consumer utility rider increases",
+          "evidence": "Ohio lawmakers and consumer watchdogs warn that Central Ohio hyperscale clusters push billions in transmission costs into customer bills unless statewide tariff protections expand.",
+          "sourceId": "src-ohio-house"
+        },
+        {
+          "claim": "NDAs mask campus-level water and grid draw from municipal taxpayers",
+          "evidence": "Neither AWS nor municipal utilities publicly itemize site-level MGD or exact contracted MW per parcel in Central Ohio.",
+          "sourceId": "src-aws-us"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-aws-us",
+        "title": "AWS U.S. Data Center Infrastructure & Sustainability Overview",
+        "publisher": "Amazon",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.aboutamazon.com/news/aws/amazon-web-services-data-centers-us"
+      },
+      {
+        "id": "src-newalbany-oh",
+        "title": "Amazon $3.5B Investment in New Albany Data Center Campus",
+        "publisher": "City of New Albany",
+        "date": "2025-08-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://newalbanyohio.org/news/2025/08/amazon-investment-in-new-albany/"
+      },
+      {
+        "id": "src-aep-contracts",
+        "title": "AEP Ohio Large-Load Data Center Contract Update",
+        "publisher": "AEP Ohio",
+        "date": "2026-02-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.aepohio.com/company/news/view?releaseID=10753"
+      },
+      {
+        "id": "src-ohio-house",
+        "title": "Proposed Statewide Extension of Data Center Tariff Protections",
+        "publisher": "Ohio House of Representatives",
+        "date": "2025-11-01",
+        "kind": "regulatory_filing",
+        "url": "https://ohiohouse.gov/members/tristan-rader/in-the-news/ohio-house-bill-would-extend-data-center-tariff-to-rest-of-state-6644"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "google-lancaster-ohio",
+    "name": "Google Central Ohio Lancaster Campus",
+    "marketCluster": "Central Ohio",
+    "city": "Lancaster",
+    "county": "Fairfield",
+    "state": "OH",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -82.683371,
+      39.722887
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "348-acre Google Cloud & AI hyperscale campus off Whiley Road SW in Lancaster (Fairfield County), served by AEP Ohio's dedicated Sifford 138 kV substation with two operational buildings (2024\u20132025) and phased expansion through 2031.",
+    "parcel": {
+      "acreage": {
+        "value": 348,
+        "unit": "acres",
+        "epistemic": "filed",
+        "asOf": "2025-05-01",
+        "basis": "348 acres assembled by Table Mountain Industries LLC across initial 121.5-acre parcel plus 62.8-acre and 163.5-acre expansions",
+        "sourceId": "src-google-oh"
+      },
+      "grossSqFt": {
+        "value": 1400000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated multi-building footprint across 2024\u20132025 operational phases and ongoing Technology Place buildout",
+        "sourceId": "src-google-oh"
+      },
+      "dataHallCount": 4,
+      "zoningDesignation": "I-2 Heavy Industrial / Greenfield Township Annexation (Fairfield County)",
+      "parcelNote": "Located west of US-33 bypass off Whiley Rd SW / Technology Place, roughly 30 miles southeast of Columbus."
+    },
+    "stakeholders": {
+      "developer": "Google LLC (Table Mountain Industries LLC)",
+      "operator": "Google LLC",
+      "anchorTenants": [
+        {
+          "name": "Google Cloud & Search Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-google-oh"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 150,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated capacity across first two energized buildings (2024 and 2025) on dedicated 138 kV station",
+        "sourceId": "src-puco-dc"
+      },
+      "totalPlannedMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated multi-phase 348-acre expansion envelope through 2031",
+        "sourceId": "src-puco-dc"
+      },
+      "utilityProvider": "AEP Ohio (Ohio Power Company)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "138 kV dedicated Sifford Station (dual Bixby\u2013West Lancaster circuits)",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Emergency diesel generators permitted via Ohio EPA; exact count per building not consolidated in public tariff filings.",
+      "cleanPowerAndTariffSummary": "Part of Google's Central Ohio cluster (New Albany, Columbus, Lancaster); subject to AEP Ohio large-load cost-recovery rules and PUCO resource oversight."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-06-01",
+        "basis": "Google's FY2025 Environmental Assurance Letter does not yet itemize Lancaster, OH separately from legacy campuses",
+        "sourceId": "src-google-env"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-06-01",
+        "basis": "Site-level MGY for Fairfield County / Lancaster is not itemized in Google's environmental tables",
+        "sourceId": "src-google-env"
+      },
+      "pue": {
+        "value": 1.1,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Google global data center fleet average PUE (~1.09\u20131.10); individual Lancaster PUE undisclosed",
+        "sourceId": "src-google-env"
+      },
+      "waterSource": "City of Lancaster municipal water & Ohio EPA aquifer-monitored supply",
+      "watershedName": "Hocking River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "03156400",
+      "nwsStationId": "KLHQ"
+    },
+    "regulatory": {
+      "permittingStage": "Phases 1\u20132 operational; ongoing Technology Place expansions under Fairfield County & AEP Ohio tariff rules",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "While Lancaster annexed and incentivized the industrial site, Fairfield County civic groups monitor regional groundwater protection and transmission rate impacts.",
+      "permits": [
+        {
+          "title": "PUCO Electricity Data Center Resources & Tariff Compliance",
+          "agency": "Public Utilities Commission of Ohio (PUCO)",
+          "docketOrPermitId": "PUCO-EL-DC-RES",
+          "date": "2025-07-23",
+          "status": "Active Oversight",
+          "url": "https://puco.ohio.gov/utilities/electricity/resources/data-centers"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Multi-billion-dollar Central Ohio investment and dedicated 138 kV substation",
+          "evidence": "Google's multi-site Ohio expansion invests billions into local infrastructure, clean energy procurement, and skilled operations jobs across Fairfield and Franklin counties.",
+          "sourceId": "src-google-oh"
+        },
+        {
+          "claim": "PUCO tariff oversight ensures large loads cover grid upgrades",
+          "evidence": "PUCO's Data Center resource framework enforces long-term capacity commitments and transmission cost-sharing on AEP Ohio's territory.",
+          "sourceId": "src-puco-dc"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Lancaster water consumption missing from Google's site-level environmental ledger",
+          "evidence": "Alphabet's FY2025 environmental indicators letter itemizes legacy sites like Berkeley SC while leaving Lancaster's MGY undisclosed to residents.",
+          "sourceId": "src-google-env"
+        },
+        {
+          "claim": "Fairfield County residents raise farmland loss and aquifer draw concerns",
+          "evidence": "Local opposition groups highlight the conversion of 348 acres of former farmland and unverified long-term Hocking basin water demand.",
+          "sourceId": "src-stop-fairfield"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-google-oh",
+        "title": "Google Data Centers: Central Ohio Locations",
+        "publisher": "Google",
+        "date": "2025-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.google/locations/ohio/"
+      },
+      {
+        "id": "src-google-env",
+        "title": "Alphabet FY2025 Environmental Indicators Assurance Letter",
+        "publisher": "Google Sustainability",
+        "date": "2026-06-01",
+        "kind": "operator_disclosure",
+        "url": "https://sustainability.google/files/alphabet-fy2025-environmental-indicators-assurance-letter/"
+      },
+      {
+        "id": "src-puco-dc",
+        "title": "PUCO Data Centers & Electric Grid Resources",
+        "publisher": "Public Utilities Commission of Ohio",
+        "date": "2025-07-23",
+        "kind": "regulatory_filing",
+        "url": "https://puco.ohio.gov/utilities/electricity/resources/data-centers"
+      },
+      {
+        "id": "src-stop-fairfield",
+        "title": "Fairfield County Data Center Tracking & Community Concerns",
+        "publisher": "Stop Ohio Data Centers",
+        "date": "2025-11-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://stopohiodatacenters.org/counties/fairfield"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "quantum-loophole-frederick",
+    "name": "Quantum Loophole / Quantum Frederick Campus",
+    "marketCluster": "Frederick / Maryland",
+    "city": "Adamstown",
+    "county": "Frederick",
+    "state": "MD",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -77.475168,
+      39.33001
+    ],
+    "lifecycleStatus": "under_construction",
+    "summary": "2,100-acre brownfield 'data center city' on the former Alcoa Eastalco aluminum smelter site; site of the landmark Maryland PSC CPCN generator dispute (Order No. 90830) that prompted Maryland's Critical Infrastructure Streamlining Act of 2024.",
+    "parcel": {
+      "acreage": {
+        "value": 2100,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-06-01",
+        "basis": "Over 2,100-acre brownfield redevelopment of the former Alcoa Eastalco aluminum smelter (1969\u20132010)",
+        "sourceId": "src-quantum"
+      },
+      "grossSqFt": {
+        "value": 15000000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2024-06-01",
+        "basis": "Master-planned multi-tenant buildout across former smelter site linked to Ashburn via 40-mile QLoop fiber ring",
+        "sourceId": "src-quantum"
+      },
+      "dataHallCount": 12,
+      "zoningDesignation": "GI General Industrial / MXD Overlay (Frederick County)",
+      "parcelNote": "Centered on 5601 Manor Woods Rd in Adamstown/Buckeystown, served by Potomac Edison (FirstEnergy) and Monocacy/Potomac watershed infrastructure."
+    },
+    "stakeholders": {
+      "developer": "TPG Real Estate / Catellus Development (fka Quantum Loophole)",
+      "operator": "Quantum Frederick / Multi-Tenant Hyperscale Builds",
+      "anchorTenants": [
+        {
+          "name": "Aligned Data Centers (Exited 2023 over CPCN cap; Post-CISA Tenant Builds Active)",
+          "role": "colocation_platform",
+          "epistemic": "filed",
+          "sourceId": "src-md-psc"
+        },
+        {
+          "name": "Amazon Data Services (MDE Permitted Parcel)",
+          "role": "hyperscale_owner",
+          "epistemic": "permitted",
+          "sourceId": "src-mde-fred"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 50,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-04-01",
+        "basis": "Estimated early phase energization following MDE air permit approvals",
+        "sourceId": "src-mde-fred"
+      },
+      "totalPlannedMw": {
+        "value": 2000,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2024-06-01",
+        "basis": "2,000\u20132,500 MW master-planned campus capacity across FirstEnergy / Potomac Edison corridor",
+        "sourceId": "src-quantum"
+      },
+      "utilityProvider": "Potomac Edison (FirstEnergy) / PJM",
+      "interconnectionStatus": "transmission_upgrade_pending",
+      "substationVoltage": "230 kV / 500 kV FirstEnergy regional transmission",
+      "backupGeneratorsPermitted": 168,
+      "backupFuelNote": "Aligned originally applied for 168 \u00d7 3 MW diesel generators (>500 MW), triggering MD PSC Order 90830 capping exemptions at 70 MW; Maryland's 2024 CISA statute later shifted emergency generator review to MDE air permits (e.g., March 2026 MDE approvals with SCR/DPF controls).",
+      "cleanPowerAndTariffSummary": "Gigawatt-scale PJM load requires major Potomac Edison transmission upgrades (including Piedmont Reliability Project controversies)."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-03-25",
+        "basis": "Tenant builds adopt closed-loop / air-dominant cooling; exact campus-wide MGD is not publicly itemized",
+        "sourceId": "src-fred-faq"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-03-25",
+        "basis": "Annual water consumption across multi-tenant parcels is undisclosed",
+        "sourceId": "src-fred-faq"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-03-25",
+        "basis": "Site-level PUE withheld across tenant facilities",
+        "sourceId": "src-fred-faq"
+      },
+      "waterSource": "Frederick County municipal / closed-loop industrial water (former Eastalco supply)",
+      "watershedName": "Monocacy / Potomac River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "01643500",
+      "nwsStationId": "KHGR"
+    },
+    "regulatory": {
+      "permittingStage": "Post-CISA 2024 MDE air permits advancing (Mar 2026); MD PSC CPCN exemption dispute (Order 90830) resolved legislatively; HDD enforcement oversight",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Following MD PSC Order 90830 rejecting Aligned's 500+ MW generator CPCN exemption, Maryland passed CISA 2024 streamlining backup generators under MDE air rules; horizontal directional drilling 'frac-outs' into Monocacy/Potomac tributaries also triggered stop-work orders and enforcement.",
+      "permits": [
+        {
+          "title": "MD PSC Provisional Order on Rehearing (Backup Generator CPCN)",
+          "agency": "Maryland Public Service Commission",
+          "docketOrPermitId": "Order No. 90830 (ML 302893)",
+          "date": "2023-10-01",
+          "status": "Superseded by CISA 2024",
+          "url": "https://psc.maryland.gov/wp-content/uploads/Order-No.-90830-Provisional-Order-on-Rehearing-ML-302893-1.pdf"
+        },
+        {
+          "title": "MDE Permit to Construct (Frederick Data Center Backup Generators)",
+          "agency": "Maryland Department of the Environment",
+          "docketOrPermitId": "MDE-PTC-FRED-2026",
+          "date": "2026-03-25",
+          "status": "Approved",
+          "url": "https://news.maryland.gov/mde/2026/03/25/maryland-department-of-environment-approves-air-permit-for-frederick-data-center/"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Reclaims a 2,100-acre brownfield smelter with 40-mile fiber loop to Ashburn",
+          "evidence": "Redeveloping the remediated Eastalco aluminum smelter leverages legacy heavy-industrial zoning and high-voltage corridors while avoiding greenfield sprawl.",
+          "sourceId": "src-quantum"
+        },
+        {
+          "claim": "CISA 2024 and MDE air permits mandate Tier 4 emissions controls",
+          "evidence": "MDE's March 2026 air permit enforces strict NOx caps, SCR/DPF controls, and prohibits emergency generators from running for non-emergency grid demand response.",
+          "sourceId": "src-mde-fred"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Bypassing PSC CPCN oversight weakens climate and cumulative air scrutiny",
+          "evidence": "Environmental and community groups (Sugarloaf Alliance, Nature Forward) argued exempting 500+ MW diesel backup fleets from CPCN review undermined Maryland climate goals.",
+          "sourceId": "src-sugarloaf"
+        },
+        {
+          "claim": "Fiber trenching 'frac-outs' polluted Monocacy and Potomac tributaries",
+          "evidence": "Potomac Conservancy documented multiple bentonite drilling mud spills during QLoop fiber installation, prompting MDE stop-work orders and Attorney General scrutiny.",
+          "sourceId": "src-potomac"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-quantum",
+        "title": "Quantum Frederick Master-Planned Brownfield Campus",
+        "publisher": "Quantum Loophole",
+        "date": "2024-06-01",
+        "kind": "operator_disclosure",
+        "url": "https://quantumloophole.com/"
+      },
+      {
+        "id": "src-md-psc",
+        "title": "MD PSC Order No. 90830 on Data Center Generator CPCN Exemption",
+        "publisher": "Maryland Public Service Commission",
+        "date": "2023-10-01",
+        "kind": "regulatory_filing",
+        "url": "https://psc.maryland.gov/wp-content/uploads/Order-No.-90830-Provisional-Order-on-Rehearing-ML-302893-1.pdf"
+      },
+      {
+        "id": "src-mde-fred",
+        "title": "MDE Approves Air Permit for Frederick County Data Center",
+        "publisher": "Maryland Department of the Environment",
+        "date": "2026-03-25",
+        "kind": "environmental_permit",
+        "url": "https://news.maryland.gov/mde/2026/03/25/maryland-department-of-environment-approves-air-permit-for-frederick-data-center/"
+      },
+      {
+        "id": "src-fred-faq",
+        "title": "Frederick County Data Center Zoning & Water FAQ",
+        "publisher": "Frederick County Government",
+        "date": "2025-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://frederickcountymd.gov/m/faq?cat=118#question-921"
+      },
+      {
+        "id": "src-potomac",
+        "title": "Open Letter on Quantum Loophole Drilling Spills in Frederick County",
+        "publisher": "Potomac Conservancy",
+        "date": "2024-04-05",
+        "kind": "environmental_permit",
+        "url": "https://potomac.org/blog/2024/4/5-2024-an-open-letter-fred-county-md"
+      },
+      {
+        "id": "src-sugarloaf",
+        "title": "Why New Maryland Data Center Regulations Are Needed",
+        "publisher": "Sugarloaf Alliance",
+        "date": "2024-05-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.sugarloaf-alliance.com/content/new-md-regs-needed"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "qts-atlanta-metro",
+    "name": "QTS Atlanta-Metro Mega-Campus",
+    "marketCluster": "Metro Atlanta",
+    "city": "Atlanta",
+    "county": "Fulton",
+    "state": "GA",
+    "isoRegion": "SERC",
+    "coordinates": [
+      -84.421154,
+      33.77769
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Flagship 99-acre urban mega-campus at 1033 Jefferson St NW (1.4M+ sq ft across DC1/DC2) in Atlanta's Westside; operates under Georgia PSC's 2025 100+ MW IRP cost-protection rule while Fulton County moves in 2026 to end data center property tax abatements.",
+    "parcel": {
+      "acreage": {
+        "value": 99,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-01-01",
+        "basis": "95\u201399 acre Westside Atlanta industrial campus at 1033 Jefferson St NW",
+        "sourceId": "src-gapsc-rule"
+      },
+      "grossSqFt": {
+        "value": 1485000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-01-01",
+        "basis": "~990,000 sq ft DC1 plus 495,000 sq ft DC2 expansion space",
+        "sourceId": "src-ajc-fulton"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "I-2 Heavy Industrial (City of Atlanta, Fulton County)",
+      "parcelNote": "Bounded by Jefferson St NW and rail corridors in Bellwood/Westside Atlanta with dedicated on-site Georgia Power substations."
+    },
+    "stakeholders": {
+      "developer": "QTS Realty Trust (Blackstone)",
+      "operator": "QTS Data Centers",
+      "anchorTenants": [
+        {
+          "name": "Hyperscale Cloud & Regional Peering Colocation Tenants",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-gapsc-rule"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 140,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated energized DC1/DC2 load fed by dual Georgia Power on-site substations (120+ MVA initial block plus expansions)",
+        "sourceId": "src-gapsc-rule"
+      },
+      "totalPlannedMw": {
+        "value": 275,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated full buildout capacity across Atlanta-Metro campus phases (>100 MW threshold triggering GA PSC IRP review)",
+        "sourceId": "src-gapsc-rule"
+      },
+      "utilityProvider": "Georgia Power (Southern Company)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "115 kV / 230 kV dedicated on-site Georgia Power substations",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "N+1 emergency diesel generator fleet regulated under Georgia EPD air quality permits.",
+      "cleanPowerAndTariffSummary": "Expansions >=100 MW trigger Georgia PSC's Jan 2025 IRP rule requiring 5\u201315 year custom contracts, upstream generation/transmission cost recovery, and PSC contract filing."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "QTS does not publish facility-level municipal water consumption in MGD for its Atlanta-Metro campus",
+        "sourceId": "src-fulton-news"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Site-level annual water draw is undisclosed by QTS",
+        "sourceId": "src-fulton-news"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "Campus PUE is not publicly disclosed",
+        "sourceId": "src-fulton-news"
+      },
+      "waterSource": "City of Atlanta Department of Watershed Management (Chattahoochee River supply)",
+      "watershedName": "Peachtree Creek / Chattahoochee River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "02336300",
+      "nwsStationId": "KFTY"
+    },
+    "regulatory": {
+      "permittingStage": "Operational campus; subject to GA PSC >100 MW IRP contracting rule (Jan 2025) and Fulton County 2026 tax-abatement opposition resolution",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Atlanta tightened BeltLine/urban data center zoning while Fulton County Commissioners voted in August 2026 to oppose local tax incentives for data centers, citing water, grid, and fiscal tradeoffs.",
+      "permits": [
+        {
+          "title": "Georgia PSC Large-Load Data Center Cost-Protection Rule (>=100 MW)",
+          "agency": "Georgia Public Service Commission",
+          "docketOrPermitId": "GA-PSC-IRP-RULE-2025",
+          "date": "2025-01-23",
+          "status": "Adopted",
+          "url": "https://psc.ga.gov/site/assets/files/8617/media_advisory_data_centers_rule_1-23-2025.pdf"
+        },
+        {
+          "title": "Fulton County Resolution Opposing Data Center Tax Incentives",
+          "agency": "Fulton County Board of Commissioners",
+          "docketOrPermitId": "FC-BOC-2026-08",
+          "date": "2026-08-10",
+          "status": "Adopted Policy",
+          "url": "https://www.fultoncountyga.gov/News/2026/08/10/Fulton-County-Opposes-Local-Incentives-For-Data-Centers"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Georgia PSC rule ensures >100 MW data centers pay full grid expansion costs",
+          "evidence": "Adopted Jan 23, 2025, the GA PSC rule mandates 5\u201315 year minimum billing contracts and upfront/progressive payment for upstream generation and transmission.",
+          "sourceId": "src-gapsc-rule"
+        },
+        {
+          "claim": "Dense brownfield urban interconnection reduces regional fiber latency",
+          "evidence": "QTS Atlanta-Metro serves as the Southeast's premier carrier hotel and cloud interconnect hub inside an existing industrial corridor.",
+          "sourceId": "src-ajc-fulton"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Local officials oppose tax abatements amid grid and water strain",
+          "evidence": "In August 2026, Fulton County formally opposed further DAFC property tax breaks for data centers, arguing massive facilities demand high electricity and water with few permanent jobs.",
+          "sourceId": "src-fulton-news"
+        },
+        {
+          "claim": "Opaque cooling water draw inside Chattahoochee urban watershed",
+          "evidence": "High-capacity evaporative cooling towers at Jefferson St operate without public MGD disclosures while Atlanta tightens industrial water planning.",
+          "sourceId": "src-ajc-fulton"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-gapsc-rule",
+        "title": "Georgia PSC Media Advisory: Data Center Cost-Protection Rules",
+        "publisher": "Georgia Public Service Commission",
+        "date": "2025-01-23",
+        "kind": "regulatory_filing",
+        "url": "https://psc.ga.gov/site/assets/files/8617/media_advisory_data_centers_rule_1-23-2025.pdf"
+      },
+      {
+        "id": "src-fulton-news",
+        "title": "Fulton County Opposes Local Incentives for Data Centers",
+        "publisher": "Fulton County Government",
+        "date": "2026-08-10",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.fultoncountyga.gov/News/2026/08/10/Fulton-County-Opposes-Local-Incentives-For-Data-Centers"
+      },
+      {
+        "id": "src-ajc-fulton",
+        "title": "Fulton Seeks to Stop Tax Breaks for New Data Centers Near Atlanta",
+        "publisher": "The Atlanta Journal-Constitution",
+        "date": "2026-08-11",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.ajc.com/news/2026/08/fulton-seeks-to-stop-tax-breaks-for-new-data-centers-near-atlanta/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-palmetto-douglas",
+    "name": "Microsoft Palmetto / Douglas County Campus",
+    "marketCluster": "Metro Atlanta",
+    "city": "Palmetto / Douglasville",
+    "county": "Fulton / Douglas",
+    "state": "GA",
+    "isoRegion": "SERC",
+    "coordinates": [
+      -84.641923,
+      33.521951
+    ],
+    "lifecycleStatus": "under_construction",
+    "summary": "Azure East US 3 dual-county Metro Atlanta footprint pairing Microsoft's 135-acre, 1.18M sq ft Palmetto campus (South Fulton) under construction since 2024 with its 160-acre Douglasville campus in neighboring Douglas County.",
+    "parcel": {
+      "acreage": {
+        "value": 295,
+        "unit": "acres",
+        "epistemic": "filed",
+        "asOf": "2024-06-01",
+        "basis": "Combined ~135-acre Palmetto (Johnson/Williams Rd) campus in ARC DRI-3576 and ~160-acre Douglasville campus",
+        "sourceId": "src-arc-palmetto"
+      },
+      "grossSqFt": {
+        "value": 2160000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2024-06-01",
+        "basis": "1.18M sq ft Palmetto data center + ~980,000 sq ft across four Douglasville buildings",
+        "sourceId": "src-arc-palmetto"
+      },
+      "dataHallCount": 7,
+      "zoningDesignation": "Industrial / Planned Technology Overlay (City of Palmetto & Douglas County)",
+      "parcelNote": "Anchored on Johnson Rd / Williams Rd in Palmetto (Fulton County) with sister Azure East US 3 campus 24 km north in Douglasville."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Azure (East US 3 Metro Atlanta)",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-msft-palmetto"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 72,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated energized Douglasville initial capacity while Palmetto phase completes construction",
+        "sourceId": "src-dcf-palmetto"
+      },
+      "totalPlannedMw": {
+        "value": 216,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Estimated combined Palmetto and Douglasville critical/campus power allocation via Georgia Power",
+        "sourceId": "src-dcf-palmetto"
+      },
+      "utilityProvider": "Georgia Power (Southern Company)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "115 kV / 230 kV Georgia Power feeders",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted emergency diesel generation subject to Georgia EPD air permits.",
+      "cleanPowerAndTariffSummary": "Backed by Microsoft's $420M+ Fulton development framework and regional renewable PPAs; new >100 MW Georgia Power loads fall under GA PSC's 2025 cost-allocation rule."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2025-10-01",
+        "basis": "Microsoft discloses zero evaporative cooling below 29.4\u00b0C (85\u00b0F) and <15% annual water-use hours, but withholds Palmetto/Douglas site MGD",
+        "sourceId": "src-msft-water"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2025-10-01",
+        "basis": "Site-level annual water consumption is undisclosed",
+        "sourceId": "src-msft-water"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2025-10-01",
+        "basis": "Individual campus PUE not broken out publicly",
+        "sourceId": "src-msft-water"
+      },
+      "waterSource": "Fulton County / Douglasville-Douglas County Water & Sewer Authority (Dog River Reservoir)",
+      "watershedName": "Flat Creek / Chattahoochee & Flint River Divide",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "02344655",
+      "nwsStationId": "KFFC"
+    },
+    "regulatory": {
+      "permittingStage": "ARC DRI-3576 completed; Palmetto under construction; Douglasville bond lease transitioned to direct ownership (Sept 2026)",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Cleared Atlanta Regional Commission Development of Regional Impact review (DRI-3576) while facing broader Fulton/Douglas policy debates over tax abatements and Georgia Power fossil generation expansion.",
+      "permits": [
+        {
+          "title": "Atlanta Regional Commission Development of Regional Impact Review",
+          "agency": "Atlanta Regional Commission",
+          "docketOrPermitId": "DRI-3576",
+          "date": "2022-09-01",
+          "status": "Reviewed",
+          "url": "https://documents.atlantaregional.com/Land%20Use/Reviews/ID4187/2022%20Microsoft%20Data%20Center%20Palmetto%20DRI%203576%20-%20TIS.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Temperature-gated evaporative cooling cuts annual water draw by >85%",
+          "evidence": "Microsoft's South Fulton facilities use outside air below 29.4\u00b0C (85\u00b0F), consuming evaporative water less than 15% of hours while targeting 2030 water positivity.",
+          "sourceId": "src-msft-water"
+        },
+        {
+          "claim": "Local workforce investments and full infrastructure upgrades",
+          "evidence": "Microsoft highlights construction jobs, local STEM partnerships, and utility upgrades in Palmetto and Douglas County.",
+          "sourceId": "src-msft-palmetto"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Tax incentive abatements and Georgia Power fossil fuel load additions",
+          "evidence": "Fulton County officials and regional watchdogs challenge tax breaks for hyperscale campuses while Georgia Power relies on coal extensions and new gas turbines to meet data center spikes.",
+          "sourceId": "src-dcf-palmetto"
+        },
+        {
+          "claim": "Traffic and water transparency gaps across South Metro expansions",
+          "evidence": "DRI-3576 documented regional traffic/infrastructure impacts while exact MGD draws from Dog River Reservoir and Fulton mains remain undisclosed.",
+          "sourceId": "src-arc-palmetto"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-msft-palmetto",
+        "title": "Microsoft Palmetto Datacenter Construction Update",
+        "publisher": "Microsoft Local",
+        "date": "2024-05-01",
+        "kind": "operator_disclosure",
+        "url": "https://local.microsoft.com/blog/palmetto-datacenter-construction-update/"
+      },
+      {
+        "id": "src-arc-palmetto",
+        "title": "ARC DRI-3576 Microsoft Palmetto Data Center Review",
+        "publisher": "Atlanta Regional Commission",
+        "date": "2022-09-01",
+        "kind": "regulatory_filing",
+        "url": "https://documents.atlantaregional.com/Land%20Use/Reviews/ID4187/2022%20Microsoft%20Data%20Center%20Palmetto%20DRI%203576%20-%20TIS.pdf"
+      },
+      {
+        "id": "src-msft-water",
+        "title": "Understanding Water Use at Microsoft Datacenters",
+        "publisher": "Microsoft Local",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://local.microsoft.com/blog/understanding-water-use-at-microsoft-datacenters/"
+      },
+      {
+        "id": "src-dcf-palmetto",
+        "title": "Microsoft Plans Cloud Data Center Campus Near Atlanta",
+        "publisher": "Data Center Frontier",
+        "date": "2023-03-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.datacenterfrontier.com/cloud/article/11428564/microsoft-plans-cloud-data-center-campus-near-atlanta"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "xai-colossus-memphis",
+    "name": "xAI \"Colossus\" Memphis Supercluster",
+    "marketCluster": "Memphis",
+    "city": "Memphis",
+    "county": "Shelby",
+    "state": "TN",
+    "isoRegion": "SERC",
+    "coordinates": [
+      -90.152225,
+      35.060058
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "200,000+ GPU AI supercluster in the former Electrolux plant at 3231 Paul R. Lowry Rd (Southwest Memphis); sparked intense Clean Air Act and environmental justice litigation over unpermitted mobile methane gas turbines and Memphis Sand Aquifer withdrawals pending an $80M greywater recycling plant.",
+    "parcel": {
+      "acreage": {
+        "value": 125,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "~112-acre former Electrolux industrial parcel plus 13-acre adjacent greywater recycling plant site near T.E. Maxson WWTP",
+        "sourceId": "src-mlgw-xai"
+      },
+      "grossSqFt": {
+        "value": 750000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-01-01",
+        "basis": "Retrofitted 750,000+ sq ft former Electrolux appliance factory in Frank C. Pidgeon Industrial Park",
+        "sourceId": "src-memphis-chamber"
+      },
+      "dataHallCount": 2,
+      "zoningDesignation": "IH Heavy Industrial (Frank C. Pidgeon Industrial Park, Memphis / Shelby County)",
+      "parcelNote": "Located at 3231 Paul R. Lowry Rd near Mississippi River industrial corridor and TVA Allen Combined Cycle Plant."
+    },
+    "stakeholders": {
+      "developer": "xAI Corp.",
+      "operator": "xAI Corp.",
+      "anchorTenants": [
+        {
+          "name": "xAI Grok AI Training Supercluster (Colossus)",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-memphis-chamber"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 150,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-02-01",
+        "basis": "150 MW grid feed energized via MLGW Substation 63 (TVA demand-response tariff), supplemented by mobile gas turbines",
+        "sourceId": "src-memphis-chamber"
+      },
+      "totalPlannedMw": {
+        "value": 300,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01-01",
+        "basis": "Phase II expansion scaling toward 300+ MW in Memphis alongside cross-border 495 MW Southaven, MS gas plant",
+        "sourceId": "src-naacp-xai"
+      },
+      "utilityProvider": "Memphis Light, Gas and Water (MLGW) / Tennessee Valley Authority (TVA)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "161 kV MLGW Substation 63 (150 MW Phase I) + mobile gas turbine array",
+      "backupGeneratorsPermitted": 15,
+      "backupFuelNote": "After operating dozens of unpermitted temporary methane gas turbines, xAI received a contested Shelby County Health Department permit for 15 permanent gas turbines while operating additional turbines across the MS border in Southaven.",
+      "cleanPowerAndTariffSummary": "TVA/MLGW interruptible/demand-response industrial power backed by xAI battery storage; on-site methane turbines drive major NOx/formaldehyde air permit disputes."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": 1.5,
+        "unit": "MGD",
+        "epistemic": "estimated",
+        "asOf": "2025-06-01",
+        "basis": "Initial MLGW potable draw estimated at ~1.5 MGD (projected up to 5 MGD) pending commissioning of an $80M 13 MGD T.E. Maxson greywater plant",
+        "sourceId": "src-poa-xai"
+      },
+      "annualWaterMgy": {
+        "value": 548,
+        "unit": "MGY",
+        "epistemic": "estimated",
+        "asOf": "2025-06-01",
+        "basis": "Estimated baseline annual cooling demand (~548 MGY) targeted to shift from Memphis Sand Aquifer to treated greywater",
+        "sourceId": "src-poa-xai"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-01-01",
+        "basis": "xAI has not published verified facility PUE",
+        "sourceId": "src-mlgw-xai"
+      },
+      "waterSource": "MLGW potable (Memphis Sand Aquifer) transitioning to $80M T.E. Maxson Wastewater Treatment Plant greywater reuse facility",
+      "watershedName": "Lower Mississippi River / Memphis Sand Aquifer",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "07032000",
+      "nwsStationId": "KMEM"
+    },
+    "regulatory": {
+      "permittingStage": "SCHD air permit for 15 turbines appealed; Clean Air Act notice/litigation by SELC/Earthjustice/NAACP active; greywater plant permitting",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "SELC, Earthjustice, and NAACP challenged xAI's unpermitted operation of mobile gas turbines in overburdened South Memphis (Boxtown), appealed Shelby County Health Department's 15-turbine permit, and contested cross-border Southaven MS permits.",
+      "permits": [
+        {
+          "title": "MLGW / TVA Substation 63 Industrial Power & Quick Facts Record",
+          "agency": "Memphis Light, Gas and Water (MLGW)",
+          "docketOrPermitId": "MLGW-SUB63-150MW",
+          "date": "2024-11-01",
+          "status": "Energized (150 MW)",
+          "url": "https://www.mlgw.com/images/content/files/pdf/PDF2024/2024xAI%20and%20MLGW%20Quick%20Facts%201a.pdf"
+        },
+        {
+          "title": "Clean Air Act Enforcement & Gas Turbine Permit Challenge",
+          "agency": "SELC / Earthjustice / Shelby County Health Dept",
+          "docketOrPermitId": "SCHD-XAI-15TURB",
+          "date": "2025-07-01",
+          "status": "Contested / Under Appeal",
+          "url": "https://earthjustice.org/case/xai-illegal-gas-power-plant-data-center-colossus"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Rapid substation deployment and $80M private greywater plant protect aquifer",
+          "evidence": "Greater Memphis Chamber and MLGW cite Substation 63 delivering 150 MW under interruptible tariffs alongside xAI's privately funded $80M 13 MGD greywater plant sparing the Memphis Sand Aquifer.",
+          "sourceId": "src-memphis-chamber"
+        },
+        {
+          "claim": "Historic multi-billion-dollar AI capital investment in Southwest Memphis",
+          "evidence": "xAI revitalized the shuttered Electrolux factory in record time, positioning Memphis as a premier frontier AI compute hub.",
+          "sourceId": "src-mlgw-xai"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Unpermitted methane turbines polluted overburdened South Memphis neighborhoods",
+          "evidence": "SELC, Earthjustice, and NAACP documented dozens of unpermitted gas turbines emitting NOx, smog precursors, and formaldehyde near Boxtown without Title V or PSD review.",
+          "sourceId": "src-selc-xai"
+        },
+        {
+          "claim": "Millions of gallons daily threaten Memphis Sand Aquifer until greywater is built",
+          "evidence": "Protect Our Aquifer highlights ongoing municipal potable draws of 1.5\u20135 MGD and greywater plant delays risking cone-of-depression contamination migration.",
+          "sourceId": "src-poa-xai"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-mlgw-xai",
+        "title": "2024 xAI and MLGW Quick Facts (Power, Water & Greywater)",
+        "publisher": "Memphis Light, Gas and Water",
+        "date": "2024-11-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.mlgw.com/images/content/files/pdf/PDF2024/2024xAI%20and%20MLGW%20Quick%20Facts%201a.pdf"
+      },
+      {
+        "id": "src-memphis-chamber",
+        "title": "xAI Phase One Substation 63 Providing 150 MW of Power",
+        "publisher": "Greater Memphis Chamber",
+        "date": "2025-02-01",
+        "kind": "operator_disclosure",
+        "url": "https://memphischamber.com/blog/press-release/xai-phase-one-substation-63-providing-150mw-of-power-to-facility/"
+      },
+      {
+        "id": "src-selc-xai",
+        "title": "Inside Memphis' Fight Against xAI Methane Gas Turbines",
+        "publisher": "Southern Environmental Law Center",
+        "date": "2025-07-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.selc.org/news/inside-memphis-fight-against-xai/"
+      },
+      {
+        "id": "src-earthjustice-xai",
+        "title": "xAI Illegal Gas Power Plant at Colossus Data Center",
+        "publisher": "Earthjustice",
+        "date": "2025-07-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://earthjustice.org/case/xai-illegal-gas-power-plant-data-center-colossus"
+      },
+      {
+        "id": "src-naacp-xai",
+        "title": "NAACP Challenge to xAI Colossus Gas Plant Permitting",
+        "publisher": "NAACP",
+        "date": "2026-04-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://naacp.org/articles/mdeq-permit-board-doubles-down-unlawfully-flawed-permit-xais-massive-colossus-gas-plant"
+      },
+      {
+        "id": "src-poa-xai",
+        "title": "Protect Our Aquifer: xAI Supercomputer & Memphis Sand Aquifer",
+        "publisher": "Protect Our Aquifer",
+        "date": "2025-06-01",
+        "kind": "environmental_permit",
+        "url": "https://www.protectouraquifer.org/issues/xai-supercomputer"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "google-berkeley-sc",
+    "name": "Google Berkeley County Campus",
+    "marketCluster": "Lowcountry SC",
+    "city": "Moncks Corner",
+    "county": "Berkeley",
+    "state": "SC",
+    "isoRegion": "SERC",
+    "coordinates": [
+      -80.039,
+      33.0778
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Established in 2007 on 520+ acres in Mount Holly Commerce Park; Google's FY2025/2026 Environmental Report explicitly discloses 901.7 million gallons of annual water consumption (2.47 MGD) while Santee Cooper load exceeds 380 MW.",
+    "parcel": {
+      "acreage": {
+        "value": 663,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-09-01",
+        "basis": "520-acre original Mount Holly Commerce Park site plus 143-acre contiguous parcel acquisition",
+        "sourceId": "src-google-sc"
+      },
+      "grossSqFt": {
+        "value": 1500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "Estimated gross building footprint across multiple operational data center buildings since 2007",
+        "sourceId": "src-google-sc"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "HI Heavy Industrial (Mount Holly Commerce Park, Berkeley County)",
+      "parcelNote": "Situated off US-52 / Garrott Ave near Cypress Gardens Rd between Goose Creek and Moncks Corner."
+    },
+    "stakeholders": {
+      "developer": "Google LLC",
+      "operator": "Google LLC",
+      "anchorTenants": [
+        {
+          "name": "Google Cloud & Core Search Services",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-google-sc"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 380,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-05-01",
+        "basis": "Public utility reporting indicates Berkeley County campus draws upwards of 380+ MW on Santee Cooper system",
+        "sourceId": "src-post-courier"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-05-01",
+        "basis": "Includes ongoing Berkeley County expansion alongside companion Dorchester County greenfield campuses",
+        "sourceId": "src-sc-gov"
+      },
+      "utilityProvider": "Santee Cooper (South Carolina Public Service Authority)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "230 kV / 115 kV Santee Cooper transmission",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Emergency diesel backup generation permitted through South Carolina DES Bureau of Air Quality.",
+      "cleanPowerAndTariffSummary": "Served by state-owned Santee Cooper under large industrial contracts; Google and Santee Cooper collaborate on WeatherNext/AI grid forecasting amid wholesale rate debates."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": 2.47,
+        "unit": "MGD",
+        "epistemic": "disclosed",
+        "asOf": "2026-06-01",
+        "basis": "Average daily consumption computed from 901.7 million gallons consumed in 2025 (out of 988.5 MGY withdrawn, 86.8 MGY discharged)",
+        "sourceId": "src-google-env-sc"
+      },
+      "annualWaterMgy": {
+        "value": 901.7,
+        "unit": "MGY",
+        "epistemic": "disclosed",
+        "asOf": "2026-06-01",
+        "basis": "Explicitly disclosed 2025 water consumption in Google 2026 Environmental Report (up from 776.5 MGY in 2024 and 763.4 MGY in 2023)",
+        "sourceId": "src-google-env-sc"
+      },
+      "pue": {
+        "value": 1.1,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Aligned with Google's disclosed global fleet PUE average",
+        "sourceId": "src-google-env-sc"
+      },
+      "waterSource": "Berkeley County Water & Sanitation (BCWS) potable supply + McQueen Branch groundwater backup wells",
+      "watershedName": "Back River / Cooper River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "02172040",
+      "nwsStationId": "KMKS"
+    },
+    "regulatory": {
+      "permittingStage": "Operational campus with multi-billion-dollar SC expansion and SCDES industrial air/water permitting",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "While welcoming Google's multi-billion-dollar investment, South Carolina lawmakers, Central Electric Power Cooperative, and media have scrutinized Santee Cooper's 380+ MW rate structures and rising groundwater/surface-water cooling demand.",
+      "permits": [
+        {
+          "title": "SCDES Industrial Air & Water ePermitting Oversight",
+          "agency": "South Carolina Department of Environmental Services",
+          "docketOrPermitId": "SCDES-BERK-MOUNT-HOLLY",
+          "date": "2025-01-01",
+          "status": "Active Compliance",
+          "url": "https://des.sc.gov/permits-regulations/permit-central/epermitting"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Multi-billion-dollar anchor with transparent annual water disclosures",
+          "evidence": "Google has invested billions in Berkeley and Dorchester counties since 2007 and uniquely discloses exact annual water withdrawal (988.5 MGY) and consumption (901.7 MGY).",
+          "sourceId": "src-google-env-sc"
+        },
+        {
+          "claim": "AI load forecasting partnership supports Santee Cooper grid reliability",
+          "evidence": "Governor McMaster and Santee Cooper highlight Google's multi-billion-dollar SC investment and AI grid forecasting collaboration.",
+          "sourceId": "src-sc-gov"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "380+ MW draw creates rate-class and generation pressure on Santee Cooper",
+          "evidence": "Post and Courier reporting details how Google's massive industrial load rivals other major Santee Cooper customers and fuels debates over wholesale cooperative rates.",
+          "sourceId": "src-post-courier"
+        },
+        {
+          "claim": "Rising evaporative consumption jumped 16% year-over-year to 901.7 MGY",
+          "evidence": "Google's environmental disclosures show Berkeley County consumption climbed from 763.4 MGY (2023) to 776.5 MGY (2024) to 901.7 MGY (2025).",
+          "sourceId": "src-google-env-sc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-google-sc",
+        "title": "Google Data Centers: Berkeley County, South Carolina",
+        "publisher": "Google",
+        "date": "2025-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.google/locations/south-carolina/"
+      },
+      {
+        "id": "src-google-env-sc",
+        "title": "Alphabet FY2025 Environmental Indicators Assurance Letter",
+        "publisher": "Google Sustainability",
+        "date": "2026-06-01",
+        "kind": "operator_disclosure",
+        "url": "https://sustainability.google/files/alphabet-fy2025-environmental-indicators-assurance-letter/"
+      },
+      {
+        "id": "src-sc-gov",
+        "title": "Google Grows South Carolina Footprint Across Berkeley & Dorchester Counties",
+        "publisher": "Office of the Governor of South Carolina",
+        "date": "2024-09-01",
+        "kind": "regulatory_filing",
+        "url": "https://governor.sc.gov/news/2024-09/google-grows-south-carolina-footprint-new-dorchester-county-operations-expansion"
+      },
+      {
+        "id": "src-post-courier",
+        "title": "Santee Cooper & Google Data Center Electric Load Analysis",
+        "publisher": "The Post and Courier",
+        "date": "2025-05-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.postandcourier.com/business/industry/santee-cooper-google-data-center-sc-electric/article_453dc24b-8d98-42ce-95c0-de176eac45dd.html"
+      },
+      {
+        "id": "src-scdes",
+        "title": "SC DES Industrial Environmental ePermitting Portal",
+        "publisher": "South Carolina DES",
+        "date": "2025-01-01",
+        "kind": "environmental_permit",
+        "url": "https://des.sc.gov/permits-regulations/permit-central/epermitting"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "apple-maiden",
+    "name": "Apple Maiden Data Center Campus",
+    "marketCluster": "Piedmont NC",
+    "city": "Maiden",
+    "county": "Catawba",
+    "state": "NC",
+    "isoRegion": "SERC",
+    "coordinates": [
+      -81.256806,
+      35.588234
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "1M+ sq ft iCloud flagship campus at 5977 Startown Road powered by 100% renewable energy via adjacent 40 MW Apple solar farms, a 10 MW Bloom biogas fuel-cell microgrid, Duke Energy Green Source Rider contracts, and Alliance for Water Stewardship (AWS) certified cooling.",
+    "parcel": {
+      "acreage": {
+        "value": 255,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-01-01",
+        "basis": "255-acre primary data center campus at 5977 Startown Rd (plus ~200 acres of adjacent dedicated solar arrays)",
+        "sourceId": "src-apple-2025"
+      },
+      "grossSqFt": {
+        "value": 1020000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2024-01-01",
+        "basis": "Over 1 million sq ft across flagship 500k+ sq ft building, tactical DC, and subsequent hall expansions",
+        "sourceId": "src-apple-2025"
+      },
+      "dataHallCount": 3,
+      "zoningDesignation": "Industrial / Economic Development District (Town of Maiden & Catawba County)",
+      "parcelNote": "Located at 5977 Startown Rd in Maiden, paired with adjacent 100-acre 20 MW solar arrays and 10 MW landfill-biogas fuel cells."
+    },
+    "stakeholders": {
+      "developer": "Apple Inc.",
+      "operator": "Apple Inc.",
+      "anchorTenants": [
+        {
+          "name": "Apple iCloud & Cloud Services",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-apple-2025"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 100,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "Estimated energized critical campus load backed by 50 MW on-site solar/biogas plus Duke Energy Carolinas feed",
+        "sourceId": "src-dck-maiden"
+      },
+      "totalPlannedMw": {
+        "value": 150,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "Estimated full Startown Road multi-building substation ceiling",
+        "sourceId": "src-dck-maiden"
+      },
+      "utilityProvider": "Duke Energy Carolinas",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "100 kV / 230 kV Duke Energy feed + 40 MW solar & 10 MW biogas fuel cell microgrid",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "NC DEQ Synthetic Minor air permit (Facility ID 1800557) governing emergency generators and 10 MW biogas Bloom Energy fuel cells.",
+      "cleanPowerAndTariffSummary": "100% renewable energy since 2010 via Apple-built solar farms (40 MW), 10 MW landfill biogas fuel cells, and Duke Energy Green Source Rider PPAs."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2025-04-01",
+        "basis": "Apple's Environmental Progress Reports certify Maiden under Alliance for Water Stewardship and cite millions of gallons saved, without disclosing absolute MGD",
+        "sourceId": "src-apple-2024"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2025-04-01",
+        "basis": "Maiden facility annual MGY consumption is not itemized in Apple's data appendix",
+        "sourceId": "src-apple-2024"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2025-04-01",
+        "basis": "Apple discloses waterside economizer idling chillers 75% of the year rather than site PUE",
+        "sourceId": "src-apple-2025"
+      },
+      "waterSource": "Town of Maiden / Catawba County municipal water with sphagnum moss bio-treatment & 37x recirculation",
+      "watershedName": "Catawba River / Henry Fork Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "02143000",
+      "nwsStationId": "KHKY"
+    },
+    "regulatory": {
+      "permittingStage": "Operational; NC DEQ Division of Air Quality Synthetic Minor Permit (ID 1800557) & Alliance for Water Stewardship certified",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Regarded as an early renewable-powered hyperscale benchmark, though state utility advocates still scrutinize NC tax incentives and Duke Energy's broader data center load growth.",
+      "permits": [
+        {
+          "title": "NC DEQ Air Quality Synthetic Minor Facility Permit",
+          "agency": "North Carolina Dept. of Environmental Quality",
+          "docketOrPermitId": "NCDAQ-1800557",
+          "date": "2024-01-01",
+          "status": "Active",
+          "url": "https://www.deq.nc.gov/air-quality/ambient/misc/north-carolina-division-air-quality-permitted-facilities/open"
+        },
+        {
+          "title": "Catawba County Commercial Permitting Record",
+          "agency": "Catawba County Government",
+          "docketOrPermitId": "CAT-MAIDEN-5977",
+          "date": "2024-01-01",
+          "status": "Operational",
+          "url": "https://www.catawbacountync.gov/news/online-permitting-now-available/"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "100% renewable microgrid with 40 MW solar and 10 MW biogas fuel cells",
+          "evidence": "Apple operates on-site solar arrays, landfill-gas Bloom Energy fuel cells, and Duke Energy Green Source Rider contracts, idling chillers 75% of the year.",
+          "sourceId": "src-apple-2025"
+        },
+        {
+          "claim": "Alliance for Water Stewardship certification and chemical-free moss treatment",
+          "evidence": "Maiden earned AWS certification using plant-based sphagnum moss cooling water treatment to reduce chemical discharge and multi-cycle water.",
+          "sourceId": "src-apple-2024"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Absolute site water MGY and PUE remain withheld despite AWS branding",
+          "evidence": "Apple's Environmental Progress Reports highlight relative water savings and chiller-idle rates without publishing Maiden's annual MGY withdrawals.",
+          "sourceId": "src-apple-2024"
+        },
+        {
+          "claim": "Biogas fuel cells and utility grid reliance still tie into natural gas pipelines",
+          "evidence": "Directed landfill biogas sourced via Piedmont Natural Gas pipelines and Duke Energy system balancing draw scrutiny from clean-grid advocates.",
+          "sourceId": "src-biomass-maiden"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-apple-2025",
+        "title": "Apple 2025 Environmental Progress Report",
+        "publisher": "Apple Inc.",
+        "date": "2025-04-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.apple.com/jp/environment/pdf/Apple_Environmental_Progress_Report_2025.pdf"
+      },
+      {
+        "id": "src-apple-2024",
+        "title": "Apple 2024 Environmental Progress Report (Maiden AWS Water)",
+        "publisher": "Apple Inc.",
+        "date": "2024-04-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.apple.com/environment/pdf/Apple_Environmental_Progress_Report_2024.pdf"
+      },
+      {
+        "id": "src-biomass-maiden",
+        "title": "Apple to Fuel Maiden Data Center with Directed Biogas",
+        "publisher": "Biomass Magazine",
+        "date": "2012-05-01",
+        "kind": "operator_disclosure",
+        "url": "https://biomassmagazine.com/articles/apple-to-fuel-data-center-with-biogas-6264"
+      },
+      {
+        "id": "src-dck-maiden",
+        "title": "Apple Plans 20 MW Solar Power Arrays for Maiden iDataCenter",
+        "publisher": "Data Center Knowledge",
+        "date": "2012-02-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.datacenterknowledge.com/energy-power-supply/apple-plans-20mw-of-solar-power-for-idatacenter"
+      },
+      {
+        "id": "src-ncdeq-apple",
+        "title": "NC DEQ Division of Air Quality Permitted Facilities Registry",
+        "publisher": "North Carolina DEQ",
+        "date": "2025-01-01",
+        "kind": "environmental_permit",
+        "url": "https://www.deq.nc.gov/air-quality/ambient/misc/north-carolina-division-air-quality-permitted-facilities/open"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "digital-realty-elk-grove",
+    "name": "Digital Realty Elk Grove Village Campus",
+    "marketCluster": "Greater Chicago",
+    "city": "Elk Grove Village",
+    "county": "Cook",
+    "state": "IL",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -87.961954,
+      41.99425
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "Core O'Hare (ORD) Midwest wholesale campus comprising CH1 (2200 Busse Rd), CH2 (2299 Busse Rd), and CH3 (1400 E Devon Ave), totaling ~1.12M sq ft served by ComEd in Illinois's PJM zone.",
+    "parcel": {
+      "acreage": {
+        "value": 48,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "Estimated combined acreage across 2200 Busse Rd (22+ acres CH1), 2299 Busse Rd (CH2), and 1400 E Devon Ave (CH3)",
+        "sourceId": "src-dlr-ch1"
+      },
+      "grossSqFt": {
+        "value": 1118500,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-01-01",
+        "basis": "~485,000 sq ft (CH1) + ~328,000 sq ft (CH2) + ~305,500 sq ft (CH3)",
+        "sourceId": "src-dlr-ch2"
+      },
+      "dataHallCount": 3,
+      "zoningDesignation": "I-2 General Industrial (Elk Grove Village Technology Corridor)",
+      "parcelNote": "Centered on Digital Realty CH1 at 2200 Busse Rd adjacent to O'Hare International Airport industrial logistics hub."
+    },
+    "stakeholders": {
+      "developer": "DuPont Fabros Technology / Digital Realty",
+      "operator": "Digital Realty",
+      "anchorTenants": [
+        {
+          "name": "Enterprise & Cloud Wholesale Tenants (ORD Cluster)",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-dlr-ch1"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 82,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-01-01",
+        "basis": "Combined critical IT load across CH1 (36.4+ MW), CH2 (26+ MW), and CH3 (~20 MW)",
+        "sourceId": "src-dlr-ch1"
+      },
+      "totalPlannedMw": {
+        "value": 100,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-01-01",
+        "basis": "Total campus site power envelope across Busse Rd and Devon Ave substations",
+        "sourceId": "src-dlr-ch3"
+      },
+      "utilityProvider": "Commonwealth Edison (ComEd / Exelon)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "138 kV / 34.5 kV ComEd industrial feeds",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "N+1 emergency diesel generators permitted with Illinois EPA.",
+      "cleanPowerAndTariffSummary": "Supplied by ComEd inside PJM's Illinois footprint (high nuclear/wind grid mix); Illinois state data center tax exemption applies to qualifying expansions."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2025-01-01",
+        "basis": "Digital Realty discloses N+1 central chiller/tower redundancy on CH1\u2013CH3 spec sheets without breaking out site-level MGD",
+        "sourceId": "src-dlr-ch1"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2025-01-01",
+        "basis": "Annual municipal water consumption is not disclosed per Chicago facility",
+        "sourceId": "src-dlr-ch1"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2025-01-01",
+        "basis": "ENERGY STAR certified facility; exact building PUE is withheld",
+        "sourceId": "src-dlr-ch1"
+      },
+      "waterSource": "Village of Elk Grove municipal water (Lake Michigan / JAWA treated supply)",
+      "watershedName": "Salt Creek / Des Plaines River Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "05531045",
+      "nwsStationId": "KORD"
+    },
+    "regulatory": {
+      "permittingStage": "Fully operational industrial campus; Elk Grove Village actively courts neighboring $1B+ Busse/Oakton data center redevelopments",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Elk Grove Village embraces data centers as a cornerstone industrial tax base along Busse Rd, though regional Chicago-area advocates scrutinize PJM capacity spikes and Lake Michigan water allocation.",
+      "permits": [
+        {
+          "title": "Elk Grove Village Busse Road Industrial Data Center Corridor",
+          "agency": "Village of Elk Grove Village",
+          "docketOrPermitId": "EGV-ORD-TECH",
+          "date": "2024-01-01",
+          "status": "Operational / Approved",
+          "url": "https://www.elkgrove.org/Home/Components/News/News/5462/"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Commercial real estate transfer and property taxes fund municipal tax relief",
+          "evidence": "Elk Grove Village highlights billions in industrial data center redevelopment along Busse Rd generating tax revenues that support community infrastructure and lower residential burdens.",
+          "sourceId": "src-daily-herald"
+        },
+        {
+          "claim": "High-efficiency ENERGY STAR operations on nuclear-heavy Illinois grid",
+          "evidence": "Digital Realty's CH1/CH2/CH3 campuses feature ENERGY STAR certifications and N+1 economized cooling inside ComEd's low-carbon PJM zone.",
+          "sourceId": "src-dlr-ch1"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Cumulative Chicago/ORD data center growth contributes to PJM capacity spikes",
+          "evidence": "Adding multi-hundred-MW campuses in northern Illinois tightens PJM ComEd zone capacity auctions alongside Virginia and Ohio hubs.",
+          "sourceId": "src-daily-herald"
+        },
+        {
+          "claim": "Per-facility water consumption remains opaque to municipal ratepayers",
+          "evidence": "Public data sheets omit Lake Michigan-sourced MGD/MGY consumption for CH1, CH2, and CH3.",
+          "sourceId": "src-dlr-ch2"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-dlr-ch1",
+        "title": "Digital Realty Chicago CH1 (2200 Busse Rd) Facility Overview",
+        "publisher": "Digital Realty",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.digitalrealty.com/data-centers/americas/chicago/ch1"
+      },
+      {
+        "id": "src-dlr-ch2",
+        "title": "Digital Realty Chicago CH2 (2299 Busse Rd) Facility Overview",
+        "publisher": "Digital Realty",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.digitalrealty.com/data-centers/americas/chicago/ch2"
+      },
+      {
+        "id": "src-dlr-ch3",
+        "title": "Digital Realty Chicago CH3 (1400 E Devon Ave) Facility Overview",
+        "publisher": "Digital Realty",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.digitalrealty.com/data-centers/americas/chicago/ch3"
+      },
+      {
+        "id": "src-daily-herald",
+        "title": "$1B Redevelopment Expands Elk Grove Village Data Center Cluster",
+        "publisher": "Daily Herald",
+        "date": "2021-09-15",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.dailyherald.com/20210915/business/1-billion-redevelopment-would-make-it-a-dozen-data-centers-in-elk-grove/"
+      },
+      {
+        "id": "src-egv",
+        "title": "Village of Elk Grove Technology & Data Center Corridor",
+        "publisher": "Village of Elk Grove Village",
+        "date": "2024-01-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.elkgrove.org/Home/Components/News/News/5462/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-mount-pleasant",
+    "name": "Microsoft Mount Pleasant AI Campus (Fairwater)",
+    "marketCluster": "SE Wisconsin",
+    "city": "Mount Pleasant",
+    "county": "Racine",
+    "state": "WI",
+    "isoRegion": "MISO",
+    "coordinates": [
+      -87.894882,
+      42.674872
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Massive 'Fairwater' AI superfactory built on 315+ acres (within 1,575+ acres of former Foxconn TID 5 land) in Mount Pleasant; Phase 1 completed in June 2026 while Wisconsin PSC approved 1,228 MW of We Energies gas generation (Dockets 6630-CE-316/317) and a public-records lawsuit forced release of Lake Michigan water projections.",
+    "parcel": {
+      "acreage": {
+        "value": 1575,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-06-23",
+        "basis": "315-acre Fairwater 1 campus inside Microsoft's 1,575-acre Mount Pleasant TID 5 land assembly",
+        "sourceId": "src-msft-fairwater"
+      },
+      "grossSqFt": {
+        "value": 2500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-06-23",
+        "basis": "Estimated Fairwater 1 multi-building AI superfactory footprint with expanded neighboring phases",
+        "sourceId": "src-msft-fairwater"
+      },
+      "dataHallCount": 4,
+      "zoningDesignation": "BP Business Park / TID 5 Technology District (Village of Mount Pleasant)",
+      "parcelNote": "Located near 4800 90th St / Braun Rd / County Rd KR, straddling the Great Lakes Basin divide and receiving Lake Michigan water from Racine Water Utility."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft AI / OpenAI Fairwater Supercomputer",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-msft-fairwater"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-06-23",
+        "basis": "Phase 1 Fairwater facility completed June 2026 (~450 MW initial phase load per Clean Wisconsin / PSC records)",
+        "sourceId": "src-clean-wi"
+      },
+      "totalPlannedMw": {
+        "value": 1200,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-06-23",
+        "basis": "Multi-phase campus scaling aligned with We Energies 1,228 MW new gas generation approvals (Oak Creek 1,100 MW + Paris 128 MW)",
+        "sourceId": "src-psc-oakcreek"
+      },
+      "utilityProvider": "We Energies (Wisconsin Electric Power Company \u2014 MISO)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "345 kV / 138 kV We Energies substations",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Wisconsin DNR air permits for emergency standby units plus 1,228 MW of utility gas generation approved by PSCW to serve load.",
+      "cleanPowerAndTariffSummary": "Paired with regional Microsoft solar commitments, yet load growth drove PSCW approvals for 1,100 MW Oak Creek combustion turbines and 128 MW Paris RICE units."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": 0.702,
+        "unit": "MGD",
+        "epistemic": "filed",
+        "asOf": "2025-10-01",
+        "basis": "Racine public-records release (following MEA/Milwaukee Riverkeeper lawsuit) projects 0.234 MGD Phase 1 peak and 0.702 MGD full-campus peak",
+        "sourceId": "src-mea-water"
+      },
+      "annualWaterMgy": {
+        "value": 8.4,
+        "unit": "MGY",
+        "epistemic": "filed",
+        "asOf": "2025-10-01",
+        "basis": "8.4 MGY projected full-campus annual consumption released by City of Racine (2.8 MGY Phase 1 baseline using closed-loop liquid cooling)",
+        "sourceId": "src-mea-water"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-06-23",
+        "basis": "Microsoft does not disclose site-level PUE for Fairwater 1",
+        "sourceId": "src-msft-fairwater"
+      },
+      "waterSource": "Racine Water Utility (Lake Michigan diversion under Mount Pleasant service agreement)",
+      "watershedName": "Pike River / Lake Michigan Basin Divide",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "04087257",
+      "nwsStationId": "KENW"
+    },
+    "regulatory": {
+      "permittingStage": "Fairwater Phase 1 completed (Jun 2026); WI PSC approved Dockets 6630-CE-316 & 6630-CE-317; Racine water records released via lawsuit",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Midwest Environmental Advocates sued Racine in Sept 2025 to force release of Mount Pleasant water projections, while Clean Wisconsin contested PSCW's 1,228 MW new We Energies gas plant approvals and neighbors filed nuisance litigation over low-frequency cooling hum.",
+      "permits": [
+        {
+          "title": "WEPCO Oak Creek 1,100 MW Combustion Turbine Approval",
+          "agency": "Public Service Commission of Wisconsin",
+          "docketOrPermitId": "6630-CE-317",
+          "date": "2025-04-01",
+          "status": "Approved",
+          "url": "https://psc.wi.gov/Pages/CommissionActions/CasePages/OakCreekGeneration.aspx"
+        },
+        {
+          "title": "WEPCO Town of Paris 128 MW RICE Gas Plant Approval",
+          "agency": "Public Service Commission of Wisconsin",
+          "docketOrPermitId": "6630-CE-316",
+          "date": "2025-04-01",
+          "status": "Approved",
+          "url": "https://psc.wi.gov/Pages/CommissionActions/CasePages/ParisGeneration.aspx"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Closed-loop cooling keeps Lake Michigan draw to 8.4 MGY across multi-billion AI hub",
+          "evidence": "Released municipal water records confirm closed-loop AI cooling requires ~2.8\u20138.4 MGY annually while Microsoft's $3.3B\u2013$4.7B buildout repurposes stranded Foxconn TID 5 infrastructure.",
+          "sourceId": "src-msft-fairwater"
+        },
+        {
+          "claim": "Utility gas and transmission upgrades preserve MISO grid reliability",
+          "evidence": "We Energies and PSCW approved dispatchable Oak Creek and Paris generation units to meet rapid AI peak load growth in Southeast Wisconsin.",
+          "sourceId": "src-psc-oakcreek"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "AI demand triggered 1,228 MW of new fossil gas plants borne by Wisconsin ratepayers",
+          "evidence": "Clean Wisconsin documents how Microsoft's Mount Pleasant load directly drove PSCW approvals for 1,100 MW Oak Creek and 128 MW Paris methane units, locking in emissions and rate risk.",
+          "sourceId": "src-clean-wi"
+        },
+        {
+          "claim": "Municipal NDAs concealed Lake Michigan water filings until court action",
+          "evidence": "Midwest Environmental Advocates had to sue the City of Racine in Sept 2025 under Wisconsin Public Records Law to disclose Fairwater's water projections.",
+          "sourceId": "src-mea-water"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-msft-fairwater",
+        "title": "Microsoft Completes Construction on First Datacenter Facility in Mount Pleasant, WI",
+        "publisher": "Microsoft News",
+        "date": "2026-06-23",
+        "kind": "operator_disclosure",
+        "url": "https://news.microsoft.com/source/2026/06/23/microsoft-completes-construction-on-first-datacenter-facility-in-mount-pleasant-wisconsin/"
+      },
+      {
+        "id": "src-psc-paris",
+        "title": "PSCW Case Page: WEPCO Paris Generation (6630-CE-316)",
+        "publisher": "Public Service Commission of Wisconsin",
+        "date": "2025-04-01",
+        "kind": "regulatory_filing",
+        "url": "https://psc.wi.gov/Pages/CommissionActions/CasePages/ParisGeneration.aspx"
+      },
+      {
+        "id": "src-psc-oakcreek",
+        "title": "PSCW Case Page: WEPCO Oak Creek Generation (6630-CE-317)",
+        "publisher": "Public Service Commission of Wisconsin",
+        "date": "2025-04-01",
+        "kind": "regulatory_filing",
+        "url": "https://psc.wi.gov/Pages/CommissionActions/CasePages/OakCreekGeneration.aspx"
+      },
+      {
+        "id": "src-mea-water",
+        "title": "MEA & Milwaukee Riverkeeper Lawsuit Over Mount Pleasant Data Center Water Records",
+        "publisher": "Midwest Environmental Advocates",
+        "date": "2025-10-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://midwestadvocates.org/our-work/legal-action/demanding-transparency-about-the-environmental-impacts-of-data-centers/"
+      },
+      {
+        "id": "src-clean-wi",
+        "title": "Clean Wisconsin Analysis: Data Centers & Fossil Fuel Expansion",
+        "publisher": "Clean Wisconsin",
+        "date": "2025-11-01",
+        "kind": "environmental_permit",
+        "url": "https://www.cleanwisconsin.org/clear-as-mud/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "aws-new-carlisle",
+    "name": "AWS New Carlisle Campus (Project Rainier)",
+    "marketCluster": "Northern Indiana",
+    "city": "New Carlisle",
+    "county": "St. Joseph",
+    "state": "IN",
+    "isoRegion": "PJM",
+    "coordinates": [
+      -86.472057,
+      41.693992
+    ],
+    "lifecycleStatus": "under_construction",
+    "summary": "$11B+ 'Project Rainier' Trainium AI campus spanning ~1,200 acres in St. Joseph County; catalyzed IURC Cause No. 46097 Indiana Michigan Power large-load tariff settlement (Feb 2025) alongside heated drainage board scrutiny over 31 MGD construction dewatering.",
+    "parcel": {
+      "acreage": {
+        "value": 1200,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-02-19",
+        "basis": "~1,200 acres inside Indiana Enterprise Center along Larrison Blvd, Edison Rd, and State Road 2",
+        "sourceId": "src-aws-in"
+      },
+      "grossSqFt": {
+        "value": 6500000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2025-02-19",
+        "basis": "Master-planned for up to 32 data center buildings totaling ~6.5 million sq ft",
+        "sourceId": "src-idem-nc"
+      },
+      "dataHallCount": 32,
+      "zoningDesignation": "Industrial / Indiana Enterprise Center Overlay (St. Joseph County)",
+      "parcelNote": "Centered on 55001 Larrison Blvd / Edison Rd in Olive Township within the Kankakee River watershed."
+    },
+    "stakeholders": {
+      "developer": "Amazon Data Services, Inc.",
+      "operator": "Amazon Web Services (AWS)",
+      "anchorTenants": [
+        {
+          "name": "AWS / Anthropic Trainium AI Supercluster (Project Rainier)",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-aws-in"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 300,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-03-01",
+        "basis": "Estimated initial energized Trainium buildings on North Campus Larrison/Edison corridors",
+        "sourceId": "src-im-46097"
+      },
+      "totalPlannedMw": {
+        "value": 2250,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-02-19",
+        "basis": "Estimated 2.25\u20132.4 GW full 32-building campus demand\u2014largest single load in Indiana Michigan Power history",
+        "sourceId": "src-iurc-46097"
+      },
+      "utilityProvider": "Indiana Michigan Power (AEP / PJM)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "345 kV / 138 kV AEP I&M dedicated substations",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "IDEM air construction/operating permits for standby diesel arrays at Larrison Blvd and State Rd 2 parcels.",
+      "cleanPowerAndTariffSummary": "Bound by IURC Cause No. 46097 settlement (Feb 19, 2025) covering >=70 MW / 150 MW aggregated loads with long-term financial commitments and commission oversight of >20% capacity reductions."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": 0.054,
+        "unit": "MGD",
+        "epistemic": "disclosed",
+        "asOf": "2025-09-01",
+        "basis": "AWS reported ~35\u201340 gpm (~0.054 MGD) active cooling draw (~2% of year) and ~18 MGY campus cooling projection to St. Joseph County Water Advisory Board",
+        "sourceId": "src-abc57-nc"
+      },
+      "annualWaterMgy": {
+        "value": 18.0,
+        "unit": "MGY",
+        "epistemic": "disclosed",
+        "asOf": "2025-09-01",
+        "basis": "Projected ~18 million gallons/year average cooling draw via Town of New Carlisle municipal supply (distinct from temporary 31 MGD construction dewatering)",
+        "sourceId": "src-sbr-nc"
+      },
+      "pue": {
+        "value": 1.15,
+        "unit": "ratio",
+        "epistemic": "estimated",
+        "asOf": "2025-09-01",
+        "basis": "AWS modern free-air-cooled hyperscale benchmark",
+        "sourceId": "src-aws-in"
+      },
+      "waterSource": "Town of New Carlisle municipal water (with Kankakee River watershed replenishment partnerships)",
+      "watershedName": "Kankakee River Watershed (Niespodziany Ditch)",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "05515500",
+      "nwsStationId": "KSBN"
+    },
+    "regulatory": {
+      "permittingStage": "IURC Cause No. 46097 settlement approved (Feb 19, 2025); IDEM air permits & St. Joseph County Drainage Board 31 MGD dewatering oversight",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "While I&M, OUCC, CAC, and hyperscalers reached a landmark ratepayer-protection settlement in IURC 46097, local farmers and drainage board hearings in 2026 heavily contested 31 MGD construction groundwater dewatering into Niespodziany Ditch.",
+      "permits": [
+        {
+          "title": "IURC Final Order Approving I&M Large-Load Tariff Settlement",
+          "agency": "Indiana Utility Regulatory Commission",
+          "docketOrPermitId": "Cause No. 46097",
+          "date": "2025-02-19",
+          "status": "Approved with Modification",
+          "url": "https://iurc.portal.in.gov/docketed-case-details/?id=b8cd5780-0546-ef11-8409-001dd803817e"
+        },
+        {
+          "title": "IDEM Air Permit Record (New Carlisle Data Center)",
+          "agency": "Indiana Dept. of Environmental Management",
+          "docketOrPermitId": "IDEM-83736344",
+          "date": "2024-09-01",
+          "status": "Issued",
+          "url": "https://ecm.idem.in.gov/cs/idcplg?IdcService=GET_FILE&dDocName=83736344&dID=83732301"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "IURC Cause No. 46097 settlement sets national standard for ratepayer protection",
+          "evidence": "Joint settlement signed by I&M, OUCC, CAC, AWS, Google, and Microsoft ensures >=70 MW customers bear generation/transmission upgrade costs via long-term commitments.",
+          "sourceId": "src-im-46097"
+        },
+        {
+          "claim": "Low ongoing operational water use (~18 MGY) and Kankakee watershed replenishment",
+          "evidence": "AWS uses outside air ~98% of the year (~35\u201340 gpm peak cooling) and partnered on Kankakee River water-saving projects.",
+          "sourceId": "src-sbr-nc"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "31 MGD construction dewatering alarms local farmers over ditch flooding and aquifer drawdown",
+          "evidence": "In March 2026, farmers and St. Joseph County residents challenged AWS's temporary groundwater pumping (capped at 31 MGD into Niespodziany Ditch) over wetland and irrigation impacts.",
+          "sourceId": "src-wvpe-dewater"
+        },
+        {
+          "claim": "Multi-GW scale creates unprecedented fossil/transmission stress for northern Indiana",
+          "evidence": "Utility Dive and consumer advocates noted Project Rainier's >2 GW demand forces rapid I&M resource additions across PJM.",
+          "sourceId": "src-ud-46097"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-iurc-46097",
+        "title": "IURC Cause No. 46097 Docket Record (I&M Large-Load Settlement)",
+        "publisher": "Indiana Utility Regulatory Commission",
+        "date": "2025-02-19",
+        "kind": "regulatory_filing",
+        "url": "https://iurc.portal.in.gov/docketed-case-details/?id=b8cd5780-0546-ef11-8409-001dd803817e"
+      },
+      {
+        "id": "src-im-46097",
+        "title": "IURC Approves I&M Data Center Large-Load Tariff Settlement",
+        "publisher": "Indiana Michigan Power",
+        "date": "2025-02-19",
+        "kind": "utility_iso_record",
+        "url": "https://www.indianamichiganpower.com/company/news/view?releaseID=10036"
+      },
+      {
+        "id": "src-aws-in",
+        "title": "Amazon $15B Indiana Data Center & Kankakee Investment",
+        "publisher": "Amazon",
+        "date": "2025-11-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.aboutamazon.com/news/company-news/amazon-15-billion-indiana-data-centers"
+      },
+      {
+        "id": "src-idem-nc",
+        "title": "IDEM Air Permit File for AWS New Carlisle Campus",
+        "publisher": "Indiana Dept. of Environmental Management",
+        "date": "2024-09-01",
+        "kind": "environmental_permit",
+        "url": "https://ecm.idem.in.gov/cs/idcplg?IdcService=GET_FILE&dDocName=83736344&dID=83732301"
+      },
+      {
+        "id": "src-abc57-nc",
+        "title": "Amazon Details Water and Energy Usage at New Carlisle Data Center",
+        "publisher": "ABC57 News",
+        "date": "2025-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://abc57.com/news/amazon-details-water-and-energy-usage-at-new-carlisle-data-center"
+      },
+      {
+        "id": "src-sbr-nc",
+        "title": "How Amazon Uses Water Responsibly at New Carlisle",
+        "publisher": "South Bend Regional Chamber",
+        "date": "2025-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.sbrchamber.com/pages/how-amazon-uses-water-responsibly-at-new-carlisle/?ctaid=13"
+      },
+      {
+        "id": "src-wvpe-dewater",
+        "title": "Farmers Worry Amazon's Site Dewatering Will Flood Ditch",
+        "publisher": "WVPE Public Radio",
+        "date": "2026-03-03",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.wvpe.org/wvpe-news/2026-03-03/farmers-worry-amazons-next-site-dewatering-will-flood-ditch"
+      },
+      {
+        "id": "src-ud-46097",
+        "title": "Indiana IURC Approves Large-Load Data Center Tariff Framework",
+        "publisher": "Utility Dive",
+        "date": "2025-02-20",
+        "kind": "utility_iso_record",
+        "url": "https://www.utilitydive.com/news/indiana-iurc-large-load-interconnection-data-center-aep-amazon-google/740452/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "chesterton-moratorium",
+    "name": "Chesterton Proposed Data Center (Porter County)",
+    "marketCluster": "Northern Indiana",
+    "city": "Chesterton",
+    "county": "Porter",
+    "state": "IN",
+    "isoRegion": "MISO",
+    "coordinates": [
+      -87.091025,
+      41.600617
+    ],
+    "lifecycleStatus": "moratorium",
+    "summary": "Cancelled $1.3B, 8-building Provident Realty Advisors data center proposal on the former Brassie Golf Club site (1110 Pearson Rd, 1.9 miles from Indiana Dunes National Park), withdrawn amid fierce citizen backlash alongside Porter County and neighboring Valparaiso (Ord. 16-2026) data center moratoria.",
+    "parcel": {
+      "acreage": {
+        "value": 220,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2024-06-01",
+        "basis": "Former Brassie Golf Club parcel at 1110 Pearson Rd (including proposed 27-acre southernmost annexation tract)",
+        "sourceId": "src-chesterton-withdrawn"
+      },
+      "grossSqFt": {
+        "value": 1600000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2024-06-01",
+        "basis": "Estimated 8-building $1.3B proposal envelope withdrawn prior to final site plan approval",
+        "sourceId": "src-inside-in"
+      },
+      "dataHallCount": 8,
+      "zoningDesignation": "Agricultural / Residential Rezone Denied & Moratorium Ordinances Active Across Porter County",
+      "parcelNote": "Former Brassie Golf Club at 1110 Pearson Rd in Chesterton, 1.9 miles from Indiana Dunes National Park; subsequently pitched for residential housing."
+    },
+    "stakeholders": {
+      "developer": "Provident Realty Advisors (Withdrawn June 2024)",
+      "operator": "None (Withdrawn / Regional Moratorium Active)",
+      "anchorTenants": [
+        {
+          "name": "Undisclosed Hyperscale End-User (Withdrawn)",
+          "role": "reported_tenant",
+          "epistemic": "undisclosed",
+          "sourceId": "src-porter-gov"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 0,
+        "unit": "MW",
+        "epistemic": "measured",
+        "asOf": "2026-11-01",
+        "basis": "Zero operational capacity; Chesterton and neighboring Union Township proposals withdrawn under community and zoning opposition",
+        "sourceId": "src-porter-gov"
+      },
+      "totalPlannedMw": {
+        "value": 250,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2024-06-01",
+        "basis": "Estimated >50\u2013250 MW hyperscale load profile targeted prior to June 2024 withdrawal and local moratoriums",
+        "sourceId": "src-inside-in"
+      },
+      "utilityProvider": "NIPSCO (Northern Indiana Public Service Company \u2014 MISO)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "138 kV NIPSCO regional corridor (unbuilt)",
+      "backupGeneratorsPermitted": 0,
+      "backupFuelNote": "Zero generator permits issued; neighboring Portage ordinance caps hyperscale projects at 55 dB noise and 500-ft setbacks.",
+      "cleanPowerAndTariffSummary": "NIPSCO (MISO) large-load expansion in Northwest Indiana prompted Citizens Action Coalition and municipal leaders to freeze speculative rezoning."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "undisclosed",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2024-06-01",
+        "basis": "Proposal withdrawn before cooling engineering or municipal water allocation permits were submitted",
+        "sourceId": "src-chesterton-withdrawn"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2024-06-01",
+        "basis": "No annual water permits issued prior to withdrawal",
+        "sourceId": "src-chesterton-withdrawn"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2024-06-01",
+        "basis": "Project cancelled prior to technical design disclosure",
+        "sourceId": "src-chesterton-withdrawn"
+      },
+      "waterSource": "Little Calumet / Lake Michigan municipal utility corridor (unpermitted)",
+      "watershedName": "Little Calumet River / Lake Michigan Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "04094000",
+      "nwsStationId": "KVPZ"
+    },
+    "regulatory": {
+      "permittingStage": "Chesterton proposal withdrawn (Jun 2024); Porter County UDO restrictions & neighboring Valparaiso Ord. 16-2026 moratorium enacted",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Massive citizen opposition in Chesterton and Union Township (Porter County Expo Center hearings) forced both Provident Realty ($1.3B) and QTS ($2B) to withdraw, while Valparaiso enacted Ordinance 16-2026 halting new data center filings pending UDO overhaul.",
+      "permits": [
+        {
+          "title": "Ordinance 16-2026 Data Center Moratorium",
+          "agency": "City of Valparaiso / Porter County Municipalities",
+          "docketOrPermitId": "VALPO-ORD-16-2026",
+          "date": "2026-04-01",
+          "status": "Moratorium Enacted",
+          "url": "https://www.inkfreenews.com/2026/07/15/valparaiso-advances-data-center-moratorium/"
+        },
+        {
+          "title": "Porter County Data Center Zoning & UDO Notice",
+          "agency": "Porter County Government",
+          "docketOrPermitId": "PORTER-UDO-DC",
+          "date": "2025-06-01",
+          "status": "Withdrawn / Restricted",
+          "url": "https://www.portercountyin.gov/2138/Union-Township-Data-Center"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Developers pitched $1.3B industrial tax base on idle golf course land",
+          "evidence": "Provident Realty proposed redeveloping the shuttered Brassie Golf Club for eight data center buildings promising commercial tax revenue without school enrollment demand.",
+          "sourceId": "src-chesterton-withdrawn"
+        },
+        {
+          "claim": "Updated UDO zoning standards seek structured hyperscale siting",
+          "evidence": "Porter County and neighboring Valparaiso/Portage officials note temporary moratoria allow municipalities to adopt strict 55 dB noise, height, and infrastructure rules.",
+          "sourceId": "src-inside-in"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Proximity to Indiana Dunes National Park and residential schools drew intense opposition",
+          "evidence": "Chesterton residents and Porter County crowds opposed converting open land 1.9 miles from Indiana Dunes over noise, water draw, and NIPSCO electric rate hikes.",
+          "sourceId": "src-porter-gov"
+        },
+        {
+          "claim": "Consumer advocates warn unpriced MISO load drives Indiana utility rate spikes",
+          "evidence": "Citizens Action Coalition documented how rapid Northern Indiana data center requests threaten residential electric bills and Lake Michigan basin resources.",
+          "sourceId": "src-cac-in"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-valpo-ord",
+        "title": "Valparaiso Advances Data Center Moratorium (Ordinance 16-2026)",
+        "publisher": "InkFreeNews",
+        "date": "2026-07-15",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.inkfreenews.com/2026/07/15/valparaiso-advances-data-center-moratorium/"
+      },
+      {
+        "id": "src-porter-gov",
+        "title": "Porter County Data Center Zoning & Public Hearing Archive",
+        "publisher": "Porter County Government",
+        "date": "2025-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.portercountyin.gov/2138/Union-Township-Data-Center"
+      },
+      {
+        "id": "src-chesterton-withdrawn",
+        "title": "Chesterton Data Center Project Withdrawn (Brassie Golf Club)",
+        "publisher": "Inside INdiana Business",
+        "date": "2024-06-11",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.insideindianabusiness.com/articles/chesterton-data-center-project-withdrawn"
+      },
+      {
+        "id": "src-chesterton-gov",
+        "title": "Town of Chesterton Official Municipal Portal",
+        "publisher": "Town of Chesterton",
+        "date": "2026-01-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.chestertonin.org/"
+      },
+      {
+        "id": "src-inside-in",
+        "title": "Valparaiso Approves Data Center Moratorium With No Set End Date",
+        "publisher": "Inside INdiana Business",
+        "date": "2026-04-02",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.insideindianabusiness.com/articles/valparaiso-approves-data-center-moratorium-with-no-set-end-date"
+      },
+      {
+        "id": "src-cac-in",
+        "title": "Data Centers in Indiana: Ratepayer & Resource Briefing",
+        "publisher": "Citizens Action Coalition of Indiana",
+        "date": "2025-08-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.citact.org/sites/default/files/Data-Centers-in-Indiana-CAC-Webinar-slides-Aug-2025-1.pdf"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "terawulf-lake-mariner",
+    "name": "TeraWulf Lake Mariner / Somerset Campus",
+    "marketCluster": "Western New York",
+    "city": "Somerset",
+    "county": "Niagara",
+    "state": "NY",
+    "isoRegion": "NYISO",
+    "coordinates": [
+      -78.604614,
+      43.35866
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Coal-to-compute brownfield campus at the retired 675 MW Somerset (Kintigh) coal plant on Lake Ontario; expanding across 157 leased acres toward 500\u2013750 MW in NYISO Zone A (~90% zero-carbon hydro/nuclear grid) to host Core42 and Google-backstopped Fluidstack AI/HPC clusters.",
+    "parcel": {
+      "acreage": {
+        "value": 157,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-10-01",
+        "basis": "Expanded 35-to-80-year ground lease covering 157 acres inside the ~410-acre former Somerset coal plant PUD",
+        "sourceId": "src-wulf-lease"
+      },
+      "grossSqFt": {
+        "value": 650000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-06-01",
+        "basis": "Combined existing CB-1\u2013CB-3 halls and under-construction CB-4/CB-5 AI buildings",
+        "sourceId": "src-wulf-q2"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "Planned Unit Development / Former Utility Industrial (Town of Somerset, Niagara County)",
+      "parcelNote": "Located at 7725 Lake Rd on the south shore of Lake Ontario with dual 345 kV switchyard legacy tie-ins."
+    },
+    "stakeholders": {
+      "developer": "TeraWulf Inc.",
+      "operator": "TeraWulf Inc.",
+      "anchorTenants": [
+        {
+          "name": "Fluidstack (360\u2013380 MW Google-Backstopped AI Lease)",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-wulf-q2"
+        },
+        {
+          "name": "Core42 / G42 (60 MW AI Compute Lease)",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-wulf-pr"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 102,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2026-08-01",
+        "basis": "102 MW energized critical IT capacity reported following CB-3 delivery (supplementing 195\u2013245 MW total site draw)",
+        "sourceId": "src-wulf-q2"
+      },
+      "totalPlannedMw": {
+        "value": 500,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2026-08-01",
+        "basis": "500 MW near-term contracted/under-construction runway (including 336 MW CB-4/CB-5) with 750 MW ground-lease power access",
+        "sourceId": "src-wulf-pr"
+      },
+      "utilityProvider": "NYSEG / National Grid (NYISO Zone A)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "345 kV dual legacy coal-plant transmission switchyard",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Utilizes grid-connected redundancy; legacy coal boilers demolished.",
+      "cleanPowerAndTariffSummary": "Connected to NYISO Zone A (~89\u201391% zero-carbon Niagara hydroelectric and upstate nuclear power); NY PSC proceedings monitor large flexible compute tariffs."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-08-01",
+        "basis": "TeraWulf deploys closed-loop liquid cooling (Schneider/Motivair RDHx) rather than once-through Lake Ontario cooling; exact makeup MGD is undisclosed in SEC filings",
+        "sourceId": "src-wulf-q2"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-08-01",
+        "basis": "Annual water makeup volume is not separately reported in 10-K/earnings filings",
+        "sourceId": "src-wulf-q2"
+      },
+      "pue": {
+        "value": null,
+        "unit": "ratio",
+        "epistemic": "undisclosed",
+        "asOf": "2026-08-01",
+        "basis": "Site-level PUE withheld in SEC filings",
+        "sourceId": "src-wulf-q2"
+      },
+      "waterSource": "Closed-loop fluid circulation adjacent to Lake Ontario / Town of Somerset municipal supply",
+      "watershedName": "Eighteenmile Creek / Lake Ontario Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "04219768",
+      "nwsStationId": "KIAG"
+    },
+    "regulatory": {
+      "permittingStage": "Somerset Planning Board PUD site reviews for CB-4/CB-5 active; NY PSC large-load & Somerset generation filings",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Town of Somerset Planning Board reviews PUD sub-parcels for AI/HPC expansion alongside NY PSC oversight of former coal-plant transmission reuse and crypto-to-AI load transitions.",
+      "permits": [
+        {
+          "title": "Town of Somerset Planning Board PUD Review (Lake Mariner)",
+          "agency": "Town of Somerset Planning Board",
+          "docketOrPermitId": "SOMERSET-PUD-8.00-1",
+          "date": "2025-08-07",
+          "status": "Active Site Plan Review",
+          "url": "https://www.somersetny.gov/sites/g/files/vyhlif3826/f/agendas/pb_agenda_8.7.25_2.pdf"
+        },
+        {
+          "title": "NY Public Service Commission Case Filing (Somerset / Lake Mariner)",
+          "agency": "New York State Public Service Commission",
+          "docketOrPermitId": "NYPSC-SOMERSET",
+          "date": "2024-10-01",
+          "status": "Filed",
+          "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId={A006468C-0000-C34E-A551-9D38756BB02E}"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Reuses dual 345 kV coal-plant switchyard on ~90% zero-carbon NYISO Zone A grid",
+          "evidence": "Converting the retired Somerset coal station leverages existing 345 kV lines and Niagara hydro/nuclear power while anchoring 10-year Fluidstack/Google AI leases.",
+          "sourceId": "src-wulf-pr"
+        },
+        {
+          "claim": "Closed-loop liquid cooling avoids thermal discharge into Lake Ontario",
+          "evidence": "Unlike the former coal plant's once-through cooling, Lake Mariner's RDHx closed-loop system seals cooling fluid and minimizes lake water draw.",
+          "sourceId": "src-wulf-q2"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Related-party lease and rapid crypto-to-AI pivot raise governance scrutiny",
+          "evidence": "TeraWulf's 157-acre ground lease counterparty is an affiliate controlled by its CEO (reviewed by Audit Committee), while high-density 500\u2013750 MW growth draws local grid attention.",
+          "sourceId": "src-wulf-lease"
+        },
+        {
+          "claim": "Diverting upstate hydro/nuclear headroom raises NYISO Zone A rate questions",
+          "evidence": "As 500+ MW of AI/crypto load absorbs low-cost Niagara Zone A electricity, NY PSC stakeholders examine industrial tariff allocation and community benefits.",
+          "sourceId": "src-nypsc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-wulf-q2",
+        "title": "TeraWulf Q2 2026 Earnings Release (SEC Form 8-K)",
+        "publisher": "U.S. SEC EDGAR",
+        "date": "2026-08-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.sec.gov/Archives/edgar/data/1083301/000108330126000162/a_wulfearningsreleaseq22026.htm"
+      },
+      {
+        "id": "src-wulf-lease",
+        "title": "TeraWulf Lake Mariner Ground Lease Related-Party Disclosure (SEC Form 10-K)",
+        "publisher": "U.S. SEC EDGAR",
+        "date": "2025-03-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.sec.gov/Archives/edgar/data/1083301/000108330125000061/R16.htm"
+      },
+      {
+        "id": "src-wulf-pr",
+        "title": "TeraWulf Full-Year Financial Results & HPC/AI Capacity Update",
+        "publisher": "TeraWulf Investor Relations",
+        "date": "2026-02-26",
+        "kind": "operator_disclosure",
+        "url": "https://investors.terawulf.com/news-events/press-releases/detail/132/terawulf-reports-fourth-quarter-and-full-year-2025-results"
+      },
+      {
+        "id": "src-somerset",
+        "title": "Town of Somerset Planning Board PUD Agenda (Lake Road Campus)",
+        "publisher": "Town of Somerset, NY",
+        "date": "2025-08-07",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.somersetny.gov/sites/g/files/vyhlif3826/f/agendas/pb_agenda_8.7.25_2.pdf"
+      },
+      {
+        "id": "src-nypsc",
+        "title": "NY PSC Public Filing Record (Somerset Infrastructure)",
+        "publisher": "New York State DPS",
+        "date": "2024-10-01",
+        "kind": "regulatory_filing",
+        "url": "https://documents.dps.ny.gov/public/Common/ViewDoc.aspx?DocRefId={A006468C-0000-C34E-A551-9D38756BB02E}"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  }
+]

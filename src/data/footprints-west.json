@@ -1,0 +1,4917 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "stargate-abilene",
+        "zoneKind": "campus_boundary",
+        "label": "Stargate Abilene AI Campus Campus Boundary",
+        "mwLabel": "1200 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -99.803734,
+              32.500444
+            ],
+            [
+              -99.802193,
+              32.494859
+            ],
+            [
+              -99.774214,
+              32.494498
+            ],
+            [
+              -99.774231,
+              32.501851
+            ],
+            [
+              -99.773019,
+              32.501861
+            ],
+            [
+              -99.773051,
+              32.50616
+            ],
+            [
+              -99.77242,
+              32.508214
+            ],
+            [
+              -99.777282,
+              32.510598
+            ],
+            [
+              -99.778362,
+              32.511101
+            ],
+            [
+              -99.778793,
+              32.510442
+            ],
+            [
+              -99.778447,
+              32.510265
+            ],
+            [
+              -99.785027,
+              32.508386
+            ],
+            [
+              -99.789672,
+              32.50392
+            ],
+            [
+              -99.803734,
+              32.500444
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "stargate-abilene",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "200 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -99.797787,
+              32.501804
+            ],
+            [
+              -99.787141,
+              32.501804
+            ],
+            [
+              -99.787141,
+              32.506453
+            ],
+            [
+              -99.797787,
+              32.506453
+            ],
+            [
+              -99.797787,
+              32.501804
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "stargate-abilene",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+1000 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -99.787767,
+              32.499313
+            ],
+            [
+              -99.778373,
+              32.499313
+            ],
+            [
+              -99.778373,
+              32.504294
+            ],
+            [
+              -99.787767,
+              32.504294
+            ],
+            [
+              -99.787767,
+              32.499313
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "stargate-abilene",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (345 kV / 138 kV)",
+        "mwLabel": "345 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -99.797161,
+              32.497985
+            ],
+            [
+              -99.792777,
+              32.497985
+            ],
+            [
+              -99.792777,
+              32.50031
+            ],
+            [
+              -99.797161,
+              32.50031
+            ],
+            [
+              -99.797161,
+              32.497985
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "stargate-abilene",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -99.784792,
+              32.505373
+            ],
+            [
+              -99.780095,
+              32.505373
+            ],
+            [
+              -99.780095,
+              32.507532
+            ],
+            [
+              -99.784792,
+              32.507532
+            ],
+            [
+              -99.784792,
+              32.505373
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "qts-fort-worth-irving",
+        "zoneKind": "campus_boundary",
+        "label": "QTS Fort Worth / Irving Mega-Campus Campus Boundary",
+        "mwLabel": "365 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.262471,
+              32.986657
+            ],
+            [
+              -97.256069,
+              32.986657
+            ],
+            [
+              -97.256069,
+              32.991163
+            ],
+            [
+              -97.262471,
+              32.991163
+            ],
+            [
+              -97.262471,
+              32.986657
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "qts-fort-worth-irving",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "165 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.260385,
+              32.989097
+            ],
+            [
+              -97.260166,
+              32.988393
+            ],
+            [
+              -97.259977,
+              32.988434
+            ],
+            [
+              -97.259971,
+              32.988414
+            ],
+            [
+              -97.259926,
+              32.988423
+            ],
+            [
+              -97.259901,
+              32.988345
+            ],
+            [
+              -97.259717,
+              32.988386
+            ],
+            [
+              -97.259619,
+              32.988071
+            ],
+            [
+              -97.258886,
+              32.988231
+            ],
+            [
+              -97.258826,
+              32.988035
+            ],
+            [
+              -97.258391,
+              32.98813
+            ],
+            [
+              -97.258452,
+              32.988327
+            ],
+            [
+              -97.258162,
+              32.98839
+            ],
+            [
+              -97.258558,
+              32.989662
+            ],
+            [
+              -97.258859,
+              32.989596
+            ],
+            [
+              -97.25892,
+              32.989791
+            ],
+            [
+              -97.259341,
+              32.989699
+            ],
+            [
+              -97.25928,
+              32.989502
+            ],
+            [
+              -97.260013,
+              32.989342
+            ],
+            [
+              -97.259963,
+              32.989189
+            ],
+            [
+              -97.260385,
+              32.989097
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "qts-fort-worth-irving",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+200 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.259206,
+              32.987964
+            ],
+            [
+              -97.257285,
+              32.987964
+            ],
+            [
+              -97.257285,
+              32.989316
+            ],
+            [
+              -97.259206,
+              32.989316
+            ],
+            [
+              -97.259206,
+              32.987964
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "qts-fort-worth-irving",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (138 kV dual-fed)",
+        "mwLabel": "138 kV dual-fed",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.261126,
+              32.987603
+            ],
+            [
+              -97.26023,
+              32.987603
+            ],
+            [
+              -97.26023,
+              32.988234
+            ],
+            [
+              -97.261126,
+              32.988234
+            ],
+            [
+              -97.261126,
+              32.987603
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "qts-fort-worth-irving",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.258598,
+              32.989608
+            ],
+            [
+              -97.257638,
+              32.989608
+            ],
+            [
+              -97.257638,
+              32.990194
+            ],
+            [
+              -97.258598,
+              32.990194
+            ],
+            [
+              -97.258598,
+              32.989608
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-temple",
+        "zoneKind": "campus_boundary",
+        "label": "Meta Temple Data Center Campus Boundary",
+        "mwLabel": "250 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.376256,
+              31.12839
+            ],
+            [
+              -97.374553,
+              31.127877
+            ],
+            [
+              -97.375767,
+              31.125118
+            ],
+            [
+              -97.375204,
+              31.124734
+            ],
+            [
+              -97.372933,
+              31.125457
+            ],
+            [
+              -97.37125,
+              31.125639
+            ],
+            [
+              -97.370237,
+              31.125587
+            ],
+            [
+              -97.366265,
+              31.127821
+            ],
+            [
+              -97.365125,
+              31.127676
+            ],
+            [
+              -97.366156,
+              31.125117
+            ],
+            [
+              -97.364716,
+              31.124679
+            ],
+            [
+              -97.36436,
+              31.125627
+            ],
+            [
+              -97.362799,
+              31.125168
+            ],
+            [
+              -97.361762,
+              31.124966
+            ],
+            [
+              -97.360461,
+              31.124792
+            ],
+            [
+              -97.358111,
+              31.130955
+            ],
+            [
+              -97.372467,
+              31.134929
+            ],
+            [
+              -97.372637,
+              31.134968
+            ],
+            [
+              -97.37293,
+              31.134933
+            ],
+            [
+              -97.373613,
+              31.134153
+            ],
+            [
+              -97.374719,
+              31.132135
+            ],
+            [
+              -97.375495,
+              31.130339
+            ],
+            [
+              -97.376256,
+              31.12839
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-temple",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "152 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.372805,
+              31.129203
+            ],
+            [
+              -97.366636,
+              31.129203
+            ],
+            [
+              -97.366636,
+              31.132084
+            ],
+            [
+              -97.372805,
+              31.132084
+            ],
+            [
+              -97.372805,
+              31.129203
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-temple",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+98 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.366999,
+              31.127659
+            ],
+            [
+              -97.361555,
+              31.127659
+            ],
+            [
+              -97.361555,
+              31.130746
+            ],
+            [
+              -97.366999,
+              31.130746
+            ],
+            [
+              -97.366999,
+              31.127659
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-temple",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (138 kV)",
+        "mwLabel": "138 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.372442,
+              31.126836
+            ],
+            [
+              -97.369902,
+              31.126836
+            ],
+            [
+              -97.369902,
+              31.128277
+            ],
+            [
+              -97.372442,
+              31.128277
+            ],
+            [
+              -97.372442,
+              31.126836
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-temple",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.365275,
+              31.131415
+            ],
+            [
+              -97.362553,
+              31.131415
+            ],
+            [
+              -97.362553,
+              31.132752
+            ],
+            [
+              -97.365275,
+              31.132752
+            ],
+            [
+              -97.365275,
+              31.131415
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-midlothian-red-oak",
+        "zoneKind": "campus_boundary",
+        "label": "Google Midlothian / Red Oak Campus Campus Boundary",
+        "mwLabel": "300 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.067429,
+              32.445319
+            ],
+            [
+              -97.064485,
+              32.440222
+            ],
+            [
+              -97.061826,
+              32.435814
+            ],
+            [
+              -97.059616,
+              32.436693
+            ],
+            [
+              -97.059298,
+              32.436828
+            ],
+            [
+              -97.057607,
+              32.437509
+            ],
+            [
+              -97.0515,
+              32.439898
+            ],
+            [
+              -97.054528,
+              32.444969
+            ],
+            [
+              -97.057911,
+              32.443326
+            ],
+            [
+              -97.060669,
+              32.4481
+            ],
+            [
+              -97.061402,
+              32.447799
+            ],
+            [
+              -97.067429,
+              32.445319
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-midlothian-red-oak",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "100 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.064398,
+              32.441223
+            ],
+            [
+              -97.058982,
+              32.441223
+            ],
+            [
+              -97.058982,
+              32.444663
+            ],
+            [
+              -97.064398,
+              32.444663
+            ],
+            [
+              -97.064398,
+              32.441223
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-midlothian-red-oak",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+200 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.059301,
+              32.43938
+            ],
+            [
+              -97.054522,
+              32.43938
+            ],
+            [
+              -97.054522,
+              32.443066
+            ],
+            [
+              -97.059301,
+              32.443066
+            ],
+            [
+              -97.059301,
+              32.43938
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-midlothian-red-oak",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (138 kV / 345 kV)",
+        "mwLabel": "138 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.064079,
+              32.438397
+            ],
+            [
+              -97.061849,
+              32.438397
+            ],
+            [
+              -97.061849,
+              32.440117
+            ],
+            [
+              -97.064079,
+              32.440117
+            ],
+            [
+              -97.064079,
+              32.438397
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-midlothian-red-oak",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "0.5 MGD",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -97.057787,
+              32.443864
+            ],
+            [
+              -97.055398,
+              32.443864
+            ],
+            [
+              -97.055398,
+              32.445462
+            ],
+            [
+              -97.057787,
+              32.445462
+            ],
+            [
+              -97.057787,
+              32.443864
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-san-antonio-castroville",
+        "zoneKind": "campus_boundary",
+        "label": "Microsoft San Antonio / Castroville Campus Campus Boundary",
+        "mwLabel": "450 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -98.889734,
+              29.343582
+            ],
+            [
+              -98.867266,
+              29.343582
+            ],
+            [
+              -98.867266,
+              29.360018
+            ],
+            [
+              -98.889734,
+              29.360018
+            ],
+            [
+              -98.889734,
+              29.343582
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-san-antonio-castroville",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "Energized Halls",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -98.885465,
+              29.350814
+            ],
+            [
+              -98.877826,
+              29.350814
+            ],
+            [
+              -98.877826,
+              29.355416
+            ],
+            [
+              -98.885465,
+              29.355416
+            ],
+            [
+              -98.885465,
+              29.350814
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-san-antonio-castroville",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+450 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -98.878275,
+              29.348349
+            ],
+            [
+              -98.871535,
+              29.348349
+            ],
+            [
+              -98.871535,
+              29.353279
+            ],
+            [
+              -98.878275,
+              29.353279
+            ],
+            [
+              -98.878275,
+              29.348349
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-san-antonio-castroville",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (138 kV / 345 kV)",
+        "mwLabel": "138 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -98.885016,
+              29.347034
+            ],
+            [
+              -98.88187,
+              29.347034
+            ],
+            [
+              -98.88187,
+              29.349335
+            ],
+            [
+              -98.885016,
+              29.349335
+            ],
+            [
+              -98.885016,
+              29.347034
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-san-antonio-castroville",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -98.876141,
+              29.354348
+            ],
+            [
+              -98.87277,
+              29.354348
+            ],
+            [
+              -98.87277,
+              29.356484
+            ],
+            [
+              -98.876141,
+              29.356484
+            ],
+            [
+              -98.876141,
+              29.354348
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-richland-parish-hyperion",
+        "zoneKind": "campus_boundary",
+        "label": "Meta Richland Parish \"Hyperion\" AI Campus Campus Boundary",
+        "mwLabel": "5000 MW",
+        "status": "under_construction"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -91.646173,
+              32.467651
+            ],
+            [
+              -91.618487,
+              32.467651
+            ],
+            [
+              -91.618487,
+              32.486649
+            ],
+            [
+              -91.646173,
+              32.486649
+            ],
+            [
+              -91.646173,
+              32.467651
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-richland-parish-hyperion",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+5000 MW",
+        "status": "under_construction"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -91.632053,
+              32.47316
+            ],
+            [
+              -91.623747,
+              32.47316
+            ],
+            [
+              -91.623747,
+              32.47886
+            ],
+            [
+              -91.632053,
+              32.47886
+            ],
+            [
+              -91.632053,
+              32.47316
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-richland-parish-hyperion",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (500 kV / 230 kV)",
+        "mwLabel": "500 kV",
+        "status": "under_construction"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -91.640359,
+              32.471641
+            ],
+            [
+              -91.636483,
+              32.471641
+            ],
+            [
+              -91.636483,
+              32.4743
+            ],
+            [
+              -91.640359,
+              32.4743
+            ],
+            [
+              -91.640359,
+              32.471641
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-richland-parish-hyperion",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "23.0 MGD",
+        "status": "under_construction"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -91.629423,
+              32.480095
+            ],
+            [
+              -91.62527,
+              32.480095
+            ],
+            [
+              -91.62527,
+              32.482564
+            ],
+            [
+              -91.629423,
+              32.482564
+            ],
+            [
+              -91.629423,
+              32.480095
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-council-bluffs",
+        "zoneKind": "campus_boundary",
+        "label": "Google Council Bluffs Campus Campus Boundary",
+        "mwLabel": "500 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -95.808125,
+              41.178299
+            ],
+            [
+              -95.808123,
+              41.176268
+            ],
+            [
+              -95.807854,
+              41.175989
+            ],
+            [
+              -95.807811,
+              41.174035
+            ],
+            [
+              -95.807725,
+              41.170069
+            ],
+            [
+              -95.807719,
+              41.169808
+            ],
+            [
+              -95.807666,
+              41.167418
+            ],
+            [
+              -95.80752,
+              41.167418
+            ],
+            [
+              -95.79759,
+              41.167416
+            ],
+            [
+              -95.795218,
+              41.167929
+            ],
+            [
+              -95.792654,
+              41.167372
+            ],
+            [
+              -95.792182,
+              41.168563
+            ],
+            [
+              -95.79524,
+              41.169633
+            ],
+            [
+              -95.79524,
+              41.170106
+            ],
+            [
+              -95.795245,
+              41.178278
+            ],
+            [
+              -95.808125,
+              41.178299
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-council-bluffs",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "407 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -95.805092,
+              41.172184
+            ],
+            [
+              -95.799672,
+              41.172184
+            ],
+            [
+              -95.799672,
+              41.175244
+            ],
+            [
+              -95.805092,
+              41.175244
+            ],
+            [
+              -95.805092,
+              41.172184
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-council-bluffs",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+93 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -95.799991,
+              41.170545
+            ],
+            [
+              -95.795208,
+              41.170545
+            ],
+            [
+              -95.795208,
+              41.173823
+            ],
+            [
+              -95.799991,
+              41.173823
+            ],
+            [
+              -95.799991,
+              41.170545
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-council-bluffs",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (161 kV / 345 kV)",
+        "mwLabel": "161 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -95.804773,
+              41.169671
+            ],
+            [
+              -95.802541,
+              41.169671
+            ],
+            [
+              -95.802541,
+              41.171201
+            ],
+            [
+              -95.804773,
+              41.171201
+            ],
+            [
+              -95.804773,
+              41.169671
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-council-bluffs",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "2.74 MGD",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -95.798476,
+              41.174534
+            ],
+            [
+              -95.796085,
+              41.174534
+            ],
+            [
+              -95.796085,
+              41.175954
+            ],
+            [
+              -95.798476,
+              41.175954
+            ],
+            [
+              -95.798476,
+              41.174534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-altoona",
+        "zoneKind": "campus_boundary",
+        "label": "Meta Altoona Mega-Campus Campus Boundary",
+        "mwLabel": "450 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -93.522261,
+              41.668912
+            ],
+            [
+              -93.521354,
+              41.66886
+            ],
+            [
+              -93.52133,
+              41.667918
+            ],
+            [
+              -93.522163,
+              41.667901
+            ],
+            [
+              -93.522147,
+              41.662717
+            ],
+            [
+              -93.51747,
+              41.662666
+            ],
+            [
+              -93.517563,
+              41.66112
+            ],
+            [
+              -93.515851,
+              41.661403
+            ],
+            [
+              -93.51497,
+              41.661534
+            ],
+            [
+              -93.514476,
+              41.661685
+            ],
+            [
+              -93.510806,
+              41.662113
+            ],
+            [
+              -93.51026,
+              41.662178
+            ],
+            [
+              -93.509578,
+              41.662271
+            ],
+            [
+              -93.508943,
+              41.662332
+            ],
+            [
+              -93.508236,
+              41.662408
+            ],
+            [
+              -93.507517,
+              41.662453
+            ],
+            [
+              -93.506515,
+              41.662502
+            ],
+            [
+              -93.505774,
+              41.66253
+            ],
+            [
+              -93.504911,
+              41.662529
+            ],
+            [
+              -93.503452,
+              41.662518
+            ],
+            [
+              -93.503095,
+              41.662509
+            ],
+            [
+              -93.503077,
+              41.664054
+            ],
+            [
+              -93.503076,
+              41.664119
+            ],
+            [
+              -93.503074,
+              41.664205
+            ],
+            [
+              -93.503073,
+              41.665308
+            ],
+            [
+              -93.503073,
+              41.665875
+            ],
+            [
+              -93.503169,
+              41.672924
+            ],
+            [
+              -93.503267,
+              41.680229
+            ],
+            [
+              -93.511831,
+              41.680233
+            ],
+            [
+              -93.511781,
+              41.67299
+            ],
+            [
+              -93.512926,
+              41.673007
+            ],
+            [
+              -93.517212,
+              41.673003
+            ],
+            [
+              -93.522195,
+              41.672968
+            ],
+            [
+              -93.522261,
+              41.668912
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-altoona",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "350 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -93.518618,
+              41.669533
+            ],
+            [
+              -93.512094,
+              41.669533
+            ],
+            [
+              -93.512094,
+              41.674885
+            ],
+            [
+              -93.518618,
+              41.674885
+            ],
+            [
+              -93.518618,
+              41.669533
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-altoona",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+100 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -93.512478,
+              41.666666
+            ],
+            [
+              -93.506722,
+              41.666666
+            ],
+            [
+              -93.506722,
+              41.6724
+            ],
+            [
+              -93.512478,
+              41.6724
+            ],
+            [
+              -93.512478,
+              41.666666
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-altoona",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (161 kV / 345 kV)",
+        "mwLabel": "161 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -93.518235,
+              41.665137
+            ],
+            [
+              -93.515548,
+              41.665137
+            ],
+            [
+              -93.515548,
+              41.667813
+            ],
+            [
+              -93.518235,
+              41.667813
+            ],
+            [
+              -93.518235,
+              41.665137
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-altoona",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -93.510655,
+              41.673643
+            ],
+            [
+              -93.507777,
+              41.673643
+            ],
+            [
+              -93.507777,
+              41.676127
+            ],
+            [
+              -93.510655,
+              41.676127
+            ],
+            [
+              -93.510655,
+              41.673643
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-omaha-papillion",
+        "zoneKind": "campus_boundary",
+        "label": "Google Omaha / Papillion Campus Campus Boundary",
+        "mwLabel": "400 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.157877,
+              41.136175
+            ],
+            [
+              -96.157842,
+              41.132691
+            ],
+            [
+              -96.157781,
+              41.132649
+            ],
+            [
+              -96.151575,
+              41.132655
+            ],
+            [
+              -96.151582,
+              41.135839
+            ],
+            [
+              -96.149764,
+              41.135838
+            ],
+            [
+              -96.149762,
+              41.132657
+            ],
+            [
+              -96.140306,
+              41.132667
+            ],
+            [
+              -96.139591,
+              41.132823
+            ],
+            [
+              -96.13947,
+              41.133851
+            ],
+            [
+              -96.139651,
+              41.134948
+            ],
+            [
+              -96.139436,
+              41.136604
+            ],
+            [
+              -96.139541,
+              41.137433
+            ],
+            [
+              -96.139393,
+              41.139834
+            ],
+            [
+              -96.141458,
+              41.139819
+            ],
+            [
+              -96.141459,
+              41.139859
+            ],
+            [
+              -96.150686,
+              41.139794
+            ],
+            [
+              -96.150837,
+              41.139796
+            ],
+            [
+              -96.150913,
+              41.139798
+            ],
+            [
+              -96.150987,
+              41.139806
+            ],
+            [
+              -96.151058,
+              41.139819
+            ],
+            [
+              -96.15113,
+              41.139835
+            ],
+            [
+              -96.151198,
+              41.139861
+            ],
+            [
+              -96.151263,
+              41.139888
+            ],
+            [
+              -96.153285,
+              41.139873
+            ],
+            [
+              -96.153469,
+              41.139871
+            ],
+            [
+              -96.15347,
+              41.139908
+            ],
+            [
+              -96.154457,
+              41.139903
+            ],
+            [
+              -96.154419,
+              41.13619
+            ],
+            [
+              -96.157877,
+              41.136175
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-omaha-papillion",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "200 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.15436,
+              41.135844
+            ],
+            [
+              -96.148075,
+              41.135844
+            ],
+            [
+              -96.148075,
+              41.137877
+            ],
+            [
+              -96.15436,
+              41.137877
+            ],
+            [
+              -96.15436,
+              41.135844
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-omaha-papillion",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+200 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.148445,
+              41.134756
+            ],
+            [
+              -96.1429,
+              41.134756
+            ],
+            [
+              -96.1429,
+              41.136933
+            ],
+            [
+              -96.148445,
+              41.136933
+            ],
+            [
+              -96.148445,
+              41.134756
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-omaha-papillion",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (161 kV / 345 kV)",
+        "mwLabel": "161 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.15399,
+              41.134175
+            ],
+            [
+              -96.151403,
+              41.134175
+            ],
+            [
+              -96.151403,
+              41.135191
+            ],
+            [
+              -96.15399,
+              41.135191
+            ],
+            [
+              -96.15399,
+              41.134175
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-omaha-papillion",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "1.5 MGD",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -96.146689,
+              41.137405
+            ],
+            [
+              -96.143917,
+              41.137405
+            ],
+            [
+              -96.143917,
+              41.138349
+            ],
+            [
+              -96.146689,
+              41.138349
+            ],
+            [
+              -96.146689,
+              41.137405
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "peculiar-project-klein",
+        "zoneKind": "campus_boundary",
+        "label": "Peculiar \"Project Klein\" Hyperscale Proposal Campus Boundary",
+        "mwLabel": "350 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -94.464028,
+              38.711736
+            ],
+            [
+              -94.449172,
+              38.711736
+            ],
+            [
+              -94.449172,
+              38.721464
+            ],
+            [
+              -94.464028,
+              38.721464
+            ],
+            [
+              -94.464028,
+              38.711736
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "peculiar-project-klein",
+        "zoneKind": "planned_expansion",
+        "label": "Planned / Contested Buildout Pad",
+        "mwLabel": "+350 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -94.456451,
+              38.714557
+            ],
+            [
+              -94.451994,
+              38.714557
+            ],
+            [
+              -94.451994,
+              38.717476
+            ],
+            [
+              -94.456451,
+              38.717476
+            ],
+            [
+              -94.456451,
+              38.714557
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "peculiar-project-klein",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (161 kV / 345 kV proposed)",
+        "mwLabel": "161 kV",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -94.460908,
+              38.713779
+            ],
+            [
+              -94.458829,
+              38.713779
+            ],
+            [
+              -94.458829,
+              38.715141
+            ],
+            [
+              -94.460908,
+              38.715141
+            ],
+            [
+              -94.460908,
+              38.713779
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "peculiar-project-klein",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -94.45504,
+              38.718108
+            ],
+            [
+              -94.452812,
+              38.718108
+            ],
+            [
+              -94.452812,
+              38.719373
+            ],
+            [
+              -94.45504,
+              38.719373
+            ],
+            [
+              -94.45504,
+              38.718108
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-the-dalles",
+        "zoneKind": "campus_boundary",
+        "label": "Google The Dalles Campus Campus Boundary",
+        "mwLabel": "450 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.212825,
+              45.625885
+            ],
+            [
+              -121.211228,
+              45.623304
+            ],
+            [
+              -121.211101,
+              45.623342
+            ],
+            [
+              -121.209811,
+              45.621257
+            ],
+            [
+              -121.209602,
+              45.621191
+            ],
+            [
+              -121.202988,
+              45.623192
+            ],
+            [
+              -121.202427,
+              45.623911
+            ],
+            [
+              -121.202567,
+              45.62419
+            ],
+            [
+              -121.202148,
+              45.62431
+            ],
+            [
+              -121.202561,
+              45.624961
+            ],
+            [
+              -121.20409,
+              45.624502
+            ],
+            [
+              -121.204825,
+              45.625734
+            ],
+            [
+              -121.205048,
+              45.625884
+            ],
+            [
+              -121.205815,
+              45.627133
+            ],
+            [
+              -121.207357,
+              45.626976
+            ],
+            [
+              -121.208256,
+              45.626574
+            ],
+            [
+              -121.210096,
+              45.626029
+            ],
+            [
+              -121.212825,
+              45.625885
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-the-dalles",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "300 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.2108,
+              45.623803
+            ],
+            [
+              -121.20717,
+              45.623803
+            ],
+            [
+              -121.20717,
+              45.625467
+            ],
+            [
+              -121.2108,
+              45.625467
+            ],
+            [
+              -121.2108,
+              45.623803
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-the-dalles",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+150 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.207383,
+              45.622912
+            ],
+            [
+              -121.20418,
+              45.622912
+            ],
+            [
+              -121.20418,
+              45.624695
+            ],
+            [
+              -121.207383,
+              45.624695
+            ],
+            [
+              -121.207383,
+              45.622912
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-the-dalles",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 115 kV)",
+        "mwLabel": "230 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.210586,
+              45.622437
+            ],
+            [
+              -121.209092,
+              45.622437
+            ],
+            [
+              -121.209092,
+              45.623269
+            ],
+            [
+              -121.210586,
+              45.623269
+            ],
+            [
+              -121.210586,
+              45.622437
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "google-the-dalles",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "1.19 MGD",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.206369,
+              45.625081
+            ],
+            [
+              -121.204767,
+              45.625081
+            ],
+            [
+              -121.204767,
+              45.625853
+            ],
+            [
+              -121.206369,
+              45.625853
+            ],
+            [
+              -121.206369,
+              45.625081
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "hillsboro-cluster",
+        "zoneKind": "campus_boundary",
+        "label": "Hillsboro Data Center Cluster (Stack / QTS / Digital Realty) Campus Boundary",
+        "mwLabel": "600 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.944055,
+              45.55142
+            ],
+            [
+              -122.934765,
+              45.55142
+            ],
+            [
+              -122.934765,
+              45.55688
+            ],
+            [
+              -122.944055,
+              45.55688
+            ],
+            [
+              -122.944055,
+              45.55142
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "hillsboro-cluster",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "350 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.940149,
+              45.554534
+            ],
+            [
+              -122.940148,
+              45.55391
+            ],
+            [
+              -122.940045,
+              45.55391
+            ],
+            [
+              -122.940044,
+              45.553732
+            ],
+            [
+              -122.939892,
+              45.553732
+            ],
+            [
+              -122.939893,
+              45.553907
+            ],
+            [
+              -122.938663,
+              45.553907
+            ],
+            [
+              -122.938664,
+              45.554535
+            ],
+            [
+              -122.939566,
+              45.554535
+            ],
+            [
+              -122.939566,
+              45.554571
+            ],
+            [
+              -122.940013,
+              45.554571
+            ],
+            [
+              -122.940029,
+              45.554534
+            ],
+            [
+              -122.940149,
+              45.554534
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "hillsboro-cluster",
+        "zoneKind": "planned_expansion",
+        "label": "Planned / Contested Buildout Pad",
+        "mwLabel": "+250 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.939317,
+              45.553003
+            ],
+            [
+              -122.93653,
+              45.553003
+            ],
+            [
+              -122.93653,
+              45.554641
+            ],
+            [
+              -122.939317,
+              45.554641
+            ],
+            [
+              -122.939317,
+              45.553003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "hillsboro-cluster",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 115 kV)",
+        "mwLabel": "230 kV",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.942104,
+              45.552567
+            ],
+            [
+              -122.940804,
+              45.552567
+            ],
+            [
+              -122.940804,
+              45.553331
+            ],
+            [
+              -122.942104,
+              45.553331
+            ],
+            [
+              -122.942104,
+              45.552567
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "hillsboro-cluster",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -122.938434,
+              45.554996
+            ],
+            [
+              -122.937041,
+              45.554996
+            ],
+            [
+              -122.937041,
+              45.555706
+            ],
+            [
+              -122.938434,
+              45.555706
+            ],
+            [
+              -122.938434,
+              45.554996
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "aws-boardman-morrow",
+        "zoneKind": "campus_boundary",
+        "label": "AWS Boardman / Morrow County Campus Campus Boundary",
+        "mwLabel": "1000 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.643832,
+              45.843099
+            ],
+            [
+              -119.617208,
+              45.843099
+            ],
+            [
+              -119.617208,
+              45.858661
+            ],
+            [
+              -119.643832,
+              45.858661
+            ],
+            [
+              -119.643832,
+              45.843099
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "aws-boardman-morrow",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "250 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.631288,
+              45.851241
+            ],
+            [
+              -119.631277,
+              45.850509
+            ],
+            [
+              -119.629759,
+              45.85052
+            ],
+            [
+              -119.62977,
+              45.851252
+            ],
+            [
+              -119.631288,
+              45.851241
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "aws-boardman-morrow",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+750 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.630254,
+              45.847612
+            ],
+            [
+              -119.622267,
+              45.847612
+            ],
+            [
+              -119.622267,
+              45.852281
+            ],
+            [
+              -119.630254,
+              45.852281
+            ],
+            [
+              -119.630254,
+              45.847612
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "aws-boardman-morrow",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 500 kV)",
+        "mwLabel": "230 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.638241,
+              45.846367
+            ],
+            [
+              -119.634513,
+              45.846367
+            ],
+            [
+              -119.634513,
+              45.848546
+            ],
+            [
+              -119.638241,
+              45.848546
+            ],
+            [
+              -119.638241,
+              45.846367
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "aws-boardman-morrow",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.627725,
+              45.853292
+            ],
+            [
+              -119.623731,
+              45.853292
+            ],
+            [
+              -119.623731,
+              45.855315
+            ],
+            [
+              -119.627725,
+              45.855315
+            ],
+            [
+              -119.627725,
+              45.853292
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-quincy",
+        "zoneKind": "campus_boundary",
+        "label": "Microsoft Quincy Columbia Basin Campus Campus Boundary",
+        "mwLabel": "350 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.896413,
+              47.239041
+            ],
+            [
+              -119.896395,
+              47.234064
+            ],
+            [
+              -119.890562,
+              47.234622
+            ],
+            [
+              -119.878765,
+              47.235726
+            ],
+            [
+              -119.878771,
+              47.238139
+            ],
+            [
+              -119.878776,
+              47.240177
+            ],
+            [
+              -119.885683,
+              47.240151
+            ],
+            [
+              -119.885697,
+              47.241597
+            ],
+            [
+              -119.886051,
+              47.241607
+            ],
+            [
+              -119.886932,
+              47.241709
+            ],
+            [
+              -119.88724,
+              47.241712
+            ],
+            [
+              -119.887519,
+              47.241665
+            ],
+            [
+              -119.888916,
+              47.241336
+            ],
+            [
+              -119.889236,
+              47.241165
+            ],
+            [
+              -119.889472,
+              47.241037
+            ],
+            [
+              -119.889766,
+              47.240929
+            ],
+            [
+              -119.890126,
+              47.240856
+            ],
+            [
+              -119.890727,
+              47.240787
+            ],
+            [
+              -119.891657,
+              47.240501
+            ],
+            [
+              -119.894606,
+              47.240019
+            ],
+            [
+              -119.896031,
+              47.239396
+            ],
+            [
+              -119.896262,
+              47.239234
+            ],
+            [
+              -119.896413,
+              47.239041
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-quincy",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "300 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.893061,
+              47.237431
+            ],
+            [
+              -119.887061,
+              47.237431
+            ],
+            [
+              -119.887061,
+              47.239573
+            ],
+            [
+              -119.893061,
+              47.239573
+            ],
+            [
+              -119.893061,
+              47.237431
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-quincy",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+50 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.887414,
+              47.236284
+            ],
+            [
+              -119.882119,
+              47.236284
+            ],
+            [
+              -119.882119,
+              47.238578
+            ],
+            [
+              -119.887414,
+              47.238578
+            ],
+            [
+              -119.887414,
+              47.236284
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-quincy",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 115 kV)",
+        "mwLabel": "230 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.892708,
+              47.235672
+            ],
+            [
+              -119.890237,
+              47.235672
+            ],
+            [
+              -119.890237,
+              47.236743
+            ],
+            [
+              -119.892708,
+              47.236743
+            ],
+            [
+              -119.892708,
+              47.235672
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-quincy",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.885737,
+              47.239075
+            ],
+            [
+              -119.88309,
+              47.239075
+            ],
+            [
+              -119.88309,
+              47.24007
+            ],
+            [
+              -119.885737,
+              47.24007
+            ],
+            [
+              -119.885737,
+              47.239075
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "vantage-sabey-quincy",
+        "zoneKind": "campus_boundary",
+        "label": "Vantage / Sabey Quincy Campus Campus Boundary",
+        "mwLabel": "200 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.83932,
+              47.250539
+            ],
+            [
+              -119.83068,
+              47.250539
+            ],
+            [
+              -119.83068,
+              47.255461
+            ],
+            [
+              -119.83932,
+              47.255461
+            ],
+            [
+              -119.83932,
+              47.250539
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "vantage-sabey-quincy",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "160 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.837678,
+              47.252705
+            ],
+            [
+              -119.834741,
+              47.252705
+            ],
+            [
+              -119.834741,
+              47.254083
+            ],
+            [
+              -119.837678,
+              47.254083
+            ],
+            [
+              -119.837678,
+              47.252705
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "vantage-sabey-quincy",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+40 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.834914,
+              47.251967
+            ],
+            [
+              -119.832322,
+              47.251967
+            ],
+            [
+              -119.832322,
+              47.253443
+            ],
+            [
+              -119.834914,
+              47.253443
+            ],
+            [
+              -119.834914,
+              47.251967
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "vantage-sabey-quincy",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (115 kV)",
+        "mwLabel": "115 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.837505,
+              47.251573
+            ],
+            [
+              -119.836296,
+              47.251573
+            ],
+            [
+              -119.836296,
+              47.252262
+            ],
+            [
+              -119.837505,
+              47.252262
+            ],
+            [
+              -119.837505,
+              47.251573
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "vantage-sabey-quincy",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.834093,
+              47.253763
+            ],
+            [
+              -119.832797,
+              47.253763
+            ],
+            [
+              -119.832797,
+              47.254403
+            ],
+            [
+              -119.834093,
+              47.254403
+            ],
+            [
+              -119.834093,
+              47.253763
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-mesa",
+        "zoneKind": "campus_boundary",
+        "label": "Meta Mesa Data Center Campus Boundary",
+        "mwLabel": "450 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.635463,
+              33.349868
+            ],
+            [
+              -111.635373,
+              33.336018
+            ],
+            [
+              -111.632485,
+              33.335995
+            ],
+            [
+              -111.630726,
+              33.336067
+            ],
+            [
+              -111.628681,
+              33.336419
+            ],
+            [
+              -111.626584,
+              33.337261
+            ],
+            [
+              -111.624344,
+              33.338626
+            ],
+            [
+              -111.625259,
+              33.339794
+            ],
+            [
+              -111.625664,
+              33.339709
+            ],
+            [
+              -111.62824,
+              33.33917
+            ],
+            [
+              -111.628181,
+              33.343951
+            ],
+            [
+              -111.626977,
+              33.343932
+            ],
+            [
+              -111.626193,
+              33.344392
+            ],
+            [
+              -111.623507,
+              33.345218
+            ],
+            [
+              -111.623182,
+              33.345443
+            ],
+            [
+              -111.623008,
+              33.345735
+            ],
+            [
+              -111.622987,
+              33.349787
+            ],
+            [
+              -111.635463,
+              33.349868
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-mesa",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "250 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.633098,
+              33.342098
+            ],
+            [
+              -111.628856,
+              33.342098
+            ],
+            [
+              -111.628856,
+              33.345982
+            ],
+            [
+              -111.633098,
+              33.345982
+            ],
+            [
+              -111.633098,
+              33.342098
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-mesa",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+200 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.629105,
+              33.340017
+            ],
+            [
+              -111.625362,
+              33.340017
+            ],
+            [
+              -111.625362,
+              33.344179
+            ],
+            [
+              -111.629105,
+              33.344179
+            ],
+            [
+              -111.629105,
+              33.340017
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-mesa",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 69 kV)",
+        "mwLabel": "230 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.632848,
+              33.338907
+            ],
+            [
+              -111.631101,
+              33.338907
+            ],
+            [
+              -111.631101,
+              33.340849
+            ],
+            [
+              -111.632848,
+              33.340849
+            ],
+            [
+              -111.632848,
+              33.338907
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-mesa",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "1.25 MGD",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.62792,
+              33.34508
+            ],
+            [
+              -111.626049,
+              33.34508
+            ],
+            [
+              -111.626049,
+              33.346884
+            ],
+            [
+              -111.62792,
+              33.346884
+            ],
+            [
+              -111.62792,
+              33.34508
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-goodyear",
+        "zoneKind": "campus_boundary",
+        "label": "Microsoft Goodyear Campus Campus Boundary",
+        "mwLabel": "350 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.445692,
+              33.487549
+            ],
+            [
+              -112.431228,
+              33.487549
+            ],
+            [
+              -112.431228,
+              33.497671
+            ],
+            [
+              -112.445692,
+              33.497671
+            ],
+            [
+              -112.445692,
+              33.487549
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-goodyear",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "150 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.440583,
+              33.492881
+            ],
+            [
+              -112.44058,
+              33.492332
+            ],
+            [
+              -112.440409,
+              33.49232
+            ],
+            [
+              -112.440414,
+              33.492351
+            ],
+            [
+              -112.436333,
+              33.492362
+            ],
+            [
+              -112.436346,
+              33.4929
+            ],
+            [
+              -112.440583,
+              33.492881
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-goodyear",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+200 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.438315,
+              33.490484
+            ],
+            [
+              -112.433976,
+              33.490484
+            ],
+            [
+              -112.433976,
+              33.493521
+            ],
+            [
+              -112.438315,
+              33.493521
+            ],
+            [
+              -112.438315,
+              33.490484
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-goodyear",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 69 kV)",
+        "mwLabel": "230 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.442654,
+              33.489675
+            ],
+            [
+              -112.440629,
+              33.489675
+            ],
+            [
+              -112.440629,
+              33.491092
+            ],
+            [
+              -112.442654,
+              33.491092
+            ],
+            [
+              -112.442654,
+              33.489675
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-goodyear",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.436941,
+              33.494179
+            ],
+            [
+              -112.434772,
+              33.494179
+            ],
+            [
+              -112.434772,
+              33.495495
+            ],
+            [
+              -112.436941,
+              33.495495
+            ],
+            [
+              -112.436941,
+              33.494179
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "edgecore-mesa",
+        "zoneKind": "campus_boundary",
+        "label": "EdgeCore Mesa Mega-Campus Campus Boundary",
+        "mwLabel": "496 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.622411,
+              33.342172
+            ],
+            [
+              -111.616769,
+              33.342172
+            ],
+            [
+              -111.616769,
+              33.346128
+            ],
+            [
+              -111.622411,
+              33.346128
+            ],
+            [
+              -111.622411,
+              33.342172
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "edgecore-mesa",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "112 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.62031,
+              33.343775
+            ],
+            [
+              -111.618869,
+              33.343772
+            ],
+            [
+              -111.618866,
+              33.344523
+            ],
+            [
+              -111.619967,
+              33.344525
+            ],
+            [
+              -111.619968,
+              33.344332
+            ],
+            [
+              -111.620308,
+              33.344333
+            ],
+            [
+              -111.62031,
+              33.343775
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "edgecore-mesa",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+384 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.619534,
+              33.343319
+            ],
+            [
+              -111.617841,
+              33.343319
+            ],
+            [
+              -111.617841,
+              33.344506
+            ],
+            [
+              -111.619534,
+              33.344506
+            ],
+            [
+              -111.619534,
+              33.343319
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "edgecore-mesa",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV)",
+        "mwLabel": "230 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.621226,
+              33.343003
+            ],
+            [
+              -111.620436,
+              33.343003
+            ],
+            [
+              -111.620436,
+              33.343557
+            ],
+            [
+              -111.621226,
+              33.343557
+            ],
+            [
+              -111.621226,
+              33.343003
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "edgecore-mesa",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -111.618998,
+              33.344763
+            ],
+            [
+              -111.618151,
+              33.344763
+            ],
+            [
+              -111.618151,
+              33.345277
+            ],
+            [
+              -111.618998,
+              33.345277
+            ],
+            [
+              -111.618998,
+              33.344763
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "tucson-pima-project-blue",
+        "zoneKind": "campus_boundary",
+        "label": "Tucson / Pima County \"Project Blue\" Proposal Campus Boundary",
+        "mwLabel": "286 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.795977,
+              32.044915
+            ],
+            [
+              -110.785643,
+              32.044915
+            ],
+            [
+              -110.785643,
+              32.052265
+            ],
+            [
+              -110.795977,
+              32.052265
+            ],
+            [
+              -110.795977,
+              32.044915
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "tucson-pima-project-blue",
+        "zoneKind": "planned_expansion",
+        "label": "Planned / Contested Buildout Pad",
+        "mwLabel": "+286 MW",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.790707,
+              32.047046
+            ],
+            [
+              -110.787607,
+              32.047046
+            ],
+            [
+              -110.787607,
+              32.049252
+            ],
+            [
+              -110.790707,
+              32.049252
+            ],
+            [
+              -110.790707,
+              32.047046
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "tucson-pima-project-blue",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (138 kV / 345 kV planned)",
+        "mwLabel": "138 kV",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.793807,
+              32.046458
+            ],
+            [
+              -110.79236,
+              32.046458
+            ],
+            [
+              -110.79236,
+              32.047487
+            ],
+            [
+              -110.793807,
+              32.047487
+            ],
+            [
+              -110.793807,
+              32.046458
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "tucson-pima-project-blue",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "0.09 MGD",
+        "status": "contested"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -110.789725,
+              32.049729
+            ],
+            [
+              -110.788175,
+              32.049729
+            ],
+            [
+              -110.788175,
+              32.050685
+            ],
+            [
+              -110.789725,
+              32.050685
+            ],
+            [
+              -110.789725,
+              32.049729
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-eagle-mountain",
+        "zoneKind": "campus_boundary",
+        "label": "Meta Eagle Mountain Campus Campus Boundary",
+        "mwLabel": "450 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.024706,
+              40.261582
+            ],
+            [
+              -112.022805,
+              40.261576
+            ],
+            [
+              -112.022818,
+              40.259112
+            ],
+            [
+              -112.015801,
+              40.259089
+            ],
+            [
+              -112.015787,
+              40.261575
+            ],
+            [
+              -112.010573,
+              40.261558
+            ],
+            [
+              -112.010405,
+              40.27607
+            ],
+            [
+              -112.024638,
+              40.276159
+            ],
+            [
+              -112.024706,
+              40.261582
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-eagle-mountain",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "250 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.021993,
+              40.266596
+            ],
+            [
+              -112.017131,
+              40.266596
+            ],
+            [
+              -112.017131,
+              40.271375
+            ],
+            [
+              -112.021993,
+              40.271375
+            ],
+            [
+              -112.021993,
+              40.266596
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-eagle-mountain",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+200 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.017417,
+              40.264035
+            ],
+            [
+              -112.013127,
+              40.264035
+            ],
+            [
+              -112.013127,
+              40.269156
+            ],
+            [
+              -112.017417,
+              40.269156
+            ],
+            [
+              -112.017417,
+              40.264035
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-eagle-mountain",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (138 kV / 345 kV)",
+        "mwLabel": "138 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.021707,
+              40.26267
+            ],
+            [
+              -112.019705,
+              40.26267
+            ],
+            [
+              -112.019705,
+              40.265059
+            ],
+            [
+              -112.021707,
+              40.265059
+            ],
+            [
+              -112.021707,
+              40.26267
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "meta-eagle-mountain",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -112.016058,
+              40.270266
+            ],
+            [
+              -112.013913,
+              40.270266
+            ],
+            [
+              -112.013913,
+              40.272485
+            ],
+            [
+              -112.016058,
+              40.272485
+            ],
+            [
+              -112.016058,
+              40.270266
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "switch-citadel-tahoe-reno",
+        "zoneKind": "campus_boundary",
+        "label": "Switch Citadel Campus (Tahoe Reno Industrial Center) Campus Boundary",
+        "mwLabel": "650 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.490407,
+              39.504601
+            ],
+            [
+              -119.460593,
+              39.504601
+            ],
+            [
+              -119.460593,
+              39.523599
+            ],
+            [
+              -119.490407,
+              39.523599
+            ],
+            [
+              -119.490407,
+              39.504601
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "switch-citadel-tahoe-reno",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "130 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.484742,
+              39.51296
+            ],
+            [
+              -119.474606,
+              39.51296
+            ],
+            [
+              -119.474606,
+              39.518279
+            ],
+            [
+              -119.484742,
+              39.518279
+            ],
+            [
+              -119.484742,
+              39.51296
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "switch-citadel-tahoe-reno",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+520 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.475202,
+              39.51011
+            ],
+            [
+              -119.466258,
+              39.51011
+            ],
+            [
+              -119.466258,
+              39.51581
+            ],
+            [
+              -119.475202,
+              39.51581
+            ],
+            [
+              -119.475202,
+              39.51011
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "switch-citadel-tahoe-reno",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (345 kV / 120 kV)",
+        "mwLabel": "345 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.484146,
+              39.508591
+            ],
+            [
+              -119.479972,
+              39.508591
+            ],
+            [
+              -119.479972,
+              39.51125
+            ],
+            [
+              -119.484146,
+              39.51125
+            ],
+            [
+              -119.484146,
+              39.508591
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "switch-citadel-tahoe-reno",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -119.472369,
+              39.517045
+            ],
+            [
+              -119.467897,
+              39.517045
+            ],
+            [
+              -119.467897,
+              39.519514
+            ],
+            [
+              -119.472369,
+              39.519514
+            ],
+            [
+              -119.472369,
+              39.517045
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-cheyenne",
+        "zoneKind": "campus_boundary",
+        "label": "Microsoft Cheyenne Campus Campus Boundary",
+        "mwLabel": "600 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.720525,
+              41.142054
+            ],
+            [
+              -104.717978,
+              41.139147
+            ],
+            [
+              -104.711867,
+              41.141818
+            ],
+            [
+              -104.711943,
+              41.141932
+            ],
+            [
+              -104.712313,
+              41.141991
+            ],
+            [
+              -104.712572,
+              41.142208
+            ],
+            [
+              -104.712986,
+              41.142678
+            ],
+            [
+              -104.71335,
+              41.143218
+            ],
+            [
+              -104.713659,
+              41.143833
+            ],
+            [
+              -104.713836,
+              41.144394
+            ],
+            [
+              -104.713906,
+              41.144978
+            ],
+            [
+              -104.714349,
+              41.14523
+            ],
+            [
+              -104.714902,
+              41.145226
+            ],
+            [
+              -104.715894,
+              41.144769
+            ],
+            [
+              -104.715802,
+              41.144514
+            ],
+            [
+              -104.720525,
+              41.142054
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-cheyenne",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "180 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.718884,
+              41.141825
+            ],
+            [
+              -104.71594,
+              41.141825
+            ],
+            [
+              -104.71594,
+              41.143528
+            ],
+            [
+              -104.718884,
+              41.143528
+            ],
+            [
+              -104.718884,
+              41.141825
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-cheyenne",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+420 MW",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.716113,
+              41.140913
+            ],
+            [
+              -104.713516,
+              41.140913
+            ],
+            [
+              -104.713516,
+              41.142737
+            ],
+            [
+              -104.716113,
+              41.142737
+            ],
+            [
+              -104.716113,
+              41.140913
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-cheyenne",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (230 kV / 115 kV)",
+        "mwLabel": "230 kV",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.718711,
+              41.140426
+            ],
+            [
+              -104.717499,
+              41.140426
+            ],
+            [
+              -104.717499,
+              41.141278
+            ],
+            [
+              -104.718711,
+              41.141278
+            ],
+            [
+              -104.718711,
+              41.140426
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "microsoft-cheyenne",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "expanding"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -104.715291,
+              41.143133
+            ],
+            [
+              -104.713992,
+              41.143133
+            ],
+            [
+              -104.713992,
+              41.143924
+            ],
+            [
+              -104.715291,
+              41.143924
+            ],
+            [
+              -104.715291,
+              41.143133
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "santa-clara-dlr-equinix",
+        "zoneKind": "campus_boundary",
+        "label": "Digital Realty / Equinix Santa Clara Hub Campus Boundary",
+        "mwLabel": "320 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.955949,
+              37.37408
+            ],
+            [
+              -121.950731,
+              37.37408
+            ],
+            [
+              -121.950731,
+              37.37756
+            ],
+            [
+              -121.955949,
+              37.37756
+            ],
+            [
+              -121.955949,
+              37.37408
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "santa-clara-dlr-equinix",
+        "zoneKind": "operational_hall",
+        "label": "Operational Data Halls",
+        "mwLabel": "220 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.953832,
+              37.376095
+            ],
+            [
+              -121.953832,
+              37.3759
+            ],
+            [
+              -121.953832,
+              37.375881
+            ],
+            [
+              -121.953831,
+              37.375552
+            ],
+            [
+              -121.952842,
+              37.375549
+            ],
+            [
+              -121.95284,
+              37.375709
+            ],
+            [
+              -121.95284,
+              37.375922
+            ],
+            [
+              -121.95284,
+              37.376027
+            ],
+            [
+              -121.95284,
+              37.376059
+            ],
+            [
+              -121.95284,
+              37.376095
+            ],
+            [
+              -121.953832,
+              37.376095
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "santa-clara-dlr-equinix",
+        "zoneKind": "planned_expansion",
+        "label": "Expansion Phase Parcel",
+        "mwLabel": "+100 MW",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.953288,
+              37.375089
+            ],
+            [
+              -121.951722,
+              37.375089
+            ],
+            [
+              -121.951722,
+              37.376133
+            ],
+            [
+              -121.953288,
+              37.376133
+            ],
+            [
+              -121.953288,
+              37.375089
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "santa-clara-dlr-equinix",
+        "zoneKind": "substation_yard",
+        "label": "Utility Substation (60 kV / 115 kV)",
+        "mwLabel": "60 kV",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.954884,
+              37.374783
+            ],
+            [
+              -121.954092,
+              37.374783
+            ],
+            [
+              -121.954092,
+              37.375326
+            ],
+            [
+              -121.954884,
+              37.375326
+            ],
+            [
+              -121.954884,
+              37.374783
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "facilityId": "santa-clara-dlr-equinix",
+        "zoneKind": "cooling_yard",
+        "label": "Cooling / Heat Rejection Yard",
+        "mwLabel": "Closed-Loop / NDA",
+        "status": "operational"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -121.952825,
+              37.376337
+            ],
+            [
+              -121.951977,
+              37.376337
+            ],
+            [
+              -121.951977,
+              37.376834
+            ],
+            [
+              -121.952825,
+              37.376834
+            ],
+            [
+              -121.952825,
+              37.376337
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

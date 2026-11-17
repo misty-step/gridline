@@ -1,0 +1,172 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT_DIR"
+
+usage() {
+  cat <<'EOF'
+Usage: ./scripts/check <command>
+
+Commands:
+  doctor   Verify toolchain, dependencies, core repository files, and DESIGN.md/tokens.css parity
+  fast     Run TypeScript typecheck, Bun unit/integration tests, static data validation, and Vite build (<120s)
+  verify   Run fast checks + live network data verification + CLI smoke + local wrangler dev HTTP smoke (<300s)
+EOF
+}
+
+check_token_parity() {
+  local tokens_file="src/client/styles/tokens.css"
+  local design_file="DESIGN.md"
+  if [[ ! -f "$tokens_file" || ! -f "$design_file" ]]; then
+    echo "WARN: skipping token parity check (missing $tokens_file or $design_file)"
+    return 0
+  fi
+
+  bun -e '
+    import { readFileSync } from "node:fs";
+    const css = readFileSync("src/client/styles/tokens.css", "utf8");
+    const doc = readFileSync("DESIGN.md", "utf8");
+    const cssVars = Array.from(new Set(css.match(/--[a-zA-Z][a-zA-Z0-9_-]*(?=\s*:)/g) ?? [])).sort();
+    const docVars = Array.from(new Set(doc.match(/--[a-zA-Z][a-zA-Z0-9_-]*/g) ?? [])).sort();
+    const missingInDoc = cssVars.filter((v) => !docVars.includes(v));
+    const extraInDoc = docVars.filter((v) => !cssVars.includes(v));
+    if (missingInDoc.length > 0 || extraInDoc.length > 0) {
+      console.error("FAIL: DESIGN.md <-> tokens.css parity mismatch");
+      if (missingInDoc.length) console.error("  Missing in DESIGN.md:", missingInDoc.join(", "));
+      if (extraInDoc.length) console.error("  Extra in DESIGN.md:", extraInDoc.join(", "));
+      process.exit(1);
+    }
+    console.log(`Token parity OK (${cssVars.length} custom properties matched 1:1).`);
+  '
+}
+
+cmd_doctor() {
+  echo "==> Gridline Doctor"
+  command -v bun >/dev/null || { echo "FAIL: bun not found"; exit 1; }
+  command -v git >/dev/null || { echo "FAIL: git not found"; exit 1; }
+  echo "bun: $(bun --version)"
+  echo "git: $(git --version)"
+  echo "wrangler: $(./node_modules/.bin/wrangler --version)"
+
+  if [[ ! -d node_modules ]]; then
+    echo "FAIL: node_modules missing (run bun install)"
+    exit 1
+  fi
+
+  local required_files=(
+    package.json
+    tsconfig.json
+    vite.config.ts
+    wrangler.jsonc
+    SPEC.md
+    DESIGN.md
+    AGENTS.md
+    README.md
+    docs/decisions/0001-stack-and-architecture.md
+    src/shared/types.ts
+    src/shared/wetbulb.ts
+    src/shared/validate.ts
+    src/worker/index.ts
+    src/worker/telemetry.ts
+    src/worker/regulatory.ts
+    src/data/index.ts
+    index.html
+    src/client/styles/tokens.css
+  )
+  for f in "${required_files[@]}"; do
+    if [[ ! -f "$f" ]]; then
+      echo "FAIL: missing required file $f"
+      exit 1
+    fi
+  done
+
+  check_token_parity
+  echo "Doctor checks PASSED."
+}
+
+cmd_fast() {
+  echo "==> Gridline Fast Checks"
+  echo "--- [1/4] TypeScript typecheck"
+  bun run typecheck
+  echo "--- [2/4] Bun tests"
+  bun test
+  echo "--- [3/4] Static dataset & invariant verification"
+  bun run scripts/verify-data.ts
+  echo "--- [4/4] Production client build"
+  bun run build
+  echo "Fast checks PASSED."
+}
+
+cmd_verify() {
+  echo "==> Gridline Full Verification"
+  cmd_fast
+
+  echo "--- [5/7] Live upstream dataset & URL verification (--network)"
+  bun run scripts/verify-data.ts --network
+
+  echo "--- [6/7] CLI smoke checks"
+  local first_id
+  first_id="$(bun -e 'import { ALL_FACILITIES } from "./src/data/index.ts"; console.log(ALL_FACILITIES[0]?.id ?? "");')"
+  if [[ -z "$first_id" ]]; then
+    echo "FAIL: no facilities found for CLI smoke test"
+    exit 1
+  fi
+  bun run cli summary
+  bun run cli list --limit 5
+  bun run cli get "$first_id"
+  bun run cli live "$first_id"
+
+  echo "--- [7/7] Local wrangler dev HTTP smoke test"
+  local port=8799
+  local insp_port=9239
+  local log_file="/tmp/gridline-wrangler-verify.log"
+  rm -f "$log_file"
+
+  ./node_modules/.bin/wrangler dev --ip 127.0.0.1 --port "$port" --inspector-port "$insp_port" --local --show-interactive-dev-session false >"$log_file" 2>&1 &
+  local worker_pid=$!
+
+  cleanup_worker() {
+    if kill -0 "$worker_pid" >/dev/null 2>&1; then
+      kill "$worker_pid" >/dev/null 2>&1 || true
+      wait "$worker_pid" >/dev/null 2>&1 || true
+    fi
+    rm -f "$log_file"
+  }
+  trap cleanup_worker EXIT
+
+  local ready=0
+  for _ in $(seq 1 40); do
+    if curl -fsS "http://127.0.0.1:${port}/api/health" >/dev/null 2>&1; then
+      ready=1
+      break
+    fi
+    sleep 0.5
+  done
+  if [[ "$ready" -ne 1 ]]; then
+    echo "FAIL: wrangler dev failed to become healthy within 20s"
+    cat "$log_file" || true
+    exit 1
+  fi
+
+  local base="http://127.0.0.1:${port}"
+  curl -fsS "${base}/api/health" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.status !== "ok" || d.facilityCount < 1) process.exit(1); console.log("GET /api/health OK:", d.facilityCount, "facilities");'
+  curl -fsS "${base}/api/facilities" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.facilities) || !d.footprints?.features?.length || !d.isoRegions?.features?.length) process.exit(1); console.log("GET /api/facilities OK:", d.facilities.length, "facilities");'
+  curl -fsS "${base}/api/facilities?format=geojson" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.type !== "FeatureCollection" || !d.features.length) process.exit(1); console.log("GET /api/facilities?format=geojson OK:", d.features.length, "features");'
+  curl -fsS "${base}/api/facilities?format=csv" | head -n 2
+  curl -fsS "${base}/api/facilities/${first_id}" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.facility?.id !== "'"$first_id"'") process.exit(1); console.log("GET /api/facilities/:id OK:", d.facility.id);'
+  curl -fsS "${base}/api/telemetry/live?facilityId=${first_id}" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.facilityId !== "'"$first_id"'") process.exit(1); console.log("GET /api/telemetry/live OK:", d.weather.status, d.hydrology.status);'
+  curl -fsS "${base}/api/regulatory/live" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.items)) process.exit(1); console.log("GET /api/regulatory/live OK:", d.status, d.items.length, "items");'
+  curl -fsS "${base}/" | grep -qi "<!doctype html" && echo "GET / (SPA ASSETS) OK"
+
+  cleanup_worker
+  trap - EXIT
+  echo "Full verification PASSED."
+}
+
+case "${1:-}" in
+  doctor) cmd_doctor ;;
+  fast)   cmd_fast ;;
+  verify) cmd_verify ;;
+  *)      usage; exit 1 ;;
+esac

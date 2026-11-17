@@ -1,0 +1,4246 @@
+[
+  {
+    "id": "stargate-abilene",
+    "name": "Stargate Abilene AI Campus",
+    "marketCluster": "West Texas AI Corridor",
+    "city": "Abilene",
+    "county": "Taylor",
+    "state": "TX",
+    "isoRegion": "ERCOT",
+    "coordinates": [
+      -99.78808,
+      32.5028
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Flagship Stargate AI compute campus developed on Lancium's Clean Campus in Abilene, combining 1.2 GW ERCOT controllable-load interconnection, Crusoe AI factories serving Oracle/OpenAI and Microsoft expansions, and onsite gas bridge turbines.",
+    "parcel": {
+      "acreage": {
+        "value": 1100,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-04",
+        "basis": "Lancium Clean Campus Abilene master site exceeding 1,000 contiguous industrial acres.",
+        "sourceId": "src-lancium"
+      },
+      "grossSqFt": {
+        "value": 4000000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-06",
+        "basis": "Estimated gross campus floor area across multi-phase Crusoe AI factory buildings.",
+        "sourceId": "src-crusoe-inside"
+      },
+      "dataHallCount": 8,
+      "zoningDesignation": "Heavy Industrial / Clean Energy Campus",
+      "parcelNote": "Situated on Spinks Road in northeast Abilene with dedicated high-voltage transmission taps into ERCOT West Zone."
+    },
+    "stakeholders": {
+      "developer": "Lancium / Crusoe Energy Systems",
+      "operator": "Crusoe Energy Systems",
+      "anchorTenants": [
+        {
+          "name": "Oracle / OpenAI (Stargate Phase I)",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-crusoe-inside"
+        },
+        {
+          "name": "Microsoft AI Infrastructure (900 MW expansion)",
+          "role": "ai_compute_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-crusoe-msft"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 200,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-06",
+        "basis": "Initial Stargate AI factory phase energized ahead of full multi-phase ramp.",
+        "sourceId": "src-crusoe-inside"
+      },
+      "totalPlannedMw": {
+        "value": 1200,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2026-05",
+        "basis": "1.2 GW ERCOT approved interconnection on Lancium Clean Campus, expanding with adjacent 900 MW Microsoft build.",
+        "sourceId": "src-crusoe-msft"
+      },
+      "utilityProvider": "AEP Texas / Taylor Electric Cooperative (ERCOT)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "345 kV / 138 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "On-site GE Vernova natural gas turbines with SCR emission controls paired with diesel backup units under TCEQ PSD review.",
+      "cleanPowerAndTariffSummary": "Operates as an ERCOT Controllable Load Resource (CLR) able to curtail during scarcity intervals, paired with West Texas wind availability and Texas SB 6 large-load rules."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Crusoe and Lancium state closed-loop liquid cooling minimizes ongoing draw after initial fill, but site-level MGD telemetry is not publicly reported.",
+        "sourceId": "src-lancium"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual water withdrawal is not disaggregated in public municipal or TCEQ filings for the campus.",
+        "sourceId": "src-lancium"
+      },
+      "pue": {
+        "value": 1.15,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2026-04",
+        "basis": "Estimated annualized design PUE for high-density direct-to-chip liquid cooling.",
+        "sourceId": "src-crusoe-inside"
+      },
+      "waterSource": "City of Abilene municipal water (initial closed-loop fill & make-up)",
+      "watershedName": "Clear Fork Brazos River / Elm Creek",
+      "watershedStress": "high",
+      "usgsGaugeSiteId": "08083430",
+      "nwsStationId": "KABI"
+    },
+    "regulatory": {
+      "permittingStage": "ERCOT Large Load Approved / Texas SB 6 Compliance",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Rapid expansion of behind-the-meter gas turbines and 1+ GW ERCOT draws places the campus at the center of Texas SB 6 large-load curtailment and cost-allocation implementation.",
+      "permits": [
+        {
+          "title": "ERCOT Large Flexible Load & SB 6 Grid Assessment",
+          "agency": "ERCOT",
+          "docketOrPermitId": "ERCOT-SB6-2026",
+          "date": "2026-07-29",
+          "status": "Active Grid Oversight",
+          "url": "https://www.ercot.com/files/docs/2026/07/29/ERCOT-Senate-July-29-Panel-1-Assessing-The-Grid.pdf"
+        },
+        {
+          "title": "Texas Senate Bill 6 Large Load Cost Allocation Analysis",
+          "agency": "Texas Legislature",
+          "docketOrPermitId": "89R-SB6",
+          "date": "2025-05-25",
+          "status": "Enacted",
+          "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Controllable Load Resource automation turns AI training blocks into grid-stabilizing flexible demand.",
+          "evidence": "Lancium's ESIG filing details sub-second load ramp and curtailment capabilities across West Texas wind surpluses.",
+          "sourceId": "src-esig"
+        },
+        {
+          "claim": "Closed-loop liquid cooling avoids continuous evaporative tower depletion in semi-arid Taylor County.",
+          "evidence": "Lancium discloses recirculating liquid loops requiring minimal supplemental municipal water post-fill.",
+          "sourceId": "src-lancium"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Gigawatt-scale load growth outpaces ERCOT transmission buildout and drives fossil bridge generation.",
+          "evidence": "ERCOT's July 2026 Senate briefing highlights surging large-load interconnection queues requiring multi-billion transmission upgrades.",
+          "sourceId": "src-ercot"
+        },
+        {
+          "claim": "Residential ratepayers face cost-shift risks without strict collateral and transmission allocation guardrails.",
+          "evidence": "Texas SB 6 legislative analysis cites stranded transmission risk when multi-GW AI campuses seek accelerated grid ties.",
+          "sourceId": "src-tx-sb6"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-lancium",
+        "title": "Lancium Clean Campus Locations & Closed-Loop Architecture",
+        "publisher": "Lancium",
+        "date": "2026-04-01",
+        "kind": "operator_disclosure",
+        "url": "https://lancium.com/locations/"
+      },
+      {
+        "id": "src-crusoe-msft",
+        "title": "Crusoe Announces 900 MW AI Factory Expansion in Abilene",
+        "publisher": "Crusoe Energy",
+        "date": "2026-05-15",
+        "kind": "operator_disclosure",
+        "url": "https://www.crusoe.ai/resources/newsroom/crusoe-announces-new-900-mw-ai-factory-campus-in-abilene-texas-to-support-microsoft-ai-infrastructure"
+      },
+      {
+        "id": "src-crusoe-inside",
+        "title": "An Inside Look at the Abilene AI Data Center",
+        "publisher": "Crusoe Energy",
+        "date": "2026-03-20",
+        "kind": "operator_disclosure",
+        "url": "https://www.crusoe.ai/resources/blog/an-inside-look-at-the-abilene-ai-data-center"
+      },
+      {
+        "id": "src-esig",
+        "title": "ESIG Large Load Task Force Presentation: Lancium Clean Campus",
+        "publisher": "Energy Systems Integration Group",
+        "date": "2025-05-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.esig.energy/wp-content/uploads/2025/05/ESIG_LLTF_PresentationLancium.pdf"
+      },
+      {
+        "id": "src-ercot",
+        "title": "ERCOT Senate Panel Briefing: Assessing the Grid",
+        "publisher": "ERCOT",
+        "date": "2026-07-29",
+        "kind": "utility_iso_record",
+        "url": "https://www.ercot.com/files/docs/2026/07/29/ERCOT-Senate-July-29-Panel-1-Assessing-The-Grid.pdf"
+      },
+      {
+        "id": "src-tx-sb6",
+        "title": "Texas 89R SB 6 Bill Analysis (Large Load Cost Allocation)",
+        "publisher": "Texas Legislature",
+        "date": "2025-05-25",
+        "kind": "regulatory_filing",
+        "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "qts-fort-worth-irving",
+    "name": "QTS Fort Worth / Irving Mega-Campus",
+    "marketCluster": "Dallas-Fort Worth Metroplex",
+    "city": "Fort Worth",
+    "county": "Tarrant & Dallas",
+    "state": "TX",
+    "isoRegion": "ERCOT",
+    "coordinates": [
+      -97.25927,
+      32.98891
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Dual-node North Texas colocation and hyperscale platform operated by QTS across 53 acres in North Fort Worth (Park Vista Blvd) and 56 acres in Irving (Longhorn Dr), backed by Oncor dual-fed substations and zero-evaporation air chillers.",
+    "parcel": {
+      "acreage": {
+        "value": 109,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-11",
+        "basis": "Combined 53-acre Fort Worth campus (14100 Park Vista Blvd) and 56-acre Irving campus (Longhorn Dr).",
+        "sourceId": "src-qts-ftw"
+      },
+      "grossSqFt": {
+        "value": 1170000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-11",
+        "basis": "Combined FTW1 DC1/DC2 (~470k sq ft) and Irving converted semiconductor/DC campus (~700k sq ft).",
+        "sourceId": "src-qts-irv"
+      },
+      "dataHallCount": 8,
+      "zoningDesignation": "Industrial / Technology Campus",
+      "parcelNote": "Anchor coordinates centered on QTS Fort Worth 1 (Park Vista Blvd) with companion DFW campus 20 miles east in Irving."
+    },
+    "stakeholders": {
+      "developer": "QTS Data Centers",
+      "operator": "QTS Data Centers",
+      "anchorTenants": [
+        {
+          "name": "Multi-Tenant Cloud & Enterprise Colocation",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-qts-ftw"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 165,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-11",
+        "basis": "Combined energized capacity across Irving (165 MW campus) and initial Fort Worth phases.",
+        "sourceId": "src-qts-irv"
+      },
+      "totalPlannedMw": {
+        "value": 365,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-11",
+        "basis": "200 MW Fort Worth master plan plus 165 MW Irving campus capacity.",
+        "sourceId": "src-qts-ftw"
+      },
+      "utilityProvider": "Oncor Electric Delivery (ERCOT)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "138 kV dual-fed",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "N+1 diesel backup generator arrays per building; exact aggregate permitted unit count not consolidated in public filings.",
+      "cleanPowerAndTariffSummary": "Served via Oncor transmission substations in ERCOT North Zone with QTS corporate renewable energy matching and LEED-certified designs."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "air_chiller_zero_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "QTS deploys water-free closed-loop chillers at Fort Worth and does not publish site-level MGD metering.",
+        "sourceId": "src-qts-ftw"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual site water volume is not disclosed in public municipal or corporate filings.",
+        "sourceId": "src-qts-ftw"
+      },
+      "pue": {
+        "value": 1.25,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated PUE for air-cooled chiller architecture in humid-subtropical DFW climate.",
+        "sourceId": "src-qts-ftw"
+      },
+      "waterSource": "City of Fort Worth / City of Irving municipal closed-loop fill",
+      "watershedName": "West Fork Trinity River",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "08048000",
+      "nwsStationId": "KAFW"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / Phased Expansion under Texas SB 6",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Operating in DFW's dense industrial corridor; future Oncor expansions above 75 MW fall under Texas SB 6 large-load interconnection and curtailment rules.",
+      "permits": [
+        {
+          "title": "Texas SB 6 Large Load Curtailment & Interconnection Analysis",
+          "agency": "Texas Legislature",
+          "docketOrPermitId": "89R-SB6",
+          "date": "2025-05-25",
+          "status": "Enacted",
+          "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+        },
+        {
+          "title": "ERCOT Large Load Grid Reliability Assessment",
+          "agency": "ERCOT",
+          "docketOrPermitId": "ERCOT-SB6-2026",
+          "date": "2026-07-29",
+          "status": "Active Oversight",
+          "url": "https://www.ercot.com/files/docs/2026/07/29/ERCOT-Senate-July-29-Panel-1-Assessing-The-Grid.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Zero-evaporation closed-loop chillers protect North Texas municipal water supplies during summer heatwaves.",
+          "evidence": "QTS Fort Worth specifies water-free cooling architecture eliminating continuous cooling-tower evaporation.",
+          "sourceId": "src-qts-ftw"
+        },
+        {
+          "claim": "Brownfield redevelopment in Irving repurposed an inactive semiconductor fab into high-density cloud capacity.",
+          "evidence": "QTS converted the Longhorn Drive manufacturing site into a 165 MW campus.",
+          "sourceId": "src-qts-irv"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Air-cooled chillers trade water savings for higher peak summer electricity draw during ERCOT reserve tight spots.",
+          "evidence": "ERCOT briefings emphasize DFW summer peak air-conditioning and data center load coincidence driving transmission needs.",
+          "sourceId": "src-ercot"
+        },
+        {
+          "claim": "Rapid DFW colocation clustering accelerates substation and rate-base expansion pressures across Oncor.",
+          "evidence": "Texas SB 6 legislative review warns large-load clusters require dedicated cost recovery to shield residential ratepayers.",
+          "sourceId": "src-tx-sb6"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-qts-ftw",
+        "title": "QTS Fort Worth Data Center Campus Overview",
+        "publisher": "QTS Data Centers",
+        "date": "2026-01-15",
+        "kind": "operator_disclosure",
+        "url": "https://q.com/data-centers/fort-worth/"
+      },
+      {
+        "id": "src-qts-irv",
+        "title": "QTS Irving Campus Expansion Announcement",
+        "publisher": "QTS Data Centers",
+        "date": "2025-10-01",
+        "kind": "operator_disclosure",
+        "url": "https://q.com/resources/meeting-the-dallas-data-center-markets-growing-inventory-demands-with-a-new-building-in-irving-texas/"
+      },
+      {
+        "id": "src-ercot",
+        "title": "ERCOT Senate Panel Briefing: Assessing the Grid",
+        "publisher": "ERCOT",
+        "date": "2026-07-29",
+        "kind": "utility_iso_record",
+        "url": "https://www.ercot.com/files/docs/2026/07/29/ERCOT-Senate-July-29-Panel-1-Assessing-The-Grid.pdf"
+      },
+      {
+        "id": "src-tx-sb6",
+        "title": "Texas 89R SB 6 Bill Analysis",
+        "publisher": "Texas Legislature",
+        "date": "2025-05-25",
+        "kind": "regulatory_filing",
+        "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-temple",
+    "name": "Meta Temple Data Center",
+    "marketCluster": "Central Texas I-35 Corridor",
+    "city": "Temple",
+    "county": "Bell",
+    "state": "TX",
+    "isoRegion": "ERCOT",
+    "coordinates": [
+      -97.36718,
+      31.12982
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "Meta's second Texas data center and first US AI-optimized production campus, spanning 386 acres in Temple with 100% renewable energy matching via Oncor/ERCOT and high-efficiency closed-loop cooling.",
+    "parcel": {
+      "acreage": {
+        "value": 386,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "386-acre parcel along Industrial Blvd in north Temple industrial park.",
+        "sourceId": "src-meta-suedc"
+      },
+      "grossSqFt": {
+        "value": 900000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "Approximately 900,000 sq ft operational footprint at full initial campus phase.",
+        "sourceId": "src-meta-pdf"
+      },
+      "dataHallCount": 2,
+      "zoningDesignation": "Light/Heavy Industrial (Temple Industrial Park)",
+      "parcelNote": "Located at 3101 Industrial Blvd near I-35 and Temple Regional Airport."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc.",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta AI & Production Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-pdf"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 152,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Reported operational electrical load across Meta's initial 900k sq ft Temple campus.",
+        "sourceId": "src-meta-suedc"
+      },
+      "totalPlannedMw": {
+        "value": 250,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Estimated master-planned capacity across multi-building campus buildout.",
+        "sourceId": "src-meta-suedc"
+      },
+      "utilityProvider": "Oncor Electric Delivery (ERCOT)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "138 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Stationary diesel standby generators for critical N+1 failover; exact permitted unit count undisclosed in fact sheet.",
+      "cleanPowerAndTariffSummary": "Meta matches 100% of campus electricity consumption with Texas solar and wind PPAs inside ERCOT."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Meta reports overall 80%+ water efficiency vs industry average but does not disclose site-level Temple MGD withdrawals.",
+        "sourceId": "src-meta-pdf"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Site-specific annual water consumption is omitted from Meta's Temple fact sheet.",
+        "sourceId": "src-meta-pdf"
+      },
+      "pue": {
+        "value": 1.1,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "Meta corporate fleet design PUE benchmark utilizing outside-air cooling >50% of the year.",
+        "sourceId": "src-meta-pdf"
+      },
+      "waterSource": "City of Temple municipal water (Leon River / Belton Lake)",
+      "watershedName": "Leon River / Brazos Basin",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "08102500",
+      "nwsStationId": "KPWG"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / City & County Chapter 312/380 Tax Incentives",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Constructed with local Chapter 312/380 economic agreements with Temple and Bell County; Meta funds direct municipal water/wastewater tie-in upgrades.",
+      "permits": [
+        {
+          "title": "Meta Temple Data Center Official Fact Sheet & Operational Summary",
+          "agency": "Meta Infrastructure",
+          "docketOrPermitId": "META-TEMPLE-2026",
+          "date": "2026-09-01",
+          "status": "Operational",
+          "url": "https://datacenters.atmeta.com/wp-content/uploads/2026/09/Metas-Temple-Data-Center.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "$1.2B+ capital investment delivered ~1,200 peak construction jobs, ~100 permanent roles, and robotics lab grants at Temple College.",
+          "evidence": "Meta's September 2026 Temple fact sheet documents workforce partnerships and local municipal utility fee coverage.",
+          "sourceId": "src-meta-pdf"
+        },
+        {
+          "claim": "Outside-air economization and closed-loop AI cooling achieve ~80% water reduction relative to legacy evaporative facilities.",
+          "evidence": "Meta disclosures highlight dry/air cooling for more than half the year paired with 100% renewable PPA matching.",
+          "sourceId": "src-meta-hello"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Site-level annual gallons remain undisclosed despite Central Texas drought sensitivity in the Brazos Basin.",
+          "evidence": "Meta's public fact sheet withholds exact annual MGY consumption while relying on regional efficiency analogies.",
+          "sourceId": "src-meta-pdf"
+        },
+        {
+          "claim": "Large industrial tax abatements and high ERCOT load concentration draw scrutiny over net fiscal return per MW.",
+          "evidence": "Regional policy trackers note substantial multi-year municipal incentives alongside 150+ MW grid demand.",
+          "sourceId": "src-meta-suedc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-pdf",
+        "title": "Meta's Temple Data Center Fact Sheet",
+        "publisher": "Meta",
+        "date": "2026-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/wp-content/uploads/2026/09/Metas-Temple-Data-Center.pdf"
+      },
+      {
+        "id": "src-meta-hello",
+        "title": "Hello Temple: Meta Breaks Ground on AI-Optimized Campus",
+        "publisher": "Meta",
+        "date": "2022-03-23",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/2022/03/hello-temple/"
+      },
+      {
+        "id": "src-jedunn",
+        "title": "JE Dunn Meta Temple Data Center Project Profile",
+        "publisher": "JE Dunn Construction",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://jedunn.com/projects/meta-temple-data-center/"
+      },
+      {
+        "id": "src-meta-suedc",
+        "title": "Meta Temple Data Center Profile",
+        "publisher": "SueDataCenters",
+        "date": "2026-01-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://suedatacenters.org/data-centers/meta-temple-tx"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "google-midlothian-red-oak",
+    "name": "Google Midlothian / Red Oak Campus",
+    "marketCluster": "Dallas-Fort Worth Metroplex",
+    "city": "Midlothian",
+    "county": "Ellis",
+    "state": "TX",
+    "isoRegion": "ERCOT",
+    "coordinates": [
+      -97.05946,
+      32.44196
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Twin Ellis County hyperscale complex combining Google's 375-acre RailPort Business Park campus in Midlothian (182.3 MGY disclosed water draw) and its expanding 166-acre Red Oak campus nearby.",
+    "parcel": {
+      "acreage": {
+        "value": 541,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "375 acres at Midlothian RailPort Business Park plus 166 acres at FM 664 / Red Oak.",
+        "sourceId": "src-quiddity"
+      },
+      "grossSqFt": {
+        "value": 1100000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-06",
+        "basis": "Combined Midlothian data halls plus Red Oak Phase 1 (285,000 sq ft) and subsequent expansions.",
+        "sourceId": "src-redoak"
+      },
+      "dataHallCount": 4,
+      "zoningDesignation": "Heavy Industrial (RailPort Business Park / Ellis County)",
+      "parcelNote": "Centered on 3441 Railport Pkwy in Midlothian, paired with Google's Red Oak campus 12 miles northeast."
+    },
+    "stakeholders": {
+      "developer": "Google LLC",
+      "operator": "Google LLC",
+      "anchorTenants": [
+        {
+          "name": "Google Cloud & Search Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-g-tx"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 100,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-06",
+        "basis": "Estimated energized critical load across Midlothian and Red Oak Phase 1 buildings.",
+        "sourceId": "src-g-tx"
+      },
+      "totalPlannedMw": {
+        "value": 300,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01",
+        "basis": "Projected buildout across Midlothian RailPort and Red Oak multi-building phases.",
+        "sourceId": "src-redoak"
+      },
+      "utilityProvider": "Oncor Electric Delivery (ERCOT)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "138 kV / 345 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted diesel standby generator yards per campus; newer builds incorporate lower-water cooling strategies.",
+      "cleanPowerAndTariffSummary": "Backed by multi-hundred-MW Texas solar and wind PPAs in ERCOT North/West Zones targeting 24/7 carbon-free energy."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": 0.5,
+        "unit": "MGD",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "Annual average derived from 182.3 MGY disclosed consumption at Midlothian (182.3 / 365 = 0.50 MGD).",
+        "sourceId": "src-hc-water"
+      },
+      "annualWaterMgy": {
+        "value": 182.3,
+        "unit": "MGY",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "182.3 million gallons/year reported in Texas / Google site-level environmental disclosures for Midlothian.",
+        "sourceId": "src-hc-water"
+      },
+      "pue": {
+        "value": 1.12,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "Google fleet-wide trailing 12-month annualized PUE disclosure.",
+        "sourceId": "src-g-tx"
+      },
+      "waterSource": "City of Midlothian / Rockett SUD (Joe Pool Lake & Trinity River Authority)",
+      "watershedName": "Mountain Creek / Upper Trinity River",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "08048970",
+      "nwsStationId": "KJWY"
+    },
+    "regulatory": {
+      "permittingStage": "Operational & Expanding / Water Stewardship Program",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Ellis County water withdrawals drew legislative and media scrutiny across North Texas, prompting Google's $10M Texas Water Impact Fund and air/closed-loop pivots on newer buildings.",
+      "permits": [
+        {
+          "title": "Texas SB 6 Large Load & ERCOT Grid Assessment",
+          "agency": "Texas Legislature",
+          "docketOrPermitId": "89R-SB6",
+          "date": "2025-05-25",
+          "status": "Enacted",
+          "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Google disclosed site-level Midlothian water figures and launched a $10M Texas Water Impact Fund for watershed restoration.",
+          "evidence": "2025-2026 stewardship reporting details municipal efficiency grants and a shift toward air/closed-loop cooling on newer expansions.",
+          "sourceId": "src-fox7"
+        },
+        {
+          "claim": "Clean energy procurement anchors hundreds of MW of Texas solar and wind generation alongside Ellis County tax base growth.",
+          "evidence": "Google Texas location disclosures cite multi-billion statewide infrastructure investment and carbon-free PPAs.",
+          "sourceId": "src-g-tx"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "182.3 MGY evaporative draw adds cumulative strain to municipal reservoirs during prolonged North Texas droughts.",
+          "evidence": "Texas water reporting highlights Midlothian's annual potable/raw water demand alongside rapid Ellis County industrial growth.",
+          "sourceId": "src-hc-water"
+        },
+        {
+          "claim": "Multi-building AI growth in Ellis County contributes to Oncor transmission buildouts governed by Texas SB 6.",
+          "evidence": "State policy analysis notes rapid DFW south-corridor load escalation requiring new 345 kV infrastructure.",
+          "sourceId": "src-tx-sb6"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-g-tx",
+        "title": "Google Data Centers: Texas Locations",
+        "publisher": "Google",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.google/locations/texas/"
+      },
+      {
+        "id": "src-quiddity",
+        "title": "Google Midlothian RailPort Site Engineering Summary",
+        "publisher": "Quiddity Engineering",
+        "date": "2024-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://quiddity.com/projects/google-data-center-quiddity/"
+      },
+      {
+        "id": "src-hc-water",
+        "title": "Texas Google Data Center Water Consumption Disclosures",
+        "publisher": "Houston Chronicle",
+        "date": "2026-01-01",
+        "kind": "environmental_permit",
+        "url": "https://www.houstonchronicle.com/politics/texas/article/texas-google-water-data-centers-ai-22286576.php"
+      },
+      {
+        "id": "src-fox7",
+        "title": "Google Launches Texas Water Impact Fund & Cooling Shift",
+        "publisher": "FOX 7 Austin",
+        "date": "2025-11-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.fox7austin.com/news/texas-data-centers-google-water-fund-stewardship-plan"
+      },
+      {
+        "id": "src-redoak",
+        "title": "Google Red Oak Ellis County Campus Profile",
+        "publisher": "SueDataCenters",
+        "date": "2025-10-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://suedatacenters.org/data-centers/google-red-oak-tx"
+      },
+      {
+        "id": "src-tx-sb6",
+        "title": "Texas 89R SB 6 Bill Analysis",
+        "publisher": "Texas Legislature",
+        "date": "2025-05-25",
+        "kind": "regulatory_filing",
+        "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-san-antonio-castroville",
+    "name": "Microsoft San Antonio / Castroville Campus",
+    "marketCluster": "San Antonio / Medina Corridor",
+    "city": "Castroville",
+    "county": "Bexar & Medina",
+    "state": "TX",
+    "isoRegion": "ERCOT",
+    "coordinates": [
+      -98.8785,
+      29.3518
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Azure South Central US mega-cluster stretching from Bexar County's Westover Hills/Wiseman Blvd corridor westward across more than 1,450 acres in unincorporated Medina County near Castroville (SAT80\u2013SAT94 builds).",
+    "parcel": {
+      "acreage": {
+        "value": 1450,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2025-12",
+        "basis": "Estimated 1,450+ acres controlled across Medina County near US-90/FM 471 plus Bexar County Westside parcels.",
+        "sourceId": "src-hoodline"
+      },
+      "grossSqFt": {
+        "value": 1500000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2025-12",
+        "basis": "Cumulative floor area across TDLR-filed SAT82, SAT89/90, and SAT93/94 data center packages.",
+        "sourceId": "src-express"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "Unincorporated County / Industrial Utility Corridor",
+      "parcelNote": "Spans US Hwy 90 & FM 471 near Castroville (Medina County) and CR 381 / Westover Link along the Bexar County line."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Azure South Central US",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-msft-sa"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": null,
+        "unit": "MW",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Microsoft does not publicly report energized MW totals across its Bexar and Medina County SAT facilities.",
+        "sourceId": "src-msft-sa"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-12",
+        "basis": "Estimated total corridor buildout across multi-hundred-million-dollar SAT80\u2013SAT94 filings.",
+        "sourceId": "src-express"
+      },
+      "utilityProvider": "CPS Energy / Medina Electric Cooperative (ERCOT)",
+      "interconnectionStatus": "transmission_upgrade_pending",
+      "substationVoltage": "138 kV / 345 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Dozens of ~3.1 MW diesel backup generators detailed in Medina County building filings.",
+      "cleanPowerAndTariffSummary": "CPS Energy has advanced multi-billion transmission/generation expansion plans for Far Westside loads while Medina County parcels tie into cooperative transmission."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Non-standard water service terms with East Medina County SUD and site-level MGD consumption are withheld.",
+        "sourceId": "src-hoodline"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Site-specific annual water draw is not publicly reported for the Castroville or Bexar campuses.",
+        "sourceId": "src-msft-sa"
+      },
+      "pue": {
+        "value": 1.18,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-12",
+        "basis": "Estimated annualized PUE for South Texas adiabatic/closed-loop campus design.",
+        "sourceId": "src-msft-sa"
+      },
+      "waterSource": "East Medina County Special Utility District / SAWS (Edwards Aquifer region)",
+      "watershedName": "Medina River Basin",
+      "watershedStress": "high",
+      "usgsGaugeSiteId": "08180640",
+      "nwsStationId": "KCVB"
+    },
+    "regulatory": {
+      "permittingStage": "TDLR Filings / Active Construction & Expansion",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Rapid expansion into unincorporated Medina County triggered resident scrutiny over rural water agreements, Edwards Aquifer proximity, road traffic, and CPS Energy grid buildout costs.",
+      "permits": [
+        {
+          "title": "Texas SB 6 Large Load Grid & Cost Allocation Framework",
+          "agency": "Texas Legislature",
+          "docketOrPermitId": "89R-SB6",
+          "date": "2025-05-25",
+          "status": "Enacted",
+          "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Multi-billion investment anchors cloud infrastructure, Datacenter Academy training, and regional Circular Center server reuse.",
+          "evidence": "Microsoft's Greater San Antonio portal documents partnerships with Northwest Vista and Palo Alto colleges plus local conservation grants.",
+          "sourceId": "src-msft-sa"
+        },
+        {
+          "claim": "Unincorporated industrial corridor siting keeps dense compute campuses buffered from central San Antonio neighborhoods.",
+          "evidence": "TDLR filings cluster new SAT89/90 builds along US Hwy 90 outside Castroville municipal boundaries.",
+          "sourceId": "src-hoodline"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Non-standard rural water agreements and withheld MGY figures alarm residents above the water-stressed Medina/Edwards region.",
+          "evidence": "Regional reporting highlights community pushback from Redbird Ranch and Castroville residents over unquantified aquifer pressure.",
+          "sourceId": "src-express"
+        },
+        {
+          "claim": "Billions in CPS Energy and cooperative transmission upgrades risk shifting peak infrastructure expenses onto local customers.",
+          "evidence": "Local coverage tracks sweeping Far Westside utility buildouts triggered by surging hyperscale demand.",
+          "sourceId": "src-hoodline"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-msft-sa",
+        "title": "Microsoft Greater San Antonio Datacenter Community Portal",
+        "publisher": "Microsoft",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://local.microsoft.com/communities/americas/greater-san-antonio/"
+      },
+      {
+        "id": "src-express",
+        "title": "Microsoft's San Antonio to Castroville Data Center Expansion",
+        "publisher": "San Antonio Express-News",
+        "date": "2025-12-20",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.expressnews.com/business/article/san-antonio-castroville-microsoft-data-centers-21261199.php"
+      },
+      {
+        "id": "src-hoodline",
+        "title": "Microsoft Castroville $400M+ Data Center Filings & Water Scrutiny",
+        "publisher": "Hoodline San Antonio",
+        "date": "2025-12-15",
+        "kind": "regulatory_filing",
+        "url": "https://hoodline.com/2025/12/microsoft-drops-400-million-data-fortress-on-castroville-s-edge/"
+      },
+      {
+        "id": "src-tx-sb6",
+        "title": "Texas 89R SB 6 Bill Analysis",
+        "publisher": "Texas Legislature",
+        "date": "2025-05-25",
+        "kind": "regulatory_filing",
+        "url": "https://capitol.texas.gov/tlodocs/89R/analysis/html/SB00006H.htm"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-richland-parish-hyperion",
+    "name": "Meta Richland Parish \"Hyperion\" AI Campus",
+    "marketCluster": "Northeast Louisiana AI Megasite",
+    "city": "Holly Ridge",
+    "county": "Richland Parish",
+    "state": "LA",
+    "isoRegion": "MISO",
+    "coordinates": [
+      -91.63233,
+      32.47715
+    ],
+    "lifecycleStatus": "under_construction",
+    "summary": "Meta's largest AI training cluster (Hyperion / Laidley LLC), spanning 3,650+ acres at the former Franklin Farms megasite and backed by 2.26 GW of LPSC-approved Entergy Louisiana combined-cycle gas plants and 500 kV lines.",
+    "parcel": {
+      "acreage": {
+        "value": 3650,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-12",
+        "basis": "2,250-acre initial Franklin Farms megasite expanded by ~1,400 adjacent acres in Richland Parish.",
+        "sourceId": "src-meta-rp"
+      },
+      "grossSqFt": {
+        "value": 10000000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-12",
+        "basis": "Up to ~10 million sq ft of AI data center buildings across the Hyperion master plan.",
+        "sourceId": "src-meta-rp"
+      },
+      "dataHallCount": null,
+      "zoningDesignation": "Certified Industrial Megasite (LA-183 / US-80)",
+      "parcelNote": "Located along LA-183 near Holly Ridge and Rayville, adjacent to Entergy's Franklin Farms generation site."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc. (Laidley LLC)",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta Hyperion Frontier AI Training Cluster",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-rp"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 0,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2026-11-16",
+        "basis": "Under heavy construction following LPSC Docket U-37425 approval; first energization blocks slated 2026\u20132028.",
+        "sourceId": "src-entergy"
+      },
+      "totalPlannedMw": {
+        "value": 5000,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-12",
+        "basis": "5 GW long-term Hyperion campus compute target; initial LPSC U-37425 approved 2,262 MW gas generation + 1,500 MW solar.",
+        "sourceId": "src-entergy"
+      },
+      "utilityProvider": "Entergy Louisiana (MISO South)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "500 kV / 230 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Dedicated multi-GW Entergy CCCT gas units co-located near Franklin Farms plus facility standby generators.",
+      "cleanPowerAndTariffSummary": "LPSC U-37425 settlement binds Meta to 15-year ESA minimum payments and requires Entergy to procure 1,500 MW of solar/renewable generation."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": 23.0,
+        "unit": "MGD",
+        "epistemic": "permitted",
+        "asOf": "2025-09",
+        "basis": "23 MGD peak industrial withdrawal allowance registered for summer peak cooling; baseline operation ~1.5 MGD.",
+        "sourceId": "src-wbrz"
+      },
+      "annualWaterMgy": {
+        "value": 600,
+        "unit": "MGY",
+        "epistemic": "estimated",
+        "asOf": "2025-09",
+        "basis": "Projected actual annual cooling draw (~500\u2013600 MGY) under seasonal averaging; maximum registered allowance is 8,400 MGY.",
+        "sourceId": "src-wbrz"
+      },
+      "pue": {
+        "value": 1.15,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-12",
+        "basis": "Estimated Hyperion liquid-cooled AI cluster PUE.",
+        "sourceId": "src-meta-rp"
+      },
+      "waterSource": "Deep groundwater wells & Richland Parish water district",
+      "watershedName": "Boeuf River / Lower Ouachita Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "07368000",
+      "nwsStationId": "KMLU"
+    },
+    "regulatory": {
+      "permittingStage": "LPSC Order U-37425 Approved (Under Judicial Appeal)",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "LPSC voted 4-1 in Aug 2025 to certify Entergy gas plants and 500 kV lines; Earthjustice and consumer advocates appealed the order in court, challenging ratepayer risk and gas emissions.",
+      "permits": [
+        {
+          "title": "LPSC Docket U-37425 Order & Record Filing",
+          "agency": "Louisiana Public Service Commission",
+          "docketOrPermitId": "U-37425",
+          "date": "2025-08-29",
+          "status": "Approved / Appealed",
+          "url": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=tDDeNhUDZ+w%3D"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "$50B+ multi-phase buildout brings unprecedented Northeast Louisiana investment, 1,500 MW of new solar, and 15-year ratepayer protections.",
+          "evidence": "Entergy and SREA highlight the LPSC U-37425 settlement locking in Meta cost coverage and renewable procurement.",
+          "sourceId": "src-srea"
+        },
+        {
+          "claim": "Meta pledged >1 billion gallons/year of local watershed restoration alongside workforce funding at Louisiana Delta Community College.",
+          "evidence": "Meta's Richland Parish portal details local education grants and regional water restoration commitments.",
+          "sourceId": "src-meta-rp"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Certifying >2.2 GW of new gas plants for a single customer locks in decades of carbon emissions and exposes ratepayers if AI load shifts.",
+          "evidence": "Earthjustice's judicial appeal argues LPSC failed to adequately scrutinize lower-cost clean alternatives and stranded-asset risks.",
+          "sourceId": "src-ej"
+        },
+        {
+          "claim": "Up to 23 MGD peak groundwater withdrawal registration raises drawdown concerns across rural Richland Parish aquifers.",
+          "evidence": "Local reporting documents public concern over registered multi-million-gallon daily groundwater permits.",
+          "sourceId": "src-wbrz"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-rp",
+        "title": "Meta Richland Parish Data Center Portal",
+        "publisher": "Meta",
+        "date": "2025-12-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/richland-parish-data-center/"
+      },
+      {
+        "id": "src-entergy",
+        "title": "Entergy Louisiana Receives LPSC Approval for Meta Infrastructure",
+        "publisher": "Entergy",
+        "date": "2025-08-20",
+        "kind": "utility_iso_record",
+        "url": "https://www.entergy.com/news/entergy-louisiana-receives-lpsc-approval-for-major-infrastructure-investments-to-support-metas-data-center-and-improve-reliability"
+      },
+      {
+        "id": "src-lpsc-file",
+        "title": "LPSC Docket U-37425 Filing Record",
+        "publisher": "Louisiana Public Service Commission",
+        "date": "2025-08-29",
+        "kind": "regulatory_filing",
+        "url": "https://lpscpubvalence.lpsc.louisiana.gov/portal/PSC/ViewFile?fileId=tDDeNhUDZ+w%3D"
+      },
+      {
+        "id": "src-srea",
+        "title": "SREA Statement on LPSC U-37425 Settlement",
+        "publisher": "Southern Renewable Energy Association",
+        "date": "2025-08-20",
+        "kind": "regulatory_filing",
+        "url": "https://southernrenewable.org/news-updates/srea-statement-on-settlement-in-louisiana-public-service-commission-docket-regarding-new-meta-data-center"
+      },
+      {
+        "id": "src-ej",
+        "title": "Advocates Appeal Louisiana PSC Decision on Meta Gas Plants",
+        "publisher": "Earthjustice",
+        "date": "2026-01-15",
+        "kind": "municipal_or_court_record",
+        "url": "https://earthjustice.org/press/2026/advocates-appeal-louisiana-pscs-arbitrary-and-capricious-decision-to-let-meta-off-the-hook-for-its-data-center-project"
+      },
+      {
+        "id": "src-wbrz",
+        "title": "Meta Richland Parish Water Permit Concerns",
+        "publisher": "WBRZ",
+        "date": "2025-09-15",
+        "kind": "environmental_permit",
+        "url": "https://www.wbrz.com/news/meta-s-louisiana-data-center-causing-concern-over-water-usage/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "google-council-bluffs",
+    "name": "Google Council Bluffs Campus",
+    "marketCluster": "Omaha\u2013Council Bluffs Metro",
+    "city": "Council Bluffs",
+    "county": "Pottawattamie",
+    "state": "IA",
+    "isoRegion": "SPP",
+    "coordinates": [
+      -95.80015,
+      41.17284
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "One of Google's largest and longest-operating US compute hubs across 928+ acres in Council Bluffs, backed by MidAmerican wind PPAs and consuming roughly 1 billion gallons of evaporative cooling water annually.",
+    "parcel": {
+      "acreage": {
+        "value": 928,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-02",
+        "basis": "Combined Southlands campus (10420 Bunge Ave) and Veterans Memorial Hwy parcels.",
+        "sourceId": "src-cb-suedc"
+      },
+      "grossSqFt": {
+        "value": 2500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-02",
+        "basis": "Estimated gross floor area across six multi-generation data center buildings.",
+        "sourceId": "src-cb-suedc"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "Industrial / Southlands Technology Corridor",
+      "parcelNote": "Positioned south of Council Bluffs near MidAmerican Energy's Walter Scott Jr. Energy Center along the Missouri River floodplain."
+    },
+    "stakeholders": {
+      "developer": "Google LLC",
+      "operator": "Google LLC",
+      "anchorTenants": [
+        {
+          "name": "Google Cloud & Core AI/Search Compute",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-g-ia"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 407,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-02",
+        "basis": "Anchored by Google's 407 MW MidAmerican Wind VIII clean energy PPA and multi-hundred-MW campus substations.",
+        "sourceId": "src-cb-suedc"
+      },
+      "totalPlannedMw": {
+        "value": 500,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-02",
+        "basis": "Estimated full buildout capacity across Southlands and East parcels.",
+        "sourceId": "src-cb-suedc"
+      },
+      "utilityProvider": "MidAmerican Energy",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "161 kV / 345 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "On-site diesel standby generation farms serving individual buildings.",
+      "cleanPowerAndTariffSummary": "Paired with MidAmerican Energy's Iowa Wind VIII and statewide wind generation fleet supplying high annual renewable matching."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": 2.74,
+        "unit": "MGD",
+        "epistemic": "disclosed",
+        "asOf": "2025-02",
+        "basis": "Annual daily average derived from ~1,000 MGY Google Environmental Report water disclosure (1000 / 365 = 2.74 MGD).",
+        "sourceId": "src-diw"
+      },
+      "annualWaterMgy": {
+        "value": 1000,
+        "unit": "MGY",
+        "epistemic": "disclosed",
+        "asOf": "2025-02",
+        "basis": "Approximately 1.0 billion gallons per year (980\u20131,300 MGY range across recent Environmental Reports).",
+        "sourceId": "src-diw"
+      },
+      "pue": {
+        "value": 1.1,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2025-02",
+        "basis": "Google fleet-wide annualized PUE disclosure.",
+        "sourceId": "src-g-ia"
+      },
+      "waterSource": "Council Bluffs Water Works (Missouri River alluvial aquifers)",
+      "watershedName": "Missouri River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "06610000",
+      "nwsStationId": "KCBF"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / Multi-Phase Industrial Permitting",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Longstanding operations supported by Iowa data center sales tax exemptions; annual water consumption (~1 BGY) ranks highest in Google's disclosed North American portfolio.",
+      "permits": [
+        {
+          "title": "MidAmerican Wind & Renewable Fleet Location Filing",
+          "agency": "MidAmerican Energy",
+          "docketOrPermitId": "MIDAM-WIND-IA",
+          "date": "2025-01-01",
+          "status": "Active Clean Supply",
+          "url": "https://www.midamericanenergy.com/media/pdf/iowa-wind-solar-farm-locations.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Pioneered utility-scale Iowa wind procurement (407 MW Wind VIII) alongside multi-billion regional capital investment.",
+          "evidence": "Google and MidAmerican disclosures document continuous wind expansion and >15 years of Council Bluffs community grants.",
+          "sourceId": "src-g-ia"
+        },
+        {
+          "claim": "Sited adjacent to the high-flow Missouri River basin classified at low-to-medium baseline water stress.",
+          "evidence": "Google's site water disclosures show high evaporative cooling efficiency in a water-abundant river valley.",
+          "sourceId": "src-diw"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Ranks as Google's single largest water-consuming US campus at ~1 billion gallons annually, intensifying local scrutiny as AI expands.",
+          "evidence": "Environmental report analyses show Council Bluffs water withdrawals climbing past 1 BGY amid AI compute growth.",
+          "sourceId": "src-diw"
+        },
+        {
+          "claim": "Cross-border Omaha\u2013Council Bluffs load growth contributes to regional coal-retirement delays on neighboring SPP/MISO grids.",
+          "evidence": "Regional reporting links metro data center clusters to delayed thermal plant phaseouts.",
+          "sourceId": "src-cb-suedc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-g-ia",
+        "title": "Google Data Centers: Iowa Locations",
+        "publisher": "Google",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.google/locations/iowa/"
+      },
+      {
+        "id": "src-cb-suedc",
+        "title": "Google Council Bluffs Campus Profile",
+        "publisher": "SueDataCenters",
+        "date": "2025-10-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://suedatacenters.org/data-centers/google-council-bluffs-ia"
+      },
+      {
+        "id": "src-diw",
+        "title": "Google US Data Center Water Consumption Disclosures",
+        "publisher": "Digital Information World",
+        "date": "2025-02-15",
+        "kind": "environmental_permit",
+        "url": "https://www.digitalinformationworld.com/2025/02/which-american-google-data-centers-had.html"
+      },
+      {
+        "id": "src-midam",
+        "title": "MidAmerican Energy Iowa Wind & Solar Fleet Locations",
+        "publisher": "MidAmerican Energy",
+        "date": "2025-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.midamericanenergy.com/media/pdf/iowa-wind-solar-farm-locations.pdf"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-altoona",
+    "name": "Meta Altoona Mega-Campus",
+    "marketCluster": "Central Iowa Hyperscale Corridor",
+    "city": "Altoona",
+    "county": "Polk",
+    "state": "IA",
+    "isoRegion": "MISO",
+    "coordinates": [
+      -93.51267,
+      41.67068
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "Meta's flagship Midwest campus since 2013 in Polk County, spanning over 5 million sq ft across 833 acres on Share Way NW, powered by MidAmerican wind contracts in MISO.",
+    "parcel": {
+      "acreage": {
+        "value": 833,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Estimated 833-acre contiguous campus parcel boundary along Share Way NW in Altoona.",
+        "sourceId": "src-meta-alt"
+      },
+      "grossSqFt": {
+        "value": 5000000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "Over 5 million sq ft of operational data center halls across >$2.5B cumulative investment.",
+        "sourceId": "src-meta-alt"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "Planned Industrial / Technology Park (Altoona)",
+      "parcelNote": "Spanning 100\u20131100 Share Way NW northeast of Des Moines."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc.",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta Core Compute & LLaMA AI Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-alt"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Estimated energized load across 5M+ sq ft campus supported by dedicated MidAmerican wind allocations.",
+        "sourceId": "src-meta-alt"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Estimated full buildout capacity across Altoona phases.",
+        "sourceId": "src-meta-alt"
+      },
+      "utilityProvider": "MidAmerican Energy (MISO)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "161 kV / 345 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "On-site diesel emergency generator yards per building cluster.",
+      "cleanPowerAndTariffSummary": "Matched 100% with MidAmerican Energy wind projects (including 225+ MW blocks) under customer-funded infrastructure agreements."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Meta withholds site-level Altoona MGD withdrawals in public fact sheets.",
+        "sourceId": "src-meta-alt"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual water consumption for Altoona is not individually published by Meta or Polk County.",
+        "sourceId": "src-meta-alt"
+      },
+      "pue": {
+        "value": 1.11,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "Meta fleet-wide trailing design PUE benchmark.",
+        "sourceId": "src-meta-alt"
+      },
+      "waterSource": "City of Altoona municipal water",
+      "watershedName": "Des Moines River / Skunk River Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "05485500",
+      "nwsStationId": "KIKV"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / Iowa Data Center Exemption Framework",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Supported by Altoona tax-increment financing and municipal water expansion; Iowa policy advocates increasingly call for mandatory site-level water reporting across Polk County campuses.",
+      "permits": [
+        {
+          "title": "Meta Altoona Data Center Fact Sheet",
+          "agency": "Meta Infrastructure",
+          "docketOrPermitId": "META-ALTOONA-2026",
+          "date": "2026-09-01",
+          "status": "Operational",
+          "url": "https://datacenters.atmeta.com/wp-content/uploads/2026/09/Meta_s-Altoona-Data-Center.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "$2.5B+ investment supports >400 operational jobs, MidAmerican wind expansion, and full coverage of local water infrastructure costs.",
+          "evidence": "Meta's 2026 Altoona fact sheet highlights 100% clean energy matching and municipal service cost recovery.",
+          "sourceId": "src-meta-alt"
+        },
+        {
+          "claim": "Polk County agricultural and wetland water-restoration partnerships offset regional watershed impacts.",
+          "evidence": "Iowa Agriculture Water Alliance documents Meta-funded wetland restoration in central Iowa.",
+          "sourceId": "src-iaag"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Lack of site-level water withdrawal disclosures prevents public verification of evaporative cooling demand across Iowa.",
+          "evidence": "Iowa water policy analyses critique confidentiality shields around Polk County data center water volumes.",
+          "sourceId": "src-iaag"
+        },
+        {
+          "claim": "Dense clustering of hyperscale loads in Central Iowa increases MISO transmission congestion and backup diesel emissions.",
+          "evidence": "Regional grid filings highlight growing MISO load forecasts across Iowa industrial zones.",
+          "sourceId": "src-midam"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-alt",
+        "title": "Meta's Altoona Data Center Fact Sheet",
+        "publisher": "Meta",
+        "date": "2026-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/wp-content/uploads/2026/09/Meta_s-Altoona-Data-Center.pdf"
+      },
+      {
+        "id": "src-midam",
+        "title": "MidAmerican Energy Iowa Wind & Solar Fleet Locations",
+        "publisher": "MidAmerican Energy",
+        "date": "2025-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.midamericanenergy.com/media/pdf/iowa-wind-solar-farm-locations.pdf"
+      },
+      {
+        "id": "src-iaag",
+        "title": "Data Centers and Water in Iowa: Economic Growth or Threat?",
+        "publisher": "Iowa Agriculture Water Alliance",
+        "date": "2025-08-01",
+        "kind": "environmental_permit",
+        "url": "https://www.iaagwater.org/data-centers-and-water-economic-growth-or-environmental-threat/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "google-omaha-papillion",
+    "name": "Google Omaha / Papillion Campus",
+    "marketCluster": "Omaha\u2013Council Bluffs Metro",
+    "city": "Papillion",
+    "county": "Sarpy",
+    "state": "NE",
+    "isoRegion": "SPP",
+    "coordinates": [
+      -96.14863,
+      41.13628
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "275-acre Google hyperscale campus in Papillion (Fireball Group LLC) whose rapid load growth alongside regional campuses contributed to Omaha Public Power District delaying coal phase-out at North Omaha Station.",
+    "parcel": {
+      "acreage": {
+        "value": 275,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "275-acre Papillion campus at 14706 Schram Rd (paired with Google's separate 270\u2013457 ac Omaha campus).",
+        "sourceId": "src-g-ne"
+      },
+      "grossSqFt": {
+        "value": 1500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-06",
+        "basis": "Estimated gross floor area across Papillion buildings.",
+        "sourceId": "src-g-ne"
+      },
+      "dataHallCount": 4,
+      "zoningDesignation": "Highway 50 Industrial / Sarpy County",
+      "parcelNote": "Anchored at 14706 Schram Rd near Highway 50 and I-80 in Sarpy County."
+    },
+    "stakeholders": {
+      "developer": "Google LLC (Fireball Group LLC)",
+      "operator": "Google LLC",
+      "anchorTenants": [
+        {
+          "name": "Google Cloud & TPU AI Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-g-ne"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 200,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-12",
+        "basis": "Estimated operational load contributing to OPPD's jump from ~4 MW/yr to ~100 MW/yr load growth.",
+        "sourceId": "src-oppd"
+      },
+      "totalPlannedMw": {
+        "value": 400,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01",
+        "basis": "Estimated expanded Sarpy County campus demand across planned additions.",
+        "sourceId": "src-oppd"
+      },
+      "utilityProvider": "Omaha Public Power District (OPPD / SPP)",
+      "interconnectionStatus": "transmission_upgrade_pending",
+      "substationVoltage": "161 kV / 345 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted diesel backup generator banks; OPPD separately expanding gas peaking units via Power with Purpose.",
+      "cleanPowerAndTariffSummary": "OPPD board voted 6\u20132 in December 2025 to further delay retiring North Omaha coal units (Units 4 & 5) citing SPP winter reserve margins and unprecedented data center load growth."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": 1.5,
+        "unit": "MGD",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "Annual average derived from 547.88 MGY state environmental filing (547.88 / 365 = 1.50 MGD).",
+        "sourceId": "src-npm"
+      },
+      "annualWaterMgy": {
+        "value": 547.88,
+        "unit": "MGY",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "547.88 million gallons/year reported in Nebraska environmental disclosures for Fireball Group LLC.",
+        "sourceId": "src-npm"
+      },
+      "pue": {
+        "value": 1.11,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "Google trailing annualized fleet PUE benchmark.",
+        "sourceId": "src-g-ne"
+      },
+      "waterSource": "Metropolitan Utilities District / City of Papillion",
+      "watershedName": "Papillion Creek / Missouri River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "06610000",
+      "nwsStationId": "KMLE"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / OPPD North Omaha Coal Extension Dispute",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "OPPD's repeated delays in retiring North Omaha Station coal units (2023 -> 2026 -> 2028+) triggered environmental/public health criticism from North Omaha residents and Nebraska legislative scrutiny over water disclosures.",
+      "permits": [
+        {
+          "title": "OPPD Generation Planning & North Omaha Coal Conversion FAQ",
+          "agency": "Omaha Public Power District",
+          "docketOrPermitId": "OPPD-NOS-2025",
+          "date": "2025-12-01",
+          "status": "Coal Retirement Delayed",
+          "url": "https://www.oppdcommunityconnect.com/generation/widgets/65049/faqs"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Public power district load growth drives local tax base expansion and clean energy procurement commitments.",
+          "evidence": "Google and Nebraska public power leaders cite grid investments and water-stewardship pledges in regional briefings.",
+          "sourceId": "src-npm"
+        },
+        {
+          "claim": "OPPD maintains system reliability against higher SPP seasonal reserve mandates while new peaking and solar units come online.",
+          "evidence": "OPPD documentation explains transitional North Omaha generation retention to prevent winter blackouts.",
+          "sourceId": "src-oppd"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Hyperscale data center growth directly forced OPPD to keep burning coal in North Omaha, prolonging particulate pollution in frontline neighborhoods.",
+          "evidence": "Flatwater Free Press investigation critiques OPPD's health-risk framing around delayed coal retirement.",
+          "sourceId": "src-ffp"
+        },
+        {
+          "claim": "547+ MGY cooling water consumption sparked county-level zoning pushback and calls for mandatory Nebraska water transparency.",
+          "evidence": "Nebraska Public Media documents local task forces reacting to multi-hundred-million-gallon municipal water draws.",
+          "sourceId": "src-npm"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-g-ne",
+        "title": "Google Data Centers: Nebraska Locations",
+        "publisher": "Google",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.google/locations/nebraska/"
+      },
+      {
+        "id": "src-oppd",
+        "title": "OPPD Power with Purpose & North Omaha Station FAQs",
+        "publisher": "Omaha Public Power District",
+        "date": "2025-12-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.oppdcommunityconnect.com/generation/widgets/65049/faqs"
+      },
+      {
+        "id": "src-ffp",
+        "title": "Investigation: OPPD North Omaha Coal Plant Health Impact",
+        "publisher": "Flatwater Free Press",
+        "date": "2025-11-01",
+        "kind": "environmental_permit",
+        "url": "https://flatwaterfreepress.org/citing-study-oppd-said-its-omaha-coal-plant-poses-no-significant-health-threat-thats-misleading-experts-say/"
+      },
+      {
+        "id": "src-npm",
+        "title": "Nebraska Data Center Water & Resource Scrutiny",
+        "publisher": "Nebraska Public Media",
+        "date": "2025-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://nebraskapublicmedia.org/en/news/news-articles/nebraska-data-center-leaders-talk-natural-resource-protection-responsible-development/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "peculiar-project-klein",
+    "name": "Peculiar \"Project Klein\" Hyperscale Proposal",
+    "marketCluster": "Kansas City Metro Southern Corridor",
+    "city": "Peculiar",
+    "county": "Cass",
+    "state": "MO",
+    "isoRegion": "SPP",
+    "coordinates": [
+      -94.4566,
+      38.7166
+    ],
+    "lifecycleStatus": "contested",
+    "summary": "Contested $1.5B, 508-acre hyperscale proposal (Harper Road Technology Park / Project Klein by Black & Veatch subsidiary Diode Ventures) halted by organized resident opposition over rezoning, NDAs, water draw, and Evergy rate impacts.",
+    "parcel": {
+      "acreage": {
+        "value": 508,
+        "unit": "acres",
+        "epistemic": "filed",
+        "asOf": "2024-04",
+        "basis": "508-acre agricultural tract north of 203rd St and west of Harper Rd sought for I-1 light industrial rezoning.",
+        "sourceId": "src-peculiar-pdf"
+      },
+      "grossSqFt": {
+        "value": 2100000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2024-04",
+        "basis": "Seven proposed 300,000 sq ft hyperscale data center buildings.",
+        "sourceId": "src-peculiar-pdf"
+      },
+      "dataHallCount": 7,
+      "zoningDesignation": "AG Agricultural (I-1 Rezoning Contested/Blocked)",
+      "parcelNote": "Adjacent to Peculiar residential tracts and Peculiar Winery along Harper Road in Cass County."
+    },
+    "stakeholders": {
+      "developer": "Diode Ventures (Black & Veatch)",
+      "operator": "Undisclosed Hyperscale Tenant (Project Klein NDA)",
+      "anchorTenants": [
+        {
+          "name": "Confidential Hyperscale End-User (\"Project Klein\")",
+          "role": "reported_tenant",
+          "epistemic": "undisclosed",
+          "sourceId": "src-uky"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 0,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-11",
+        "basis": "0 MW energized; proposal rejected/halted following municipal zoning backlash.",
+        "sourceId": "src-uky"
+      },
+      "totalPlannedMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated 7-building hyperscale peak demand well above Evergy Missouri West's 75 MW large-load tariff threshold.",
+        "sourceId": "src-mo-psc"
+      },
+      "utilityProvider": "Evergy Missouri West (SPP)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "161 kV / 345 kV proposed",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Proposed generator enclosures drew heavy local opposition over low-frequency noise and diesel emissions.",
+      "cleanPowerAndTariffSummary": "Missouri PSC Case EO-2025-0154 (following SB 4) now mandates 12-year minimum contracts, 80% minimum demand bills, and 2-year collateral for >=75 MW Evergy data centers."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "undisclosed",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Diode Ventures did not publicly disclose cooling technology or peak MGD water demand prior to rezoning halt.",
+        "sourceId": "src-uky"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual water allocation remained undisclosed under developer NDA during Planning Commission hearings.",
+        "sourceId": "src-peculiar-pdf"
+      },
+      "pue": {
+        "value": null,
+        "unit": "PUE",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Design PUE never publicly filed.",
+        "sourceId": "src-peculiar-pdf"
+      },
+      "waterSource": "City of Peculiar / Cass County PWSD (disputed capacity)",
+      "watershedName": "South Grand River / Blue River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "06893100",
+      "nwsStationId": "KLRY"
+    },
+    "regulatory": {
+      "permittingStage": "Rezoning Blocked / Evergy Large-Load Tariff Enacted",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Packed municipal hearings led by grassroots opponents ('Don't Dump Data in Peculiar') halted the 508-acre rezoning over NDA secrecy, noise, and utility cost-shift fears.",
+      "permits": [
+        {
+          "title": "City of Peculiar Planning Commission Rezoning Packet (Harper Rd)",
+          "agency": "City of Peculiar",
+          "docketOrPermitId": "PC-2024-0411",
+          "date": "2024-04-11",
+          "status": "Blocked / Withdrawn",
+          "url": "https://files.municipalone.com/peculiar-mo/PlanningCommissionPacket04-11-24112235040824AM1722.pdf"
+        },
+        {
+          "title": "Missouri PSC Large Load Tariff Framework (Case EO-2025-0154)",
+          "agency": "Missouri Public Service Commission",
+          "docketOrPermitId": "EO-2025-0154",
+          "date": "2025-11-01",
+          "status": "Approved Tariff Guardrails",
+          "url": "https://psc.mo.gov/General/Utility_Tariffs_for_Large_Load_Customers"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "$1.5B tech park would diversify Cass County's tax base and fund municipal infrastructure without residential property tax hikes.",
+          "evidence": "Peculiar Planning Commission staff packet and Evergy large-load landing emphasize customer-funded dedicated transmission and 12-year minimum commitments.",
+          "sourceId": "src-evergy"
+        },
+        {
+          "claim": "Statewide large-load tariffs enacted in Case EO-2025-0154 prevent Evergy retail customers from subsidizing future hyperscale builds.",
+          "evidence": "Missouri PSC rules mandate 100% direct substation cost recovery and two years of minimum bill collateral.",
+          "sourceId": "src-mo-psc"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Developer NDAs, 24/7 generator noise, and undisclosed water demand adjacent to rural homes sparked overwhelming community rejection.",
+          "evidence": "University of Kentucky rural policy analysis documents how secrecy and AG-to-industrial conversion mobilized local opposition.",
+          "sourceId": "src-uky"
+        },
+        {
+          "claim": "Unchecked hyperscale proposals threaten local water pressure and Evergy rate stability if anchor tenants exit early.",
+          "evidence": "Planning Commission packet records extensive public testimony questioning water infrastructure capacity and noise buffering.",
+          "sourceId": "src-peculiar-pdf"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-peculiar-pdf",
+        "title": "Peculiar Planning Commission Packet: Harper Road Technology Park",
+        "publisher": "City of Peculiar",
+        "date": "2024-04-11",
+        "kind": "municipal_or_court_record",
+        "url": "https://files.municipalone.com/peculiar-mo/PlanningCommissionPacket04-11-24112235040824AM1722.pdf"
+      },
+      {
+        "id": "src-uky",
+        "title": "Small Towns Battled Over Giant Data Center Campus in Peculiar",
+        "publisher": "University of Kentucky Rural Blog",
+        "date": "2024-11-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://ci.uky.edu/irj/rural-blog/small-towns-residents-battled-over-giant-data-center-campus-its-drama-happening"
+      },
+      {
+        "id": "src-mo-psc",
+        "title": "Missouri PSC Utility Tariffs for Large Load Customers (EO-2025-0154)",
+        "publisher": "Missouri Public Service Commission",
+        "date": "2025-11-01",
+        "kind": "regulatory_filing",
+        "url": "https://psc.mo.gov/General/Utility_Tariffs_for_Large_Load_Customers"
+      },
+      {
+        "id": "src-evergy",
+        "title": "Evergy Large-Load Data Center Customer Protections",
+        "publisher": "Evergy",
+        "date": "2025-11-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.evergy.com/landing/data-center-customer-protections"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "google-the-dalles",
+    "name": "Google The Dalles Campus",
+    "marketCluster": "Columbia River Gorge",
+    "city": "The Dalles",
+    "county": "Wasco",
+    "state": "OR",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -121.20749,
+      45.62416
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Landmark Columbia River Gorge Google campus whose 2021\u20132022 public-records lawsuit ended trade-secret water secrecy nationwide, revealing 434+ MGY municipal consumption (~1/3 of city supply).",
+    "parcel": {
+      "acreage": {
+        "value": 135,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2026-01",
+        "basis": "Combined Columbia Rd campus and River Rd former Northwest Aluminum smelter redevelopment.",
+        "sourceId": "src-dalles-gov"
+      },
+      "grossSqFt": {
+        "value": 1800000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-01",
+        "basis": "Estimated gross floor area across original and River Rd buildings.",
+        "sourceId": "src-dalles-gov"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "Industrial / Port of The Dalles Enterprise Zone",
+      "parcelNote": "Spans 3500 River Rd and 4200 Columbia Rd along the Columbia River."
+    },
+    "stakeholders": {
+      "developer": "Google LLC",
+      "operator": "Google LLC",
+      "anchorTenants": [
+        {
+          "name": "Google Cloud & Search Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-g-or"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 300,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01",
+        "basis": "Estimated cumulative energized load across The Dalles buildings.",
+        "sourceId": "src-dalles-gov"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-01",
+        "basis": "Estimated expanded load including River Road expansion builds.",
+        "sourceId": "src-dalles-gov"
+      },
+      "utilityProvider": "Northern Wasco County PUD (WECC / BPA)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "230 kV / 115 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted standby diesel backup generator banks.",
+      "cleanPowerAndTariffSummary": "Supplied via Northern Wasco County PUD Bonneville Power Administration (BPA) hydro and regional renewable PPAs."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": 1.19,
+        "unit": "MGD",
+        "epistemic": "measured",
+        "asOf": "2025-12",
+        "basis": "Annual daily average derived from 434.4 MGY municipal water logs released under public-records settlement.",
+        "sourceId": "src-rcfp"
+      },
+      "annualWaterMgy": {
+        "value": 434.4,
+        "unit": "MGY",
+        "epistemic": "measured",
+        "asOf": "2025-12",
+        "basis": "434.4 million gallons/year in settled municipal water logs (~29\u201333% of The Dalles' total city supply).",
+        "sourceId": "src-opb"
+      },
+      "pue": {
+        "value": 1.1,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2026-01",
+        "basis": "Google trailing annualized fleet PUE benchmark.",
+        "sourceId": "src-g-or"
+      },
+      "waterSource": "City of The Dalles municipal supply & transferred industrial water rights",
+      "watershedName": "Mid-Columbia River Basin",
+      "watershedStress": "low_medium",
+      "usgsGaugeSiteId": "14105700",
+      "nwsStationId": "KDLS"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / Public Records Water Settlement",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Following a 2022 court settlement with The Oregonian, the city released 10 years of Google water logs and Google ended trade-secret water secrecy nationwide while funding $28.5M in city water upgrades.",
+      "permits": [
+        {
+          "title": "City of The Dalles v. Rogoway Public Records Water Settlement",
+          "agency": "Wasco County Circuit Court / City of The Dalles",
+          "docketOrPermitId": "THE-DALLES-2022",
+          "date": "2022-12-14",
+          "status": "Settled / Ongoing Disclosure",
+          "url": "https://www.rcfp.org/dalles-google-oregonian-settlement/"
+        },
+        {
+          "title": "City of The Dalles Google Water & SIP Portal",
+          "agency": "City of The Dalles",
+          "docketOrPermitId": "SIP-WASCO",
+          "date": "2026-01-23",
+          "status": "Active Reporting",
+          "url": "https://www.thedalles.gov/business/google_data_centers/index.php"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Google serves as Wasco County's largest taxpayer (~$10M/yr post-expansion fees) and funded $28.5M in city water infrastructure.",
+          "evidence": "City of The Dalles portal documents Strategic Investment Program revenues and transferred industrial water rights.",
+          "sourceId": "src-dalles-gov"
+        },
+        {
+          "claim": "2022 legal settlement established industry-leading site-level water transparency across US Google campuses.",
+          "evidence": "RCFP confirms Google dropped trade-secret water claims nationwide following the Oregonian settlement.",
+          "sourceId": "src-rcfp"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Data centers consume roughly one-third of The Dalles' entire municipal water supply, prompting city efforts for forest reservoir land transfers.",
+          "evidence": "OPB reporting tracks sustained municipal consumption growth and debates over watershed supply expansion.",
+          "sourceId": "src-opb"
+        },
+        {
+          "claim": "Municipal officials initially sued a local journalist using taxpayer resources to conceal corporate water logs.",
+          "evidence": "RCFP case records detail how the city fought the Wasco County DA disclosure order before settling for $53k in legal fees.",
+          "sourceId": "src-rcfp"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-dalles-gov",
+        "title": "City of The Dalles: Google Data Centers Information Portal",
+        "publisher": "City of The Dalles",
+        "date": "2026-01-23",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.thedalles.gov/business/google_data_centers/index.php"
+      },
+      {
+        "id": "src-rcfp",
+        "title": "City of The Dalles v. Rogoway Public Records Settlement",
+        "publisher": "Reporters Committee for Freedom of the Press",
+        "date": "2022-12-14",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.rcfp.org/dalles-google-oregonian-settlement/"
+      },
+      {
+        "id": "src-opb",
+        "title": "The Dalles Mayor & Community Scrutiny Over Google Water Use",
+        "publisher": "Oregon Public Broadcasting",
+        "date": "2026-01-23",
+        "kind": "environmental_permit",
+        "url": "https://www.opb.org/article/2026/01/23/the-dalles-mayor-data-center-google/"
+      },
+      {
+        "id": "src-g-or",
+        "title": "Google Data Centers: Oregon Locations",
+        "publisher": "Google",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.google/locations/oregon/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "hillsboro-cluster",
+    "name": "Hillsboro Data Center Cluster (Stack / QTS / Digital Realty)",
+    "marketCluster": "Silicon Forest (Hillsboro)",
+    "city": "Hillsboro",
+    "county": "Washington",
+    "state": "OR",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -122.93941,
+      45.55415
+    ],
+    "lifecycleStatus": "contested",
+    "summary": "Dense Pacific Northwest hyperscale colocation cluster along Brookwood Pkwy and Starr Blvd (Stack POR01/POR03, QTS, Digital Realty) at the center of Oregon's HB 3546 POWER Act rate class and Hillsboro's July 2026 standalone data-center moratorium.",
+    "parcel": {
+      "acreage": {
+        "value": 160,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2026-07",
+        "basis": "Combined cluster footprint across Stack POR03 (55 ac), Stack POR01, QTS Hillsboro 3, and Digital Realty sites.",
+        "sourceId": "src-stack"
+      },
+      "grossSqFt": {
+        "value": 3200000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-07",
+        "basis": "Estimated combined powered-shell and operational floor area across cluster campuses.",
+        "sourceId": "src-stack"
+      },
+      "dataHallCount": 10,
+      "zoningDesignation": "Industrial Sanctuary / Moratorium Code Review",
+      "parcelNote": "Anchored on Stack POR03 (4735 NE Starr Blvd) adjacent to QTS Hillsboro 3 (5419 NE Starr Blvd) and Brookwood Pkwy."
+    },
+    "stakeholders": {
+      "developer": "STACK Infrastructure / QTS / Digital Realty",
+      "operator": "STACK Infrastructure / QTS / Digital Realty",
+      "anchorTenants": [
+        {
+          "name": "STACK POR01/POR03 Hyperscale Campuses",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-stack"
+        },
+        {
+          "name": "QTS & Digital Realty Silicon Forest Campuses",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-opb-mora"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-07",
+        "basis": "Estimated active energized demand across existing Hillsboro data centers.",
+        "sourceId": "src-pge"
+      },
+      "totalPlannedMw": {
+        "value": 600,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-07",
+        "basis": "Combined operational and pipeline capacity including Stack POR03 (200 MW) and adjacent QTS/DLR halls.",
+        "sourceId": "src-stack"
+      },
+      "utilityProvider": "Portland General Electric (PGE Schedule 96 / WECC)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "230 kV / 115 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Hundreds of MW of Tier-4/Tier-2 standby diesel generators across clustered campuses.",
+      "cleanPowerAndTariffSummary": "Subject to Oregon's 2025 POWER Act (HB 3546) and OPUC-approved PGE Schedule 96 tariff (~29% structural rate increase and 10-year contracts for >=20 MW loads)."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Multi-operator cluster does not publish unified site-level municipal water metering.",
+        "sourceId": "src-stack"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Aggregate annual municipal draw across Stack, QTS, and Digital Realty campuses is undisclosed.",
+        "sourceId": "src-stack"
+      },
+      "pue": {
+        "value": 1.2,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2026-05",
+        "basis": "Estimated annualized PUE leveraging cool Willamette Valley air economization.",
+        "sourceId": "src-stack"
+      },
+      "waterSource": "Hillsboro Water Department / Joint Water Commission / Willamette Supply",
+      "watershedName": "Tualatin River Basin",
+      "watershedStress": "low",
+      "usgsGaugeSiteId": "14203500",
+      "nwsStationId": "KHIO"
+    },
+    "regulatory": {
+      "permittingStage": "OPUC Schedule 96 Enacted / Hillsboro Standalone Moratorium",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "In July 2026 Hillsboro enacted a moratorium on new standalone data centers to rewrite land-use caps, alongside OPUC Schedule 96 rate separation under the POWER Act.",
+      "permits": [
+        {
+          "title": "Oregon HB 3546 POWER Act (Large Energy Use Facilities)",
+          "agency": "Oregon Legislative Assembly",
+          "docketOrPermitId": "HB-3546-2025",
+          "date": "2025-06-16",
+          "status": "Enacted Law",
+          "url": "https://olis.oregonlegislature.gov/liz/2025r1/Downloads/MeasureDocument/HB3546/Introduced"
+        },
+        {
+          "title": "OPUC Schedule 96 Data Center Rate Class Order",
+          "agency": "Oregon Public Utility Commission",
+          "docketOrPermitId": "OPUC-UM2377",
+          "date": "2026-05-01",
+          "status": "Approved Schedule 96",
+          "url": "https://www.oregon.gov/puc/news-events/Documents/PR-202609.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Trans-Pacific subsea cable landings and industrial zoning turned Hillsboro into the Northwest's premier cloud gateway.",
+          "evidence": "Stack POR03 specifications highlight 200 MW scalable capacity and dense carrier ecosystems in Washington County.",
+          "sourceId": "src-stack"
+        },
+        {
+          "claim": "PGE Schedule 96 under the POWER Act codifies cost-causer-pays guardrails protecting households.",
+          "evidence": "PGE's May 2026 regulatory announcement establishes dedicated large-load contracts and infrastructure cost assignment.",
+          "sourceId": "src-pge"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Explosive GW-scale clustering overwhelmed residential affordability and forced both state rate legislation and a city moratorium.",
+          "evidence": "OPB and Oregon CUB document Hillsboro's July 2026 moratorium and Schedule 96 rate hikes triggered by 20+ MW load growth.",
+          "sourceId": "src-opb-mora"
+        },
+        {
+          "claim": "Diesel backup testing and loss of industrial land for higher-employment manufacturing drew county-wide policy pushback.",
+          "evidence": "Climate Solutions and OPUC records detail multi-year scrutiny of grid emissions and land-use caps.",
+          "sourceId": "src-climatesol"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-stack",
+        "title": "STACK Infrastructure POR03 Hillsboro Campus Overview",
+        "publisher": "STACK Infrastructure",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.stackinfra.com/locations/americas/portland/por03/"
+      },
+      {
+        "id": "src-opb-mora",
+        "title": "Hillsboro Approves Moratorium on New Data Centers",
+        "publisher": "Oregon Public Broadcasting",
+        "date": "2026-07-27",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.opb.org/article/2026/07/27/hillsboro-approves-data-center-moratorium/"
+      },
+      {
+        "id": "src-opuc",
+        "title": "Oregon PUC Implementation of POWER Act (Schedule 96)",
+        "publisher": "Oregon Public Utility Commission",
+        "date": "2026-05-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.oregon.gov/puc/news-events/Documents/PR-202609.pdf"
+      },
+      {
+        "id": "src-pge",
+        "title": "PGE Secures Regulatory Approval for Schedule 96 Data Center Class",
+        "publisher": "Portland General Electric",
+        "date": "2026-05-01",
+        "kind": "utility_iso_record",
+        "url": "https://portlandgeneral.com/news/2026-05-pge-secures-regulatory-approval-to-ensure-data-centers-pay-for-the-growth-they-drive"
+      },
+      {
+        "id": "src-hb3546",
+        "title": "Oregon HB 3546 Measure Text (POWER Act)",
+        "publisher": "Oregon Legislature",
+        "date": "2025-06-16",
+        "kind": "regulatory_filing",
+        "url": "https://olis.oregonlegislature.gov/liz/2025r1/Downloads/MeasureDocument/HB3546/Introduced"
+      },
+      {
+        "id": "src-climatesol",
+        "title": "Oregon's POWER Act Analysis",
+        "publisher": "Climate Solutions",
+        "date": "2026-05-01",
+        "kind": "regulatory_filing",
+        "url": "https://www.climatesolutions.org/article/2026-05/oregons-power-act-first-its-kind-protect-oregonians-utility-bills-data-center"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "aws-boardman-morrow",
+    "name": "AWS Boardman / Morrow County Campus",
+    "marketCluster": "Eastern Oregon Columbia Basin",
+    "city": "Boardman",
+    "county": "Morrow",
+    "state": "OR",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -119.63052,
+      45.85088
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Massive AWS Port of Morrow and 1,300-acre 1 GW exascale Boardman complex (PDX1/PDX64+), entangled in the Lower Umatilla Basin groundwater nitrate crisis and a $20.5M federal class-action settlement in March 2026.",
+    "parcel": {
+      "acreage": {
+        "value": 1300,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-03",
+        "basis": "1,300-acre exascale expansion parcel acquired near Boardman plus operational Port of Morrow industrial lots.",
+        "sourceId": "src-opb-fine"
+      },
+      "grossSqFt": {
+        "value": 4000000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-03",
+        "basis": "Up to ~4 million sq ft across existing PDX facilities and 16\u201320 planned exascale halls.",
+        "sourceId": "src-opb-fine"
+      },
+      "dataHallCount": 10,
+      "zoningDesignation": "Port Industrial / Agricultural-to-Industrial Exascale Zone",
+      "parcelNote": "Anchored at 73575 Lewis and Clark Dr at Port of Morrow, expanding south across former Threemile Canyon farmland."
+    },
+    "stakeholders": {
+      "developer": "Amazon Data Services, Inc. (AWS)",
+      "operator": "Amazon Web Services (US-West-2)",
+      "anchorTenants": [
+        {
+          "name": "Amazon Web Services (US-West-2 Region)",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-opb-fine"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 250,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-03",
+        "basis": "Estimated energized demand across operational Port of Morrow AWS buildings.",
+        "sourceId": "src-opb-fine"
+      },
+      "totalPlannedMw": {
+        "value": 1000,
+        "unit": "MW",
+        "epistemic": "filed",
+        "asOf": "2026-03",
+        "basis": "1 GW planned exascale campus capacity outlined in regional energy/siting filings.",
+        "sourceId": "src-or-efsc"
+      },
+      "utilityProvider": "Umatilla Electric Cooperative / PacifiCorp (WECC)",
+      "interconnectionStatus": "transmission_upgrade_pending",
+      "substationVoltage": "230 kV / 500 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Large-scale diesel generator installations drew DEQ and community air-quality protests over NOx emissions.",
+      "cleanPowerAndTariffSummary": "Powered via Umatilla Electric Cooperative BPA allocations and Eastern Oregon wind/solar contracts."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "evaporative_tower",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "AWS does not publicly disclose daily MGD withdrawals or wastewater blowdown volumes at its Morrow County buildings.",
+        "sourceId": "src-opb-fine"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Facility-level annual water draw remains undisclosed outside confidential Port of Morrow industrial meters.",
+        "sourceId": "src-opb-fine"
+      },
+      "pue": {
+        "value": 1.18,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2026-03",
+        "basis": "Estimated evaporative-assisted PUE in arid Eastern Oregon climate.",
+        "sourceId": "src-opb-fine"
+      },
+      "waterSource": "Port of Morrow wells & Columbia River intake (Lower Umatilla Basin GWMA)",
+      "watershedName": "Lower Umatilla / Mid-Columbia Basin",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "14033500",
+      "nwsStationId": "KHRI"
+    },
+    "regulatory": {
+      "permittingStage": "Operational & Expanding / Nitrate Litigation Settlement",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "In March 2026 Amazon Data Services reached a $20.5M settlement in Pearson v. Amazon Data Services over Lower Umatilla Basin nitrate-concentrated wastewater disputes while pursuing 1 GW expansion.",
+      "permits": [
+        {
+          "title": "Oregon Energy Facility Siting / Public Record Comment on Amazon Expansion",
+          "agency": "Oregon Department of Energy",
+          "docketOrPermitId": "ODOE-AMZN-2026",
+          "date": "2026-03-27",
+          "status": "Active Siting Review",
+          "url": "https://www.oregon.gov/energy/Get-Involved/Documents/2026-03-27-Schilz-Amazon.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "AWS agreed to a $20.5M remediation settlement funding deeper clean-water wells and pledged surface-water intake shifts.",
+          "evidence": "OPB reporting notes settlement funds support safe drinking water projects across Morrow and Umatilla counties.",
+          "sourceId": "src-opb-fine"
+        },
+        {
+          "claim": "Morrow County enterprise zone fees finance local schools, roads, and rural emergency infrastructure.",
+          "evidence": "Regional economic disclosures document substantial tax-district contributions from Port of Morrow campuses.",
+          "sourceId": "src-or-efsc"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Evaporative cooling concentrates nitrates in Port of Morrow wastewater applied over an already poisoned drinking-water aquifer.",
+          "evidence": "Pearson litigation and Oregon Rural Action document severe groundwater nitrate levels exceeding EPA limits in rural wells.",
+          "sourceId": "src-orural"
+        },
+        {
+          "claim": "Hundreds of backup diesel generators and 1 GW power expansion compound local air pollution and transmission burdens.",
+          "evidence": "Oregon Rural Action and state filings cite unresolved NOx air-permitting complaints prior to further buildout.",
+          "sourceId": "src-or-efsc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-opb-fine",
+        "title": "Amazon $20.5M Boardman Nitrate Pollution Settlement",
+        "publisher": "Oregon Public Broadcasting",
+        "date": "2026-03-31",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.opb.org/article/2026/03/31/amazon-fine-northeast-oregon-boardman-nitrate-pollution-well/"
+      },
+      {
+        "id": "src-or-efsc",
+        "title": "Oregon Dept of Energy Public Filing on Amazon Boardman Project",
+        "publisher": "Oregon Department of Energy",
+        "date": "2026-03-27",
+        "kind": "regulatory_filing",
+        "url": "https://www.oregon.gov/energy/Get-Involved/Documents/2026-03-27-Schilz-Amazon.pdf"
+      },
+      {
+        "id": "src-orural",
+        "title": "Eastern Oregon Residents Call on Amazon to Address Pollution",
+        "publisher": "Oregon Rural Action",
+        "date": "2026-03-01",
+        "kind": "environmental_permit",
+        "url": "https://www.oregonrural.org/blog/eastern-oregon-residents-call-on-amazon-to-address-air-pollution-before-further-data-center-development"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-quincy",
+    "name": "Microsoft Quincy Columbia Basin Campus",
+    "marketCluster": "Central Washington Hydro Corridor",
+    "city": "Quincy",
+    "county": "Grant",
+    "state": "WA",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -119.88759,
+      47.23789
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "Flagship Azure West US 2 campus spanning 270 acres in Quincy powered by Grant County PUD Columbia River hydropower and anchored by Washington's first industrial cooling water reuse plant (QWRU).",
+    "parcel": {
+      "acreage": {
+        "value": 270,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "270-acre MWH campus centered along Port Industrial Pkwy NW in Quincy.",
+        "sourceId": "src-epa-quincy"
+      },
+      "grossSqFt": {
+        "value": 2400000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-01",
+        "basis": "Estimated gross floor area across Microsoft's multi-building Columbia Data Center cluster.",
+        "sourceId": "src-msft-qwru"
+      },
+      "dataHallCount": 8,
+      "zoningDesignation": "Industrial / Port of Quincy Data Center Zone",
+      "parcelNote": "Includes Microsoft Circular Center server-reuse hub adjacent to data center halls."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Azure West US 2",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-msft-qwru"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 300,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-06",
+        "basis": "Estimated cumulative campus load fed by Grant County PUD hydro substations.",
+        "sourceId": "src-grantpud"
+      },
+      "totalPlannedMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-06",
+        "basis": "Estimated total campus capacity with ongoing hall upgrades.",
+        "sourceId": "src-grantpud"
+      },
+      "utilityProvider": "Grant County PUD (WECC)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "230 kV / 115 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted diesel generator arrays; Washington Department of Ecology regulates air-emissions limits.",
+      "cleanPowerAndTariffSummary": "Powered primarily by carbon-free Columbia River hydroelectric dams (Wanapum & Priest Rapids) under Grant PUD high-density industrial rate tiers."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Microsoft does not disclose individual Quincy facility MGD withdrawals despite QWRU closed-loop reuse integration.",
+        "sourceId": "src-epa-quincy"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Site-level annual water draw is not published separately from Quincy Water Reuse Utility metrics.",
+        "sourceId": "src-msft-qwru"
+      },
+      "pue": {
+        "value": 1.18,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-01",
+        "basis": "Estimated PUE utilizing outside-air economizers in dry Central Washington climate.",
+        "sourceId": "src-msft-qwru"
+      },
+      "waterSource": "Quincy Water Reuse Utility (QWRU) closed-loop industrial reuse + municipal supply",
+      "watershedName": "Columbia River / Moses Coulee Basin",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "12462600",
+      "nwsStationId": "KEPH"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / QWRU Industrial Water Reuse Model",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Highlighted by US EPA as a model industrial water-reuse partnership while Grant PUD monitors cumulative data center share (~37% of county load) and transmission upgrades.",
+      "permits": [
+        {
+          "title": "US EPA Water Reuse Case Study: Quincy, Washington",
+          "agency": "US Environmental Protection Agency",
+          "docketOrPermitId": "EPA-QWRU-WA",
+          "date": "2024-01-01",
+          "status": "Active Reuse System",
+          "url": "https://www.epa.gov/waterreuse/water-reuse-case-study-quincy-washington"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Co-funding the Quincy Water Reuse Utility recycles mineral-heavy cooling blowdown and slashes potable aquifer withdrawals.",
+          "evidence": "US EPA and Microsoft document closed-loop treatment returning non-potable water back to campus chillers.",
+          "sourceId": "src-epa-quincy"
+        },
+        {
+          "claim": "Low-cost Columbia River hydropower and data center property taxes fund local schools and hospitals across Grant County.",
+          "evidence": "Grant PUD data center FAQs explain tier-based industrial rates designed to shield residential core customers.",
+          "sourceId": "src-grantpud"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Data centers consume ~37% of Grant County PUD's electricity, tightening surplus hydro headroom and driving costly transmission buildouts.",
+          "evidence": "Grant PUD load analyses highlight industrial compute growth requiring new transmission projects and tiered rate hikes.",
+          "sourceId": "src-grantpud"
+        },
+        {
+          "claim": "Individual campus water consumption remains undisclosed even as agricultural and tech demands compete over Columbia Basin aquifers.",
+          "evidence": "EPA case study details QWRU engineering without publishing Microsoft's specific annual MGY totals.",
+          "sourceId": "src-epa-quincy"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-epa-quincy",
+        "title": "EPA Water Reuse Case Study: Quincy, Washington",
+        "publisher": "US EPA",
+        "date": "2024-01-01",
+        "kind": "environmental_permit",
+        "url": "https://www.epa.gov/waterreuse/water-reuse-case-study-quincy-washington"
+      },
+      {
+        "id": "src-msft-qwru",
+        "title": "Partnering with Quincy on Industrial Water Reuse Center",
+        "publisher": "Microsoft",
+        "date": "2023-06-01",
+        "kind": "operator_disclosure",
+        "url": "https://local.microsoft.com/blog/partnering-with-the-city-of-quincy-to-open-washingtons-first-industrial-water-reuse-center/"
+      },
+      {
+        "id": "src-grantpud",
+        "title": "Grant County PUD Data Center Load & Rate FAQs",
+        "publisher": "Grant County PUD",
+        "date": "2025-10-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.grantpud.org/blog/data-center-faqs"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "vantage-sabey-quincy",
+    "name": "Vantage / Sabey Quincy Campus",
+    "marketCluster": "Central Washington Hydro Corridor",
+    "city": "Quincy",
+    "county": "Grant",
+    "state": "WA",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -119.835,
+      47.253
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "Twin multi-tenant hyperscale campuses in northeast Quincy \u2014 Vantage WA1 (89 MW across 68 acres) and Sabey Intergate.Quincy (>530k sq ft) \u2014 leveraging Grant PUD hydro and closed-loop air chillers.",
+    "parcel": {
+      "acreage": {
+        "value": 130,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2024-01",
+        "basis": "68-acre Vantage WA1 campus (2101 M St NE) plus ~62-acre Sabey Intergate.Quincy campus.",
+        "sourceId": "src-vantage"
+      },
+      "grossSqFt": {
+        "value": 1200000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2024-01",
+        "basis": "Combined ~670k sq ft Vantage WA11\u2013WA13 buildings and >530k sq ft Sabey campus.",
+        "sourceId": "src-sabey"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "Industrial / Port of Quincy Technology Corridor",
+      "parcelNote": "Located along M St NE in northeast Quincy."
+    },
+    "stakeholders": {
+      "developer": "Vantage Data Centers / Sabey Data Centers",
+      "operator": "Vantage Data Centers / Sabey Data Centers",
+      "anchorTenants": [
+        {
+          "name": "Vantage WA1 Hyperscale Platform (89 MW)",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-vantage"
+        },
+        {
+          "name": "Sabey Intergate.Quincy Enterprise & Cloud Platform",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-sabey"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 160,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2024-01",
+        "basis": "89 MW completed Vantage WA1 capacity plus ~71 MW operational Sabey capacity.",
+        "sourceId": "src-vantage"
+      },
+      "totalPlannedMw": {
+        "value": 200,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2024-01",
+        "basis": "200 MW combined Grant PUD utility capacity across Vantage and Sabey buildouts.",
+        "sourceId": "src-sabey"
+      },
+      "utilityProvider": "Grant County PUD (WECC)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "115 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted diesel emergency standby generators for N+1 multi-tenant SLA redundancy.",
+      "cleanPowerAndTariffSummary": "100% renewable hydro-dominant supply from Grant PUD under tiered industrial/evolving rate classes."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "air_chiller_zero_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Vantage utilizes closed-loop air chillers (~zero WUE); neither operator publishes site MGD logs.",
+        "sourceId": "src-vantage"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual site-level water draw is undisclosed by Vantage and Sabey.",
+        "sourceId": "src-vantage"
+      },
+      "pue": {
+        "value": 1.2,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2024-01",
+        "basis": "Reported design PUE leveraging Quincy outside-air economization and closed-loop chillers.",
+        "sourceId": "src-vantage"
+      },
+      "waterSource": "City of Quincy municipal (near-zero evaporative draw on closed-loop chillers)",
+      "watershedName": "Columbia River / Moses Coulee Basin",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "12452990",
+      "nwsStationId": "KEPH"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / Grant PUD Industrial Rate Oversight",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Completed multi-building expansions under Washington state sales tax incentives while Grant PUD navigates Rate Schedule 17 high-density load growth.",
+      "permits": [
+        {
+          "title": "Grant County PUD High-Density Load Policy & FAQs",
+          "agency": "Grant County PUD",
+          "docketOrPermitId": "GCPUD-HDL-2025",
+          "date": "2025-10-01",
+          "status": "Active Tariff Oversight",
+          "url": "https://www.grantpud.org/blog/data-center-faqs"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Closed-loop air-cooled chiller architectures achieve near-zero operational water loss in Central Washington.",
+          "evidence": "Vantage's 89 MW WA1 completion report highlights waterless chiller loops with air-side economizers.",
+          "sourceId": "src-vantage"
+        },
+        {
+          "claim": "Multi-tenant platforms bring diversified cloud tenants and sustained property tax revenues to Grant County.",
+          "evidence": "Sabey and Vantage disclosures note >$1B regional capital deployment.",
+          "sourceId": "src-sabey"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Cumulative Quincy colocation load strains Grant PUD surplus hydro capacity and drives new 115/230 kV buildout costs.",
+          "evidence": "Grant PUD load FAQs detail rapid industrial power growth reaching 37% of county demand.",
+          "sourceId": "src-grantpud"
+        },
+        {
+          "claim": "Closed-loop chillers increase peak summer kW demand during warm Columbia Basin afternoons.",
+          "evidence": "Grant PUD resource planning notes summer peak sensitivity alongside cooling system load.",
+          "sourceId": "src-grantpud"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-vantage",
+        "title": "Vantage Completes 89 MW $1B Quincy Campus",
+        "publisher": "Vantage Data Centers",
+        "date": "2023-11-01",
+        "kind": "operator_disclosure",
+        "url": "https://vantage-dc.com/news/vantage-data-centers-completes-development-of-89mw-1billion-quincy-washington-campus/"
+      },
+      {
+        "id": "src-sabey",
+        "title": "Sabey Intergate.Quincy Data Center Campus",
+        "publisher": "Sabey Data Centers",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://sabey.com/real-estate/quincy-data-center"
+      },
+      {
+        "id": "src-grantpud",
+        "title": "Grant County PUD Data Center Load & Rate FAQs",
+        "publisher": "Grant County PUD",
+        "date": "2025-10-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.grantpud.org/blog/data-center-faqs"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-mesa",
+    "name": "Meta Mesa Data Center",
+    "marketCluster": "East Valley Phoenix (Elliot Road Corridor)",
+    "city": "Mesa",
+    "county": "Maricopa",
+    "state": "AZ",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -111.62923,
+      33.34293
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "LEED Gold hyperscale campus spanning 396 acres at Elliot & Ellsworth Roads in Mesa, served by Salt River Project (450 MW solar match via Project Huckleberry) under a 1,400 AFY Sustainable Water Service Agreement.",
+    "parcel": {
+      "acreage": {
+        "value": 396,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "396-acre campus (389 net developable acres in SRP CEC filing) at SE corner of Elliot and Ellsworth Rds.",
+        "sourceId": "src-srp"
+      },
+      "grossSqFt": {
+        "value": 2500000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "2.5+ million sq ft multi-building campus online as of January 2025.",
+        "sourceId": "src-meta-mesa"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "Light Industrial / Elliot Road Technology Corridor",
+      "parcelNote": "Situated at 3841 S Ellsworth Rd immediately west of EdgeCore Mesa."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc.",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta Cloud & AI Production Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-mesa"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 250,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-01",
+        "basis": "Estimated energized load as Phase 1\u20133 buildings serve live traffic via SRP Prickly Pear Substation.",
+        "sourceId": "src-srp"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "Matched by 450 MW of net-new Arizona solar/storage PPAs procured with SRP (including Eleven Mile Solar Center).",
+        "sourceId": "src-meta-mesa"
+      },
+      "utilityProvider": "Salt River Project (SRP / WECC)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "230 kV / 69 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted standby diesel backup generators under Maricopa County air quality permits.",
+      "cleanPowerAndTariffSummary": "Meta fully funded SRP Project Huckleberry 230 kV transmission and Prickly Pear Substation while contracting 450 MW of solar generation."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": 1.25,
+        "unit": "MGD",
+        "epistemic": "permitted",
+        "asOf": "2025-01",
+        "basis": "City of Mesa Phase 3 Sustainable Water Service Agreement allowance up to 1,400 AFY (456.2 MGY / 365 = 1.25 MGD cap).",
+        "sourceId": "src-mesa-suedc"
+      },
+      "annualWaterMgy": {
+        "value": 456.2,
+        "unit": "MGY",
+        "epistemic": "permitted",
+        "asOf": "2025-01",
+        "basis": "1,400 acre-feet/year permitted municipal allowance at full Phase 3 buildout.",
+        "sourceId": "src-mesa-suedc"
+      },
+      "pue": {
+        "value": 1.12,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "Meta disclosed fleet design PUE utilizing outside air for cooling across cooler desert hours.",
+        "sourceId": "src-meta-mesa"
+      },
+      "waterSource": "City of Mesa (Salt River / Verde / Central Arizona Project portfolio)",
+      "watershedName": "Salt River / Lower Gila Basin",
+      "watershedStress": "extremely_high",
+      "usgsGaugeSiteId": "09512165",
+      "nwsStationId": "KIWA"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / ACC Certificate of Environmental Compatibility (SRP Huckleberry)",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Approved via ACC Project Huckleberry CEC and City of Mesa Sustainable Water Agreement requiring Meta to fund watershed restoration equal to 200% of water consumed.",
+      "permits": [
+        {
+          "title": "SRP Project Huckleberry 230 kV Transmission CEC Exhibit",
+          "agency": "Arizona Power Plant and Transmission Line Siting Committee",
+          "docketOrPermitId": "SRP-CEC-HUCKLEBERRY",
+          "date": "2022-01-01",
+          "status": "Approved / Energized",
+          "url": "https://www.srpnet.com/v3/assets/bltefc1fc708dcc94e7/blta8f2e51b0040f6f1/SRP-Huckleberry-CEC-Final_ExhibitH.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Meta funded 100% of dedicated SRP substation/transmission infrastructure and contracted 450 MW of Arizona solar.",
+          "evidence": "SRP CEC filing and Meta's Jan 2025 launch announcement verify direct transmission financing and clean PPA matching.",
+          "sourceId": "src-srp"
+        },
+        {
+          "claim": "Sustainable Water Service Agreement pairs capped allocation with 200% Colorado/Salt basin water restoration commitments.",
+          "evidence": "Meta's Mesa disclosure details Colorado River basin restoration and LEED Gold efficiency.",
+          "sourceId": "src-meta-mesa"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Up to 1,400 AFY (456 MGY) water allowance sits inside an extremely water-stressed Colorado River / Sonoran Desert basin.",
+          "evidence": "Regional water trackers emphasize desert scarcity risks even with offset credits elsewhere in the watershed.",
+          "sourceId": "src-mesa-suedc"
+        },
+        {
+          "claim": "Summer peak Sonoran Desert wet-bulb spikes coincide with SRP air-conditioning peaks, straining evening grid ramps.",
+          "evidence": "Phoenix corridor grid planning underscores intense July\u2013August cooling demand coincidence.",
+          "sourceId": "src-srp"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-mesa",
+        "title": "Meta Mesa Data Center Online Announcement",
+        "publisher": "Meta",
+        "date": "2025-01-15",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/2025/01/mesa-we-are-online/"
+      },
+      {
+        "id": "src-srp",
+        "title": "SRP Project Huckleberry CEC Final Filing Exhibit",
+        "publisher": "Salt River Project",
+        "date": "2022-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.srpnet.com/v3/assets/bltefc1fc708dcc94e7/blta8f2e51b0040f6f1/SRP-Huckleberry-CEC-Final_ExhibitH.pdf"
+      },
+      {
+        "id": "src-mesa-suedc",
+        "title": "Meta Mesa Data Center Profile & Water Agreement",
+        "publisher": "SueDataCenters",
+        "date": "2025-08-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://suedatacenters.org/data-centers/meta-mesa-az"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-goodyear",
+    "name": "Microsoft Goodyear Campus",
+    "marketCluster": "West Valley Phoenix",
+    "city": "Goodyear",
+    "county": "Maricopa",
+    "state": "AZ",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -112.43846,
+      33.49261
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "550+ acre Azure West Valley campus on Citrus Road served by Arizona Public Service (APS), where municipal water-scarcity friction led Microsoft to shift new halls to air-cooling and fund wastewater plant expansions.",
+    "parcel": {
+      "acreage": {
+        "value": 550,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-10",
+        "basis": "550+ acres across Citrus Rd, Broadway Rd, and Bullard Ave parcels in Goodyear.",
+        "sourceId": "src-goodyear-suedc"
+      },
+      "grossSqFt": {
+        "value": 2000000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-10",
+        "basis": "Estimated gross floor area across PHX70\u2013PHX74 and newer West Valley builds.",
+        "sourceId": "src-goodyear-suedc"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "Industrial / Goodyear Airpark Corridor",
+      "parcelNote": "Centered at 3785 N Citrus Rd north of Phoenix Goodyear Airport."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Azure West US 3 / AI Compute",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-goodyear-suedc"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 150,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-10",
+        "basis": "Estimated energized load across operational Citrus Rd buildings.",
+        "sourceId": "src-goodyear-suedc"
+      },
+      "totalPlannedMw": {
+        "value": 350,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-10",
+        "basis": "Estimated multi-parcel APS load across 550+ acre Goodyear holdings.",
+        "sourceId": "src-aps"
+      },
+      "utilityProvider": "Arizona Public Service (APS / WECC)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "230 kV / 69 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted diesel emergency generators for mission-critical failover.",
+      "cleanPowerAndTariffSummary": "Served by APS under large-load infrastructure agreements designed to recover substation and transmission costs from hyperscale customers."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "air_chiller_zero_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Microsoft withholds site-level MGD telemetry in Goodyear while transitioning newer halls from evaporative to air cooling.",
+        "sourceId": "src-aztech"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Exact annual municipal water consumption across PHX70\u2013PHX74 remains undisclosed.",
+        "sourceId": "src-aztech"
+      },
+      "pue": {
+        "value": 1.22,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-10",
+        "basis": "Estimated PUE reflecting high desert ambient air-chiller operation.",
+        "sourceId": "src-aztech"
+      },
+      "waterSource": "City of Goodyear (groundwater + CAP; new buildings converted to air-cooling)",
+      "watershedName": "Agua Fria / Lower Gila Basin",
+      "watershedStress": "extremely_high",
+      "usgsGaugeSiteId": "09514100",
+      "nwsStationId": "KLUF"
+    },
+    "regulatory": {
+      "permittingStage": "Operational / Amended Municipal Water & Wastewater Agreement",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Following early desert groundwater criticism, Goodyear amended Microsoft's development agreement to require air-cooling on future buildings and tens of millions in 157th Ave wastewater plant upgrades.",
+      "permits": [
+        {
+          "title": "APS Large Data Center Customer Cost Protection Policy",
+          "agency": "Arizona Public Service",
+          "docketOrPermitId": "APS-DC-PLAN",
+          "date": "2025-06-01",
+          "status": "Active Tariff Policy",
+          "url": "https://www.aps.com/en/Utility/Company-wide-Events-and-Messages/Data_Centers_How_Were_Protecting_Customers_While_Planning-for_Big_Energy_Needs"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Amended municipal pact eliminates evaporative cooling on new halls and finances 157th Ave wastewater capacity upgrades.",
+          "evidence": "Arizona Technology Council documents Microsoft's switch to air-cooling and direct municipal wastewater funding.",
+          "sourceId": "src-aztech"
+        },
+        {
+          "claim": "APS requires hyperscalers to fund upfront grid upgrades and minimum load commitments so residential customers avoid cost shifts.",
+          "evidence": "APS policy briefing outlines customer-protection contract guardrails for West Valley large loads.",
+          "sourceId": "src-aps"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Air-cooling in 115\u00b0F+ West Valley summers drastically spikes peak electrical demand on APS's grid.",
+          "evidence": "APS planning notices highlight extraordinary 24/7 capacity additions needed to serve West Valley data centers.",
+          "sourceId": "src-aps"
+        },
+        {
+          "claim": "Historical water volumes for older evaporative phases remain shielded from full public accounting in an extreme-stress basin.",
+          "evidence": "Regional data center trackers cite ongoing transparency gaps around earlier Goodyear water draw.",
+          "sourceId": "src-goodyear-suedc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-aztech",
+        "title": "Microsoft Agrees to Air-Cooled Data Centers in Goodyear",
+        "publisher": "Arizona Technology Council",
+        "date": "2024-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.aztechcouncil.org/microsoft-agrees-to-make-data-centers-air-cooled-amid-water-infrastructure-challenges-in-goodyear/"
+      },
+      {
+        "id": "src-aps",
+        "title": "APS: Protecting Customers While Planning for Big Data Center Loads",
+        "publisher": "Arizona Public Service",
+        "date": "2025-06-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.aps.com/en/Utility/Company-wide-Events-and-Messages/Data_Centers_How_Were_Protecting_Customers_While_Planning-for_Big_Energy_Needs"
+      },
+      {
+        "id": "src-goodyear-suedc",
+        "title": "Microsoft Goodyear Campus Profile",
+        "publisher": "SueDataCenters",
+        "date": "2025-10-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://suedatacenters.org/data-centers/microsoft-goodyear-az"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "edgecore-mesa",
+    "name": "EdgeCore Mesa Mega-Campus",
+    "marketCluster": "East Valley Phoenix (Elliot Road Corridor)",
+    "city": "Mesa",
+    "county": "Maricopa",
+    "state": "AZ",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -111.61959,
+      33.34415
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "84-acre, 496 MW hyperscale campus on Everton Terrace in Mesa's Elliot Road corridor utilizing closed-loop air-cooled chilled water (<0.01 L/kWh WUE) and Salt River Project 230 kV supply.",
+    "parcel": {
+      "acreage": {
+        "value": 84,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "Expanded from 40 to 84 contiguous acres at 3856 S Everton Terrace in Mesa.",
+        "sourceId": "src-edgecore"
+      },
+      "grossSqFt": {
+        "value": 3100000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "Master-planned campus up to 2.7\u20133.1 million sq ft across multiple AI-ready buildings.",
+        "sourceId": "src-edgecore"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "Light Industrial / Elliot Road Tech Corridor",
+      "parcelNote": "Adjacent to Meta Mesa along the Elliot Road 230 kV utility corridor."
+    },
+    "stakeholders": {
+      "developer": "EdgeCore Digital Infrastructure",
+      "operator": "EdgeCore Digital Infrastructure",
+      "anchorTenants": [
+        {
+          "name": "Hyperscale Cloud & AI Colocation Tenants",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-edgecore"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 112,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-06",
+        "basis": "Estimated energized load across initial operational phases.",
+        "sourceId": "src-edgecore"
+      },
+      "totalPlannedMw": {
+        "value": 496,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "496 MW critical IT load master plan served via dedicated on-site SRP substation.",
+        "sourceId": "src-edgecore"
+      },
+      "utilityProvider": "Salt River Project (SRP / WECC)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "230 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Acoustic-attenuated diesel standby generation farms serving high-density AI/cloud halls.",
+      "cleanPowerAndTariffSummary": "Dedicated SRP 230 kV substation with developer-funded transmission ties and renewable PPA options."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "air_chiller_zero_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "EdgeCore publishes design WUE (<0.01 L/kWh) for closed-loop chillers without disclosing absolute MGD draw.",
+        "sourceId": "src-edgecore"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual site MGY water consumption is not publicly itemized.",
+        "sourceId": "src-edgecore"
+      },
+      "pue": {
+        "value": 1.25,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2025-06",
+        "basis": "Disclosed air-cooled closed-loop chiller design PUE.",
+        "sourceId": "src-edgecore"
+      },
+      "waterSource": "City of Mesa closed-loop fill (virtually zero ongoing evaporation)",
+      "watershedName": "Salt River / Lower Gila Basin",
+      "watershedStress": "extremely_high",
+      "usgsGaugeSiteId": "09502000",
+      "nwsStationId": "KIWA"
+    },
+    "regulatory": {
+      "permittingStage": "Operational & Expanding / SRP 230 kV Corridor",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Constructed inside Mesa's pre-entitled Elliot Road Technology Corridor; ultra-low WUE cooling mitigates municipal water criticism while peak summer power demand grows.",
+      "permits": [
+        {
+          "title": "EdgeCore Phoenix/Mesa 496 MW Campus Disclosure",
+          "agency": "EdgeCore / City of Mesa",
+          "docketOrPermitId": "MESA-EC-496MW",
+          "date": "2025-06-01",
+          "status": "Operational / Expanding",
+          "url": "https://edgecore.com/locations/phoenix-data-center"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Closed-loop air-cooled chilled water achieves <0.01 L/kWh WUE, saving hundreds of millions of gallons annually in Mesa.",
+          "evidence": "EdgeCore's Mesa specifications confirm essentially zero evaporative water loss during operation.",
+          "sourceId": "src-edgecore"
+        },
+        {
+          "claim": "Concentrating 496 MW inside Mesa's Elliot Road corridor leverages dedicated SRP 230 kV infrastructure.",
+          "evidence": "SRP CEC filings document planned 230 kV substations serving East Valley industrial parks.",
+          "sourceId": "src-srp"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Water-free chillers carry a higher energy penalty (PUE ~1.25) during peak Phoenix summer heat waves.",
+          "evidence": "EdgeCore's 1.25 PUE vs evaporative 1.10 illustrates the desert water-energy trade-off hitting SRP summer peaks.",
+          "sourceId": "src-edgecore"
+        },
+        {
+          "claim": "Elliot Road clustering concentrates multi-hundred-MW diesel backup arrays and substation infrastructure near Eastmark neighborhoods.",
+          "evidence": "Adjacent SRP siting filings detail high-voltage line corridors crossing fast-growing Mesa tracts.",
+          "sourceId": "src-srp"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-edgecore",
+        "title": "EdgeCore Phoenix / Mesa 496 MW Data Center Specifications",
+        "publisher": "EdgeCore Digital Infrastructure",
+        "date": "2025-06-01",
+        "kind": "operator_disclosure",
+        "url": "https://edgecore.com/locations/phoenix-data-center"
+      },
+      {
+        "id": "src-srp",
+        "title": "SRP Project Huckleberry / Elliot Road 230 kV Corridor CEC",
+        "publisher": "Salt River Project",
+        "date": "2022-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.srpnet.com/v3/assets/bltefc1fc708dcc94e7/blta8f2e51b0040f6f1/SRP-Huckleberry-CEC-Final_ExhibitH.pdf"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "tucson-pima-project-blue",
+    "name": "Tucson / Pima County \"Project Blue\" Proposal",
+    "marketCluster": "Southern Arizona (Tucson Basin)",
+    "city": "Tucson",
+    "county": "Pima",
+    "state": "AZ",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -110.79081,
+      32.04859
+    ],
+    "lifecycleStatus": "contested",
+    "summary": "Contested $3.6B, 290-acre hyperscale project by Beale Infrastructure in Pima County's SELC; Tucson City Council unanimously rejected annexation and reclaimed-water service, while Arizona's Attorney General appealed the ACC's 286 MW TEP power approval.",
+    "parcel": {
+      "acreage": {
+        "value": 290,
+        "unit": "acres",
+        "epistemic": "filed",
+        "asOf": "2025-12",
+        "basis": "290 acres of county-owned SELC land north of Pima County Fairgrounds.",
+        "sourceId": "src-pima"
+      },
+      "grossSqFt": {
+        "value": 2000000,
+        "unit": "sq ft",
+        "epistemic": "filed",
+        "asOf": "2025-12",
+        "basis": "Proposed 4\u201310 data center buildings in Pima County development agreement.",
+        "sourceId": "src-pima"
+      },
+      "dataHallCount": 4,
+      "zoningDesignation": "Southeast Employment & Logistics Center (SELC / Unincorporated County)",
+      "parcelNote": "Positioned north of Pima County Fairgrounds along S Houghton Rd and Brekke Rd."
+    },
+    "stakeholders": {
+      "developer": "Beale Infrastructure Group (Humphrey's Peak Power)",
+      "operator": "Beale Infrastructure Group",
+      "anchorTenants": [
+        {
+          "name": "AWS (Reported Initial Partner \u2014 Subsequently Stepped Back)",
+          "role": "reported_tenant",
+          "epistemic": "disclosed",
+          "sourceId": "src-azpm"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 0,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2026-11-16",
+        "basis": "0 MW energized; proposed 2027\u20132028 ramp remains under legal challenge.",
+        "sourceId": "src-azpm"
+      },
+      "totalPlannedMw": {
+        "value": 286,
+        "unit": "MW",
+        "epistemic": "permitted",
+        "asOf": "2025-12",
+        "basis": "286 MW Energy Supply Agreement approved 4\u20131 by ACC in Docket E-01933A-25-0187, now under Attorney General appeal.",
+        "sourceId": "src-azcc"
+      },
+      "utilityProvider": "Tucson Electric Power (TEP / WECC)",
+      "interconnectionStatus": "ferc_or_puc_contested",
+      "substationVoltage": "138 kV / 345 kV planned",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Backup diesel generator air emissions flagged in public-health reviews.",
+      "cleanPowerAndTariffSummary": "ACC approved TEP's special Energy Supply Agreement with minimum-bill guardrails in Dec 2025; Arizona AG Kris Mayes appealed the decision over rate-setting legality."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": 0.09,
+        "unit": "MGD",
+        "epistemic": "permitted",
+        "asOf": "2025-12",
+        "basis": "96.5 AFY (31.4 MGY / 365 = 0.086 MGD) grandfathered groundwater rights after switching to closed-loop air cooling.",
+        "sourceId": "src-azpm"
+      },
+      "annualWaterMgy": {
+        "value": 31.4,
+        "unit": "MGY",
+        "epistemic": "permitted",
+        "asOf": "2025-12",
+        "basis": "96.5 acre-feet/year groundwater right acquired after Tucson City Council killed the 18-mile reclaimed water annexation.",
+        "sourceId": "src-noddc"
+      },
+      "pue": {
+        "value": 1.2,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-12",
+        "basis": "Estimated PUE after pivot from evaporative reclaimed water to closed-loop air-cooled design.",
+        "sourceId": "src-azpm"
+      },
+      "waterSource": "Grandfathered local groundwater wells (post Tucson reclaimed-water rejection)",
+      "watershedName": "Santa Cruz River / Tucson Active Management Area",
+      "watershedStress": "extremely_high",
+      "usgsGaugeSiteId": "09482500",
+      "nwsStationId": "KDMA"
+    },
+    "regulatory": {
+      "permittingStage": "ACC ESA Approved / Attorney General Appeal & Local Litigation",
+      "moratoriumOrLitigationActive": true,
+      "communityAndLegalSummary": "Tucson City Council unanimously rejected water annexation in Aug 2025; Arizona AG Kris Mayes appealed ACC approval of the 286 MW TEP contract, and the No Desert Data Center Coalition continues litigation.",
+      "permits": [
+        {
+          "title": "ACC Docket E-01933A-25-0187 TEP Energy Supply Agreement Decision",
+          "agency": "Arizona Corporation Commission",
+          "docketOrPermitId": "E-01933A-25-0187",
+          "date": "2025-12-09",
+          "status": "Approved / Appealed by AZ AG",
+          "url": "https://www.azcc.gov/news/home/2025/12/09/vice-chair-myers-confirms-tep-customers-protected-from-data-center-cost-shift"
+        },
+        {
+          "title": "Arizona Attorney General Appeal of Project Blue ACC Order",
+          "agency": "Arizona Attorney General",
+          "docketOrPermitId": "AZAG-APPEAL-2026",
+          "date": "2026-02-01",
+          "status": "Active Appeal",
+          "url": "https://www.azag.gov/press-release/attorney-general-mayes-appeals-arizona-corporation-commissions-approval-tucson"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "$3.6B capital investment pivots to closed-loop air cooling while contract termination fees and minimum bills shield TEP customers.",
+          "evidence": "Pima County release and ACC Vice Chair Myers confirm 96.5 AFY cap and strict ratepayer cost-shift protections.",
+          "sourceId": "src-azcc"
+        },
+        {
+          "claim": "SELC industrial land sale generates long-term county revenue without requiring City of Tucson water annexation.",
+          "evidence": "Pima County Board of Supervisors approved development deal terms for the 290-acre SELC parcel.",
+          "sourceId": "src-pima"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Bypassing municipal oversight via grandfathered desert wells and a closed-door ACC contract undermines Tucson water and rate protections.",
+          "evidence": "Arizona AG appeal challenges ACC's authority to approve special energy contracts outside full rate-case scrutiny.",
+          "sourceId": "src-azag"
+        },
+        {
+          "claim": "286 MW of 24/7 desert load threatens Tucson climate targets, fossil generation extension, and air quality from backup diesel generators.",
+          "evidence": "No Desert Data Center Coalition and AZPM coverage detail Tucson Council's unanimous annexation rejection.",
+          "sourceId": "src-noddc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-pima",
+        "title": "Pima County Supervisors Approve SELC Data Center Deal",
+        "publisher": "Pima County",
+        "date": "2025-07-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.pima.gov/content/news/supervisors-approve-billion-dollar-development-deal-with-data-center-provider"
+      },
+      {
+        "id": "src-azcc",
+        "title": "ACC Vice Chair Statement on TEP Project Blue Rate Protections",
+        "publisher": "Arizona Corporation Commission",
+        "date": "2025-12-09",
+        "kind": "regulatory_filing",
+        "url": "https://www.azcc.gov/news/home/2025/12/09/vice-chair-myers-confirms-tep-customers-protected-from-data-center-cost-shift"
+      },
+      {
+        "id": "src-azag",
+        "title": "Attorney General Mayes Appeals ACC Approval of Tucson Project Blue",
+        "publisher": "Arizona Attorney General",
+        "date": "2026-02-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://www.azag.gov/press-release/attorney-general-mayes-appeals-arizona-corporation-commissions-approval-tucson"
+      },
+      {
+        "id": "src-azpm",
+        "title": "Regulators Approve TEP Deal for Controversial Pima County Data Center",
+        "publisher": "Arizona Public Media",
+        "date": "2025-12-10",
+        "kind": "regulatory_filing",
+        "url": "https://www.azpm.org/arizona/2025-12-10/227598-arizona-regulators-approve-tep-deal-to-power-controversial-pima-county-data-center"
+      },
+      {
+        "id": "src-noddc",
+        "title": "Project Blue Opposition & Timeline",
+        "publisher": "No Desert Data Center Coalition",
+        "date": "2026-01-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://nodesertdatacenter.com/project-blue-history/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "meta-eagle-mountain",
+    "name": "Meta Eagle Mountain Campus",
+    "marketCluster": "Wasatch Front / Utah County",
+    "city": "Eagle Mountain",
+    "county": "Utah",
+    "state": "UT",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -112.01756,
+      40.26762
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "$3B+ Meta hyperscale campus spanning 566 acres in Eagle Mountain, pioneering Rocky Mountain Power (PacifiCorp) Schedule 34 100% renewable procurement alongside Provo River flow restoration and closed-loop expansion phases.",
+    "parcel": {
+      "acreage": {
+        "value": 566,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "566-acre campus boundary within Sweetwater Industrial Park in southern Eagle Mountain.",
+        "sourceId": "src-meta-em-pdf"
+      },
+      "grossSqFt": {
+        "value": 4500000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "4.5+ million sq ft multi-building campus across expansions announced through September 2026.",
+        "sourceId": "src-meta-em-news"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "Industrial / Sweetwater Tech Park",
+      "parcelNote": "Located along Pole Canyon Blvd / Community Circle in Eagle Mountain."
+    },
+    "stakeholders": {
+      "developer": "Meta Platforms, Inc.",
+      "operator": "Meta Platforms, Inc.",
+      "anchorTenants": [
+        {
+          "name": "Meta Cloud & AI Infrastructure",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-meta-em-pdf"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 250,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Estimated energized load across active buildings backed by Rocky Mountain Power Schedule 34 solar+storage.",
+        "sourceId": "src-rmp"
+      },
+      "totalPlannedMw": {
+        "value": 450,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-09",
+        "basis": "Estimated full buildout capacity following September 2026 expansion commitment.",
+        "sourceId": "src-meta-em-news"
+      },
+      "utilityProvider": "Rocky Mountain Power / PacifiCorp (WECC)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "138 kV / 345 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Permitted emergency standby diesel generators serving critical data halls.",
+      "cleanPowerAndTariffSummary": "Anchor customer of Rocky Mountain Power Schedule 34, contracting net-new Utah solar and battery projects (including Faraday Solar) to match 100% of load."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Meta withholds site-level Eagle Mountain MGD draw while shifting new phases to closed-loop liquid/dry cooling.",
+        "sourceId": "src-meta-em-pdf"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual municipal withdrawal volume is undisclosed; Meta separately reports 415+ MGY restored via Provo River/Hobble Creek projects.",
+        "sourceId": "src-meta-water"
+      },
+      "pue": {
+        "value": 1.12,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2026-09",
+        "basis": "Meta fleet-wide annualized PUE benchmark leveraging cool high-desert nights.",
+        "sourceId": "src-meta-em-pdf"
+      },
+      "waterSource": "Eagle Mountain City / Central Utah Water Conservancy District",
+      "watershedName": "Utah Lake / Jordan-Provo River Basin",
+      "watershedStress": "high",
+      "usgsGaugeSiteId": "10163000",
+      "nwsStationId": "KPVU"
+    },
+    "regulatory": {
+      "permittingStage": "Operational & Expanding / Utah Schedule 34 Green Tariff",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Multi-phase expansion backed by Utah County/Eagle Mountain infrastructure agreements, 50 MG municipal water storage funding, and Cory Wride Park reclaimed irrigation.",
+      "permits": [
+        {
+          "title": "Rocky Mountain Power Utah Rates & Schedule 34 Tariffs",
+          "agency": "Utah Public Service Commission / PacifiCorp",
+          "docketOrPermitId": "UT-SCHED-34",
+          "date": "2025-01-01",
+          "status": "Active Green Tariff",
+          "url": "https://www.rockymountainpower.net/about/rates-regulation/utah-rates-tariffs.html"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Pioneered Schedule 34 clean-energy contracting in Utah while funding a 50M-gallon city water tank and park reuse irrigation.",
+          "evidence": "Eagle Mountain City and Meta disclosures document municipal infrastructure funding and >415 MGY Provo River restoration.",
+          "sourceId": "src-em-city"
+        },
+        {
+          "claim": "Newer AI-ready phases adopt closed-loop liquid cooling with dry chillers, confining water draw mainly to domestic/fire needs.",
+          "evidence": "Meta's 2026 Eagle Mountain fact sheet details zero-evap closed-loop cooling transition.",
+          "sourceId": "src-meta-em-pdf"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Site-level water draw from earlier cooling phases remains unpublished inside Utah's drought-stressed Great Salt Lake / Utah Lake basin.",
+          "evidence": "Water benefit reports disclose restoration offsets without publishing raw campus municipal consumption.",
+          "sourceId": "src-meta-water"
+        },
+        {
+          "claim": "Multi-hundred-MW load additions across Utah County pressure PacifiCorp transmission capacity and summer peak planning.",
+          "evidence": "Regional tracking highlights rapid Wasatch Front industrial power expansion.",
+          "sourceId": "src-em-suedc"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-meta-em-pdf",
+        "title": "Meta Eagle Mountain Data Center Fact Sheet",
+        "publisher": "Meta",
+        "date": "2026-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/wp-content/uploads/2022/02/Metas-Eagle-Mountain-Data-Center-2026.pdf"
+      },
+      {
+        "id": "src-meta-em-news",
+        "title": "Meta Deepens Investment in Eagle Mountain, Utah",
+        "publisher": "Meta",
+        "date": "2026-09-01",
+        "kind": "operator_disclosure",
+        "url": "https://datacenters.atmeta.com/2026/09/deepening-our-investment-in-eagle-mountain-utah/"
+      },
+      {
+        "id": "src-em-city",
+        "title": "Eagle Mountain Welcomes Meta's Deepened Community Investment",
+        "publisher": "City of Eagle Mountain",
+        "date": "2026-09-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://eaglemountain.gov/eagle-mountain-welcomes-metas-deepened-community-investment/"
+      },
+      {
+        "id": "src-rmp",
+        "title": "Rocky Mountain Power Utah Schedule 34 Tariffs",
+        "publisher": "Rocky Mountain Power",
+        "date": "2025-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.rockymountainpower.net/about/rates-regulation/utah-rates-tariffs.html"
+      },
+      {
+        "id": "src-meta-water",
+        "title": "Meta Volumetric Water Benefit Report (Provo River)",
+        "publisher": "Meta",
+        "date": "2023-07-01",
+        "kind": "environmental_permit",
+        "url": "https://sustainability.fb.com/wp-content/uploads/2023/07/Meta_2022_Volumetric_Water_Benefit_Report_2023.pdf"
+      },
+      {
+        "id": "src-em-suedc",
+        "title": "Meta Eagle Mountain Campus Profile",
+        "publisher": "SueDataCenters",
+        "date": "2025-10-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://suedatacenters.org/data-centers/meta-eagle-mountain-ut"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "switch-citadel-tahoe-reno",
+    "name": "Switch Citadel Campus (Tahoe Reno Industrial Center)",
+    "marketCluster": "Northern Nevada (TRIC)",
+    "city": "Sparks / McCarran",
+    "county": "Storey",
+    "state": "NV",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -119.4755,
+      39.5141
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "2,000-acre exascale colocation campus inside Storey County's Tahoe-Reno Industrial Center (planned up to 650 MW / 7.2M sq ft), anchored by Switch's NV Energy unbundled green-power exit and a 16-mile treated effluent pipeline.",
+    "parcel": {
+      "acreage": {
+        "value": 2000,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "2,000-acre Citadel master-planned campus at 1 Superloop Circle inside TRIC.",
+        "sourceId": "src-switch"
+      },
+      "grossSqFt": {
+        "value": 7200000,
+        "unit": "sq ft",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "Master plan for up to 7.2 million sq ft anchored by 1.3M sq ft Tahoe Reno 1.",
+        "sourceId": "src-switch"
+      },
+      "dataHallCount": 5,
+      "zoningDesignation": "Heavy Industrial (Tahoe Reno Industrial Center)",
+      "parcelNote": "Located in Storey County east of Reno-Sparks along I-80 and Electric Ave."
+    },
+    "stakeholders": {
+      "developer": "Switch, Ltd.",
+      "operator": "Switch, Ltd.",
+      "anchorTenants": [
+        {
+          "name": "Switch Citadel Enterprise & AI Colocation Platform",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-switch"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 130,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "130 MW flagship Tahoe Reno 1 energized capacity plus ongoing campus expansion blocks.",
+        "sourceId": "src-switch"
+      },
+      "totalPlannedMw": {
+        "value": 650,
+        "unit": "MW",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "650 MW master-planned Citadel Campus design capacity.",
+        "sourceId": "src-switch"
+      },
+      "utilityProvider": "NV Energy / Sierra Pacific Power (WECC \u2014 unbundled wholesale access)",
+      "interconnectionStatus": "energized",
+      "substationVoltage": "345 kV / 120 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Modular redundant diesel generator yards supporting Tier IV uptime.",
+      "cleanPowerAndTariffSummary": "Switch paid exit fees to leave bundled NV Energy retail service under Nevada NRS 704B, sourcing 100% renewable wholesale power while relying on NV Energy transmission infrastructure."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "hybrid_liquid_evap",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "The Regional Water Improvement Pipeline delivers up to 4,000 AFY (~3.57 MGD) park-wide to TRIC; Switch's campus-specific draw is undisclosed.",
+        "sourceId": "src-switch-eff"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Campus-level recycled effluent annual volume is not separately published.",
+        "sourceId": "src-tmwa"
+      },
+      "pue": {
+        "value": 1.18,
+        "unit": "PUE",
+        "epistemic": "disclosed",
+        "asOf": "2025-01",
+        "basis": "Disclosed campus thermal efficiency utilizing dry-season ambient air and effluent cooling.",
+        "sourceId": "src-switch"
+      },
+      "waterSource": "Truckee Meadows Water Reclamation Facility 16-mile treated effluent pipeline",
+      "watershedName": "Truckee River / Pyramid Lake Basin",
+      "watershedStress": "high",
+      "usgsGaugeSiteId": "10348200",
+      "nwsStationId": "KRNO"
+    },
+    "regulatory": {
+      "permittingStage": "Operational & Expanding / PUCN Transmission & Water Reuse P3",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Nevada's NRS 704B wholesale exit framework and TRIC's 16-mile effluent pipeline enabled Switch's rapid scale-up while NV Energy IRP filings highlight steep Storey County transmission demands.",
+      "permits": [
+        {
+          "title": "NV Energy Integrated Resource Plan (Storey County / TRIC Load & Transmission)",
+          "agency": "Public Utilities Commission of Nevada / NV Energy",
+          "docketOrPermitId": "NV-IRP-VOL29",
+          "date": "2024-06-01",
+          "status": "Active Grid Plan",
+          "url": "https://www.nvenergy.com/publish/content/dam/nvenergy/brochures_arch/about-nvenergy/rates-regulatory/recent-regulatory-filings/irp/IRP-Volume-29.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "16-mile recycled effluent pipeline supplies TRIC cooling without tapping Reno's drinking water and cuts nutrient discharge into the Truckee River.",
+          "evidence": "Switch and TMWA document up to 4,000 AFY of treated wastewater diverted from river discharge to industrial cooling.",
+          "sourceId": "src-tmwa"
+        },
+        {
+          "claim": "100% renewable energy procurement under NRS 704B catalyzed multi-billion tech investment in northern Nevada.",
+          "evidence": "Switch Citadel disclosures highlight renewable solar/geothermal contracting for Tahoe Reno 1+.",
+          "sourceId": "src-switch"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Departing bundled retail customers via NRS 704B exits raised stranded-cost debates and forced multi-million exit fees to protect remaining NV Energy ratepayers.",
+          "evidence": "NV Energy IRP filings reflect immense Storey County transmission and reliability demands on Sierra Pacific Power.",
+          "sourceId": "src-nve"
+        },
+        {
+          "claim": "Site-specific effluent water usage and long-term Truckee Basin allocations remain aggregated across TRIC industrial tenants.",
+          "evidence": "TMWA disclosures emphasize park-wide reuse metrics without breaking out individual facility MGY.",
+          "sourceId": "src-tmwa"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-switch",
+        "title": "Switch Citadel Tahoe Reno Data Center Campus",
+        "publisher": "Switch",
+        "date": "2025-01-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.switch.com/switch-tahoe-reno-data-center-now-open/"
+      },
+      {
+        "id": "src-switch-eff",
+        "title": "Regional Water Improvement Effluent Pipeline Project",
+        "publisher": "Switch",
+        "date": "2024-01-01",
+        "kind": "environmental_permit",
+        "url": "https://www.switch.com/regional-water-improvement-pipeline-project-commences-bringing-jobs-economic-growth-and-environmental-sustainability/"
+      },
+      {
+        "id": "src-tmwa",
+        "title": "TMWA: Water and Data Centers in Truckee Meadows",
+        "publisher": "Truckee Meadows Water Authority",
+        "date": "2024-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://tmwa.com/water-and-data-centers/"
+      },
+      {
+        "id": "src-nve",
+        "title": "NV Energy Integrated Resource Plan (Volume 29: Northern Nevada Load)",
+        "publisher": "NV Energy",
+        "date": "2024-06-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.nvenergy.com/publish/content/dam/nvenergy/brochures_arch/about-nvenergy/rates-regulatory/recent-regulatory-filings/irp/IRP-Volume-29.pdf"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "microsoft-cheyenne",
+    "name": "Microsoft Cheyenne Campus",
+    "marketCluster": "Front Range / Southeast Wyoming",
+    "city": "Cheyenne",
+    "county": "Laramie",
+    "state": "WY",
+    "isoRegion": "WECC",
+    "coordinates": [
+      -104.7162,
+      41.14219
+    ],
+    "lifecycleStatus": "expanding",
+    "summary": "Long-standing Azure West Central US hub undergoing a massive 3,200-acre expansion announced April 2026 under Black Hills Energy's Large Power Contract Service (LPCS) tariff with zero local property tax abatements.",
+    "parcel": {
+      "acreage": {
+        "value": 3200,
+        "unit": "acres",
+        "epistemic": "disclosed",
+        "asOf": "2026-04",
+        "basis": "3,200-acre southeast Cheyenne expansion intent (5 sq mi) tripling Microsoft's Business Pkwy & Bison holdings.",
+        "sourceId": "src-msft-chey"
+      },
+      "grossSqFt": {
+        "value": 2500000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2026-04",
+        "basis": "Estimated gross floor area across existing Logistics Dr / Bison halls and initial expansion builds.",
+        "sourceId": "src-oilcity"
+      },
+      "dataHallCount": 6,
+      "zoningDesignation": "Industrial / Cheyenne Business Parkway & Bison Business Park",
+      "parcelNote": "Centered on Microsoft's Cheyenne Business Parkway campus with southeast expansion land south of Happy Jack Rd."
+    },
+    "stakeholders": {
+      "developer": "Microsoft Corporation",
+      "operator": "Microsoft Corporation",
+      "anchorTenants": [
+        {
+          "name": "Microsoft Azure West Central US",
+          "role": "hyperscale_owner",
+          "epistemic": "disclosed",
+          "sourceId": "src-msft-chey"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 180,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-04",
+        "basis": "Estimated energized load across Business Parkway and Bison Business Park facilities.",
+        "sourceId": "src-bhe"
+      },
+      "totalPlannedMw": {
+        "value": 600,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2026-04",
+        "basis": "Estimated expanded multi-campus scale under Black Hills Energy LPCS tariff.",
+        "sourceId": "src-oilcity"
+      },
+      "utilityProvider": "Black Hills Energy (WECC)",
+      "interconnectionStatus": "phased_energization",
+      "substationVoltage": "230 kV / 115 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "Backup generators transitioning toward renewable biofuel blends, paired with behind-the-meter grid support agreements.",
+      "cleanPowerAndTariffSummary": "Black Hills Energy's LPCS tariff requires Microsoft to pay 100% of dedicated substations, transmission, and energy procurement to protect Wyoming residential ratepayers."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "adiabatic_hybrid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Microsoft relies on Cheyenne free-air cooling >95% of the year and withholds site-level MGD telemetry.",
+        "sourceId": "src-msft-chey"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Annual water volume is undisclosed; Microsoft commits to basin replenishment exceeding operational draw.",
+        "sourceId": "src-msft-chey"
+      },
+      "pue": {
+        "value": 1.15,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2026-04",
+        "basis": "Estimated PUE leveraging high-altitude cool dry Wyoming air economization.",
+        "sourceId": "src-msft-chey"
+      },
+      "waterSource": "City of Cheyenne Board of Public Utilities (direct evaporative assist <5% of year)",
+      "watershedName": "Crow Creek / North & South Platte Divide",
+      "watershedStress": "medium_high",
+      "usgsGaugeSiteId": "06660000",
+      "nwsStationId": "KCYS"
+    },
+    "regulatory": {
+      "permittingStage": "Operational & 3,200-Acre Expansion / WY PSC LPCS Tariff",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "Microsoft pledged not to seek local property tax abatements for its 3,200-acre expansion and pays full transmission/substation costs via Black Hills Energy's LPCS tariff.",
+      "permits": [
+        {
+          "title": "Black Hills Energy Large Power Contract Service (LPCS) Data Center Tariff",
+          "agency": "Wyoming PSC / Black Hills Energy",
+          "docketOrPermitId": "BHE-WY-LPCS",
+          "date": "2026-04-14",
+          "status": "Active Tariff Structure",
+          "url": "https://datacenters.blackhillsenergy.com/resources/energy-solutions-data-centers"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Zero tax abatements, full LPCS infrastructure cost recovery, and multi-million municipal water/road grants shield local residents.",
+          "evidence": "Microsoft's April 2026 Cheyenne announcement and Oil City reporting confirm tax-incentive waivers and 100% grid cost payment.",
+          "sourceId": "src-oilcity"
+        },
+        {
+          "claim": "Cool high-plains climate allows direct outside-air cooling >95% of hours, limiting evaporative water draw.",
+          "evidence": "Microsoft discloses minimal seasonal water assist alongside LCCC Datacenter Academy workforce funding.",
+          "sourceId": "src-msft-chey"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "3,200-acre land assembly (5 square miles) concentrates multi-hundred-MW power demand in a semi-arid Front Range basin.",
+          "evidence": "Local reporting tracks community questions regarding future substation routing and groundwater/surface-water capacity.",
+          "sourceId": "src-oilcity"
+        },
+        {
+          "claim": "Site-level annual water draw and exact total MW projections remain omitted from public LPCS tariff summaries.",
+          "evidence": "Public announcements rely on efficiency percentages rather than audited facility MGY and MW figures.",
+          "sourceId": "src-bhe"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-msft-chey",
+        "title": "Microsoft Announces 3,200-Acre Cheyenne Datacenter Expansion",
+        "publisher": "Microsoft",
+        "date": "2026-04-14",
+        "kind": "operator_disclosure",
+        "url": "https://news.microsoft.com/source/2026/04/14/microsoft-announces-intent-to-expand-datacenter-operations-in-cheyenne-accelerating-innovation-and-economic-growth/"
+      },
+      {
+        "id": "src-oilcity",
+        "title": "Microsoft Plans Massive 3,200-Acre Expansion of Cheyenne Campuses",
+        "publisher": "Oil City News",
+        "date": "2026-04-14",
+        "kind": "municipal_or_court_record",
+        "url": "https://oilcity.news/general/2026/04/14/microsoft-plans-massive-3200-acre-expansion-of-cheyenne-data-centers/"
+      },
+      {
+        "id": "src-bhe",
+        "title": "Black Hills Energy Large-Load Data Center Energy Solutions",
+        "publisher": "Black Hills Energy",
+        "date": "2026-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://datacenters.blackhillsenergy.com/resources/energy-solutions-data-centers"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  },
+  {
+    "id": "santa-clara-dlr-equinix",
+    "name": "Digital Realty / Equinix Santa Clara Hub",
+    "marketCluster": "Silicon Valley (Santa Clara)",
+    "city": "Santa Clara",
+    "county": "Santa Clara",
+    "state": "CA",
+    "isoRegion": "CAISO",
+    "coordinates": [
+      -121.95334,
+      37.37582
+    ],
+    "lifecycleStatus": "operational",
+    "summary": "High-density Silicon Valley interconnection hub led by Digital Realty (Space Park Dr / Comstock St / De La Cruz) and Equinix (Duane Ave / Corvin Dr), constrained by Silicon Valley Power's 2023 application freeze and $459M transmission buildout.",
+    "parcel": {
+      "acreage": {
+        "value": 65,
+        "unit": "acres",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated combined urban land footprint across Digital Realty (SJC10/14/15/16/SC1) and Equinix (SV2/14/15) parcels.",
+        "sourceId": "src-dlr-sc1"
+      },
+      "grossSqFt": {
+        "value": 2800000,
+        "unit": "sq ft",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated multi-story colocation floor area across North Santa Clara industrial core.",
+        "sourceId": "src-eqx-sv"
+      },
+      "dataHallCount": 14,
+      "zoningDesignation": "Light/Heavy Industrial (North Santa Clara Tech Hub)",
+      "parcelNote": "Anchored on Digital Realty SJC10 (1100 Space Park Dr) within a 3.5-sq-mi cluster hosting ~50+ facilities."
+    },
+    "stakeholders": {
+      "developer": "Digital Realty / Equinix",
+      "operator": "Digital Realty / Equinix",
+      "anchorTenants": [
+        {
+          "name": "Digital Realty SJC Campus (120+ MW)",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-dlr-sc1"
+        },
+        {
+          "name": "Equinix Silicon Valley IBX Hub (SV2/SV14/SV15)",
+          "role": "colocation_platform",
+          "epistemic": "disclosed",
+          "sourceId": "src-eqx-sv"
+        }
+      ]
+    },
+    "power": {
+      "operationalMw": {
+        "value": 220,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated energized load across Digital Realty (>120 MW) and Equinix Santa Clara buildings.",
+        "sourceId": "src-dlr-sc1"
+      },
+      "totalPlannedMw": {
+        "value": 320,
+        "unit": "MW",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated full cluster load including queued expansions awaiting Silicon Valley Power transmission capacity.",
+        "sourceId": "src-cec"
+      },
+      "utilityProvider": "Silicon Valley Power (CAISO)",
+      "interconnectionStatus": "interconnection_queue",
+      "substationVoltage": "60 kV / 115 kV",
+      "backupGeneratorsPermitted": null,
+      "backupFuelNote": "BAAQMD-permitted diesel backup generators and pilot fuel-cell / load-flexibility microgrid deployments.",
+      "cleanPowerAndTariffSummary": "Silicon Valley Power stopped accepting new data center load applications in 2023 while executing a $459M substation/transmission expansion and grid-flexibility pilots within CAISO."
+    },
+    "waterAndCooling": {
+      "coolingArchitecture": "closed_loop_liquid",
+      "peakOrAvgWaterMgd": {
+        "value": null,
+        "unit": "MGD",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Site-level MGD metering for individual Digital Realty and Equinix Santa Clara buildings is not published.",
+        "sourceId": "src-dlr-sc1"
+      },
+      "annualWaterMgy": {
+        "value": null,
+        "unit": "MGY",
+        "epistemic": "undisclosed",
+        "asOf": "2026-11-16",
+        "basis": "Cluster municipal/recycled water consumption is undisclosed while Santa Clara evaluates recycled-water mandates.",
+        "sourceId": "src-spotlight"
+      },
+      "pue": {
+        "value": 1.28,
+        "unit": "PUE",
+        "epistemic": "estimated",
+        "asOf": "2025-11",
+        "basis": "Estimated weighted PUE across multi-generation urban colocation halls.",
+        "sourceId": "src-dlr-sc1"
+      },
+      "waterSource": "City of Santa Clara Water & Sewer / South Bay Water Recycling",
+      "watershedName": "Guadalupe River / South San Francisco Bay",
+      "watershedStress": "high",
+      "usgsGaugeSiteId": "11169025",
+      "nwsStationId": "KSJC"
+    },
+    "regulatory": {
+      "permittingStage": "SVP New-Load Freeze / CEC & City Standards Overhaul",
+      "moratoriumOrLitigationActive": false,
+      "communityAndLegalSummary": "While Santa Clara opted against a statutory ban because SVP already halted new load applications, the city is tightening data center air, grid-reliability, and recycled-water standards.",
+      "permits": [
+        {
+          "title": "California Energy Commission Santa Clara / SVP Load Planning Filing",
+          "agency": "California Energy Commission",
+          "docketOrPermitId": "CEC-TN-264908",
+          "date": "2025-07-01",
+          "status": "Active Grid Planning",
+          "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=264908"
+        },
+        {
+          "title": "CAISO Public Generation & Interconnection Queue Report",
+          "agency": "CAISO",
+          "docketOrPermitId": "CAISO-QUEUE-2026",
+          "date": "2026-01-01",
+          "status": "Active Queue",
+          "url": "https://www.caiso.com/documents/publicqueuereport.pdf"
+        }
+      ]
+    },
+    "perspectives": {
+      "proponent": [
+        {
+          "claim": "Low-latency Bay Area interconnection powers critical AI/enterprise ecosystems while data center utility fees bolster Santa Clara revenues.",
+          "evidence": "Equinix and Digital Realty disclosures highlight dense carrier/cloud fabrics and closed-loop water-conservation upgrades.",
+          "sourceId": "src-eqx-sv"
+        },
+        {
+          "claim": "Dynamic AI load-shedding pilots with Silicon Valley Power could unlock stranded queue capacity without new gas peakers.",
+          "evidence": "CEC load-forecast filings and CAISO queue planning track flexible demand and $459M grid expansion.",
+          "sourceId": "src-cec"
+        }
+      ],
+      "critic": [
+        {
+          "claim": "Grid saturation forced SVP to freeze new power applications in 2023, leaving newly built shells awaiting energization.",
+          "evidence": "San Jose Spotlight and CEC filings document capacity ceilings, stranded shells, and behind-the-meter gas microgrid workarounds.",
+          "sourceId": "src-spotlight"
+        },
+        {
+          "claim": "Clustered diesel backup arrays and unquantified water use prompt Santa Clara council demands for stricter air and recycled-water rules.",
+          "evidence": "Municipal reporting details ongoing council overhaul of water and diesel backup standards.",
+          "sourceId": "src-spotlight"
+        }
+      ]
+    },
+    "sources": [
+      {
+        "id": "src-dlr-sc1",
+        "title": "Digital Realty Silicon Valley Data Center Hub",
+        "publisher": "Digital Realty",
+        "date": "2025-11-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.digitalrealty.com/data-centers/americas/silicon-valley/sc1"
+      },
+      {
+        "id": "src-eqx-sv",
+        "title": "Equinix Silicon Valley IBX Portfolio",
+        "publisher": "Equinix",
+        "date": "2025-11-01",
+        "kind": "operator_disclosure",
+        "url": "https://www.equinix.com/data-centers/americas-colocation/united-states-colocation/silicon-valley-data-centers"
+      },
+      {
+        "id": "src-cec",
+        "title": "California Energy Commission Santa Clara Load Forecast Filing",
+        "publisher": "California Energy Commission",
+        "date": "2025-07-01",
+        "kind": "regulatory_filing",
+        "url": "https://efiling.energy.ca.gov/GetDocument.aspx?tn=264908"
+      },
+      {
+        "id": "src-caiso",
+        "title": "CAISO Public Interconnection Queue Report",
+        "publisher": "CAISO",
+        "date": "2026-01-01",
+        "kind": "utility_iso_record",
+        "url": "https://www.caiso.com/documents/publicqueuereport.pdf"
+      },
+      {
+        "id": "src-spotlight",
+        "title": "Santa Clara Seeks Stricter Water and Air Rules for Data Centers",
+        "publisher": "San Jose Spotlight",
+        "date": "2025-06-01",
+        "kind": "municipal_or_court_record",
+        "url": "https://sanjosespotlight.com/santa-clara-wants-better-water-air-standards-for-data-centers/"
+      }
+    ],
+    "lastVerified": "2026-11-16"
+  }
+]

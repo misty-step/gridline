@@ -1,0 +1,374 @@
+/*
+ * Gridline — Design Tokens
+ * Single source of truth for colors, typography, surfaces, semantic statuses,
+ * epistemic badges, thermal regimes, watershed stress, radii, spacing, and z-index.
+ * Synchronized 1:1 with DESIGN.md.
+ */
+
+:root {
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, "Liberation Mono", monospace;
+
+  --text-2xs: 10px;
+  --text-xs: 11px;
+  --text-sm: 12px;
+  --text-base: 13px;
+  --text-md: 14px;
+  --text-lg: 16px;
+  --text-xl: 18px;
+
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+
+  /* Radii */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Layout Dimensions */
+  --topbar-height: 48px;
+  --ribbon-height: 40px;
+  --rail-width: 344px;
+  --drawer-width: 520px;
+
+  /* Z-Index Scale */
+  --z-map: 0;
+  --z-hud: 10;
+  --z-controls: 20;
+  --z-rail: 30;
+  --z-drawer: 40;
+  --z-topbar: 50;
+  --z-popover: 60;
+  --z-modal: 70;
+  --z-tooltip: 80;
+
+  /* Light Theme Defaults (Cartographic Paper) */
+  --bg-canvas: #eef2f6;
+  --bg-surface: #ffffff;
+  --bg-surface-elevated: #f8fafc;
+  --bg-surface-glass: rgba(255, 255, 255, 0.9);
+  --bg-surface-hover: #f1f5f9;
+  --bg-surface-active: #e2e8f0;
+  --bg-inset: #f1f5f9;
+
+  --border-subtle: rgba(15, 23, 42, 0.08);
+  --border-default: rgba(15, 23, 42, 0.14);
+  --border-strong: rgba(15, 23, 42, 0.24);
+  --border-focus: #0284c7;
+
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #475569;
+  --text-inverse: #ffffff;
+
+  --accent-primary: #0284c7;
+  --accent-primary-hover: #0369a1;
+  --accent-primary-muted: rgba(2, 132, 199, 0.12);
+  --accent-primary-text: #0369a1;
+
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.08);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.1), 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 14px 34px rgba(15, 23, 42, 0.16), 0 4px 12px rgba(15, 23, 42, 0.08);
+
+  /* High-Contrast Map HUD (legible on light vector, dark vector, and satellite imagery) */
+  --hud-bg: rgba(15, 23, 42, 0.86);
+  --hud-border: rgba(248, 250, 252, 0.18);
+  --hud-text: #f8fafc;
+  --hud-text-muted: #cbd5e1;
+
+  /* Semantic Lifecycle Statuses */
+  --status-operational: #047857;
+  --status-operational-bg: rgba(4, 120, 87, 0.11);
+  --status-operational-border: rgba(4, 120, 87, 0.32);
+
+  --status-expanding: #0e7490;
+  --status-expanding-bg: rgba(14, 116, 144, 0.11);
+  --status-expanding-border: rgba(14, 116, 144, 0.32);
+
+  --status-under-construction: #1d4ed8;
+  --status-under-construction-bg: rgba(29, 78, 216, 0.11);
+  --status-under-construction-border: rgba(29, 78, 216, 0.32);
+
+  --status-permitted: #6d28d9;
+  --status-permitted-bg: rgba(109, 40, 217, 0.11);
+  --status-permitted-border: rgba(109, 40, 217, 0.32);
+
+  --status-proposed: #475569;
+  --status-proposed-bg: rgba(71, 85, 105, 0.11);
+  --status-proposed-border: rgba(71, 85, 105, 0.32);
+
+  --status-contested: #b45309;
+  --status-contested-bg: rgba(180, 83, 9, 0.12);
+  --status-contested-border: rgba(180, 83, 9, 0.38);
+
+  --status-moratorium: #b91c1c;
+  --status-moratorium-bg: rgba(185, 28, 28, 0.12);
+  --status-moratorium-border: rgba(185, 28, 28, 0.38);
+
+  /* Epistemic Provenance Tones */
+  --epistemic-measured: #047857;
+  --epistemic-measured-bg: rgba(4, 120, 87, 0.11);
+  --epistemic-permitted: #1d4ed8;
+  --epistemic-permitted-bg: rgba(29, 78, 216, 0.11);
+  --epistemic-filed: #6d28d9;
+  --epistemic-filed-bg: rgba(109, 40, 217, 0.11);
+  --epistemic-disclosed: #0e7490;
+  --epistemic-disclosed-bg: rgba(14, 116, 144, 0.11);
+  --epistemic-estimated: #b45309;
+  --epistemic-estimated-bg: rgba(180, 83, 9, 0.12);
+  --epistemic-undisclosed: #be123c;
+  --epistemic-undisclosed-bg: rgba(190, 18, 60, 0.11);
+
+  /* Live Thermal Regime Tones */
+  --thermal-free: #047857;
+  --thermal-free-bg: rgba(4, 120, 87, 0.11);
+  --thermal-adiabatic: #b45309;
+  --thermal-adiabatic-bg: rgba(180, 83, 9, 0.12);
+  --thermal-peak: #b91c1c;
+  --thermal-peak-bg: rgba(185, 28, 28, 0.12);
+  --thermal-unavailable: #475569;
+  --thermal-unavailable-bg: rgba(71, 85, 105, 0.12);
+
+  /* Watershed Baseline Stress Tones */
+  --stress-low: #047857;
+  --stress-low-medium: #0e7490;
+  --stress-medium-high: #b45309;
+  --stress-high: #c2410c;
+  --stress-extremely-high: #b91c1c;
+
+  /* Grid Interconnection Tones */
+  --grid-energized: #047857;
+  --grid-phased: #0e7490;
+  --grid-queue: #1d4ed8;
+  --grid-contested: #b91c1c;
+  --grid-upgrade: #b45309;
+
+  /* Parcel Footprint Zone Colors */
+  --zone-boundary: #0284c7;
+  --zone-operational: #059669;
+  --zone-expansion: #7c3aed;
+  --zone-substation: #d97706;
+  --zone-cooling: #0891b2;
+}
+
+/* Dark Theme Override (Cartographic Obsidian) */
+:root[data-resolved-theme="dark"] {
+  --bg-canvas: #070b11;
+  --bg-surface: #0d131d;
+  --bg-surface-elevated: #121a27;
+  --bg-surface-glass: rgba(13, 19, 29, 0.9);
+  --bg-surface-hover: #182233;
+  --bg-surface-active: #1f2c42;
+  --bg-inset: #090e16;
+
+  --border-subtle: rgba(148, 163, 184, 0.12);
+  --border-default: rgba(148, 163, 184, 0.2);
+  --border-strong: rgba(148, 163, 184, 0.34);
+  --border-focus: #38bdf8;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-inverse: #070b11;
+
+  --accent-primary: #38bdf8;
+  --accent-primary-hover: #7dd3fc;
+  --accent-primary-muted: rgba(56, 189, 248, 0.14);
+  --accent-primary-text: #7dd3fc;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.45);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 20px 44px rgba(0, 0, 0, 0.65), 0 6px 16px rgba(0, 0, 0, 0.45);
+
+  --hud-bg: rgba(9, 13, 21, 0.88);
+  --hud-border: rgba(148, 163, 184, 0.24);
+  --hud-text: #f1f5f9;
+  --hud-text-muted: #94a3b8;
+
+  --status-operational: #34d399;
+  --status-operational-bg: rgba(16, 185, 129, 0.15);
+  --status-operational-border: rgba(52, 211, 153, 0.36);
+
+  --status-expanding: #22d3ee;
+  --status-expanding-bg: rgba(6, 182, 212, 0.15);
+  --status-expanding-border: rgba(34, 211, 238, 0.36);
+
+  --status-under-construction: #60a5fa;
+  --status-under-construction-bg: rgba(59, 130, 246, 0.16);
+  --status-under-construction-border: rgba(96, 165, 250, 0.38);
+
+  --status-permitted: #a78bfa;
+  --status-permitted-bg: rgba(139, 92, 246, 0.16);
+  --status-permitted-border: rgba(167, 139, 250, 0.38);
+
+  --status-proposed: #94a3b8;
+  --status-proposed-bg: rgba(148, 163, 184, 0.14);
+  --status-proposed-border: rgba(148, 163, 184, 0.34);
+
+  --status-contested: #fbbf24;
+  --status-contested-bg: rgba(245, 158, 11, 0.16);
+  --status-contested-border: rgba(251, 191, 36, 0.4);
+
+  --status-moratorium: #f87171;
+  --status-moratorium-bg: rgba(239, 68, 68, 0.16);
+  --status-moratorium-border: rgba(248, 113, 113, 0.42);
+
+  --epistemic-measured: #34d399;
+  --epistemic-measured-bg: rgba(16, 185, 129, 0.15);
+  --epistemic-permitted: #60a5fa;
+  --epistemic-permitted-bg: rgba(59, 130, 246, 0.16);
+  --epistemic-filed: #a78bfa;
+  --epistemic-filed-bg: rgba(139, 92, 246, 0.16);
+  --epistemic-disclosed: #22d3ee;
+  --epistemic-disclosed-bg: rgba(6, 182, 212, 0.15);
+  --epistemic-estimated: #fbbf24;
+  --epistemic-estimated-bg: rgba(245, 158, 11, 0.16);
+  --epistemic-undisclosed: #fb7185;
+  --epistemic-undisclosed-bg: rgba(244, 63, 94, 0.16);
+
+  --thermal-free: #34d399;
+  --thermal-free-bg: rgba(16, 185, 129, 0.15);
+  --thermal-adiabatic: #fbbf24;
+  --thermal-adiabatic-bg: rgba(245, 158, 11, 0.16);
+  --thermal-peak: #f87171;
+  --thermal-peak-bg: rgba(239, 68, 68, 0.16);
+  --thermal-unavailable: #94a3b8;
+  --thermal-unavailable-bg: rgba(148, 163, 184, 0.14);
+
+  --stress-low: #34d399;
+  --stress-low-medium: #22d3ee;
+  --stress-medium-high: #fbbf24;
+  --stress-high: #fb923c;
+  --stress-extremely-high: #f87171;
+
+  --grid-energized: #34d399;
+  --grid-phased: #22d3ee;
+  --grid-queue: #60a5fa;
+  --grid-contested: #f87171;
+  --grid-upgrade: #fbbf24;
+
+  --zone-boundary: #38bdf8;
+  --zone-operational: #10b981;
+  --zone-expansion: #a78bfa;
+  --zone-substation: #f59e0b;
+  --zone-cooling: #06b6d4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-resolved-theme="light"]) {
+    --bg-canvas: #070b11;
+    --bg-surface: #0d131d;
+    --bg-surface-elevated: #121a27;
+    --bg-surface-glass: rgba(13, 19, 29, 0.9);
+    --bg-surface-hover: #182233;
+    --bg-surface-active: #1f2c42;
+    --bg-inset: #090e16;
+
+    --border-subtle: rgba(148, 163, 184, 0.12);
+    --border-default: rgba(148, 163, 184, 0.2);
+    --border-strong: rgba(148, 163, 184, 0.34);
+    --border-focus: #38bdf8;
+
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-inverse: #070b11;
+
+    --accent-primary: #38bdf8;
+    --accent-primary-hover: #7dd3fc;
+    --accent-primary-muted: rgba(56, 189, 248, 0.14);
+    --accent-primary-text: #7dd3fc;
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35), 0 1px 3px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 20px 44px rgba(0, 0, 0, 0.65), 0 6px 16px rgba(0, 0, 0, 0.45);
+
+    --hud-bg: rgba(9, 13, 21, 0.88);
+    --hud-border: rgba(148, 163, 184, 0.24);
+    --hud-text: #f1f5f9;
+    --hud-text-muted: #94a3b8;
+
+    --status-operational: #34d399;
+    --status-operational-bg: rgba(16, 185, 129, 0.15);
+    --status-operational-border: rgba(52, 211, 153, 0.36);
+
+    --status-expanding: #22d3ee;
+    --status-expanding-bg: rgba(6, 182, 212, 0.15);
+    --status-expanding-border: rgba(34, 211, 238, 0.36);
+
+    --status-under-construction: #60a5fa;
+    --status-under-construction-bg: rgba(59, 130, 246, 0.16);
+    --status-under-construction-border: rgba(96, 165, 250, 0.38);
+
+    --status-permitted: #a78bfa;
+    --status-permitted-bg: rgba(139, 92, 246, 0.16);
+    --status-permitted-border: rgba(167, 139, 250, 0.38);
+
+    --status-proposed: #94a3b8;
+    --status-proposed-bg: rgba(148, 163, 184, 0.14);
+    --status-proposed-border: rgba(148, 163, 184, 0.34);
+
+    --status-contested: #fbbf24;
+    --status-contested-bg: rgba(245, 158, 11, 0.16);
+    --status-contested-border: rgba(251, 191, 36, 0.4);
+
+    --status-moratorium: #f87171;
+    --status-moratorium-bg: rgba(239, 68, 68, 0.16);
+    --status-moratorium-border: rgba(248, 113, 113, 0.42);
+
+    --epistemic-measured: #34d399;
+    --epistemic-measured-bg: rgba(16, 185, 129, 0.15);
+    --epistemic-permitted: #60a5fa;
+    --epistemic-permitted-bg: rgba(59, 130, 246, 0.16);
+    --epistemic-filed: #a78bfa;
+    --epistemic-filed-bg: rgba(139, 92, 246, 0.16);
+    --epistemic-disclosed: #22d3ee;
+    --epistemic-disclosed-bg: rgba(6, 182, 212, 0.15);
+    --epistemic-estimated: #fbbf24;
+    --epistemic-estimated-bg: rgba(245, 158, 11, 0.16);
+    --epistemic-undisclosed: #fb7185;
+    --epistemic-undisclosed-bg: rgba(244, 63, 94, 0.16);
+
+    --thermal-free: #34d399;
+    --thermal-free-bg: rgba(16, 185, 129, 0.15);
+    --thermal-adiabatic: #fbbf24;
+    --thermal-adiabatic-bg: rgba(245, 158, 11, 0.16);
+    --thermal-peak: #f87171;
+    --thermal-peak-bg: rgba(239, 68, 68, 0.16);
+    --thermal-unavailable: #94a3b8;
+    --thermal-unavailable-bg: rgba(148, 163, 184, 0.14);
+
+    --stress-low: #34d399;
+    --stress-low-medium: #22d3ee;
+    --stress-medium-high: #fbbf24;
+    --stress-high: #fb923c;
+    --stress-extremely-high: #f87171;
+
+    --grid-energized: #34d399;
+    --grid-phased: #22d3ee;
+    --grid-queue: #60a5fa;
+    --grid-contested: #f87171;
+    --grid-upgrade: #fbbf24;
+
+    --zone-boundary: #38bdf8;
+    --zone-operational: #10b981;
+    --zone-expansion: #a78bfa;
+    --zone-substation: #f59e0b;
+    --zone-cooling: #06b6d4;
+  }
+}
