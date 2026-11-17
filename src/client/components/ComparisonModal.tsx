@@ -1,27 +1,37 @@
 import { GitCompareArrows, Satellite, Trash2, X } from "lucide-react";
 import type {
   EpistemicStatus,
-  FacilityRecord,
+  FacilityDetailApiResponse,
+  FacilityIndexItem,
   LiveBasinHydrology,
+  LiveGridFeed,
   LiveStationWeather,
 } from "@shared/types";
 import {
+  computeCleanSharePct,
   COOLING_LABELS,
   EPISTEMIC_LABELS,
+  FOOTPRINT_COVERAGE_LABELS,
   formatDischargeCfs,
+  formatGw,
   formatMetricValue,
+  formatMw,
   formatNumber,
   formatTempPair,
+  formatWaterSummary,
   INTERCONNECTION_LABELS,
   THERMAL_REGIME_LABELS,
   WATERSHED_STRESS_LABELS,
 } from "../lib/format";
 import { useModalDialog } from "../lib/useModalDialog";
-import { EpistemicPill, StatusPill } from "./EpistemicBadge";
+import { EpistemicPill, StatusPill, TierBadge } from "./EpistemicBadge";
 
 function InlineProvenance({ status }: { status: EpistemicStatus }) {
   if (status === "undisclosed") {
     return <EpistemicPill status="undisclosed" />;
+  }
+  if (status === "reported") {
+    return <EpistemicPill status="reported" />;
   }
   return (
     <span className="compare-prov" title={`Provenance tier: ${EPISTEMIC_LABELS[status]}`}>
@@ -32,7 +42,7 @@ function InlineProvenance({ status }: { status: EpistemicStatus }) {
 }
 
 interface CompareDockProps {
-  pinnedFacilities: FacilityRecord[];
+  pinnedFacilities: FacilityIndexItem[];
   onRemove: (id: string) => void;
   onClear: () => void;
   onOpenMatrix: () => void;
@@ -102,19 +112,23 @@ export function CompareDock({
 }
 
 interface ComparisonModalProps {
-  facilities: FacilityRecord[];
+  facilities: FacilityIndexItem[];
+  detailsById: Record<string, FacilityDetailApiResponse>;
   stations: Record<string, LiveStationWeather>;
   gauges: Record<string, LiveBasinHydrology>;
+  gridFeed: LiveGridFeed | null;
   onClose: () => void;
   onRemove: (id: string) => void;
-  onSelectFacility: (f: FacilityRecord) => void;
-  onInspectParcel: (f: FacilityRecord) => void;
+  onSelectFacility: (f: FacilityIndexItem) => void;
+  onInspectParcel: (f: FacilityIndexItem) => void;
 }
 
 export function ComparisonModal({
   facilities,
+  detailsById,
   stations,
   gauges,
+  gridFeed,
   onClose,
   onRemove,
   onSelectFacility,
@@ -186,6 +200,7 @@ export function ComparisonModal({
                         {f.city}, {f.state} · <span className="mono">{f.isoRegion}</span>
                       </div>
                       <div className="compare-col-actions">
+                        <TierBadge tier={f.catalogTier} compact />
                         <StatusPill status={f.lifecycleStatus} compact />
                         <button
                           type="button"
@@ -207,115 +222,134 @@ export function ComparisonModal({
             <tbody>
               <tr>
                 <th>Operational MW</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {formatMetricValue(f.power.operationalMw)}
-                    </div>
-                    <InlineProvenance status={f.power.operationalMw.epistemic} />
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div className="compare-cell-val mono">
+                        {rec ? formatMetricValue(rec.power.operationalMw) : formatMw(f.operationalMw)}
+                      </div>
+                      <InlineProvenance status={f.operationalMwEpistemic} />
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Total Planned MW</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {formatMetricValue(f.power.totalPlannedMw)}
-                    </div>
-                    <InlineProvenance status={f.power.totalPlannedMw.epistemic} />
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div className="compare-cell-val mono">
+                        {rec ? formatMetricValue(rec.power.totalPlannedMw) : formatMw(f.totalPlannedMw)}
+                      </div>
+                      <InlineProvenance status={f.totalPlannedMwEpistemic} />
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Utility &amp; Interconnection</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div>{f.power.utilityProvider}</div>
-                    <div className="compare-sub-note">
-                      {INTERCONNECTION_LABELS[f.power.interconnectionStatus] ??
-                        f.power.interconnectionStatus}
-                      {" · "}
-                      <span className="mono">{f.power.substationVoltage}</span>
-                    </div>
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div>{rec?.power.utilityProvider ?? f.utilityProvider}</div>
+                      <div className="compare-sub-note">
+                        {INTERCONNECTION_LABELS[f.interconnectionStatus] ??
+                          f.interconnectionStatus}
+                        {rec ? ` · ${rec.power.substationVoltage}` : ""}
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
-                <th>Backup Generators</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {f.power.backupGeneratorsPermitted !== null
-                        ? formatNumber(f.power.backupGeneratorsPermitted)
-                        : "Undisclosed"}
-                    </div>
-                    <div className="compare-sub-note">{f.power.backupFuelNote}</div>
-                  </td>
-                ))}
+                <th>Regional Grid Dispatch</th>
+                {facilities.map((f) => {
+                  const snap =
+                    detailsById[f.id]?.gridSnapshot ??
+                    gridFeed?.regions?.[f.isoRegion] ??
+                    null;
+                  const cleanPct = snap ? computeCleanSharePct(snap.fuelMix) : null;
+                  return (
+                    <td key={f.id}>
+                      <div className="compare-cell-val mono">
+                        {f.isoRegion}
+                        {snap ? ` · ${formatGw(snap.demandMw)}` : ""}
+                      </div>
+                      <div className="compare-sub-note mono">
+                        {snap
+                          ? `${cleanPct !== null ? `${cleanPct}% clean` : snap.status} · ${snap.status.toUpperCase()}`
+                          : "Live grid snapshot pending"}
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Cooling Architecture</th>
                 {facilities.map((f) => (
-                  <td key={f.id}>
-                    {COOLING_LABELS[f.waterAndCooling.coolingArchitecture]}
-                  </td>
+                  <td key={f.id}>{COOLING_LABELS[f.coolingArchitecture]}</td>
                 ))}
               </tr>
               <tr>
                 <th>Peak / Avg Water</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {formatMetricValue(f.waterAndCooling.peakOrAvgWaterMgd)}
-                    </div>
-                    <InlineProvenance
-                      status={f.waterAndCooling.peakOrAvgWaterMgd.epistemic}
-                    />
-                  </td>
-                ))}
-              </tr>
-              <tr>
-                <th>Annual Water</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {formatMetricValue(f.waterAndCooling.annualWaterMgy)}
-                    </div>
-                    <InlineProvenance
-                      status={f.waterAndCooling.annualWaterMgy.epistemic}
-                    />
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div className="compare-cell-val mono">
+                        {rec
+                          ? formatMetricValue(rec.waterAndCooling.peakOrAvgWaterMgd)
+                          : formatWaterSummary(
+                              f.peakOrAvgWaterMgd,
+                              f.annualWaterMgy,
+                              f.waterEpistemic,
+                            )}
+                      </div>
+                      <InlineProvenance status={f.waterEpistemic} />
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Design PUE</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {formatMetricValue(f.waterAndCooling.pue)}
-                    </div>
-                    <InlineProvenance status={f.waterAndCooling.pue.epistemic} />
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div className="compare-cell-val mono">
+                        {rec ? formatMetricValue(rec.waterAndCooling.pue) : "Hydrating..."}
+                      </div>
+                      {rec && <InlineProvenance status={rec.waterAndCooling.pue.epistemic} />}
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Watershed &amp; Stress</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div>{f.waterAndCooling.watershedName}</div>
-                    <span
-                      className={`stress-pill stress-pill--${f.waterAndCooling.watershedStress}`}
-                    >
-                      {WATERSHED_STRESS_LABELS[f.waterAndCooling.watershedStress]}
-                    </span>
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div>
+                        {rec?.waterAndCooling.watershedName ?? `USGS-${f.usgsGaugeSiteId}`}
+                      </div>
+                      <span
+                        className={`stress-pill stress-pill--${f.watershedStress}`}
+                      >
+                        {WATERSHED_STRESS_LABELS[f.watershedStress]}
+                      </span>
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Live Wet-Bulb &amp; Regime</th>
                 {facilities.map((f) => {
-                  const st = stations[f.waterAndCooling.nwsStationId];
+                  const st =
+                    detailsById[f.id]?.telemetry.weather ?? stations[f.nwsStationId];
                   return (
                     <td key={f.id}>
                       {st ? (
@@ -339,45 +373,63 @@ export function ComparisonModal({
               <tr>
                 <th>Live USGS Gauge</th>
                 {facilities.map((f) => {
-                  const g = gauges[f.waterAndCooling.usgsGaugeSiteId];
+                  const g =
+                    detailsById[f.id]?.telemetry.hydrology ?? gauges[f.usgsGaugeSiteId];
                   return (
                     <td key={f.id}>
                       <div className="compare-cell-val mono">
                         {g ? formatDischargeCfs(g.dischargeCfs) : "Pending"}
                       </div>
                       <div className="compare-sub-note mono">
-                        USGS-{f.waterAndCooling.usgsGaugeSiteId}
+                        USGS-{f.usgsGaugeSiteId}
                       </div>
                     </td>
                   );
                 })}
               </tr>
               <tr>
-                <th>Parcel Footprint</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div className="compare-cell-val mono">
-                      {formatMetricValue(f.parcel.acreage)}
-                    </div>
-                    <div className="compare-sub-note mono">
-                      {formatMetricValue(f.parcel.grossSqFt)}
-                    </div>
-                  </td>
-                ))}
+                <th>Footprint &amp; Area</th>
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div className="compare-cell-val mono">
+                        {FOOTPRINT_COVERAGE_LABELS[f.footprintCoverage]}
+                      </div>
+                      <div className="compare-sub-note mono">
+                        {rec
+                          ? `${formatMetricValue(rec.parcel.acreage)} · ${formatMetricValue(rec.parcel.grossSqFt)}`
+                          : f.grossSqFt !== null
+                            ? `${formatNumber(f.grossSqFt)} sq ft`
+                            : "Area undisclosed"}
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
               <tr>
                 <th>Regulatory &amp; Permits</th>
-                {facilities.map((f) => (
-                  <td key={f.id}>
-                    <div>{f.regulatory.permittingStage}</div>
-                    <div className="compare-sub-note mono">
-                      {f.regulatory.permits.length} filings
-                      {f.regulatory.moratoriumOrLitigationActive
-                        ? " · Active Litigation/Moratorium"
-                        : ""}
-                    </div>
-                  </td>
-                ))}
+                {facilities.map((f) => {
+                  const rec = detailsById[f.id]?.facility;
+                  return (
+                    <td key={f.id}>
+                      <div>
+                        {rec?.regulatory.permittingStage ??
+                          (f.moratoriumOrLitigationActive
+                            ? "Active Litigation / Moratorium"
+                            : "Standard Regulatory Record")}
+                      </div>
+                      <div className="compare-sub-note mono">
+                        {rec
+                          ? `${rec.regulatory.permits.length} filings`
+                          : f.sourceTags.join(", ") || f.catalogTier}
+                        {f.moratoriumOrLitigationActive
+                          ? " · Active Litigation/Moratorium"
+                          : ""}
+                      </div>
+                    </td>
+                  );
+                })}
               </tr>
             </tbody>
           </table>

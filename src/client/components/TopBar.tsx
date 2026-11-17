@@ -32,8 +32,9 @@ interface TopBarProps {
   onSelectCorridor: (preset: CorridorPreset) => void;
   theme: ThemeMode;
   onCycleTheme: () => void;
-  onOpenRegulatory: () => void;
-  regulatoryCount: number | null;
+  onOpenPulse: () => void;
+  pulseCount: number | null;
+  pulseStatus: "live" | "stale" | "degraded" | null;
 }
 
 function renderThemeIcon(theme: ThemeMode) {
@@ -58,8 +59,9 @@ export function TopBar({
   onSelectCorridor,
   theme,
   onCycleTheme,
-  onOpenRegulatory,
-  regulatoryCount,
+  onOpenPulse,
+  pulseCount,
+  pulseStatus,
 }: TopBarProps) {
   const [corridorOpen, setCorridorOpen] = useState(false);
   const [exportOpen, setExportOpen] = useState(false);
@@ -138,7 +140,7 @@ export function TopBar({
       <div className="topbar-left">
         <div
           className="brand-mark"
-          title="Gridline — US Data Center Infrastructure & Telemetry Atlas"
+          title="Gridline // MAGI — 50-State US Data Center Infrastructure & Live Observatory"
         >
           <svg
             className="brand-glyph"
@@ -148,26 +150,43 @@ export function TopBar({
             aria-hidden="true"
           >
             <rect
-              x="1.5"
-              y="1.5"
-              width="29"
-              height="29"
-              rx="6"
+              x="2"
+              y="2"
+              width="28"
+              height="28"
+              rx="1"
               fill="none"
-              stroke="currentColor"
-              strokeOpacity="0.28"
-              strokeWidth="2"
+              stroke="var(--accent-primary)"
+              strokeWidth="1.8"
+            />
+            <circle
+              cx="16"
+              cy="16"
+              r="7.5"
+              fill="none"
+              stroke="var(--accent-primary)"
+              strokeOpacity="0.6"
+              strokeWidth="1.4"
             />
             <path
-              d="M6 16h4.5l3-7.5 5 15 3-7.5H26"
+              d="M16 4v4.5M16 23.5V28M4 16h4.5M23.5 16H28"
+              stroke="var(--accent-primary)"
+              strokeWidth="1.5"
+              strokeLinecap="square"
+            />
+            <path
+              d="M8.5 16h3.5l2-4.5 3 9 2-4.5h4.5"
               fill="none"
               stroke="var(--status-operational)"
-              strokeWidth="2.6"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              strokeWidth="2.1"
+              strokeLinecap="square"
+              strokeLinejoin="miter"
             />
           </svg>
-          <span className="brand-name">Gridline</span>
+          <span className="brand-wordmark">
+            <span className="brand-name">GRIDLINE</span>
+            <span className="brand-sub mono">// MAGI</span>
+          </span>
         </div>
 
         <div className="omnibox">
@@ -178,8 +197,8 @@ export function TopBar({
             className="omnibox-input"
             value={filters.q}
             onChange={(e) => onSearchChange(e.target.value)}
-            placeholder="Search campus, city, utility, tenant, docket..."
-            aria-label="Search facilities, operators, tenants, utilities, or docket IDs"
+            placeholder="Search campus, city, state, utility, tenant..."
+            aria-label="Search campuses, states, operators, tenants, utilities, or registry tags"
           />
           {filters.q ? (
             <button
@@ -266,14 +285,20 @@ export function TopBar({
 
         <button
           type="button"
-          className="topbar-action-btn"
-          onClick={onOpenRegulatory}
-          title="Live Federal Regulatory Pulse (DOE / FERC / EPA / NRC)"
+          className="topbar-action-btn topbar-pulse-btn"
+          onClick={onOpenPulse}
+          title="Live Observatory Pulse — 9-ISO Dispatch, Federal Register, SEC EDGAR & PeeringDB"
         >
           <Radio size={13} aria-hidden="true" />
-          <span>Federal Pulse</span>
-          {regulatoryCount !== null && regulatoryCount > 0 && (
-            <span className="topbar-badge mono">{regulatoryCount}</span>
+          <span>Live Pulse</span>
+          {pulseStatus && (
+            <span
+              className={`pulse-status-dot pulse-status-dot--${pulseStatus}`}
+              aria-hidden="true"
+            />
+          )}
+          {pulseCount !== null && pulseCount > 0 && (
+            <span className="topbar-badge mono">{pulseCount}</span>
           )}
         </button>
 
@@ -306,7 +331,7 @@ export function TopBar({
                 <div>
                   <div className="export-item-title">Export Filtered CSV</div>
                   <div className="export-item-sub">
-                    Tabular power, water &amp; docket summary
+                    RFC 4180 table with tier, coverage &amp; capacity provenance
                   </div>
                 </div>
               </a>
@@ -321,7 +346,7 @@ export function TopBar({
                 <div>
                   <div className="export-item-title">Export Filtered GeoJSON</div>
                   <div className="export-item-sub">
-                    WGS84 points with full facility metadata
+                    RFC 7946 WGS84 points with full observatory metadata
                   </div>
                 </div>
               </a>
@@ -333,7 +358,7 @@ export function TopBar({
           type="button"
           className="topbar-action-btn topbar-theme-btn"
           onClick={onCycleTheme}
-          title={`Theme: ${getThemeLabel(theme)} (click to cycle Auto / Light / Dark)`}
+          title={`Theme: ${getThemeLabel(theme)} (click to cycle Dark / Light / Auto)`}
           aria-label={`Theme: ${getThemeLabel(theme)}. Click to switch theme`}
         >
           {renderThemeIcon(theme)}
@@ -350,7 +375,7 @@ export function TopBar({
           onClick={() => setMobileToolsOpen((prev) => !prev)}
           aria-expanded={mobileToolsOpen}
           aria-haspopup="menu"
-          aria-label="Regions, Federal Pulse, Export and Theme menu"
+          aria-label="Corridors, Live Pulse, Export and Theme menu"
         >
           <MoreHorizontal size={18} aria-hidden="true" />
         </button>
@@ -387,15 +412,15 @@ export function TopBar({
               className="popover-item"
               onClick={() => {
                 setMobileToolsOpen(false);
-                onOpenRegulatory();
+                onOpenPulse();
               }}
             >
               <span className="popover-item-inline">
                 <Radio size={14} aria-hidden="true" />
-                <span>Federal Pulse</span>
+                <span>Live Pulse</span>
               </span>
-              {regulatoryCount !== null && regulatoryCount > 0 && (
-                <span className="topbar-badge mono">{regulatoryCount}</span>
+              {pulseCount !== null && pulseCount > 0 && (
+                <span className="topbar-badge mono">{pulseCount}</span>
               )}
             </button>
 

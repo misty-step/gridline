@@ -1,26 +1,31 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Layers, RotateCcw } from "lucide-react";
+import { Crosshair, Layers, RotateCcw } from "lucide-react";
 import maplibregl from "maplibre-gl";
 import type {
+  ActivityWindow,
   CampusFootprintProps,
-  FacilityRecord,
+  FacilityIndexItem,
   IsoRegion,
   IsoRegionProps,
+  LiveGridFeed,
+  LiveIsoGridSnapshot,
   LiveStationWeather,
 } from "@shared/types";
 import {
   BASEMAP_OPTIONS,
   ESRI_WORLD_IMAGERY_TILES,
-  GRID_STATUS_COLORS,
+  getMapPalette,
+  ISO_ORDER,
+  LAZY_FOOTPRINTS_ZOOM,
   LENS_OPTIONS,
-  LIFECYCLE_COLORS,
+  type MapColorPalette,
+  RADAR_WINDOW_OPTIONS,
   TIER_MACRO_MAX_ZOOM,
   TIER_PARCEL_MIN_ZOOM,
   US_CONTIGUOUS_BOUNDS,
   USGS_IMAGERY_TILES,
   VECTOR_DARK_STYLE,
   VECTOR_LIGHT_STYLE,
-  WATERSHED_STRESS_COLORS,
 } from "../lib/constants";
 import {
   buildFacilitiesGeoJson,
@@ -29,13 +34,17 @@ import {
   isUndisclosedWater,
 } from "../lib/filters";
 import {
+  CATALOG_TIER_SHORT_LABELS,
+  computeCleanSharePct,
   COOLING_SHORT_LABELS,
+  formatCoordHud,
+  formatGw,
   formatGwOrMw,
   formatMw,
   formatNumber,
   formatShortClusterName,
   formatTempPair,
-  formatWaterMgd,
+  formatWaterSummary,
   INTERCONNECTION_LABELS,
   THERMAL_REGIME_LABELS,
   WATERSHED_STRESS_LABELS,
@@ -54,7 +63,7 @@ import type {
   ResolvedTheme,
   ZoomTier,
 } from "../lib/types";
-import { StatusPill } from "./EpistemicBadge";
+import { StatusPill, TierBadge } from "./EpistemicBadge";
 
 export interface MapFlyRequest {
   center?: [number, number];
@@ -66,13 +75,15 @@ export interface MapFlyRequest {
 }
 
 interface MapCanvasProps {
-  facilities: FacilityRecord[];
+  facilities: FacilityIndexItem[];
   footprints: GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps>;
   isoRegions: GeoJSON.FeatureCollection<
     GeoJSON.Polygon | GeoJSON.MultiPolygon,
     IsoRegionProps
   >;
   stations: Record<string, LiveStationWeather>;
+  gridFeed: LiveGridFeed | null;
+  selectedFacility: FacilityIndexItem | null;
   selectedFacilityId: string | null;
   basemap: BasemapMode;
   previousBasemap: BasemapMode | null;
@@ -81,6 +92,8 @@ interface MapCanvasProps {
   resolvedTheme: ResolvedTheme;
   lens: AnalyticalLens;
   onLensChange: (lens: AnalyticalLens) => void;
+  radarWindow: ActivityWindow;
+  onRadarWindowChange: (window: ActivityWindow) => void;
   initialView: MapViewState;
   fitUsOnLoad: boolean;
   flyRequest: MapFlyRequest | null;
@@ -88,7 +101,8 @@ interface MapCanvasProps {
   drawerOpen: boolean;
   mobileDetent: "peek" | "expanded";
   hasCompareDock?: boolean;
-  onSelectFacility: (facility: FacilityRecord) => void;
+  onNeedFootprints: () => void;
+  onSelectFacility: (facility: FacilityIndexItem) => void;
   onViewChange: (view: MapViewState, bounds: MapBoundsTuple) => void;
 }
 
@@ -114,9 +128,9 @@ function getZoomTier(zoom: number): ZoomTier {
 }
 
 function getZoomTierLabel(tier: ZoomTier): string {
-  if (tier === "macro") return "Macro National";
-  if (tier === "regional") return "Regional Corridor";
-  return "Parcel Inspection";
+  if (tier === "macro") return "MACRO NATIONAL";
+  if (tier === "regional") return "REGIONAL CORRIDOR";
+  return "PARCEL INSPECTION";
 }
 
 function buildRasterStyle(
@@ -140,7 +154,7 @@ function buildRasterStyle(
         type: "raster",
         source: "gridline-raster",
         paint: {
-          "raster-saturation": -0.05,
+          "raster-saturation": -0.08,
         },
       },
     ],
@@ -183,7 +197,7 @@ function createDashedRingImage(
 
   ctx.clearRect(0, 0, size, size);
   ctx.lineWidth = 4.2;
-  ctx.strokeStyle = "rgba(7, 11, 17, 0.78)";
+  ctx.strokeStyle = "rgba(6, 5, 8, 0.84)";
   ctx.setLineDash(dash);
   ctx.beginPath();
   ctx.arc(cx, cy, 24, 0, Math.PI * 2);
@@ -212,21 +226,35 @@ function ensureProceduralIcons(map: maplibregl.Map): void {
   if (!map.hasImage("halo-contested")) {
     map.addImage(
       "halo-contested",
-      createDashedRingImage("#f59e0b", [7, 5], false),
+      createDashedRingImage("#ffb300", [7, 5], false),
       { pixelRatio: 2 },
     );
   }
   if (!map.hasImage("halo-moratorium")) {
     map.addImage(
       "halo-moratorium",
-      createDashedRingImage("#ef4444", [5, 4], true),
+      createDashedRingImage("#ff4d4d", [5, 4], true),
       { pixelRatio: 2 },
     );
   }
   if (!map.hasImage("ring-undisclosed-water")) {
     map.addImage(
       "ring-undisclosed-water",
-      createDashedRingImage("#fb7185", [4, 4], false),
+      createDashedRingImage("#ff4d4d", [4, 4], false),
+      { pixelRatio: 2 },
+    );
+  }
+  if (!map.hasImage("halo-provisional")) {
+    map.addImage(
+      "halo-provisional",
+      createDashedRingImage("#c084fc", [5, 5], false),
+      { pixelRatio: 2 },
+    );
+  }
+  if (!map.hasImage("halo-activity-target")) {
+    map.addImage(
+      "halo-activity-target",
+      createDashedRingImage("#ff9e2c", [8, 4], false),
       { pixelRatio: 2 },
     );
   }
@@ -236,11 +264,16 @@ function softenVectorBasemapLabels(map: maplibregl.Map): void {
   try {
     const layers = map.getStyle()?.layers ?? [];
     for (const layer of layers) {
-      if (layer.id.startsWith("iso-") || layer.id.startsWith("clusters-") || layer.id.startsWith("facilities-") || layer.id.startsWith("footprints-")) {
+      if (
+        layer.id.startsWith("iso-") ||
+        layer.id.startsWith("clusters-") ||
+        layer.id.startsWith("facilities-") ||
+        layer.id.startsWith("footprints-")
+      ) {
         continue;
       }
       if (layer.type === "symbol") {
-        map.setPaintProperty(layer.id, "text-opacity", 0.52);
+        map.setPaintProperty(layer.id, "text-opacity", 0.5);
       }
     }
   } catch {
@@ -248,24 +281,45 @@ function softenVectorBasemapLabels(map: maplibregl.Map): void {
   }
 }
 
+function deriveLiveIsoStress(
+  baseLevel: string,
+  snap?: LiveIsoGridSnapshot | null,
+): string {
+  if (!snap || snap.status === "degraded" || snap.demandMw === null) {
+    return baseLevel;
+  }
+  if (snap.netGenerationMw !== null && snap.demandMw > 0) {
+    const importRatio = (snap.demandMw - snap.netGenerationMw) / snap.demandMw;
+    if (importRatio > 0.16 && baseLevel === "severe") return "severe";
+    if (importRatio > 0.12) return "high";
+  }
+  const cleanPct = computeCleanSharePct(snap.fuelMix);
+  if (baseLevel === "severe") return "severe";
+  if (cleanPct !== null && cleanPct >= 55 && baseLevel === "elevated") {
+    return "moderate";
+  }
+  return baseLevel;
+}
+
 function buildFacilityColorExpression(
   lens: AnalyticalLens,
+  palette: MapColorPalette,
 ): maplibregl.ExpressionSpecification {
   if (lens === "water") {
     return [
       "match",
       ["get", "watershedStress"],
       "low",
-      WATERSHED_STRESS_COLORS.low,
+      palette.stress.low,
       "low_medium",
-      WATERSHED_STRESS_COLORS.low_medium,
+      palette.stress.low_medium,
       "medium_high",
-      WATERSHED_STRESS_COLORS.medium_high,
+      palette.stress.medium_high,
       "high",
-      WATERSHED_STRESS_COLORS.high,
+      palette.stress.high,
       "extremely_high",
-      WATERSHED_STRESS_COLORS.extremely_high,
-      "#94a3b8",
+      palette.stress.extremely_high,
+      "#9e917d",
     ];
   }
   if (lens === "grid") {
@@ -273,57 +327,81 @@ function buildFacilityColorExpression(
       "match",
       ["get", "interconnectionStatus"],
       "energized",
-      GRID_STATUS_COLORS.energized,
+      palette.grid.energized,
       "phased_energization",
-      GRID_STATUS_COLORS.phased_energization,
+      palette.grid.phased_energization,
       "interconnection_queue",
-      GRID_STATUS_COLORS.interconnection_queue,
+      palette.grid.interconnection_queue,
       "transmission_upgrade_pending",
-      GRID_STATUS_COLORS.transmission_upgrade_pending,
+      palette.grid.transmission_upgrade_pending,
       "ferc_or_puc_contested",
-      GRID_STATUS_COLORS.ferc_or_puc_contested,
-      "#94a3b8",
+      palette.grid.ferc_or_puc_contested,
+      "#9e917d",
+    ];
+  }
+  if (lens === "activity") {
+    return [
+      "case",
+      ["==", ["get", "recentActivityFlag"], 1],
+      [
+        "match",
+        ["get", "lifecycleStatus"],
+        "moratorium",
+        palette.lifecycle.moratorium,
+        "contested",
+        palette.lifecycle.contested,
+        "proposed",
+        palette.tier.provisional,
+        palette.activityGlow,
+      ],
+      "#9e917d",
     ];
   }
   return [
-    "match",
-    ["get", "lifecycleStatus"],
-    "operational",
-    LIFECYCLE_COLORS.operational,
-    "expanding",
-    LIFECYCLE_COLORS.expanding,
-    "under_construction",
-    LIFECYCLE_COLORS.under_construction,
-    "permitted",
-    LIFECYCLE_COLORS.permitted,
-    "proposed",
-    LIFECYCLE_COLORS.proposed,
-    "contested",
-    LIFECYCLE_COLORS.contested,
-    "moratorium",
-    LIFECYCLE_COLORS.moratorium,
-    "#94a3b8",
+    "case",
+    ["==", ["get", "hasKnownMw"], 0],
+    palette.tier.registry,
+    [
+      "match",
+      ["get", "lifecycleStatus"],
+      "operational",
+      palette.lifecycle.operational,
+      "expanding",
+      palette.lifecycle.expanding,
+      "under_construction",
+      palette.lifecycle.under_construction,
+      "permitted",
+      palette.lifecycle.permitted,
+      "proposed",
+      palette.lifecycle.proposed,
+      "contested",
+      palette.lifecycle.contested,
+      "moratorium",
+      palette.lifecycle.moratorium,
+      "#9e917d",
+    ],
   ];
 }
 
 function buildClusterOuterColorExpression(
   lens: AnalyticalLens,
+  palette: MapColorPalette,
 ): maplibregl.ExpressionSpecification {
   if (lens === "water") {
     return [
       "match",
       ["get", "maxWatershedStress"],
       "low",
-      WATERSHED_STRESS_COLORS.low,
+      palette.stress.low,
       "low_medium",
-      WATERSHED_STRESS_COLORS.low_medium,
+      palette.stress.low_medium,
       "medium_high",
-      WATERSHED_STRESS_COLORS.medium_high,
+      palette.stress.medium_high,
       "high",
-      WATERSHED_STRESS_COLORS.high,
+      palette.stress.high,
       "extremely_high",
-      WATERSHED_STRESS_COLORS.extremely_high,
-      "#94a3b8",
+      palette.stress.extremely_high,
+      "#9e917d",
     ];
   }
   if (lens === "grid") {
@@ -331,53 +409,71 @@ function buildClusterOuterColorExpression(
       "match",
       ["get", "dominantGridStatus"],
       "energized",
-      GRID_STATUS_COLORS.energized,
+      palette.grid.energized,
       "phased_energization",
-      GRID_STATUS_COLORS.phased_energization,
+      palette.grid.phased_energization,
       "interconnection_queue",
-      GRID_STATUS_COLORS.interconnection_queue,
+      palette.grid.interconnection_queue,
       "transmission_upgrade_pending",
-      GRID_STATUS_COLORS.transmission_upgrade_pending,
+      palette.grid.transmission_upgrade_pending,
       "ferc_or_puc_contested",
-      GRID_STATUS_COLORS.ferc_or_puc_contested,
-      "#94a3b8",
+      palette.grid.ferc_or_puc_contested,
+      "#9e917d",
+    ];
+  }
+  if (lens === "activity") {
+    return [
+      "case",
+      [">", ["get", "recentActivityCount"], 0],
+      palette.activityGlow,
+      "#9e917d",
     ];
   }
   return [
     "case",
     [">", ["get", "contestedCount"], 0],
-    "#f59e0b",
-    "#38bdf8",
+    palette.warnRing,
+    palette.accent,
   ];
 }
 
 function buildClusterStrokeColorExpression(
   lens: AnalyticalLens,
+  palette: MapColorPalette,
 ): maplibregl.ExpressionSpecification {
   if (lens === "water") {
     return [
       "case",
       [">", ["get", "undisclosedWaterCount"], 0],
-      "#fb7185",
-      buildClusterOuterColorExpression("water"),
+      palette.undisclosedRing,
+      buildClusterOuterColorExpression("water", palette),
     ];
   }
-  return buildClusterOuterColorExpression(lens);
+  return buildClusterOuterColorExpression(lens, palette);
 }
 
 function buildClusterInnerColorExpression(
   lens: AnalyticalLens,
+  palette: MapColorPalette,
 ): maplibregl.DataDrivenPropertyValueSpecification<string> {
   if (lens === "capacity") {
-    return "#10b981";
+    return palette.lifecycle.operational;
   }
-  return buildClusterOuterColorExpression(lens);
+  return buildClusterOuterColorExpression(lens, palette);
 }
 
-function formatCoordPair(lng: number, lat: number): string {
-  const latDir = lat >= 0 ? "N" : "S";
-  const lngDir = lng >= 0 ? "E" : "W";
-  return `${Math.abs(lat).toFixed(4)}°${latDir}, ${Math.abs(lng).toFixed(4)}°${lngDir}`;
+function buildActivityOpacityExpression(
+  lens: AnalyticalLens,
+  activeOpacity: number,
+  baselineDimmedOpacity = 0.16,
+): maplibregl.ExpressionSpecification | number {
+  if (lens !== "activity") return activeOpacity;
+  return [
+    "case",
+    ["==", ["get", "recentActivityFlag"], 1],
+    activeOpacity,
+    baselineDimmedOpacity,
+  ];
 }
 
 export function MapCanvas({
@@ -385,6 +481,8 @@ export function MapCanvas({
   footprints,
   isoRegions,
   stations,
+  gridFeed,
+  selectedFacility,
   selectedFacilityId,
   basemap,
   previousBasemap,
@@ -393,6 +491,8 @@ export function MapCanvas({
   resolvedTheme,
   lens,
   onLensChange,
+  radarWindow,
+  onRadarWindowChange,
   initialView,
   fitUsOnLoad,
   flyRequest,
@@ -400,17 +500,21 @@ export function MapCanvas({
   drawerOpen,
   mobileDetent,
   hasCompareDock = false,
+  onNeedFootprints,
   onSelectFacility,
   onViewChange,
 }: MapCanvasProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const clusterMarkersRef = useRef<maplibregl.Marker[]>([]);
+  const pointReticleMarkerRef = useRef<maplibregl.Marker | null>(null);
   const hoveredIsoIdRef = useRef<string | null>(null);
   const pointerOverMapRef = useRef<boolean>(false);
   const didInitialUsFitRef = useRef<boolean>(false);
   const clustersRef = useRef<MarketClusterSummary[]>([]);
   const renderClusterMarkersRef = useRef<() => void>(() => {});
+  const onNeedFootprintsRef = useRef(onNeedFootprints);
+  onNeedFootprintsRef.current = onNeedFootprints;
 
   const [zoom, setZoom] = useState<number>(initialView.zoom);
   const [cursorCoord, setCursorCoord] = useState<[number, number]>([
@@ -427,11 +531,14 @@ export function MapCanvas({
   const [mobileLegendOpen, setMobileLegendOpen] = useState(false);
   const [styleVersion, setStyleVersion] = useState(0);
 
-  const facilitiesByIdRef = useRef<Map<string, FacilityRecord>>(new Map());
+  const facilitiesByIdRef = useRef<Map<string, FacilityIndexItem>>(new Map());
   const clustersByNameRef = useRef<Map<string, MarketClusterSummary>>(new Map());
   const isoStatsRef = useRef<Map<IsoRegion, { count: number; mw: number }>>(
     new Map(),
   );
+  const gridFeedRef = useRef<LiveGridFeed | null>(gridFeed);
+  gridFeedRef.current = gridFeed;
+
   const onSelectRef = useRef(onSelectFacility);
   const onViewChangeRef = useRef(onViewChange);
   const lensRef = useRef(lens);
@@ -446,7 +553,33 @@ export function MapCanvas({
   drawerOpenRef.current = drawerOpen;
   mobileDetentRef.current = mobileDetent;
 
-  const clusters = useMemo(() => buildMarketClusters(facilities), [facilities]);
+  const palette = useMemo(
+    () => getMapPalette(basemap, resolvedTheme),
+    [basemap, resolvedTheme],
+  );
+
+  const enrichedIsoRegions = useMemo(() => {
+    return {
+      ...isoRegions,
+      features: isoRegions.features.map((feat) => {
+        const id = feat.properties.id;
+        const snap = gridFeed?.regions?.[id] ?? null;
+        const liveStress = deriveLiveIsoStress(feat.properties.gridStressLevel, snap);
+        return {
+          ...feat,
+          properties: {
+            ...feat.properties,
+            liveStress,
+          },
+        };
+      }),
+    };
+  }, [isoRegions, gridFeed]);
+
+  const clusters = useMemo(
+    () => buildMarketClusters(facilities, radarWindow),
+    [facilities, radarWindow],
+  );
   clustersRef.current = clusters;
 
   useEffect(() => {
@@ -460,8 +593,8 @@ export function MapCanvas({
     [clusters],
   );
   const facilitiesGeoJson = useMemo(
-    () => buildFacilitiesGeoJson(facilities),
-    [facilities],
+    () => buildFacilitiesGeoJson(facilities, radarWindow),
+    [facilities, radarWindow],
   );
 
   const visibleFootprintsGeoJson = useMemo(() => {
@@ -475,13 +608,13 @@ export function MapCanvas({
   }, [facilities, footprints]);
 
   useEffect(() => {
-    const map = new Map<string, FacilityRecord>();
+    const map = new Map<string, FacilityIndexItem>();
     const isoAgg = new Map<IsoRegion, { count: number; mw: number }>();
     for (const f of facilities) {
       map.set(f.id, f);
       const prev = isoAgg.get(f.isoRegion) ?? { count: 0, mw: 0 };
       prev.count += 1;
-      prev.mw += f.power.totalPlannedMw.value ?? f.power.operationalMw.value ?? 0;
+      prev.mw += f.totalPlannedMw ?? f.operationalMw ?? 0;
       isoAgg.set(f.isoRegion, prev);
     }
     facilitiesByIdRef.current = map;
@@ -507,13 +640,12 @@ export function MapCanvas({
     }
   };
 
-  // Clear floating tooltips whenever filters, camera fly, selection, drawer, lens, or basemap changes
   useEffect(() => {
     clearHoverStates();
   }, [facilities, flyRequest, selectedFacilityId, drawerOpen, lens, basemap]);
 
   const dataRef = useRef({
-    isoRegions,
+    isoRegions: enrichedIsoRegions,
     clustersGeoJson,
     facilitiesGeoJson,
     visibleFootprintsGeoJson,
@@ -521,9 +653,10 @@ export function MapCanvas({
     selectedFacilityId,
     basemap,
     resolvedTheme,
+    palette,
   });
   dataRef.current = {
-    isoRegions,
+    isoRegions: enrichedIsoRegions,
     clustersGeoJson,
     facilitiesGeoJson,
     visibleFootprintsGeoJson,
@@ -531,6 +664,7 @@ export function MapCanvas({
     selectedFacilityId,
     basemap,
     resolvedTheme,
+    palette,
   };
 
   const styleKey =
@@ -540,13 +674,14 @@ export function MapCanvas({
   function syncLayersAndSources(map: maplibregl.Map) {
     ensureProceduralIcons(map);
     const snap = dataRef.current;
+    const pal = snap.palette;
     const isLightVector = snap.basemap === "vector" && snap.resolvedTheme === "light";
-    const borderColor = isLightVector ? "#0f172a" : "#f8fafc";
+    const borderColor = pal.border;
     const isoLineColor = isLightVector
-      ? "rgba(15, 23, 42, 0.3)"
+      ? "rgba(20, 16, 24, 0.32)"
       : snap.basemap === "vector"
-        ? "rgba(148, 163, 184, 0.32)"
-        : "rgba(255, 255, 255, 0.45)";
+        ? "rgba(255, 145, 0, 0.34)"
+        : "rgba(255, 180, 70, 0.45)";
 
     if (snap.basemap === "vector") {
       softenVectorBasemapLabels(map);
@@ -577,14 +712,14 @@ export function MapCanvas({
         paint: {
           "fill-color": [
             "match",
-            ["get", "gridStressLevel"],
+            ["get", "liveStress"],
             "severe",
-            "#ef4444",
+            pal.lifecycle.moratorium,
             "high",
-            "#f59e0b",
+            pal.lifecycle.contested,
             "elevated",
-            "#38bdf8",
-            "#10b981",
+            pal.lifecycle.expanding,
+            pal.lifecycle.operational,
           ],
           "fill-opacity": [
             "interpolate",
@@ -594,14 +729,14 @@ export function MapCanvas({
             [
               "case",
               ["boolean", ["feature-state", "hover"], false],
-              0.22,
-              0.09,
+              0.24,
+              0.1,
             ],
             5.8,
             [
               "case",
               ["boolean", ["feature-state", "hover"], false],
-              0.12,
+              0.14,
               0.04,
             ],
             7.4,
@@ -631,7 +766,7 @@ export function MapCanvas({
             ["linear"],
             ["zoom"],
             3.0,
-            0.65,
+            0.68,
             6.2,
             0.3,
             7.8,
@@ -641,7 +776,7 @@ export function MapCanvas({
       });
     }
 
-    // 2. Parcel Footprints Source & Layers (Tier 3: z >= 11.4)
+    // 2. Parcel Footprints Source & Layers (Tier 3: z >= 11.4, real polygons only)
     if (!map.getSource("footprints")) {
       map.addSource("footprints", {
         type: "geojson",
@@ -659,10 +794,10 @@ export function MapCanvas({
         type: "fill",
         source: "footprints",
         minzoom: 11.4,
-        filter: ["==", ["get", "zoneKind"], "campus_boundary"],
+        filter: ["in", ["get", "zoneKind"], ["literal", ["campus_boundary", "campus"]]],
         paint: {
-          "fill-color": "#38bdf8",
-          "fill-opacity": 0.08,
+          "fill-color": pal.zones.boundary,
+          "fill-opacity": 0.1,
         },
       });
     }
@@ -673,12 +808,12 @@ export function MapCanvas({
         type: "line",
         source: "footprints",
         minzoom: 11.4,
-        filter: ["==", ["get", "zoneKind"], "campus_boundary"],
+        filter: ["in", ["get", "zoneKind"], ["literal", ["campus_boundary", "campus"]]],
         paint: {
-          "line-color": "#38bdf8",
+          "line-color": pal.zones.boundary,
           "line-width": 2.2,
           "line-dasharray": [5, 3],
-          "line-opacity": 0.92,
+          "line-opacity": 0.94,
         },
       });
     }
@@ -691,7 +826,7 @@ export function MapCanvas({
         minzoom: 11.6,
         filter: ["==", ["get", "zoneKind"], "planned_expansion"],
         paint: {
-          "fill-color": "#8b5cf6",
+          "fill-color": pal.zones.expansion,
           "fill-opacity": 0.22,
         },
       });
@@ -705,7 +840,7 @@ export function MapCanvas({
         minzoom: 11.6,
         filter: ["==", ["get", "zoneKind"], "planned_expansion"],
         paint: {
-          "line-color": "#a78bfa",
+          "line-color": pal.zones.expansion,
           "line-width": 1.8,
           "line-dasharray": [3, 2],
         },
@@ -720,9 +855,9 @@ export function MapCanvas({
         minzoom: 11.8,
         filter: ["==", ["get", "zoneKind"], "substation_yard"],
         paint: {
-          "fill-color": "#f59e0b",
+          "fill-color": pal.zones.substation,
           "fill-opacity": 0.36,
-          "fill-outline-color": "#fbbf24",
+          "fill-outline-color": pal.zones.substation,
         },
       });
     }
@@ -735,9 +870,9 @@ export function MapCanvas({
         minzoom: 11.8,
         filter: ["==", ["get", "zoneKind"], "cooling_yard"],
         paint: {
-          "fill-color": "#06b6d4",
+          "fill-color": pal.zones.cooling,
           "fill-opacity": 0.4,
-          "fill-outline-color": "#22d3ee",
+          "fill-outline-color": pal.zones.cooling,
         },
       });
     }
@@ -748,9 +883,9 @@ export function MapCanvas({
         type: "fill-extrusion",
         source: "footprints",
         minzoom: 11.8,
-        filter: ["==", ["get", "zoneKind"], "operational_hall"],
+        filter: ["in", ["get", "zoneKind"], ["literal", ["operational_hall", "building"]]],
         paint: {
-          "fill-extrusion-color": "#10b981",
+          "fill-extrusion-color": pal.zones.operational,
           "fill-extrusion-height": [
             "interpolate",
             ["linear"],
@@ -758,7 +893,7 @@ export function MapCanvas({
             11.8,
             0,
             13.2,
-            15,
+            ["case", ["==", ["get", "zoneKind"], "operational_hall"], 15, 11],
           ],
           "fill-extrusion-base": 0,
           "fill-extrusion-opacity": 0.84,
@@ -766,7 +901,91 @@ export function MapCanvas({
       });
     }
 
-    // 3. Macro Market Cluster Proportional Rings (Tier 1: z < 5.8, lens-aware)
+    // 3. Facilities Source (Powers BOTH Macro 50-State Constellation AND Regional Glyphs)
+    if (!map.getSource("facilities")) {
+      map.addSource("facilities", {
+        type: "geojson",
+        data: snap.facilitiesGeoJson,
+      });
+    } else {
+      (map.getSource("facilities") as maplibregl.GeoJSONSource).setData(
+        snap.facilitiesGeoJson,
+      );
+    }
+
+    const lensColorExpr = buildFacilityColorExpression(snap.lens, pal);
+
+    // 3a. Macro 50-state luminous WebGL constellation (renders UNDER cluster rings & pills)
+    if (!map.getLayer("facilities-constellation")) {
+      map.addLayer({
+        id: "facilities-constellation",
+        type: "circle",
+        source: "facilities",
+        minzoom: 2.5,
+        maxzoom: 6.2,
+        paint: {
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            3.0,
+            [
+              "case",
+              ["==", ["get", "catalogTier"], "flagship"],
+              3.4,
+              ["==", ["get", "hasKnownMw"], 1],
+              2.8,
+              2.0,
+            ],
+            5.6,
+            [
+              "case",
+              ["==", ["get", "catalogTier"], "flagship"],
+              4.8,
+              ["==", ["get", "hasKnownMw"], 1],
+              3.8,
+              2.8,
+            ],
+          ],
+          "circle-color": lensColorExpr,
+          "circle-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            3.0,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.95, 0.16]
+              : 0.78,
+            5.4,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.92, 0.16]
+              : 0.72,
+            6.1,
+            0,
+          ],
+          "circle-stroke-width": [
+            "case",
+            ["==", ["get", "catalogTier"], "flagship"],
+            0.9,
+            0,
+          ],
+          "circle-stroke-color": borderColor,
+          "circle-stroke-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            3.0,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.7, 0]
+              : 0.5,
+            6.1,
+            0,
+          ],
+        },
+      });
+    }
+
+    // 4. Macro Market Cluster Proportional Rings (Tier 1: z < 6.2, OVER constellation)
     if (!map.getSource("market-clusters")) {
       map.addSource("market-clusters", {
         type: "geojson",
@@ -778,9 +997,9 @@ export function MapCanvas({
       );
     }
 
-    const clusterOuterColor = buildClusterOuterColorExpression(snap.lens);
-    const clusterStrokeColor = buildClusterStrokeColorExpression(snap.lens);
-    const clusterInnerColor = buildClusterInnerColorExpression(snap.lens);
+    const clusterOuterColor = buildClusterOuterColorExpression(snap.lens, pal);
+    const clusterStrokeColor = buildClusterStrokeColorExpression(snap.lens, pal);
+    const clusterInnerColor = buildClusterInnerColorExpression(snap.lens, pal);
 
     if (!map.getLayer("clusters-outer")) {
       map.addLayer({
@@ -796,7 +1015,7 @@ export function MapCanvas({
             ["linear"],
             ["zoom"],
             5.2,
-            0.25,
+            0.22,
             6.0,
             0,
           ],
@@ -851,20 +1070,8 @@ export function MapCanvas({
       });
     }
 
-    // 4. Individual Campus Glyphs (Tier 2: z 5.4 - 14.2, fades smoothly before Parcel zones take over)
-    if (!map.getSource("facilities")) {
-      map.addSource("facilities", {
-        type: "geojson",
-        data: snap.facilitiesGeoJson,
-      });
-    } else {
-      (map.getSource("facilities") as maplibregl.GeoJSONSource).setData(
-        snap.facilitiesGeoJson,
-      );
-    }
-
-    const lensColorExpr = buildFacilityColorExpression(snap.lens);
-
+    // 5. Regional Corridor Glyphs (Tier 2: z 5.4 - 14.3)
+    // 5a. Proportional MW outer rings (known-MW campuses)
     if (!map.getLayer("facilities-planned-ring")) {
       map.addLayer({
         id: "facilities-planned-ring",
@@ -872,6 +1079,7 @@ export function MapCanvas({
         source: "facilities",
         minzoom: 5.4,
         maxzoom: 14.3,
+        filter: ["==", ["get", "hasKnownMw"], 1],
         paint: {
           "circle-radius": [
             "interpolate",
@@ -892,13 +1100,27 @@ export function MapCanvas({
             5.4,
             0,
             6.0,
-            0.26,
+            snap.lens === "activity"
+              ? [
+                  "case",
+                  ["==", ["get", "recentActivityFlag"], 1],
+                  ["case", ["==", ["get", "isProvisionalOrProposed"], 1], 0.14, 0.3],
+                  0.06,
+                ]
+              : ["case", ["==", ["get", "isProvisionalOrProposed"], 1], 0.08, 0.26],
             12.8,
-            0.24,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.28, 0.06]
+              : ["case", ["==", ["get", "isProvisionalOrProposed"], 1], 0.08, 0.24],
             14.2,
             0,
           ],
-          "circle-stroke-width": 1.6,
+          "circle-stroke-width": [
+            "case",
+            ["==", ["get", "isProvisionalOrProposed"], 1],
+            1.2,
+            1.7,
+          ],
           "circle-stroke-color": lensColorExpr,
           "circle-stroke-opacity": [
             "interpolate",
@@ -907,9 +1129,13 @@ export function MapCanvas({
             5.4,
             0,
             6.0,
-            0.92,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.94, 0.16]
+              : ["case", ["==", ["get", "isProvisionalOrProposed"], 1], 0.45, 0.92],
             13.0,
-            0.88,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.9, 0.16]
+              : ["case", ["==", ["get", "isProvisionalOrProposed"], 1], 0.45, 0.88],
             14.2,
             0,
           ],
@@ -917,6 +1143,67 @@ export function MapCanvas({
       });
     }
 
+    // 5b. Crisp 4px luminous dots for undisclosed-MW registry colocation facilities
+    if (!map.getLayer("facilities-registry-dot")) {
+      map.addLayer({
+        id: "facilities-registry-dot",
+        type: "circle",
+        source: "facilities",
+        minzoom: 5.4,
+        maxzoom: 14.3,
+        filter: ["==", ["get", "hasKnownMw"], 0],
+        paint: {
+          "circle-radius": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5.6,
+            3.5,
+            9.0,
+            4.2,
+            13.2,
+            4.5,
+            14.2,
+            3,
+          ],
+          "circle-color": lensColorExpr,
+          "circle-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5.4,
+            0,
+            6.0,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.92, 0.16]
+              : 0.9,
+            13.0,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.88, 0.16]
+              : 0.85,
+            14.2,
+            0,
+          ],
+          "circle-stroke-width": 1,
+          "circle-stroke-color": borderColor,
+          "circle-stroke-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5.4,
+            0,
+            6.0,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.72, 0.12]
+              : 0.68,
+            14.2,
+            0,
+          ],
+        },
+      });
+    }
+
+    // 5c. Inner operational core for known-MW facilities
     if (!map.getLayer("facilities-operational-core")) {
       map.addLayer({
         id: "facilities-operational-core",
@@ -924,6 +1211,11 @@ export function MapCanvas({
         source: "facilities",
         minzoom: 5.4,
         maxzoom: 14.3,
+        filter: [
+          "all",
+          ["==", ["get", "hasKnownMw"], 1],
+          [">", ["get", "operationalMw"], 0],
+        ],
         paint: {
           "circle-radius": [
             "interpolate",
@@ -944,9 +1236,13 @@ export function MapCanvas({
             5.4,
             0,
             6.0,
-            0.94,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.94, 0.16]
+              : 0.94,
             13.0,
-            0.88,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.88, 0.16]
+              : 0.88,
             14.2,
             0,
           ],
@@ -959,9 +1255,13 @@ export function MapCanvas({
             5.4,
             0,
             6.0,
-            0.82,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.82, 0.16]
+              : 0.82,
             13.0,
-            0.75,
+            snap.lens === "activity"
+              ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.75, 0.16]
+              : 0.75,
             14.2,
             0,
           ],
@@ -969,7 +1269,76 @@ export function MapCanvas({
       });
     }
 
-    // Halos rendered strictly AFTER & OUTSIDE operational core (r = radiusOuter + offset)
+    // 5d. Dashed EVA Violet perimeter halo for provisional / proposed campuses
+    if (!map.getLayer("facilities-provisional-halo")) {
+      map.addLayer({
+        id: "facilities-provisional-halo",
+        type: "symbol",
+        source: "facilities",
+        minzoom: 5.4,
+        maxzoom: 14.3,
+        filter: ["==", ["get", "isProvisionalOrProposed"], 1],
+        layout: {
+          "icon-image": "halo-provisional",
+          "icon-size": ["/", ["+", ["get", "radiusOuter"], 2], 12],
+          "icon-allow-overlap": true,
+          "icon-ignore-placement": true,
+          visibility:
+            snap.lens === "capacity" || snap.lens === "activity" ? "visible" : "none",
+        },
+        paint: {
+          "icon-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5.4,
+            0,
+            6.0,
+            0.94,
+            13.0,
+            0.88,
+            14.2,
+            0,
+          ],
+        },
+      });
+    }
+
+    // 5e. Activity radar target ring
+    if (!map.getLayer("facilities-activity-halo")) {
+      map.addLayer({
+        id: "facilities-activity-halo",
+        type: "symbol",
+        source: "facilities",
+        minzoom: 5.4,
+        maxzoom: 14.3,
+        filter: ["==", ["get", "recentActivityFlag"], 1],
+        layout: {
+          "icon-image": "halo-activity-target",
+          "icon-size": ["/", ["+", ["get", "radiusOuter"], 4.5], 12],
+          "icon-allow-overlap": true,
+          "icon-ignore-placement": true,
+          visibility: snap.lens === "activity" ? "visible" : "none",
+        },
+        paint: {
+          "icon-opacity": [
+            "interpolate",
+            ["linear"],
+            ["zoom"],
+            5.4,
+            0,
+            6.0,
+            0.92,
+            13.0,
+            0.84,
+            14.2,
+            0,
+          ],
+        },
+      });
+    }
+
+    // 5f. Contested / Moratorium halos strictly outside cores
     if (!map.getLayer("facilities-contested-halo")) {
       map.addLayer({
         id: "facilities-contested-halo",
@@ -1008,6 +1377,7 @@ export function MapCanvas({
       });
     }
 
+    // 5g. Undisclosed Water Alert Ring (flagships / proposals / >= 20 MW) strictly above core fills
     if (!map.getLayer("facilities-water-undisclosed-ring")) {
       map.addLayer({
         id: "facilities-water-undisclosed-ring",
@@ -1015,7 +1385,7 @@ export function MapCanvas({
         source: "facilities",
         minzoom: 5.4,
         maxzoom: 14.3,
-        filter: ["==", ["get", "undisclosedWaterFlag"], 1],
+        filter: ["==", ["get", "undisclosedWaterAlertFlag"], 1],
         layout: {
           "icon-image": "ring-undisclosed-water",
           "icon-size": ["/", ["+", ["get", "radiusOuter"], 5.5], 12],
@@ -1041,27 +1411,28 @@ export function MapCanvas({
       });
     }
 
+    // 5h. Selected facility highlight ring
     if (!map.getLayer("facilities-selected-ring")) {
       map.addLayer({
         id: "facilities-selected-ring",
         type: "circle",
         source: "facilities",
-        minzoom: 5.2,
+        minzoom: 2.5,
         maxzoom: 14.3,
         filter: ["==", ["get", "id"], snap.selectedFacilityId ?? ""],
         paint: {
           "circle-radius": ["+", ["get", "radiusOuter"], 7],
           "circle-color": "transparent",
           "circle-stroke-width": 2.4,
-          "circle-stroke-color": borderColor,
+          "circle-stroke-color": pal.accent,
           "circle-stroke-opacity": [
             "interpolate",
             ["linear"],
             ["zoom"],
-            5.4,
+            3.0,
             0.95,
             13.0,
-            0.9,
+            0.92,
             14.2,
             0,
           ],
@@ -1070,7 +1441,7 @@ export function MapCanvas({
     }
   }
 
-  // Initialize MapLibre once inside flex map container
+  // Initialize MapLibre once
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -1107,6 +1478,9 @@ export function MapCanvas({
       const b = map.getBounds();
       const z = map.getZoom();
       setZoom(z);
+      if (z >= LAZY_FOOTPRINTS_ZOOM) {
+        onNeedFootprintsRef.current();
+      }
       if (!pointerOverMapRef.current) {
         setCursorCoord([c.lng, c.lat]);
       }
@@ -1158,7 +1532,11 @@ export function MapCanvas({
     });
 
     map.on("move", () => {
-      setZoom(map.getZoom());
+      const z = map.getZoom();
+      setZoom(z);
+      if (z >= LAZY_FOOTPRINTS_ZOOM) {
+        onNeedFootprintsRef.current();
+      }
       if (!pointerOverMapRef.current) {
         const c = map.getCenter();
         setCursorCoord([c.lng, c.lat]);
@@ -1178,6 +1556,8 @@ export function MapCanvas({
       const queryLayers = [
         "facilities-planned-ring",
         "facilities-operational-core",
+        "facilities-registry-dot",
+        "facilities-constellation",
         "footprints-halls-extrusion",
         "footprints-expansion-fill",
         "footprints-substation",
@@ -1194,7 +1574,9 @@ export function MapCanvas({
       const facilityHit = hits.find(
         (h) =>
           h.layer.id === "facilities-planned-ring" ||
-          h.layer.id === "facilities-operational-core",
+          h.layer.id === "facilities-operational-core" ||
+          h.layer.id === "facilities-registry-dot" ||
+          h.layer.id === "facilities-constellation",
       );
 
       if (facilityHit && facilityHit.properties?.id) {
@@ -1215,6 +1597,7 @@ export function MapCanvas({
         setHoveredFacility(null);
         setHoveredCluster(null);
         setHoveredIso(null);
+        const rawSqft = Number(footprintHit.properties.sqft);
         setHoveredFootprint({
           facilityId: String(footprintHit.properties.facilityId ?? ""),
           label: String(footprintHit.properties.label ?? "Zone"),
@@ -1222,6 +1605,7 @@ export function MapCanvas({
           mwLabel: footprintHit.properties.mwLabel
             ? String(footprintHit.properties.mwLabel)
             : undefined,
+          sqft: Number.isFinite(rawSqft) && rawSqft > 0 ? rawSqft : null,
           status: footprintHit.properties.status,
           point: e.point,
         });
@@ -1256,6 +1640,7 @@ export function MapCanvas({
         map.setFeatureState({ source: "iso-regions", id: isoId }, { hover: true });
         map.getCanvas().style.cursor = "default";
         const stats = isoStatsRef.current.get(isoId) ?? { count: 0, mw: 0 };
+        const gridSnap = gridFeedRef.current?.regions?.[isoId] ?? null;
         setHoveredFacility(null);
         setHoveredFootprint(null);
         setHoveredCluster(null);
@@ -1263,9 +1648,14 @@ export function MapCanvas({
           id: isoId,
           fullName: String(isoHit.properties.fullName ?? isoId),
           queueNote: String(isoHit.properties.queueNote ?? ""),
-          gridStressLevel: String(isoHit.properties.gridStressLevel ?? "elevated"),
+          gridStressLevel: String(
+            isoHit.properties.liveStress ??
+              isoHit.properties.gridStressLevel ??
+              "elevated",
+          ),
           facilityCount: stats.count,
           plannedMw: stats.mw,
+          gridSnapshot: gridSnap,
           point: e.point,
         });
         return;
@@ -1290,6 +1680,8 @@ export function MapCanvas({
       const clickLayers = [
         "facilities-planned-ring",
         "facilities-operational-core",
+        "facilities-registry-dot",
+        "facilities-constellation",
         "footprints-halls-extrusion",
         "footprints-expansion-fill",
         "footprints-substation",
@@ -1305,7 +1697,9 @@ export function MapCanvas({
       const facilityHit = hits.find(
         (h) =>
           h.layer.id === "facilities-planned-ring" ||
-          h.layer.id === "facilities-operational-core",
+          h.layer.id === "facilities-operational-core" ||
+          h.layer.id === "facilities-registry-dot" ||
+          h.layer.id === "facilities-constellation",
       );
       if (facilityHit && facilityHit.properties?.id) {
         const rec = facilitiesByIdRef.current.get(String(facilityHit.properties.id));
@@ -1350,12 +1744,14 @@ export function MapCanvas({
       container.removeEventListener("pointerleave", handleLeave);
       clusterMarkersRef.current.forEach((m) => m.remove());
       clusterMarkersRef.current = [];
+      pointReticleMarkerRef.current?.remove();
+      pointReticleMarkerRef.current = null;
       map.remove();
       mapRef.current = null;
     };
   }, []);
 
-  // Switch basemap or theme style only when styleKey actually changes
+  // Switch basemap or theme style when styleKey changes
   useEffect(() => {
     const map = mapRef.current;
     if (!map) return;
@@ -1364,13 +1760,13 @@ export function MapCanvas({
     map.setStyle(getMapStyleSpec(basemap, resolvedTheme), { diff: false });
   }, [basemap, resolvedTheme, styleKey]);
 
-  // Update GeoJSON data & lens-driven paint expressions whenever data/lens/selection changes
+  // Update GeoJSON data & lens-driven paint expressions whenever data/lens/selection/theme changes
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !map.getSource("facilities")) return;
 
     const isoSrc = map.getSource("iso-regions") as maplibregl.GeoJSONSource | undefined;
-    if (isoSrc) isoSrc.setData(isoRegions);
+    if (isoSrc) isoSrc.setData(enrichedIsoRegions);
 
     const clusterSrc = map.getSource("market-clusters") as
       | maplibregl.GeoJSONSource
@@ -1389,18 +1785,29 @@ export function MapCanvas({
         "visibility",
         lens === "grid" ? "visible" : "none",
       );
+      map.setPaintProperty("iso-regions-fill", "fill-color", [
+        "match",
+        ["get", "liveStress"],
+        "severe",
+        palette.lifecycle.moratorium,
+        "high",
+        palette.lifecycle.contested,
+        "elevated",
+        palette.lifecycle.expanding,
+        palette.lifecycle.operational,
+      ]);
     }
 
     if (map.getLayer("clusters-outer")) {
       map.setPaintProperty(
         "clusters-outer",
         "circle-color",
-        buildClusterOuterColorExpression(lens),
+        buildClusterOuterColorExpression(lens, palette),
       );
       map.setPaintProperty(
         "clusters-outer",
         "circle-stroke-color",
-        buildClusterStrokeColorExpression(lens),
+        buildClusterStrokeColorExpression(lens, palette),
       );
       map.setPaintProperty(
         "clusters-outer",
@@ -1414,18 +1821,147 @@ export function MapCanvas({
       map.setPaintProperty(
         "clusters-inner",
         "circle-color",
-        buildClusterInnerColorExpression(lens),
+        buildClusterInnerColorExpression(lens, palette),
       );
     }
 
-    const lensColor = buildFacilityColorExpression(lens);
+    const lensColor = buildFacilityColorExpression(lens, palette);
+
+    if (map.getLayer("facilities-constellation")) {
+      map.setPaintProperty("facilities-constellation", "circle-color", lensColor);
+      map.setPaintProperty("facilities-constellation", "circle-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        3.0,
+        lens === "activity"
+          ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.95, 0.16]
+          : 0.78,
+        5.4,
+        lens === "activity"
+          ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.92, 0.16]
+          : 0.72,
+        6.1,
+        0,
+      ]);
+      map.setPaintProperty("facilities-constellation", "circle-stroke-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        3.0,
+        lens === "activity"
+          ? ["case", ["==", ["get", "recentActivityFlag"], 1], 0.7, 0]
+          : 0.5,
+        6.1,
+        0,
+      ]);
+    }
+
     if (map.getLayer("facilities-planned-ring")) {
       map.setPaintProperty("facilities-planned-ring", "circle-color", lensColor);
       map.setPaintProperty("facilities-planned-ring", "circle-stroke-color", lensColor);
+      map.setPaintProperty("facilities-planned-ring", "circle-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5.4,
+        0,
+        6.0,
+        buildActivityOpacityExpression(lens, 0.26, 0.06),
+        12.8,
+        buildActivityOpacityExpression(lens, 0.24, 0.06),
+        14.2,
+        0,
+      ]);
+      map.setPaintProperty("facilities-planned-ring", "circle-stroke-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5.4,
+        0,
+        6.0,
+        buildActivityOpacityExpression(lens, 0.92, 0.16),
+        13.0,
+        buildActivityOpacityExpression(lens, 0.88, 0.16),
+        14.2,
+        0,
+      ]);
     }
+
+    if (map.getLayer("facilities-registry-dot")) {
+      map.setPaintProperty("facilities-registry-dot", "circle-color", lensColor);
+      map.setPaintProperty("facilities-registry-dot", "circle-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5.4,
+        0,
+        6.0,
+        buildActivityOpacityExpression(lens, 0.9, 0.16),
+        13.0,
+        buildActivityOpacityExpression(lens, 0.85, 0.16),
+        14.2,
+        0,
+      ]);
+      map.setPaintProperty("facilities-registry-dot", "circle-stroke-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5.4,
+        0,
+        6.0,
+        buildActivityOpacityExpression(lens, 0.68, 0.12),
+        14.2,
+        0,
+      ]);
+    }
+
     if (map.getLayer("facilities-operational-core")) {
       map.setPaintProperty("facilities-operational-core", "circle-color", lensColor);
+      map.setPaintProperty("facilities-operational-core", "circle-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5.4,
+        0,
+        6.0,
+        buildActivityOpacityExpression(lens, 0.94, 0.16),
+        13.0,
+        buildActivityOpacityExpression(lens, 0.88, 0.16),
+        14.2,
+        0,
+      ]);
+      map.setPaintProperty("facilities-operational-core", "circle-stroke-opacity", [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        5.4,
+        0,
+        6.0,
+        buildActivityOpacityExpression(lens, 0.82, 0.16),
+        13.0,
+        buildActivityOpacityExpression(lens, 0.75, 0.16),
+        14.2,
+        0,
+      ]);
     }
+
+    if (map.getLayer("facilities-provisional-halo")) {
+      map.setLayoutProperty(
+        "facilities-provisional-halo",
+        "visibility",
+        lens === "capacity" || lens === "activity" ? "visible" : "none",
+      );
+    }
+
+    if (map.getLayer("facilities-activity-halo")) {
+      map.setLayoutProperty(
+        "facilities-activity-halo",
+        "visibility",
+        lens === "activity" ? "visible" : "none",
+      );
+    }
+
     if (map.getLayer("facilities-selected-ring")) {
       map.setFilter("facilities-selected-ring", [
         "==",
@@ -1441,19 +1977,19 @@ export function MapCanvas({
       );
     }
   }, [
-    isoRegions,
+    enrichedIsoRegions,
     clustersGeoJson,
     facilitiesGeoJson,
     visibleFootprintsGeoJson,
     lens,
     selectedFacilityId,
+    palette,
     styleVersion,
   ]);
 
   const tier = getZoomTier(zoom);
 
-  // Render crisp DOM Cluster Callout pills in Macro National Tier (z < 5.8)
-  // clamped cleanly inside unobscured canvas with 4-quadrant offset attempts
+  // Render <= 22 collision-culled chamfered DOM Cluster Callout pills in Macro National Tier (z < 5.8)
   renderClusterMarkersRef.current = () => {
     const map = mapRef.current;
     clusterMarkersRef.current.forEach((m) => m.remove());
@@ -1463,14 +1999,22 @@ export function MapCanvas({
     const canvasW = containerRef.current?.clientWidth ?? 1100;
     const canvasH = containerRef.current?.clientHeight ?? 800;
     const isNarrow = canvasW < 500;
-    const topSafe = isNarrow ? 56 : 52;
-    const bottomSafe = canvasH - (isNarrow ? 88 : 54);
-    const minX = 8;
-    const maxX = canvasW - 8;
+    const topSafe = isNarrow ? 58 : 54;
+    const bottomSafe = canvasH - (isNarrow ? 92 : 58);
+    const minX = 10;
+    const maxX = canvasW - 10;
 
-    const sorted = [...clustersRef.current].sort(
+    const multiSite = clustersRef.current.filter((c) => c.facilityCount >= 2);
+    const candidatePool =
+      multiSite.length > 0
+        ? multiSite
+        : clustersRef.current.length <= 4
+          ? clustersRef.current
+          : [];
+
+    const sorted = [...candidatePool].sort(
       (a, b) =>
-        b.plannedMw - a.plannedMw ||
+        b.plannedMw + b.reportedOrProposedMw - (a.plannedMw + a.reportedOrProposedMw) ||
         b.facilityCount - a.facilityCount ||
         a.clusterName.localeCompare(b.clusterName),
     );
@@ -1484,6 +2028,7 @@ export function MapCanvas({
     const markers: maplibregl.Marker[] = [];
 
     for (const c of sorted) {
+      if (markers.length >= 22) break;
       const pt = map.project(c.coordinates);
       if (pt.x < -12 || pt.x > canvasW + 12 || pt.y < topSafe || pt.y > bottomSafe) {
         continue;
@@ -1492,7 +2037,9 @@ export function MapCanvas({
       const shortName = formatShortClusterName(c.clusterName);
       const activeLens = lensRef.current;
       let metaText = `${formatGwOrMw(c.plannedMw)} · ${c.facilityCount}`;
-      if (activeLens === "water") {
+      if (c.reportedOrProposedMw > 0 && activeLens === "capacity") {
+        metaText = `${formatGwOrMw(c.plannedMw)} +${formatGwOrMw(c.reportedOrProposedMw)} · ${c.facilityCount}`;
+      } else if (activeLens === "water") {
         metaText =
           c.undisclosedWaterCount === c.facilityCount
             ? `${c.facilityCount}/${c.facilityCount} Undisclosed`
@@ -1500,12 +2047,14 @@ export function MapCanvas({
               ? `${formatNumber(c.disclosedWaterMgd, 1)} MGD · ${c.undisclosedWaterCount} NDA`
               : `${formatNumber(c.disclosedWaterMgd, 1)} MGD · ${c.facilityCount}`;
       } else if (activeLens === "grid") {
-        metaText = `${c.primaryIso} · ${formatGwOrMw(c.plannedMw)}`;
+        metaText = `${c.primaryIso} · ${formatGwOrMw(c.plannedMw + c.reportedOrProposedMw)}`;
+      } else if (activeLens === "activity") {
+        metaText = `${c.recentActivityCount} active · ${c.facilityCount} total`;
       }
 
       const estChars = Math.max(shortName.length, metaText.length);
-      const boxW = Math.max(114, Math.min(168, estChars * 6.5 + 22));
-      const boxH = 34;
+      const boxW = Math.max(118, Math.min(182, estChars * 6.6 + 24));
+      const boxH = 38;
 
       const candidates: Array<{
         anchor: maplibregl.PositionAnchor;
@@ -1516,19 +2065,19 @@ export function MapCanvas({
           anchor: "top",
           offset: [0, 12],
           box: {
-            left: pt.x - boxW / 2 - 3,
-            right: pt.x + boxW / 2 + 3,
+            left: pt.x - boxW / 2 - 4,
+            right: pt.x + boxW / 2 + 4,
             top: pt.y + 10,
-            bottom: pt.y + 10 + boxH + 4,
+            bottom: pt.y + 10 + boxH + 6,
           },
         },
         {
           anchor: "bottom",
           offset: [0, -12],
           box: {
-            left: pt.x - boxW / 2 - 3,
-            right: pt.x + boxW / 2 + 3,
-            top: pt.y - 10 - boxH - 4,
+            left: pt.x - boxW / 2 - 4,
+            right: pt.x + boxW / 2 + 4,
+            top: pt.y - 10 - boxH - 6,
             bottom: pt.y - 10,
           },
         },
@@ -1537,19 +2086,19 @@ export function MapCanvas({
           offset: [14, 0],
           box: {
             left: pt.x + 12,
-            right: pt.x + 12 + boxW + 4,
-            top: pt.y - boxH / 2 - 2,
-            bottom: pt.y + boxH / 2 + 2,
+            right: pt.x + 12 + boxW + 6,
+            top: pt.y - boxH / 2 - 4,
+            bottom: pt.y + boxH / 2 + 4,
           },
         },
         {
           anchor: "right",
           offset: [-14, 0],
           box: {
-            left: pt.x - 12 - boxW - 4,
+            left: pt.x - 12 - boxW - 6,
             right: pt.x - 12,
-            top: pt.y - boxH / 2 - 2,
-            bottom: pt.y + boxH / 2 + 2,
+            top: pt.y - boxH / 2 - 4,
+            bottom: pt.y + boxH / 2 + 4,
           },
         },
       ];
@@ -1576,7 +2125,8 @@ export function MapCanvas({
       const isAlertCluster =
         (activeLens === "capacity" && c.contestedCount > 0) ||
         (activeLens === "water" && c.undisclosedWaterCount > 0) ||
-        (activeLens === "grid" && c.dominantGridStatus === "ferc_or_puc_contested");
+        (activeLens === "grid" && c.dominantGridStatus === "ferc_or_puc_contested") ||
+        (activeLens === "activity" && c.recentActivityCount > 0);
 
       const el = document.createElement("button");
       el.type = "button";
@@ -1585,7 +2135,7 @@ export function MapCanvas({
       }`;
       el.setAttribute(
         "aria-label",
-        `${c.clusterName}: ${formatGwOrMw(c.plannedMw)} across ${c.facilityCount} sites`,
+        `${c.clusterName}: ${formatGwOrMw(c.plannedMw)} verified across ${c.facilityCount} sites`,
       );
 
       const nameSpan = document.createElement("span");
@@ -1642,7 +2192,59 @@ export function MapCanvas({
     };
   }, [clusters, tier, lens]);
 
-  // Execute declarative fly requests (unobscured container means simple symmetric padding!)
+  // NERV Optical Target Reticle over imagery for point_only campuses at parcel zoom (z >= 11.8)
+  const showPointReticle = useMemo(() => {
+    if (zoom < LAZY_FOOTPRINTS_ZOOM || !selectedFacility) return false;
+    const hasMatchingFootprint = visibleFootprintsGeoJson.features.some(
+      (ft) => ft.properties.facilityId === selectedFacility.id,
+    );
+    return (
+      selectedFacility.footprintCoverage === "point_only" || !hasMatchingFootprint
+    );
+  }, [zoom, selectedFacility, visibleFootprintsGeoJson]);
+
+  useEffect(() => {
+    const map = mapRef.current;
+    pointReticleMarkerRef.current?.remove();
+    pointReticleMarkerRef.current = null;
+
+    if (!map || !showPointReticle || !selectedFacility) return;
+
+    const root = document.createElement("div");
+    root.className = "nerv-optical-reticle";
+    root.setAttribute("aria-hidden", "true");
+
+    root.innerHTML = `
+      <svg class="nerv-reticle-svg" width="144" height="144" viewBox="0 0 144 144">
+        <circle cx="72" cy="72" r="56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.78" />
+        <circle cx="72" cy="72" r="34" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.92" />
+        <circle cx="72" cy="72" r="6" fill="none" stroke="currentColor" stroke-width="1.8" />
+        <path d="M72 4v26M72 114v26M4 72h26M114 72h26" stroke="currentColor" stroke-width="1.5" stroke-linecap="square" />
+        <path d="M22 22h14M22 22v14M122 22h-14M122 22v14M22 122h14M22 122v-14M122 122h-14M122 122v-14" stroke="currentColor" stroke-width="1.8" fill="none" />
+        <polygon points="72,56 88,72 72,88 56,72" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.72" />
+      </svg>
+      <div class="nerv-reticle-badge mono">
+        OPEN GIS FOOTPRINT UNMAPPED // COORDINATE VERIFIED
+      </div>
+    `;
+
+    const marker = new maplibregl.Marker({
+      element: root,
+      anchor: "center",
+    })
+      .setLngLat(selectedFacility.coordinates)
+      .addTo(map);
+    pointReticleMarkerRef.current = marker;
+
+    return () => {
+      marker.remove();
+      if (pointReticleMarkerRef.current === marker) {
+        pointReticleMarkerRef.current = null;
+      }
+    };
+  }, [showPointReticle, selectedFacility]);
+
+  // Declarative fly requests
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !flyRequest) return;
@@ -1693,11 +2295,25 @@ export function MapCanvas({
   }, [flyRequest]);
 
   const hoveredWeather = hoveredFacility
-    ? stations[hoveredFacility.facility.waterAndCooling.nwsStationId]
+    ? stations[hoveredFacility.facility.nwsStationId]
     : undefined;
 
   const containerW = containerRef.current?.clientWidth ?? 900;
   const containerH = containerRef.current?.clientHeight ?? 760;
+
+  const liveGridRegionsSummary = useMemo(() => {
+    if (!gridFeed || lens !== "grid") return [];
+    return ISO_ORDER.map((iso) => {
+      const snap = gridFeed.regions?.[iso];
+      if (!snap || snap.demandMw === null) return null;
+      return {
+        iso,
+        demandGw: formatGw(snap.demandMw),
+        cleanPct: computeCleanSharePct(snap.fuelMix),
+        status: snap.status,
+      };
+    }).filter((x): x is NonNullable<typeof x> => Boolean(x));
+  }, [gridFeed, lens]);
 
   return (
     <div
@@ -1712,8 +2328,21 @@ export function MapCanvas({
         aria-label="Interactive US Data Center Infrastructure Map"
       />
 
-      {/* Mobile-Only Map Floating Lens & Basemap Strip (keeps TopBar 1-row <= 52px) */}
-      <div className="map-mobile-bar" role="region" aria-label="Map analytical lens and basemap">
+      {/* NERV CRT 4-corner amber reticle L-brackets + subtle drafting scanline overlay */}
+      <div className="map-stage-brackets" aria-hidden="true">
+        <span className="map-bracket map-bracket--tl" />
+        <span className="map-bracket map-bracket--tr" />
+        <span className="map-bracket map-bracket--bl" />
+        <span className="map-bracket map-bracket--br" />
+      </div>
+      <div className="map-scanline-overlay" aria-hidden="true" />
+
+      {/* Mobile-Only Map Floating Lens & Basemap Strip */}
+      <div
+        className="map-mobile-bar"
+        role="region"
+        aria-label="Map analytical lens and basemap"
+      >
         <div className="map-mobile-group" role="group" aria-label="Analytical Lens">
           {LENS_OPTIONS.map((opt) => (
             <button
@@ -1722,8 +2351,9 @@ export function MapCanvas({
               className={`map-float-btn${lens === opt.id ? " map-float-btn--active" : ""}`}
               onClick={() => onLensChange(opt.id)}
               aria-pressed={lens === opt.id}
+              title={opt.label}
             >
-              {opt.shortLabel}
+              {opt.mobileLabel}
             </button>
           ))}
         </div>
@@ -1733,15 +2363,57 @@ export function MapCanvas({
             <button
               key={opt.id}
               type="button"
-              className={`map-float-btn${basemap === opt.id ? " map-float-btn--active" : ""}`}
+              className={`map-float-btn${
+                basemap === opt.id ? " map-float-btn--active" : ""
+              }`}
               onClick={() => onBasemapChange(opt.id)}
               aria-pressed={basemap === opt.id}
+              title={opt.label}
             >
-              {opt.id === "satellite" ? "Sat" : opt.label}
+              {opt.mobileLabel}
             </button>
           ))}
         </div>
       </div>
+
+      {/* Activity Lens Floating Time-Window Selector */}
+      {lens === "activity" && (
+        <div
+          className="map-activity-window"
+          role="group"
+          aria-label="Activity Radar Window"
+        >
+          <span className="map-activity-tag mono">PULSE DELTA</span>
+          {RADAR_WINDOW_OPTIONS.map((opt) => (
+            <button
+              key={opt.id}
+              type="button"
+              className={`map-float-btn mono${
+                radarWindow === opt.id ? " map-float-btn--active" : ""
+              }`}
+              aria-pressed={radarWindow === opt.id}
+              onClick={() => onRadarWindowChange(opt.id)}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Grid Lens Live ISO Telemetry Summary Pills */}
+      {lens === "grid" && liveGridRegionsSummary.length > 0 && (
+        <div
+          className="map-grid-telemetry-bar mono"
+          aria-label="Live ISO dispatch summary"
+        >
+          {liveGridRegionsSummary.map((row) => (
+            <span key={row.iso} className="map-grid-iso-chip">
+              <strong>{row.iso}</strong> {row.demandGw}
+              {row.cleanPct !== null ? ` · ${row.cleanPct}%` : ""}
+            </span>
+          ))}
+        </div>
+      )}
 
       {/* Top-Right Map Layers (Basemap) & Live Coordinate HUD */}
       <div className="map-top-right">
@@ -1757,7 +2429,9 @@ export function MapCanvas({
             <button
               key={opt.id}
               type="button"
-              className={`map-float-btn${basemap === opt.id ? " map-float-btn--active" : ""}`}
+              className={`map-float-btn${
+                basemap === opt.id ? " map-float-btn--active" : ""
+              }`}
               onClick={() => onBasemapChange(opt.id)}
               aria-pressed={basemap === opt.id}
             >
@@ -1778,18 +2452,25 @@ export function MapCanvas({
         </div>
 
         <div className="map-hud-pill" aria-live="polite">
-          <span className="hud-tier">{getZoomTierLabel(tier)}</span>
+          <span className="hud-tier mono">{getZoomTierLabel(tier)}</span>
           <span className="hud-sep" aria-hidden="true">
-            ·
-          </span>
-          <span className="hud-zoom mono">z {zoom.toFixed(1)}</span>
-          <span className="hud-sep hud-coord-sep" aria-hidden="true">
-            ·
+            //
           </span>
           <span className="hud-coord mono">
-            {formatCoordPair(cursorCoord[0], cursorCoord[1])}
+            {formatCoordHud(cursorCoord[0], cursorCoord[1], zoom)}
           </span>
+          <span className="hud-zoom-mobile mono">z {zoom.toFixed(1)}</span>
         </div>
+
+        {showPointReticle && selectedFacility && (
+          <div className="map-point-only-hud mono">
+            <Crosshair size={12} aria-hidden="true" />
+            <span>
+              {selectedFacility.name}: OPEN GIS FOOTPRINT UNMAPPED // COORDINATE
+              VERIFIED
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Mobile Legend Toggle Chip */}
@@ -1803,7 +2484,7 @@ export function MapCanvas({
         Legend
       </button>
 
-      {/* Compact Contextual Legend Pill (1:1 parity across all tiers & lenses) */}
+      {/* Compact Contextual Legend Pill (1:1 parity across all 3 tiers & 4 lenses) */}
       <div
         className={`map-legend-pill${
           mobileLegendOpen ? " map-legend-pill--mobile-open" : ""
@@ -1818,7 +2499,15 @@ export function MapCanvas({
             </span>
             <span className="legend-item">
               <span className="legend-ring legend-ring--plan" />
-              Planned Pipeline
+              Planned MW
+            </span>
+            <span className="legend-item">
+              <span className="legend-dot legend-dot--cyan" />
+              Registry Colocation
+            </span>
+            <span className="legend-item">
+              <span className="legend-ring legend-ring--provisional" />
+              Provisional
             </span>
             <span className="legend-item">
               <span className="legend-ring legend-ring--warn" />
@@ -1847,7 +2536,7 @@ export function MapCanvas({
             </span>
             <span className="legend-item">
               <span className="legend-ring legend-ring--undisclosed" />
-              Undisclosed Sites
+              Undisclosed (&gt;=20MW / Flagship)
             </span>
           </>
         )}
@@ -1876,7 +2565,28 @@ export function MapCanvas({
             </span>
             <span className="legend-item">
               <span className="legend-swatch legend-swatch--iso" />
-              ISO Stress Fill
+              Live ISO Stress
+            </span>
+          </>
+        )}
+
+        {tier === "macro" && lens === "activity" && (
+          <>
+            <span className="legend-item">
+              <span className="legend-dot legend-dot--amber" />
+              Recent Delta / Building
+            </span>
+            <span className="legend-item">
+              <span className="legend-ring legend-ring--provisional" />
+              Provisional / Proposed
+            </span>
+            <span className="legend-item">
+              <span className="legend-ring legend-ring--warn" />
+              Contested / Moratorium
+            </span>
+            <span className="legend-item">
+              <span className="legend-dot legend-dot--dim" />
+              Static Baseline (16%)
             </span>
           </>
         )}
@@ -1889,19 +2599,19 @@ export function MapCanvas({
             </span>
             <span className="legend-item">
               <span className="legend-dot legend-dot--cyan" />
-              Expanding
+              Expanding / Registry
             </span>
             <span className="legend-item">
               <span className="legend-dot legend-dot--const" />
               Building
             </span>
             <span className="legend-item">
-              <span className="legend-dot legend-dot--perm" />
+              <span className="legend-dot legend-dot--amber" />
               Permitted
             </span>
             <span className="legend-item">
-              <span className="legend-dot legend-dot--prop" />
-              Proposed
+              <span className="legend-ring legend-ring--provisional" />
+              Provisional / Proposed
             </span>
             <span className="legend-item">
               <span className="legend-ring legend-ring--dashed" />
@@ -1930,7 +2640,7 @@ export function MapCanvas({
             </span>
             <span className="legend-item">
               <span className="legend-ring legend-ring--undisclosed" />
-              Undisclosed Water
+              Undisclosed (&gt;=20MW / Flagship)
             </span>
           </>
         )}
@@ -1960,11 +2670,32 @@ export function MapCanvas({
           </>
         )}
 
+        {tier === "regional" && lens === "activity" && (
+          <>
+            <span className="legend-item">
+              <span className="legend-dot legend-dot--amber" />
+              Active Delta ({radarWindow})
+            </span>
+            <span className="legend-item">
+              <span className="legend-ring legend-ring--provisional" />
+              Provisional / Proposed
+            </span>
+            <span className="legend-item">
+              <span className="legend-ring legend-ring--warn" />
+              Contested / Moratorium
+            </span>
+            <span className="legend-item">
+              <span className="legend-dot legend-dot--dim" />
+              Baseline Fleet (16%)
+            </span>
+          </>
+        )}
+
         {tier === "parcel" && (
           <>
             <span className="legend-item">
               <span className="legend-swatch legend-swatch--hall" />
-              Operational Hall (2.5D)
+              Hall / Building (2.5D)
             </span>
             <span className="legend-item">
               <span className="legend-swatch legend-swatch--exp" />
@@ -1978,22 +2709,26 @@ export function MapCanvas({
               <span className="legend-swatch legend-swatch--cool" />
               Cooling Yard
             </span>
+            <span className="legend-item">
+              <span className="legend-ring legend-ring--reticle" />
+              Point Only Reticle
+            </span>
           </>
         )}
       </div>
 
-      {/* Floating Facility Hover Card (Tier 2/3) */}
+      {/* Floating Facility Hover Card (ALL 3 zoom tiers: constellation dots & regional glyphs) */}
       {hoveredFacility && (
         <div
           className="map-hover-card"
           style={{
             left: Math.max(
               12,
-              Math.min(hoveredFacility.point.x + 16, containerW - 292),
+              Math.min(hoveredFacility.point.x + 16, containerW - 298),
             ),
             top: Math.max(
               52,
-              Math.min(hoveredFacility.point.y - 24, containerH - 180),
+              Math.min(hoveredFacility.point.y - 24, containerH - 200),
             ),
           }}
         >
@@ -2002,23 +2737,23 @@ export function MapCanvas({
             <StatusPill status={hoveredFacility.facility.lifecycleStatus} compact />
           </div>
           <div className="hover-card-sub">
+            <TierBadge tier={hoveredFacility.facility.catalogTier} compact /> ·{" "}
             {hoveredFacility.facility.city}, {hoveredFacility.facility.state} ·{" "}
             <span className="mono">{hoveredFacility.facility.isoRegion}</span> ·{" "}
-            {
-              COOLING_SHORT_LABELS[
-                hoveredFacility.facility.waterAndCooling.coolingArchitecture
-              ]
-            }
+            {COOLING_SHORT_LABELS[hoveredFacility.facility.coolingArchitecture]}
           </div>
           <div className="hover-card-grid mono">
             <div>
               <span className="hover-k">Op / Plan</span>
               <span className="hover-v">
-                {hoveredFacility.facility.power.operationalMw.value !== null
-                  ? Math.round(hoveredFacility.facility.power.operationalMw.value)
+                {hoveredFacility.facility.operationalMw !== null
+                  ? Math.round(hoveredFacility.facility.operationalMw)
                   : "—"}
                 {" / "}
-                {formatMw(hoveredFacility.facility.power.totalPlannedMw.value)}
+                {formatMw(hoveredFacility.facility.totalPlannedMw)}
+                {hoveredFacility.facility.totalPlannedMwEpistemic === "reported"
+                  ? " (Rep)"
+                  : ""}
               </span>
             </div>
             <div>
@@ -2030,25 +2765,33 @@ export function MapCanvas({
                     : ""
                 }`}
               >
-                {formatWaterMgd(
-                  hoveredFacility.facility.waterAndCooling.peakOrAvgWaterMgd,
+                {formatWaterSummary(
+                  hoveredFacility.facility.peakOrAvgWaterMgd,
+                  hoveredFacility.facility.annualWaterMgy,
+                  hoveredFacility.facility.waterEpistemic,
                 )}
               </span>
             </div>
           </div>
-          {hoveredWeather && hoveredWeather.status === "live" && (
-            <div className="hover-card-live">
-              <span className="mono">
-                WB {formatTempPair(hoveredWeather.wetBulbF, hoveredWeather.wetBulbC)}
-              </span>
+          <div className="hover-card-live">
+            <span className="mono">
+              {hoveredWeather && hoveredWeather.status === "live"
+                ? `WB ${formatTempPair(hoveredWeather.wetBulbF, hoveredWeather.wetBulbC)}`
+                : `${CATALOG_TIER_SHORT_LABELS[hoveredFacility.facility.catalogTier]} · ${
+                    hoveredFacility.facility.footprintCoverage === "verified_polygons"
+                      ? `${hoveredFacility.facility.mappedPolygonCount || "Mapped"} poly`
+                      : "Point Only"
+                  }`}
+            </span>
+            {hoveredWeather && hoveredWeather.status === "live" && (
               <span
                 className={`thermal-pill thermal-pill--${hoveredWeather.thermalRegime}`}
               >
                 {THERMAL_REGIME_LABELS[hoveredWeather.thermalRegime] ??
                   hoveredWeather.thermalRegime}
               </span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
 
@@ -2077,22 +2820,28 @@ export function MapCanvas({
             {hoveredFootprint.mwLabel && (
               <span className="mono"> · {hoveredFootprint.mwLabel}</span>
             )}
+            {hoveredFootprint.sqft && (
+              <span className="mono">
+                {" "}
+                · {formatNumber(hoveredFootprint.sqft)} sq ft
+              </span>
+            )}
           </div>
         </div>
       )}
 
-      {/* Floating Cluster Summary Card (Tier 1: ensures culled macro clusters are inspectable on hover) */}
+      {/* Floating Cluster Summary Card (Tier 1) */}
       {hoveredCluster && !hoveredFacility && !hoveredFootprint && tier === "macro" && (
         <div
           className="map-hover-card"
           style={{
             left: Math.max(
               12,
-              Math.min(hoveredCluster.point.x + 16, containerW - 292),
+              Math.min(hoveredCluster.point.x + 16, containerW - 298),
             ),
             top: Math.max(
               52,
-              Math.min(hoveredCluster.point.y - 24, containerH - 180),
+              Math.min(hoveredCluster.point.y - 24, containerH - 190),
             ),
           }}
         >
@@ -2104,7 +2853,7 @@ export function MapCanvas({
           </div>
           <div className="hover-card-grid mono">
             <div>
-              <span className="hover-k">Op / Plan</span>
+              <span className="hover-k">Verified Op / Plan</span>
               <span className="hover-v">
                 {formatGwOrMw(hoveredCluster.cluster.operationalMw)} /{" "}
                 {formatGwOrMw(hoveredCluster.cluster.plannedMw)}
@@ -2112,11 +2861,16 @@ export function MapCanvas({
             </div>
             <div>
               <span className="hover-k">
-                {lens === "grid" ? "Grid Bottleneck" : "Peak Water"}
+                {lens === "grid"
+                  ? "Grid Bottleneck"
+                  : hoveredCluster.cluster.reportedOrProposedMw > 0 &&
+                      lens === "capacity"
+                    ? "Proposed Pipeline"
+                    : "Peak Water"}
               </span>
               <span
                 className={`hover-v${
-                  lens !== "grid" &&
+                  lens === "water" &&
                   hoveredCluster.cluster.undisclosedWaterCount ===
                     hoveredCluster.cluster.facilityCount
                     ? " hover-v--warn"
@@ -2126,22 +2880,26 @@ export function MapCanvas({
                 {lens === "grid"
                   ? INTERCONNECTION_LABELS[hoveredCluster.cluster.dominantGridStatus] ??
                     hoveredCluster.cluster.dominantGridStatus
-                  : hoveredCluster.cluster.undisclosedWaterCount ===
-                      hoveredCluster.cluster.facilityCount
-                    ? `${hoveredCluster.cluster.facilityCount}/${hoveredCluster.cluster.facilityCount} Undisclosed`
-                    : `${formatNumber(hoveredCluster.cluster.disclosedWaterMgd, 1)} MGD`}
+                  : hoveredCluster.cluster.reportedOrProposedMw > 0 &&
+                      lens === "capacity"
+                    ? `+${formatGwOrMw(hoveredCluster.cluster.reportedOrProposedMw)}`
+                    : hoveredCluster.cluster.undisclosedWaterCount ===
+                        hoveredCluster.cluster.facilityCount
+                      ? `${hoveredCluster.cluster.facilityCount}/${hoveredCluster.cluster.facilityCount} Undisclosed`
+                      : `${formatNumber(hoveredCluster.cluster.disclosedWaterMgd, 1)} MGD`}
               </span>
             </div>
           </div>
           <div className="hover-card-sub">
-            Watershed max: {WATERSHED_STRESS_LABELS[hoveredCluster.cluster.maxWatershedStress]}
+            Watershed max:{" "}
+            {WATERSHED_STRESS_LABELS[hoveredCluster.cluster.maxWatershedStress]}
             {hoveredCluster.cluster.contestedCount > 0 &&
               ` · ${hoveredCluster.cluster.contestedCount} contested`}
           </div>
         </div>
       )}
 
-      {/* Floating ISO Region Callout (Tier 1 under Grid lens) */}
+      {/* Floating ISO Region Callout (Tier 1 under Grid lens with live EIA snapshot) */}
       {hoveredIso &&
         !hoveredFacility &&
         !hoveredFootprint &&
@@ -2153,29 +2911,44 @@ export function MapCanvas({
             style={{
               left: Math.max(
                 12,
-                Math.min(hoveredIso.point.x + 16, containerW - 292),
+                Math.min(hoveredIso.point.x + 16, containerW - 298),
               ),
               top: Math.max(
                 52,
-                Math.min(hoveredIso.point.y - 20, containerH - 180),
+                Math.min(hoveredIso.point.y - 20, containerH - 210),
               ),
             }}
           >
             <div className="hover-card-head">
-              <strong className="mono">{hoveredIso.id}</strong>
+              <strong className="mono">ISO // {hoveredIso.id}</strong>
               <span className="iso-stress-tag">
-                Grid Stress: {hoveredIso.gridStressLevel}
+                Stress: {hoveredIso.gridStressLevel}
               </span>
             </div>
             <div className="hover-card-sub">{hoveredIso.fullName}</div>
             <div className="hover-card-grid mono">
               <div>
-                <span className="hover-k">Sites in Filter</span>
-                <span className="hover-v">{hoveredIso.facilityCount}</span>
+                <span className="hover-k">
+                  {hoveredIso.gridSnapshot ? "EIA Live Demand" : "Sites in Filter"}
+                </span>
+                <span className="hover-v">
+                  {hoveredIso.gridSnapshot
+                    ? formatGw(hoveredIso.gridSnapshot.demandMw)
+                    : hoveredIso.facilityCount}
+                </span>
               </div>
               <div>
-                <span className="hover-k">Planned Load</span>
-                <span className="hover-v">{formatGwOrMw(hoveredIso.plannedMw)}</span>
+                <span className="hover-k">
+                  {hoveredIso.gridSnapshot ? "Clean Gen Share" : "Planned Load"}
+                </span>
+                <span className="hover-v">
+                  {hoveredIso.gridSnapshot
+                    ? (() => {
+                        const pct = computeCleanSharePct(hoveredIso.gridSnapshot.fuelMix);
+                        return pct !== null ? `${pct}% clean` : "Unavailable";
+                      })()
+                    : formatGwOrMw(hoveredIso.plannedMw)}
+                </span>
               </div>
             </div>
             {hoveredIso.queueNote && (
