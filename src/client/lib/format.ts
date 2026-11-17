@@ -1,10 +1,14 @@
 import type {
   AnchorTenant,
+  CatalogTier,
   CoolingArchitecture,
   EpistemicStatus,
   FacilitySource,
+  FootprintCoverage,
+  GridFuelMixItem,
   LifecycleStatus,
   MetricValue,
+  PulseStream,
   WatershedStress,
 } from "@shared/types";
 
@@ -221,4 +225,82 @@ export function formatShortClusterName(clusterName: string): string {
     .replace(/\s+(AI Megasite|Metro|Hydro Corridor|Corridor)$/i, "")
     .trim();
   return stripped || clusterName;
+}
+
+export const CATALOG_TIER_LABELS: Record<CatalogTier, string> = {
+  flagship: "Flagship Dossier",
+  registry: "Verified Registry",
+  provisional: "Provisional Proposal",
+};
+
+export const CATALOG_TIER_BADGES: Record<CatalogTier, string> = {
+  flagship: "FLAGSHIP DOSSIER",
+  registry: "VERIFIED REGISTRY",
+  provisional: "PROVISIONAL PROPOSAL",
+};
+
+export const CATALOG_TIER_SHORT_LABELS: Record<CatalogTier, string> = {
+  flagship: "Flagship",
+  registry: "Registry",
+  provisional: "Provisional",
+};
+
+export const FOOTPRINT_COVERAGE_LABELS: Record<FootprintCoverage, string> = {
+  verified_polygons: "Verified Polygons",
+  point_only: "Point Only",
+};
+
+export const PULSE_STREAM_LABELS: Record<PulseStream, string> = {
+  federal_register: "Federal Register",
+  sec_edgar: "SEC EDGAR",
+  peeringdb: "PeeringDB",
+};
+
+export function formatWaterSummary(
+  peakMgd: number | null,
+  annualMgy: number | null,
+  epistemic: EpistemicStatus,
+): string {
+  if (epistemic === "undisclosed" || (peakMgd === null && annualMgy === null)) {
+    return "Undisclosed";
+  }
+  if (peakMgd !== null && Number.isFinite(peakMgd)) {
+    return `${formatNumber(peakMgd, 2)} MGD`;
+  }
+  if (annualMgy !== null && Number.isFinite(annualMgy)) {
+    return `${formatNumber(annualMgy, 0)} MGY`;
+  }
+  return "Undisclosed";
+}
+
+export function computeCleanSharePct(fuelMix: GridFuelMixItem[]): number | null {
+  if (!Array.isArray(fuelMix) || fuelMix.length === 0) return null;
+  let clean = 0;
+  for (const item of fuelMix) {
+    if (
+      item.fuel === "nuclear" ||
+      item.fuel === "wind" ||
+      item.fuel === "solar" ||
+      item.fuel === "hydro"
+    ) {
+      clean += item.sharePct;
+    }
+  }
+  return Math.max(0, Math.min(100, Math.round(clean)));
+}
+
+export function formatGw(mw: number | null | undefined): string {
+  if (mw === null || mw === undefined || !Number.isFinite(mw)) {
+    return "Unavailable";
+  }
+  return `${dec1Formatter.format(mw / 1000)} GW`;
+}
+
+export function formatCoordHud(lng: number, lat: number, zoom: number): string {
+  const latDir = lat >= 0 ? "N" : "S";
+  const lngDir = lng >= 0 ? "E" : "W";
+  const latStr = Math.abs(lat).toFixed(2).padStart(5, "0");
+  const lngStr = Math.abs(lng).toFixed(2).padStart(6, "0");
+  const zStr = zoom.toFixed(1).padStart(4, "0");
+  return `[Z:${zStr} // ${latStr}°${latDir} ${lngStr}°${lngDir}]`;
 }

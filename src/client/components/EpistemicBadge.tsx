@@ -1,8 +1,17 @@
 import React from "react";
 import { ExternalLink, ShieldAlert } from "lucide-react";
-import type { EpistemicStatus, LifecycleStatus } from "@shared/types";
+import type {
+  CatalogTier,
+  EpistemicStatus,
+  FootprintCoverage,
+  LifecycleStatus,
+} from "@shared/types";
 import {
+  CATALOG_TIER_BADGES,
+  CATALOG_TIER_LABELS,
+  CATALOG_TIER_SHORT_LABELS,
   EPISTEMIC_LABELS,
+  FOOTPRINT_COVERAGE_LABELS,
   LIFECYCLE_LABELS,
   safeHttpUrl,
 } from "../lib/format";
@@ -21,6 +30,38 @@ export function StatusPill({
     >
       <span className={`status-glyph status-glyph--${status}`} aria-hidden="true" />
       <span>{LIFECYCLE_LABELS[status]}</span>
+    </span>
+  );
+}
+
+export function TierBadge({
+  tier,
+  compact = false,
+}: {
+  tier: CatalogTier;
+  compact?: boolean;
+}) {
+  return (
+    <span
+      className={`tier-badge tier-badge--${tier}${compact ? " tier-badge--compact" : ""} mono`}
+      title={`Catalog Tier: ${CATALOG_TIER_LABELS[tier]}`}
+    >
+      {compact ? CATALOG_TIER_SHORT_LABELS[tier].toUpperCase() : CATALOG_TIER_BADGES[tier]}
+    </span>
+  );
+}
+
+export function FootprintCoveragePill({
+  coverage,
+}: {
+  coverage: FootprintCoverage;
+}) {
+  return (
+    <span
+      className={`coverage-pill coverage-pill--${coverage} mono`}
+      title={FOOTPRINT_COVERAGE_LABELS[coverage]}
+    >
+      {coverage === "verified_polygons" ? "VERIFIED POLYGONS" : "POINT ONLY"}
     </span>
   );
 }

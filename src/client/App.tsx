@@ -7,22 +7,30 @@ import {
 } from "react";
 import { AlertTriangle, ChevronRight, RefreshCw } from "lucide-react";
 import type {
+  ActivityWindow,
   CampusFootprintProps,
-  FacilityRecord,
+  FacilityDetailApiResponse,
+  FacilityIndexItem,
+  FleetSummaryMetadata,
   IsoRegionProps,
   LiveBasinHydrology,
-  LiveRegulatoryFeed,
+  LiveGridFeed,
+  LivePulseFeed,
   LiveStationWeather,
 } from "@shared/types";
 import { CompareDock, ComparisonModal } from "./components/ComparisonModal";
 import { DirectoryRail } from "./components/DirectoryRail";
 import { FacilityDrawer } from "./components/FacilityDrawer";
+import { LivePulseModal } from "./components/LivePulseModal";
 import { MapCanvas, type MapFlyRequest } from "./components/MapCanvas";
-import { RegulatoryModal } from "./components/RegulatoryModal";
 import { TopBar } from "./components/TopBar";
 import {
-  fetchFacilitiesBundle,
-  fetchLiveRegulatory,
+  facilityRecordToIndexItem,
+  fetchFacilitiesIndex,
+  fetchFacilityDetail,
+  fetchLiveGrid,
+  fetchLivePulse,
+  fetchNationalFootprints,
   fetchTelemetrySummary,
 } from "./lib/api";
 import { DEFAULT_FILTERS, US_CONTIGUOUS_BOUNDS } from "./lib/constants";
@@ -31,7 +39,7 @@ import {
   filterFacilities,
   isFacilityInBounds,
 } from "./lib/filters";
-import { formatGwOrMw } from "./lib/format";
+import { formatGwOrMw, formatNumber } from "./lib/format";
 import type {
   BasemapMode,
   CorridorPreset,
@@ -72,6 +80,34 @@ function isSinglePanelViewport(): boolean {
   return typeof window !== "undefined" && window.innerWidth < 1280;
 }
 
+function mergeFootprintCollections(
+  base: GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps>,
+  incoming: GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps>,
+): GeoJSON.FeatureCollection<GeoJSON.Polygon, CampusFootprintProps> {
+  if (incoming.features.length === 0) return base;
+  if (base.features.length === 0) return incoming;
+  const seen = new Set<string>();
+  for (const ft of base.features) {
+    const ring0 = ft.geometry.coordinates[0]?.[0];
+    seen.add(
+      `${ft.properties.facilityId}:${ft.properties.zoneKind}:${ft.properties.label}:${ring0?.[0] ?? ""}:${ring0?.[1] ?? ""}`,
+    );
+  }
+  const merged = [...base.features];
+  for (const ft of incoming.features) {
+    const ring0 = ft.geometry.coordinates[0]?.[0];
+    const key = `${ft.properties.facilityId}:${ft.properties.zoneKind}:${ft.properties.label}:${ring0?.[0] ?? ""}:${ring0?.[1] ?? ""}`;
+    if (!seen.has(key)) {
+      seen.add(key);
+      merged.push(ft);
+    }
+  }
+  return {
+    type: "FeatureCollection",
+    features: merged,
+  };
+}
+
 export function App() {
   const initial = useMemo(() => readInitialUrlState(), []);
 
@@ -83,23 +119,45 @@ export function App() {
   const resolvedTheme: ResolvedTheme =
     theme === "system" ? (systemDark ? "dark" : "light") : theme;
 
-  // Data bundles
-  const [facilities, setFacilities] = useState<FacilityRecord[]>([]);
+  // National Index & Lazy Spatial Bundles
+  const [facilities, setFacilities] = useState<FacilityIndexItem[]>([]);
+  const [fleetSummary, setFleetSummary] = useState<FleetSummaryMetadata | null>(
+    null,
+  );
   const [footprints, setFootprints] = useState(EMPTY_FOOTPRINTS);
   const [isoRegions, setIsoRegions] = useState(EMPTY_ISO);
   const [bundleLoading, setBundleLoading] = useState(true);
   const [bundleError, setBundleError] = useState<string | null>(null);
+  const nationalFootprintsRequestedRef = useRef(false);
+  const hasLegacyAllFootprintsRef = useRef(false);
 
+  // Per-facility Detail Cache
+  const [detailsById, setDetailsById] = useState<
+    Record<string, FacilityDetailApiResponse>
+  >({});
+  const [detailLoadingIds, setDetailLoadingIds] = useState<Record<string, boolean>>(
+    {},
+  );
+  const [detailErrorById, setDetailErrorById] = useState<Record<string, string>>(
+    {},
+  );
+  const detailsByIdRef = useRef(detailsById);
+  detailsByIdRef.current = detailsById;
+  const inflightDetailsRef = useRef<Set<string>>(new Set());
+
+  // Live Telemetry & Grid Dispatch
   const [stations, setStations] = useState<Record<string, LiveStationWeather>>(
     {},
   );
   const [gauges, setGauges] = useState<Record<string, LiveBasinHydrology>>({});
+  const [gridFeed, setGridFeed] = useState<LiveGridFeed | null>(null);
 
-  // Regulatory Pulse
-  const [regFeed, setRegFeed] = useState<LiveRegulatoryFeed | null>(null);
-  const [regLoading, setRegLoading] = useState(false);
-  const [regError, setRegError] = useState<string | null>(null);
-  const [regModalOpen, setRegModalOpen] = useState(false);
+  // Live Observatory Pulse
+  const [pulseFeed, setPulseFeed] = useState<LivePulseFeed | null>(null);
+  const [pulseWindow, setPulseWindow] = useState<ActivityWindow>("30d");
+  const [pulseLoading, setPulseLoading] = useState(false);
+  const [pulseError, setPulseError] = useState<string | null>(null);
+  const [pulseModalOpen, setPulseModalOpen] = useState(false);
 
   // Interactive Map & UI state
   const [basemap, setBasemap] = useState<BasemapMode>(initial.basemap);
@@ -107,6 +165,7 @@ export function App() {
     null,
   );
   const [lens, setLens] = useState(initial.lens);
+  const [radarWindow, setRadarWindow] = useState<ActivityWindow>("all");
   const [filters, setFilters] = useState<FilterState>(initial.filters);
   const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(
     initial.facilityId,
@@ -135,7 +194,7 @@ export function App() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // Sync rail collapse when viewport transitions across mobile / compact breakpoints
+  // Sync rail collapse on narrow viewports
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
     const mqMobile = window.matchMedia("(max-width: 768px)");
@@ -159,19 +218,105 @@ export function App() {
     }
   }, [theme, resolvedTheme]);
 
-  // Initial fetch: Facilities + Telemetry Summary + Background Regulatory Pulse
+  // Lazy load national traced footprints once on parcel zoom / inspect / verified_polygons selection
+  const ensureNationalFootprints = useCallback(() => {
+    if (hasLegacyAllFootprintsRef.current) return;
+    if (nationalFootprintsRequestedRef.current) return;
+    nationalFootprintsRequestedRef.current = true;
+    fetchNationalFootprints().then((fc) => {
+      if (fc && fc.features.length > 0) {
+        setFootprints((prev) => mergeFootprintCollections(prev, fc));
+      }
+    });
+  }, []);
+
+  // On-demand campus detail hydration
+  const ensureFacilityDetail = useCallback((facilityId: string) => {
+    if (!facilityId) return;
+    if (
+      detailsByIdRef.current[facilityId] ||
+      inflightDetailsRef.current.has(facilityId)
+    ) {
+      return;
+    }
+    inflightDetailsRef.current.add(facilityId);
+    setDetailLoadingIds((prev) => ({ ...prev, [facilityId]: true }));
+    setDetailErrorById((prev) => {
+      if (!prev[facilityId]) return prev;
+      const next = { ...prev };
+      delete next[facilityId];
+      return next;
+    });
+
+    fetchFacilityDetail(facilityId)
+      .then((detail) => {
+        setDetailsById((prev) => ({ ...prev, [facilityId]: detail }));
+        if (detail.footprints?.features?.length) {
+          setFootprints((prev) =>
+            mergeFootprintCollections(prev, detail.footprints),
+          );
+        }
+        if (detail.telemetry?.weather) {
+          setStations((prev) => ({
+            ...prev,
+            [detail.telemetry.weather.stationId]: detail.telemetry.weather,
+          }));
+        }
+        if (detail.telemetry?.hydrology) {
+          setGauges((prev) => ({
+            ...prev,
+            [detail.telemetry.hydrology.siteId]: detail.telemetry.hydrology,
+          }));
+        }
+        if (detail.gridSnapshot) {
+          setGridFeed((prev) => {
+            if (!prev) return prev;
+            return {
+              ...prev,
+              regions: {
+                ...prev.regions,
+                [detail.gridSnapshot!.isoRegion]: detail.gridSnapshot!,
+              },
+            };
+          });
+        }
+      })
+      .catch((err: unknown) => {
+        setDetailErrorById((prev) => ({
+          ...prev,
+          [facilityId]:
+            err instanceof Error ? err.message : "Failed to load facility dossier",
+        }));
+      })
+      .finally(() => {
+        inflightDetailsRef.current.delete(facilityId);
+        setDetailLoadingIds((prev) => ({ ...prev, [facilityId]: false }));
+      });
+  }, []);
+
+  // Initial parallel boot: Index + Live Grid + Live Pulse + Telemetry Summary
   const loadInitialData = useCallback(() => {
     setBundleLoading(true);
     setBundleError(null);
     const controller = new AbortController();
 
-    fetchFacilitiesBundle(controller.signal)
-      .then((bundle) => {
-        setFacilities(bundle.facilities);
-        setFootprints(bundle.footprints);
-        setIsoRegions(bundle.isoRegions);
+    fetchFacilitiesIndex(controller.signal)
+      .then((boot) => {
+        hasLegacyAllFootprintsRef.current = Boolean(
+          boot.legacyFootprints && boot.legacyFootprints.features.length > 0,
+        );
+        setFacilities(boot.indexResponse.facilities);
+        setFleetSummary(boot.indexResponse.summary);
+        setIsoRegions(boot.indexResponse.isoRegions);
+
+        if (boot.legacyFootprints && boot.legacyFootprints.features.length > 0) {
+          setFootprints((prev) =>
+            mergeFootprintCollections(prev, boot.legacyFootprints!),
+          );
+        }
+
         if (initial.facilityId && !initial.hasExplicitCoords) {
-          const target = bundle.facilities.find(
+          const target = boot.indexResponse.facilities.find(
             (f) => f.id === initial.facilityId,
           );
           if (target) {
@@ -188,28 +333,36 @@ export function App() {
       .catch((err: unknown) => {
         if (err instanceof DOMException && err.name === "AbortError") return;
         setBundleError(
-          err instanceof Error ? err.message : "Failed to load atlas dataset",
+          err instanceof Error ? err.message : "Failed to load observatory index",
         );
       })
       .finally(() => {
         setBundleLoading(false);
       });
 
-    fetchTelemetrySummary(controller.signal)
-      .then((summary) => {
-        setStations(summary.stations);
-        setGauges(summary.gauges);
+    fetchLiveGrid(false, controller.signal)
+      .then((feed) => {
+        if (feed) setGridFeed(feed);
       })
       .catch(() => {
-        // Non-fatal: individual facility drawers still query /api/telemetry/live directly
+        // Non-fatal: 404 or degraded upstream handled cleanly
       });
 
-    fetchLiveRegulatory(false, controller.signal)
+    fetchLivePulse({ window: "30d" }, controller.signal)
       .then((feed) => {
-        setRegFeed(feed);
+        setPulseFeed(feed);
       })
       .catch(() => {
-        // Handled cleanly when RegulatoryModal opens
+        // Handled cleanly when LivePulseModal opens
+      });
+
+    fetchTelemetrySummary(controller.signal)
+      .then((summary) => {
+        setStations((prev) => ({ ...summary.stations, ...prev }));
+        setGauges((prev) => ({ ...summary.gauges, ...prev }));
+      })
+      .catch(() => {
+        // Non-fatal: facility detail fetches live NOAA/USGS directly
       });
 
     return () => controller.abort();
@@ -218,6 +371,23 @@ export function App() {
   useEffect(() => {
     return loadInitialData();
   }, [loadInitialData]);
+
+  // Hydrate selected facility + lazy footprints if verified_polygons
+  useEffect(() => {
+    if (!selectedFacilityId) return;
+    ensureFacilityDetail(selectedFacilityId);
+    const item = facilities.find((f) => f.id === selectedFacilityId);
+    if (item?.footprintCoverage === "verified_polygons") {
+      ensureNationalFootprints();
+    }
+  }, [selectedFacilityId, facilities, ensureFacilityDetail, ensureNationalFootprints]);
+
+  // Hydrate pinned compare facilities on demand
+  useEffect(() => {
+    for (const id of compareIds) {
+      ensureFacilityDetail(id);
+    }
+  }, [compareIds, ensureFacilityDetail]);
 
   // Global keyboard shortcuts (`/` focuses search without inserting slash; Escape closes drawer)
   useEffect(() => {
@@ -242,8 +412,7 @@ export function App() {
       }
 
       if (e.key === "Escape") {
-        // Modal dialogs manage their own Escape handling & opener focus restoration
-        if (regModalOpen || compareModalOpen) return;
+        if (pulseModalOpen || compareModalOpen) return;
         if (selectedFacilityId) {
           setSelectedFacilityId(null);
           return;
@@ -254,8 +423,9 @@ export function App() {
       }
     }
     window.addEventListener("keydown", handleKeyDown, { capture: true });
-    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true });
-  }, [regModalOpen, compareModalOpen, selectedFacilityId]);
+    return () =>
+      window.removeEventListener("keydown", handleKeyDown, { capture: true });
+  }, [pulseModalOpen, compareModalOpen, selectedFacilityId]);
 
   // Debounced URL search param synchronization
   useEffect(() => {
@@ -279,8 +449,7 @@ export function App() {
   );
 
   const visibleFacilities = useMemo(
-    () =>
-      filteredFacilities.filter((f) => isFacilityInBounds(f, mapBounds)),
+    () => filteredFacilities.filter((f) => isFacilityInBounds(f, mapBounds)),
     [filteredFacilities, mapBounds],
   );
 
@@ -289,16 +458,19 @@ export function App() {
     [visibleFacilities],
   );
 
-  const selectedFacility = useMemo(
-    () => facilities.find((f) => f.id === selectedFacilityId) ?? null,
-    [facilities, selectedFacilityId],
-  );
+  const selectedFacility = useMemo(() => {
+    if (!selectedFacilityId) return null;
+    const found = facilities.find((f) => f.id === selectedFacilityId);
+    if (found) return found;
+    const detail = detailsById[selectedFacilityId];
+    return detail ? facilityRecordToIndexItem(detail.facility) : null;
+  }, [facilities, selectedFacilityId, detailsById]);
 
   const pinnedFacilities = useMemo(
     () =>
       compareIds
         .map((id) => facilities.find((f) => f.id === id))
-        .filter((f): f is FacilityRecord => Boolean(f)),
+        .filter((f): f is FacilityIndexItem => Boolean(f)),
     [compareIds, facilities],
   );
 
@@ -314,7 +486,7 @@ export function App() {
   }, []);
 
   const handleSelectFacility = useCallback(
-    (facility: FacilityRecord) => {
+    (facility: FacilityIndexItem) => {
       setSelectedFacilityId(facility.id);
       setMobileDetent("expanded");
       if (isSinglePanelViewport()) {
@@ -331,8 +503,21 @@ export function App() {
     [mapBounds, mapView.zoom, triggerFly],
   );
 
+  const handleSelectFacilityById = useCallback(
+    (facilityId: string) => {
+      const target = facilities.find((f) => f.id === facilityId);
+      if (target) {
+        handleSelectFacility(target);
+      } else {
+        setSelectedFacilityId(facilityId);
+      }
+    },
+    [facilities, handleSelectFacility],
+  );
+
   const handleInspectParcel = useCallback(
-    (facility: FacilityRecord) => {
+    (facility: FacilityIndexItem) => {
+      ensureNationalFootprints();
       setSelectedFacilityId(facility.id);
       setRailOpen(false);
       setMobileDetent("peek");
@@ -348,7 +533,7 @@ export function App() {
         bearing: 0,
       });
     },
-    [basemap, triggerFly],
+    [basemap, triggerFly, ensureNationalFootprints],
   );
 
   const handleBasemapChange = useCallback((next: BasemapMode) => {
@@ -364,7 +549,7 @@ export function App() {
 
   const handleCycleTheme = useCallback(() => {
     setTheme((prev) =>
-      prev === "system" ? "light" : prev === "light" ? "dark" : "system",
+      prev === "dark" ? "light" : prev === "light" ? "system" : "dark",
     );
   }, []);
 
@@ -434,34 +619,53 @@ export function App() {
     [],
   );
 
-  const handleOpenRegulatory = useCallback(() => {
-    setRegModalOpen(true);
-    if (!regFeed) {
-      setRegLoading(true);
-      setRegError(null);
-      fetchLiveRegulatory(false)
-        .then((feed) => setRegFeed(feed))
-        .catch((err: unknown) =>
-          setRegError(
-            err instanceof Error ? err.message : "Failed to load regulatory feed",
-          ),
-        )
-        .finally(() => setRegLoading(false));
-    }
-  }, [regFeed]);
+  const loadPulseStreams = useCallback(
+    (windowArg: ActivityWindow, refresh: boolean) => {
+      setPulseLoading(true);
+      setPulseError(null);
+      Promise.allSettled([
+        fetchLivePulse({ window: windowArg, refresh }),
+        refresh ? fetchLiveGrid(true) : Promise.resolve(null),
+      ])
+        .then(([pulseRes, gridRes]) => {
+          if (pulseRes.status === "fulfilled") {
+            setPulseFeed(pulseRes.value);
+          } else {
+            setPulseError(
+              pulseRes.reason instanceof Error
+                ? pulseRes.reason.message
+                : "Failed to load Live Pulse feed",
+            );
+          }
+          if (gridRes.status === "fulfilled" && gridRes.value) {
+            setGridFeed(gridRes.value);
+          }
+        })
+        .finally(() => {
+          setPulseLoading(false);
+        });
+    },
+    [],
+  );
 
-  const handleRefreshRegulatory = useCallback(() => {
-    setRegLoading(true);
-    setRegError(null);
-    fetchLiveRegulatory(true)
-      .then((feed) => setRegFeed(feed))
-      .catch((err: unknown) =>
-        setRegError(
-          err instanceof Error ? err.message : "Failed to refresh regulatory feed",
-        ),
-      )
-      .finally(() => setRegLoading(false));
-  }, []);
+  const handleOpenPulse = useCallback(() => {
+    setPulseModalOpen(true);
+    if (!pulseFeed) {
+      loadPulseStreams(pulseWindow, false);
+    }
+  }, [pulseFeed, pulseWindow, loadPulseStreams]);
+
+  const handlePulseWindowChange = useCallback(
+    (nextWindow: ActivityWindow) => {
+      setPulseWindow(nextWindow);
+      loadPulseStreams(nextWindow, false);
+    },
+    [loadPulseStreams],
+  );
+
+  const handleRefreshPulse = useCallback(() => {
+    loadPulseStreams(pulseWindow, true);
+  }, [pulseWindow, loadPulseStreams]);
 
   const handleToggleRail = useCallback(() => {
     setRailOpen((prev) => {
@@ -503,8 +707,9 @@ export function App() {
         onSelectCorridor={handleSelectCorridor}
         theme={theme}
         onCycleTheme={handleCycleTheme}
-        onOpenRegulatory={handleOpenRegulatory}
-        regulatoryCount={regFeed?.items.length ?? null}
+        onOpenPulse={handleOpenPulse}
+        pulseCount={pulseFeed?.items.length ?? null}
+        pulseStatus={pulseFeed?.status ?? gridFeed?.status ?? null}
       />
 
       <main
@@ -548,8 +753,8 @@ export function App() {
           )}
 
           {bundleLoading && facilities.length === 0 && (
-            <div className="workspace-loading-pill" aria-live="polite">
-              Loading US facility telemetry...
+            <div className="workspace-loading-pill mono" aria-live="polite">
+              INITIALIZING 50-STATE MAGI OBSERVATORY...
             </div>
           )}
 
@@ -563,17 +768,29 @@ export function App() {
               >
                 <ChevronRight size={14} aria-hidden="true" />
                 <span>Directory</span>
-                <span className="rail-tab-count mono">{visibleFacilities.length}</span>
+                <span className="rail-tab-count mono">
+                  {formatNumber(visibleFacilities.length)}
+                </span>
               </button>
 
               <div className="map-collapsed-stats mono" aria-label="Viewport totals">
                 <span className="map-stat-op">
-                  {formatGwOrMw(viewportMetrics.operationalMw)} op
+                  {formatGwOrMw(viewportMetrics.verifiedOperationalMw)} op
                 </span>
                 <span className="hud-sep" aria-hidden="true">
                   ·
                 </span>
-                <span>{formatGwOrMw(viewportMetrics.plannedMw)} plan</span>
+                <span>{formatGwOrMw(viewportMetrics.verifiedPlannedMw)} plan</span>
+                {viewportMetrics.reportedOrProposedMw > 0 && (
+                  <>
+                    <span className="hud-sep" aria-hidden="true">
+                      ·
+                    </span>
+                    <span className="map-stat-prop">
+                      +{formatGwOrMw(viewportMetrics.reportedOrProposedMw)} prop
+                    </span>
+                  </>
+                )}
                 <span className="hud-sep" aria-hidden="true">
                   ·
                 </span>
@@ -589,6 +806,8 @@ export function App() {
             footprints={footprints}
             isoRegions={isoRegions}
             stations={stations}
+            gridFeed={gridFeed}
+            selectedFacility={selectedFacility}
             selectedFacilityId={selectedFacilityId}
             basemap={basemap}
             previousBasemap={previousBasemap}
@@ -597,6 +816,8 @@ export function App() {
             resolvedTheme={resolvedTheme}
             lens={lens}
             onLensChange={setLens}
+            radarWindow={radarWindow}
+            onRadarWindowChange={setRadarWindow}
             initialView={initial.view}
             fitUsOnLoad={!initial.hasExplicitCoords && !initial.facilityId}
             flyRequest={flyRequest}
@@ -604,6 +825,7 @@ export function App() {
             drawerOpen={Boolean(selectedFacility)}
             mobileDetent={mobileDetent}
             hasCompareDock={pinnedFacilities.length > 0}
+            onNeedFootprints={ensureNationalFootprints}
             onSelectFacility={handleSelectFacility}
             onViewChange={handleViewChange}
           />
@@ -623,10 +845,14 @@ export function App() {
 
         {selectedFacility && (
           <FacilityDrawer
-            facility={selectedFacility}
-            summaryWeather={stations[selectedFacility.waterAndCooling.nwsStationId]}
-            summaryHydrology={
-              gauges[selectedFacility.waterAndCooling.usgsGaugeSiteId]
+            indexItem={selectedFacility}
+            detail={detailsById[selectedFacility.id] ?? null}
+            detailLoading={Boolean(detailLoadingIds[selectedFacility.id])}
+            detailError={detailErrorById[selectedFacility.id] ?? null}
+            summaryWeather={stations[selectedFacility.nwsStationId]}
+            summaryHydrology={gauges[selectedFacility.usgsGaugeSiteId]}
+            summaryGridSnapshot={
+              gridFeed?.regions?.[selectedFacility.isoRegion] ?? null
             }
             isPinnedCompare={compareIds.includes(selectedFacility.id)}
             compareDisabled={compareIds.length >= 3}
@@ -644,8 +870,10 @@ export function App() {
       {compareModalOpen && (
         <ComparisonModal
           facilities={pinnedFacilities}
+          detailsById={detailsById}
           stations={stations}
           gauges={gauges}
+          gridFeed={gridFeed}
           onClose={() => setCompareModalOpen(false)}
           onRemove={(id) =>
             setCompareIds((prev) => prev.filter((item) => item !== id))
@@ -655,13 +883,18 @@ export function App() {
         />
       )}
 
-      <RegulatoryModal
-        open={regModalOpen}
-        feed={regFeed}
-        loading={regLoading}
-        error={regError}
-        onRefresh={handleRefreshRegulatory}
-        onClose={() => setRegModalOpen(false)}
+      <LivePulseModal
+        open={pulseModalOpen}
+        gridFeed={gridFeed}
+        pulseFeed={pulseFeed}
+        fleetSummary={fleetSummary}
+        pulseWindow={pulseWindow}
+        loading={pulseLoading}
+        error={pulseError}
+        onPulseWindowChange={handlePulseWindowChange}
+        onRefresh={handleRefreshPulse}
+        onSelectFacilityById={handleSelectFacilityById}
+        onClose={() => setPulseModalOpen(false)}
       />
     </div>
   );
