@@ -1,0 +1,1309 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gridline — US Data Center Infrastructure Atlas Launch Film</title>
+    <style>
+      :root {
+        --bg-canvas: #070b11;
+        --bg-surface: #0d131d;
+        --bg-elevated: #121a27;
+        --bg-glass: rgba(13, 19, 29, 0.88);
+        --border-subtle: rgba(148, 163, 184, 0.14);
+        --border-strong: rgba(148, 163, 184, 0.28);
+        --text-primary: #f8fafc;
+        --text-secondary: #cbd5e1;
+        --text-muted: #94a3b8;
+        --accent: #38bdf8;
+        --emerald: #34d399;
+        --amber: #fbbf24;
+        --rose: #fb7185;
+        --violet: #a78bfa;
+        --cyan: #22d3ee;
+        --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--bg-canvas);
+        color: var(--text-primary);
+        font-family: var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: geometricPrecision;
+      }
+
+      .mono {
+        font-family: var(--font-mono);
+        font-variant-numeric: tabular-nums;
+      }
+
+      #stage {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        background:
+          radial-gradient(1200px 700px at 18% 12%, rgba(56, 189, 248, 0.10), transparent 60%),
+          radial-gradient(1000px 650px at 84% 86%, rgba(52, 211, 153, 0.08), transparent 60%),
+          #070b11;
+        overflow: hidden;
+      }
+
+      /* Precision Architectural Dot Grid */
+      .bg-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(148, 163, 184, 0.045) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(148, 163, 184, 0.045) 1px, transparent 1px);
+        background-size: 64px 64px;
+        pointer-events: none;
+      }
+
+      .bg-vignette {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 50%, transparent 52%, rgba(4, 6, 10, 0.72) 100%);
+        pointer-events: none;
+      }
+
+      /* Top Persistent Telemetry HUD Strip */
+      #top-hud {
+        position: absolute;
+        top: 24px;
+        left: 64px;
+        right: 64px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        z-index: 60;
+      }
+
+      .hud-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text-primary);
+      }
+
+      .hud-pulse {
+        width: 9px;
+        height: 9px;
+        border-radius: 9999px;
+        background: var(--emerald);
+        box-shadow: 0 0 14px rgba(52, 211, 153, 0.75);
+      }
+
+      .hud-chapter {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 14px;
+        border-radius: 9999px;
+        background: rgba(13, 19, 29, 0.85);
+        border: 1px solid var(--border-subtle);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary);
+      }
+
+      .hud-chapter-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 9999px;
+        background: var(--accent);
+      }
+
+      .hud-time {
+        font-size: 12px;
+        color: var(--text-muted);
+      }
+
+      #progress-track {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: rgba(148, 163, 184, 0.1);
+        z-index: 70;
+      }
+
+      #progress-fill {
+        height: 100%;
+        width: 0%;
+        background: linear-gradient(90deg, var(--accent), var(--emerald));
+      }
+
+      /* Scene Containers */
+      .scene {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+        pointer-events: none;
+        will-change: transform, opacity;
+      }
+
+      /* ========== SCENE 1: COLD OPEN ========== */
+      #s1-map-wrap {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1180px;
+        height: 700px;
+        transform: translate(-50%, -48%);
+      }
+
+      #s1-svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+
+      #s1-header {
+        position: absolute;
+        top: 86px;
+        left: 96px;
+        right: 96px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .hero-title-mask {
+        overflow: hidden;
+      }
+
+      #s1-title {
+        font-size: 86px;
+        font-weight: 800;
+        letter-spacing: -0.045em;
+        line-height: 1;
+        margin: 0;
+        background: linear-gradient(180deg, #ffffff 15%, #cbd5e1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      #s1-sub {
+        margin: 14px 0 0 0;
+        font-size: 24px;
+        font-weight: 450;
+        letter-spacing: -0.015em;
+        color: var(--text-secondary);
+      }
+
+      #s1-kpis {
+        position: absolute;
+        left: 96px;
+        right: 96px;
+        bottom: 64px;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+      }
+
+      .kpi-tile {
+        padding: 18px 20px;
+        border-radius: 12px;
+        background: rgba(13, 19, 29, 0.88);
+        border: 1px solid var(--border-subtle);
+        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
+      }
+
+      .kpi-val {
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--text-primary);
+      }
+
+      .kpi-val--accent { color: var(--accent); }
+      .kpi-val--emerald { color: var(--emerald); }
+      .kpi-val--amber { color: var(--amber); }
+      .kpi-val--rose { color: var(--rose); }
+
+      .kpi-label {
+        margin-top: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        color: var(--text-muted);
+      }
+
+      /* ========== SHARED SHOWCASE WINDOW FRAME ========== */
+      .browser-stage {
+        position: absolute;
+        left: 220px;
+        top: 86px;
+        width: 1480px;
+        height: 925px;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #0d131d;
+        border: 1px solid rgba(148, 163, 184, 0.26);
+        box-shadow:
+          0 40px 100px rgba(0, 0, 0, 0.72),
+          0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+        transform-origin: center center;
+        will-change: transform, opacity;
+      }
+
+      .plate-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      /* Callout Cards */
+      .callout {
+        position: absolute;
+        padding: 16px 20px;
+        border-radius: 12px;
+        background: rgba(9, 13, 21, 0.94);
+        border: 1px solid rgba(56, 189, 248, 0.42);
+        box-shadow: 0 22px 48px rgba(0, 0, 0, 0.68);
+        max-width: 390px;
+        will-change: transform, opacity;
+      }
+
+      .callout--amber {
+        border-color: rgba(251, 191, 36, 0.5);
+      }
+
+      .callout--rose {
+        border-color: rgba(251, 113, 133, 0.52);
+      }
+
+      .callout--emerald {
+        border-color: rgba(52, 211, 153, 0.52);
+      }
+
+      .callout-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .callout-body {
+        margin-top: 6px;
+        font-size: 13.5px;
+        line-height: 1.45;
+        color: var(--text-secondary);
+      }
+
+      .dot-accent {
+        width: 8px;
+        height: 8px;
+        border-radius: 9999px;
+        background: var(--accent);
+        flex-shrink: 0;
+      }
+      .dot-emerald { background: var(--emerald); }
+      .dot-amber { background: var(--amber); }
+      .dot-rose { background: var(--rose); }
+
+      /* Floating Scene Headline Bar (sits cleanly at bottom margin below browser frame or top) */
+      .scene-caption-bar {
+        position: absolute;
+        left: 220px;
+        right: 220px;
+        bottom: 20px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        border-radius: 10px;
+        background: rgba(13, 19, 29, 0.92);
+        border: 1px solid var(--border-subtle);
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .scene-caption-strong {
+        color: var(--text-primary);
+        font-weight: 650;
+      }
+
+      /* Animated Vector Cursor */
+      #cursor {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 34px;
+        height: 34px;
+        z-index: 90;
+        opacity: 0;
+        pointer-events: none;
+        filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.65));
+      }
+
+      #cursor-ripple {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 44px;
+        height: 44px;
+        border-radius: 9999px;
+        border: 2.5px solid var(--accent);
+        opacity: 0;
+        z-index: 88;
+        pointer-events: none;
+        transform: translate(-50%, -50%) scale(0.3);
+      }
+
+      /* ========== SCENE 5: LIVE FEDERAL TELEMETRY ========== */
+      .s5-layout {
+        position: absolute;
+        left: 88px;
+        right: 88px;
+        top: 86px;
+        bottom: 186px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        gap: 24px;
+      }
+
+      .focus-card {
+        position: relative;
+        border-radius: 14px;
+        overflow: hidden;
+        background: var(--bg-surface);
+        border: 1px solid var(--border-strong);
+        box-shadow: 0 32px 72px rgba(0, 0, 0, 0.65);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .focus-card-label {
+        position: relative;
+        height: 44px;
+        padding: 0 16px;
+        z-index: 5;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-shrink: 0;
+        background: #0b111b;
+        border-bottom: 1px solid var(--border-subtle);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .focus-card-viewport {
+        position: relative;
+        flex: 1 1 auto;
+        overflow: hidden;
+        background: #070b11;
+      }
+
+      .s5-dossier-zoom {
+        position: absolute;
+        width: 2445px;
+        height: 1528px;
+        right: 0;
+        top: -149px;
+        object-fit: cover;
+      }
+
+      .s5-reg-fit {
+        position: absolute;
+        width: 1520px;
+        height: 950px;
+        left: 50%;
+        top: -54px;
+        transform: translateX(-50%);
+        object-fit: cover;
+      }
+
+      .s5-triad {
+        position: absolute;
+        left: 88px;
+        right: 88px;
+        bottom: 36px;
+        height: 128px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .triad-card {
+        padding: 16px 20px;
+        border-radius: 12px;
+        background: rgba(13, 19, 29, 0.94);
+        border: 1px solid var(--border-subtle);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .triad-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12.5px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      .triad-live-pill {
+        padding: 2px 8px;
+        border-radius: 9999px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--emerald);
+        background: rgba(16, 185, 129, 0.14);
+        border: 1px solid rgba(52, 211, 153, 0.35);
+      }
+
+      .triad-val {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .triad-sub {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      /* ========== SCENE 6: SYMMETRIC PROVENANCE & CLI ========== */
+      .s6-layout {
+        position: absolute;
+        left: 88px;
+        right: 88px;
+        top: 86px;
+        bottom: 40px;
+        display: grid;
+        grid-template-columns: 1.02fr 0.98fr;
+        gap: 24px;
+      }
+
+      .s6-persp-zoom {
+        position: absolute;
+        width: 2400px;
+        height: 1500px;
+        right: 0;
+        top: -146px;
+        object-fit: cover;
+      }
+
+      .s6-right-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: 100%;
+      }
+
+      .s6-compare-card {
+        flex: 1.45;
+      }
+
+      .s6-compare-zoom {
+        position: absolute;
+        width: 1180px;
+        height: 738px;
+        left: 50%;
+        top: -40px;
+        transform: translateX(-50%);
+        object-fit: cover;
+      }
+
+      .s6-cli-card {
+        flex: 0.72;
+        padding: 18px 22px;
+        border-radius: 14px;
+        background: #090d14;
+        border: 1px solid rgba(56, 189, 248, 0.35);
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      .cli-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-muted);
+      }
+
+      .cli-lines {
+        font-size: 14.5px;
+        line-height: 1.55;
+        color: var(--text-secondary);
+        white-space: pre-wrap;
+      }
+
+      .cli-cmd {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .cli-ok {
+        color: var(--emerald);
+      }
+
+      /* ========== SCENE 7: END SLATE ========== */
+      #s7-center {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 0 120px;
+      }
+
+      #s7-brand {
+        font-size: 108px;
+        font-weight: 800;
+        letter-spacing: -0.05em;
+        line-height: 1;
+        margin: 0;
+        background: linear-gradient(180deg, #ffffff 20%, #94a3b8 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      #s7-tag {
+        margin: 18px 0 0 0;
+        font-size: 28px;
+        font-weight: 450;
+        color: var(--text-secondary);
+        letter-spacing: -0.015em;
+      }
+
+      .s7-links {
+        margin-top: 38px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .s7-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 24px;
+        border-radius: 12px;
+        font-size: 19px;
+        font-weight: 600;
+        background: rgba(13, 19, 29, 0.94);
+        border: 1px solid rgba(56, 189, 248, 0.48);
+        color: var(--text-primary);
+        box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
+      }
+
+      .s7-pill--repo {
+        border-color: rgba(52, 211, 153, 0.45);
+      }
+
+      .s7-specs {
+        margin-top: 28px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .s7-spec-chip {
+        padding: 8px 16px;
+        border-radius: 9999px;
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        background: rgba(18, 26, 39, 0.8);
+        border: 1px solid var(--border-subtle);
+      }
+
+      #fade-black {
+        position: absolute;
+        inset: 0;
+        background: #000000;
+        opacity: 0;
+        z-index: 95;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div class="bg-grid"></div>
+      <div class="bg-vignette"></div>
+
+      <div id="progress-track"><div id="progress-fill"></div></div>
+
+      <header id="top-hud">
+        <div class="hud-brand">
+          <span class="hud-pulse"></span>
+          <span>Gridline</span>
+        </div>
+        <div class="hud-chapter">
+          <span class="hud-chapter-dot"></span>
+          <span id="hud-chapter-label">01 · THE INVISIBLE BUILDOUT</span>
+        </div>
+        <div class="hud-time mono" id="hud-clock">00:00.0 / 00:50.0</div>
+      </header>
+
+      <!-- SCENE 1: COLD OPEN -->
+      <section class="scene" id="scene-1">
+        <div id="s1-map-wrap">
+          <svg id="s1-svg" viewBox="0 0 1100 680"></svg>
+        </div>
+
+        <div id="s1-header">
+          <div class="hero-title-mask">
+            <h1 id="s1-title">GRIDLINE</h1>
+          </div>
+          <p id="s1-sub">Objective Geospatial Intelligence for US Data Center Infrastructure</p>
+        </div>
+
+        <div id="s1-kpis">
+          <div class="kpi-tile" id="kpi-1">
+            <div class="kpi-val mono" id="kpi-v1">0</div>
+            <div class="kpi-label">US Campuses Mapped</div>
+          </div>
+          <div class="kpi-tile" id="kpi-2">
+            <div class="kpi-val kpi-val--emerald mono" id="kpi-v2">0.00 GW</div>
+            <div class="kpi-label">Operational Capacity</div>
+          </div>
+          <div class="kpi-tile" id="kpi-3">
+            <div class="kpi-val kpi-val--accent mono" id="kpi-v3">0.00 GW</div>
+            <div class="kpi-label">Total Planned Pipeline</div>
+          </div>
+          <div class="kpi-tile" id="kpi-4">
+            <div class="kpi-val kpi-val--amber mono" id="kpi-v4">0</div>
+            <div class="kpi-label">Contested / Moratorium</div>
+          </div>
+          <div class="kpi-tile" id="kpi-5">
+            <div class="kpi-val kpi-val--rose mono" id="kpi-v5">0</div>
+            <div class="kpi-label">Undisclosed Water</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 2: NATIONAL COMMAND -->
+      <section class="scene" id="scene-2">
+        <div class="browser-stage" id="s2-frame">
+          <img class="plate-img" src="/.cache/plates/01-macro-dark.png" alt="National Command Dark" />
+        </div>
+
+        <div class="callout" id="s2-c1" style="left: 604px; top: 196px;">
+          <div class="callout-title"><span class="dot-accent"></span>Synchronized Viewport Ribbon</div>
+          <div class="callout-body">Every pan, zoom, and filter updates operational GW, planned pipeline, contested status, and water disclosures live.</div>
+        </div>
+
+        <div class="callout callout--amber" id="s2-c2" style="left: 1320px; top: 754px;">
+          <div class="callout-title"><span class="dot-accent dot-amber"></span>De-Conflicted Market Clusters</div>
+          <div class="callout-body">Proportional operational cores and planned rings across 9 US ISO/RTO grid territories with zero label collisions.</div>
+        </div>
+
+        <div class="scene-caption-bar" id="s2-cap">
+          <span class="scene-caption-strong">What it is — High-density cartographic command for proponents, regulators, and critics</span>
+          <span class="mono">45 Campuses · 9 ISO Territories</span>
+        </div>
+      </section>
+
+      <!-- SCENE 3: THEMES, LENSES & NDA TRANSPARENCY -->
+      <section class="scene" id="scene-3">
+        <div class="browser-stage" id="s3-frame">
+          <img class="plate-img" id="s3-img-dark" src="/.cache/plates/01-macro-dark.png" alt="Dark Mode" />
+          <img class="plate-img" id="s3-img-light" src="/.cache/plates/02-macro-light-water.png" alt="Light Water Lens" />
+          <img class="plate-img" id="s3-img-undisc" src="/.cache/plates/03-filter-undisclosed.png" alt="Undisclosed Water Filter" />
+        </div>
+
+        <div class="callout" id="s3-c1" style="left: 1120px; top: 186px;">
+          <div class="callout-title"><span class="dot-accent"></span>Light Theme &amp; Water Stress Lens</div>
+          <div class="callout-body">Switch seamlessly between Cartographic Obsidian, Cartographic Paper, and three analytical map encodings.</div>
+        </div>
+
+        <div class="callout callout--rose" id="s3-c2" style="left: 608px; top: 266px;">
+          <div class="callout-title"><span class="dot-accent dot-rose"></span>Epistemic Honesty by Default</div>
+          <div class="callout-body"><strong class="mono">32 / 45</strong> campuses omit site-level water figures — surfaced transparently as <em>Undisclosed</em>, never coerced to zero.</div>
+        </div>
+
+        <div class="scene-caption-bar">
+          <span class="scene-caption-strong">How to use it — Switch lenses, themes, and isolate undisclosed water disclosures in one click</span>
+          <span class="mono">Measured · Permitted · Disclosed · Undisclosed</span>
+        </div>
+      </section>
+
+      <!-- SCENE 4: MULTI-SCALE PARCEL DIVE -->
+      <section class="scene" id="scene-4">
+        <div class="browser-stage" id="s4-frame">
+          <img class="plate-img" id="s4-img-corridor" src="/.cache/plates/04-corridor-nova.png" alt="Northern Virginia Corridor" />
+          <img class="plate-img" id="s4-img-parcel" src="/.cache/plates/05-parcel-ashburn-satellite.png" alt="Ashburn Satellite Parcel" />
+        </div>
+
+        <div class="callout callout--emerald" id="s4-c1" style="left: 602px; top: 726px;">
+          <div class="callout-title"><span class="dot-accent dot-emerald"></span>z 15.8 Satellite + 2.5D Sub-Zones</div>
+          <div class="callout-body">One-click <strong>Inspect Parcel</strong> flies from national clusters directly onto Esri aerial orthophotos with extruded data halls, substation yards, and reclaimed cooling plants.</div>
+        </div>
+
+        <div class="scene-caption-bar">
+          <span class="scene-caption-strong">Multi-scale zoom — National macro clusters → regional corridor glyphs → parcel-level engineering zones</span>
+          <span class="mono" id="s4-coord">Northern Virginia · z 9.2 → z 15.8</span>
+        </div>
+      </section>
+
+      <!-- SCENE 5: LIVE FEDERAL TELEMETRY -->
+      <section class="scene" id="scene-5">
+        <div class="s5-layout">
+          <div class="focus-card" id="s5-card-left">
+            <div class="focus-card-label">
+              <span class="dot-accent dot-emerald"></span>
+              <span>Campus Dossier · Live NOAA &amp; USGS Stream</span>
+            </div>
+            <div class="focus-card-viewport">
+              <img class="s5-dossier-zoom" src="/.cache/plates/05-parcel-ashburn-satellite.png" alt="Ashburn Live Telemetry Zoom" />
+            </div>
+          </div>
+
+          <div class="focus-card" id="s5-card-right">
+            <div class="focus-card-label">
+              <span class="dot-accent"></span>
+              <span>Federal Regulatory Pulse · Live FERC / DOE / EPA</span>
+            </div>
+            <div class="focus-card-viewport">
+              <img class="s5-reg-fit" src="/.cache/plates/08-federal-pulse.png" alt="Federal Register Modal" />
+            </div>
+          </div>
+        </div>
+
+        <div class="s5-triad">
+          <div class="triad-card" id="s5-t1">
+            <div class="triad-top">
+              <span class="mono">NOAA NWS · api.weather.gov</span>
+              <span class="triad-live-pill">LIVE</span>
+            </div>
+            <div class="triad-val mono">41.5°F Wet-Bulb · Free Economizer</div>
+            <div class="triad-sub">Computed via Stull (2011) from live dry-bulb &amp; relative humidity across 40 ICAO stations.</div>
+          </div>
+
+          <div class="triad-card" id="s5-t2">
+            <div class="triad-top">
+              <span class="mono">USGS OGC · api.waterdata.usgs.gov</span>
+              <span class="triad-live-pill">LIVE</span>
+            </div>
+            <div class="triad-val mono">24 ft³/s Basin Discharge</div>
+            <div class="triad-sub">Continuous parameter 00060 streamgauges anchored to each watershed across 43 active sites.</div>
+          </div>
+
+          <div class="triad-card" id="s5-t3">
+            <div class="triad-top">
+              <span class="mono">FEDERAL REGISTER · federalregister.gov</span>
+              <span class="triad-live-pill">LIVE</span>
+            </div>
+            <div class="triad-val mono">15 Large-Load Dockets</div>
+            <div class="triad-sub">Bounded 4.5s edge fetch with hourly cron warming — explicit degraded telemetry, zero fabricated fallbacks.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 6: SYMMETRIC PROVENANCE & CLI -->
+      <section class="scene" id="scene-6">
+        <div class="s6-layout">
+          <div class="focus-card" id="s6-left">
+            <div class="focus-card-label">
+              <span class="dot-accent dot-amber"></span>
+              <span>Symmetric Proponent vs. Critic Evidence · 199 Primary Links</span>
+            </div>
+            <div class="focus-card-viewport">
+              <img class="s6-persp-zoom" src="/.cache/plates/06-dossier-perspectives.png" alt="Proponent and Critic Perspectives" />
+            </div>
+          </div>
+
+          <div class="s6-right-stack">
+            <div class="focus-card s6-compare-card" id="s6-top-right">
+              <div class="focus-card-label">
+                <span class="dot-accent"></span>
+                <span>Side-by-Side Comparison Matrix</span>
+              </div>
+              <div class="focus-card-viewport">
+                <img class="s6-compare-zoom" src="/.cache/plates/07-comparison-matrix.png" alt="Campus Comparison Matrix" />
+              </div>
+            </div>
+
+            <div class="s6-cli-card" id="s6-cli">
+              <div class="cli-head mono">
+                <span>AGENT CLI &amp; OPEN DATA EXPORTS</span>
+                <span>CSV · GEOJSON · JSON</span>
+              </div>
+              <div class="cli-lines mono" id="s6-cli-text"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCENE 7: END SLATE -->
+      <section class="scene" id="scene-7">
+        <svg id="s7-bg-svg" viewBox="0 0 1100 680" style="position:absolute;left:50%;top:50%;width:1280px;height:760px;transform:translate(-50%,-50%);opacity:0.22;"></svg>
+        <div id="s7-center">
+          <h2 id="s7-brand">GRIDLINE</h2>
+          <p id="s7-tag">Objective Geospatial Intelligence for US Data Center Infrastructure</p>
+          <div class="s7-links" id="s7-links">
+            <div class="s7-pill mono">gridline.misty-step.workers.dev</div>
+            <div class="s7-pill s7-pill--repo mono">github.com/misty-step/gridline</div>
+          </div>
+          <div class="s7-specs" id="s7-specs">
+            <span class="s7-spec-chip">45 US Campuses · 218 Sub-Zones</span>
+            <span class="s7-spec-chip">Live NOAA · USGS · Federal Register</span>
+            <span class="s7-spec-chip">Symmetric Provenance · MIT Open Source</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Animated Vector Cursor + Ripple -->
+      <svg id="cursor" viewBox="0 0 28 28">
+        <path d="M4 3 L4 23 L9.8 17.6 L14.2 25 L17.4 23.2 L13 15.8 L21 15.8 Z" fill="#ffffff" stroke="#070b11" stroke-width="2" stroke-linejoin="round" />
+      </svg>
+      <div id="cursor-ripple"></div>
+
+      <div id="fade-black"></div>
+    </div>
+
+    <script>
+      (function () {
+        const TOTAL_DURATION = 50.0;
+
+        const clamp01 = (v) => Math.max(0, Math.min(1, v));
+        const lerp = (a, b, t) => a + (b - a) * t;
+        const smoothstep = (e0, e1, x) => {
+          const t = clamp01((x - e0) / (e1 - e0));
+          return t * t * (3 - 2 * t);
+        };
+        const easeOutExpo = (t) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * clamp01(t)));
+        const easeOutQuint = (t) => 1 - Math.pow(1 - clamp01(t), 5);
+        const easeInOutCubic = (t) => {
+          const x = clamp01(t);
+          return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        };
+
+        const chapters = [
+          [0.0, "01 · THE INVISIBLE BUILDOUT"],
+          [6.5, "02 · NATIONAL COMMAND"],
+          [13.0, "03 · LENSES & NDA TRANSPARENCY"],
+          [20.5, "04 · PARCEL-LEVEL DIVE"],
+          [29.0, "05 · LIVE FEDERAL TELEMETRY"],
+          [36.5, "06 · PROVENANCE, MATRIX & CLI"],
+          [44.0, "07 · GRIDLINE · MISTY STEP"],
+        ];
+
+        const elProgress = document.getElementById("progress-fill");
+        const elChapter = document.getElementById("hud-chapter-label");
+        const elClock = document.getElementById("hud-clock");
+        const elFadeBlack = document.getElementById("fade-black");
+
+        const scenes = [1, 2, 3, 4, 5, 6, 7].map((i) => document.getElementById(`scene-${i}`));
+
+        // Scene 1 refs
+        const elS1Svg = document.getElementById("s1-svg");
+        const elS7BgSvg = document.getElementById("s7-bg-svg");
+        const elS1Title = document.getElementById("s1-title");
+        const elS1Sub = document.getElementById("s1-sub");
+        const kpiEls = [1, 2, 3, 4, 5].map((i) => document.getElementById(`kpi-${i}`));
+        const kpiVals = [1, 2, 3, 4, 5].map((i) => document.getElementById(`kpi-v${i}`));
+
+        // Scene 2..7 refs
+        const elS2Frame = document.getElementById("s2-frame");
+        const elS2C1 = document.getElementById("s2-c1");
+        const elS2C2 = document.getElementById("s2-c2");
+        const elS2Cap = document.getElementById("s2-cap");
+
+        const elS3ImgLight = document.getElementById("s3-img-light");
+        const elS3ImgUndisc = document.getElementById("s3-img-undisc");
+        const elS3C1 = document.getElementById("s3-c1");
+        const elS3C2 = document.getElementById("s3-c2");
+
+        const elS4Frame = document.getElementById("s4-frame");
+        const elS4ImgCorridor = document.getElementById("s4-img-corridor");
+        const elS4ImgParcel = document.getElementById("s4-img-parcel");
+        const elS4C1 = document.getElementById("s4-c1");
+        const elS4Coord = document.getElementById("s4-coord");
+
+        const elS5L = document.getElementById("s5-card-left");
+        const elS5R = document.getElementById("s5-card-right");
+        const elS5Ts = [1, 2, 3].map((i) => document.getElementById(`s5-t${i}`));
+
+        const elS6L = document.getElementById("s6-left");
+        const elS6TR = document.getElementById("s6-top-right");
+        const elS6Cli = document.getElementById("s6-cli");
+        const elS6CliText = document.getElementById("s6-cli-text");
+
+        const elS7Brand = document.getElementById("s7-brand");
+        const elS7Tag = document.getElementById("s7-tag");
+        const elS7Links = document.getElementById("s7-links");
+        const elS7Specs = document.getElementById("s7-specs");
+
+        const elCursor = document.getElementById("cursor");
+        const elRipple = document.getElementById("cursor-ripple");
+
+        let isoSvgPaths = [];
+        let facilityNodes = [];
+
+        function setCard(el, progress, yDist = 28) {
+          const e = easeOutQuint(progress);
+          el.style.opacity = String(clamp01(e * 1.15));
+          el.style.transform = `translate3d(0, ${lerp(yDist, 0, e).toFixed(2)}px, 0)`;
+        }
+
+        function setSceneWindow(el, t, start, end) {
+          const fadeIn = smoothstep(start, start + 0.45, t);
+          const fadeOut = 1 - smoothstep(end - 0.45, end, t);
+          const op = start === 0 ? fadeOut : end >= 50 ? fadeIn : fadeIn * fadeOut;
+          el.style.opacity = String(op);
+          return op;
+        }
+
+        function updateCursor(t) {
+          // Define cursor paths across Scenes 3 and 4
+          // Showcase frame sits at left: 220, top: 86, scale ~1.0278 (1480/1440)
+          let visible = false;
+          let x = 960;
+          let y = 540;
+          let scale = 1;
+          let rippleT = -1;
+          let rx = 0;
+          let ry = 0;
+
+          if (t >= 13.3 && t <= 20.1) {
+            visible = true;
+            if (t < 14.55) {
+              const p = easeInOutCubic((t - 13.3) / 1.15);
+              x = lerp(960, 725, p); // Move onto "Water & Cooling Stress" & Light cluster
+              y = lerp(540, 111, p);
+            } else if (t < 15.2) {
+              const p = easeInOutCubic((t - 14.55) / 0.55);
+              x = lerp(725, 1418, p); // Tap Light sun button
+              y = 111;
+            } else if (t < 16.5) {
+              x = 1418;
+              y = 111;
+            } else if (t < 17.45) {
+              const p = easeInOutCubic((t - 16.5) / 0.85);
+              x = lerp(1418, 466, p); // Move down to "Undisclosed Water" chip
+              y = lerp(111, 286, p);
+            } else {
+              x = 466;
+              y = 286;
+            }
+            if (t >= 14.6 && t <= 14.78) scale = 0.86;
+            if (t >= 17.5 && t <= 17.68) scale = 0.86;
+
+            if (t >= 14.6 && t <= 15.15) {
+              rippleT = (t - 14.6) / 0.55;
+              rx = 725;
+              ry = 111;
+            } else if (t >= 17.5 && t <= 18.05) {
+              rippleT = (t - 17.5) / 0.55;
+              rx = 466;
+              ry = 286;
+            }
+          } else if (t >= 20.9 && t <= 24.0) {
+            visible = true;
+            if (t < 22.1) {
+              const p = easeInOutCubic((t - 20.9) / 1.1);
+              x = lerp(880, 290, p); // Move to Equinix Ashburn "Inspect Parcel" button
+              y = lerp(520, 949, p);
+            } else {
+              x = 290;
+              y = 949;
+            }
+            if (t >= 23.4 && t <= 23.58) scale = 0.86;
+            if (t >= 23.4 && t <= 23.95) {
+              rippleT = (t - 23.4) / 0.55;
+              rx = 290;
+              ry = 949;
+            }
+          }
+
+          const op = visible
+            ? smoothstep(13.3, 13.6, t) * (1 - smoothstep(19.7, 20.1, t)) +
+              smoothstep(20.9, 21.2, t) * (1 - smoothstep(23.6, 24.0, t))
+            : 0;
+          elCursor.style.opacity = String(clamp01(op));
+          elCursor.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${scale})`;
+
+          if (rippleT >= 0 && rippleT <= 1) {
+            const re = easeOutExpo(rippleT);
+            elRipple.style.opacity = String(1 - re);
+            elRipple.style.left = `${rx}px`;
+            elRipple.style.top = `${ry}px`;
+            elRipple.style.transform = `translate(-50%, -50%) scale(${lerp(0.35, 1.85, re).toFixed(2)})`;
+          } else {
+            elRipple.style.opacity = "0";
+          }
+        }
+
+        window.setFrame = function (frame, fps) {
+          const t = frame / fps;
+          const pct = clamp01(t / TOTAL_DURATION) * 100;
+          elProgress.style.width = `${pct.toFixed(3)}%`;
+          elClock.textContent = `00:${t.toFixed(1).padStart(4, "0")} / 00:50.0`;
+
+          let activeChapter = chapters[0][1];
+          for (const [start, label] of chapters) {
+            if (t >= start) activeChapter = label;
+          }
+          elChapter.textContent = activeChapter;
+
+          // Fade to black at exact end
+          elFadeBlack.style.opacity = String(smoothstep(48.95, 49.95, t));
+
+          // ===== SCENE 1: COLD OPEN (0.0 - 6.5s) =====
+          const op1 = setSceneWindow(scenes[0], t, 0.0, 6.55);
+          if (op1 > 0.001) {
+            const titleP = easeOutExpo((t - 0.3) / 0.9);
+            elS1Title.style.transform = `translate3d(0, ${lerp(96, 0, titleP).toFixed(1)}px, 0)`;
+            elS1Title.style.opacity = String(smoothstep(0.3, 0.65, t));
+
+            const subP = easeOutQuint((t - 0.7) / 0.8);
+            elS1Sub.style.opacity = String(subP);
+            elS1Sub.style.transform = `translate3d(0, ${lerp(20, 0, subP).toFixed(1)}px, 0)`;
+
+            // Vector ISO draw-on
+            const drawP = easeInOutCubic((t - 0.15) / 1.7);
+            const fillOp = smoothstep(1.0, 2.2, t) * 0.22;
+            for (const item of isoSvgPaths) {
+              const offset = item.len * (1 - drawP);
+              item.el.style.strokeDashoffset = String(offset.toFixed(1));
+              item.el.style.fillOpacity = String(fillOp.toFixed(3));
+            }
+
+            // 45 Facilities ignite west-to-east with MW pulse
+            for (const node of facilityNodes) {
+              const localT = t - node.delay;
+              const appear = easeOutExpo(localT / 0.45);
+              const pulse = localT > 0 && localT < 1.2 ? easeOutExpo(localT / 1.2) : 0;
+              node.dot.setAttribute("opacity", appear.toFixed(3));
+              node.dot.setAttribute("r", (node.r * lerp(0.2, 1.0, appear)).toFixed(2));
+              if (localT > 0 && localT < 1.2) {
+                node.ring.setAttribute("opacity", ((1 - pulse) * 0.75).toFixed(3));
+                node.ring.setAttribute("r", (node.r * (1 + pulse * 3.2)).toFixed(2));
+              } else {
+                node.ring.setAttribute("opacity", "0");
+              }
+            }
+
+            // KPI counters
+            const kpiReveal = (idx) => (t - (1.4 + idx * 0.12)) / 0.7;
+            const countP = easeOutExpo((t - 1.55) / 1.6);
+            kpiVals[0].textContent = String(Math.round(45 * countP));
+            kpiVals[1].textContent = `${(7.73 * countP).toFixed(2)} GW`;
+            kpiVals[2].textContent = `${(31.40 * countP).toFixed(2)} GW`;
+            kpiVals[3].textContent = String(Math.round(15 * countP));
+            kpiVals[4].textContent = String(Math.round(32 * countP));
+            kpiEls.forEach((el, idx) => setCard(el, kpiReveal(idx), 24));
+          }
+
+          // ===== SCENE 2: NATIONAL COMMAND (6.5 - 13.0s) =====
+          const op2 = setSceneWindow(scenes[1], t, 6.2, 13.1);
+          if (op2 > 0.001) {
+            const p = easeOutExpo((t - 6.3) / 1.3);
+            const rotX = lerp(9.0, 0.0, p);
+            const sc = lerp(0.92, 1.0, p);
+            elS2Frame.style.transform = `perspective(1800px) rotateX(${rotX.toFixed(2)}deg) scale(${sc.toFixed(4)})`;
+            setCard(elS2C1, (t - 7.7) / 0.7, 22);
+            setCard(elS2C2, (t - 8.9) / 0.7, 22);
+            setCard(elS2Cap, (t - 6.7) / 0.7, 16);
+          }
+
+          // ===== SCENE 3: LENSES, LIGHT MODE & UNDISCLOSED WATER (13.0 - 20.5s) =====
+          const op3 = setSceneWindow(scenes[2], t, 12.8, 20.6);
+          if (op3 > 0.001) {
+            // Diagonal glass wipe into Light Water Lens at 14.65s..15.45s
+            const wipeP = easeInOutCubic((t - 14.65) / 0.8);
+            const polyRight = lerp(0, 140, wipeP);
+            elS3ImgLight.style.clipPath = `polygon(0 0, ${polyRight.toFixed(1)}% 0, ${Math.max(0, polyRight - 35).toFixed(1)}% 100%, 0 100%)`;
+
+            // Crossfade into Undisclosed Water filter at 17.55s
+            elS3ImgUndisc.style.opacity = String(smoothstep(17.55, 17.95, t));
+
+            const c1Vis = smoothstep(15.2, 15.6, t) * (1 - smoothstep(17.1, 17.45, t));
+            elS3C1.style.opacity = String(c1Vis);
+            elS3C1.style.transform = `translate3d(0, ${lerp(18, 0, smoothstep(15.2, 15.7, t)).toFixed(1)}px, 0)`;
+
+            setCard(elS3C2, (t - 17.85) / 0.65, 22);
+          }
+
+          // ===== SCENE 4: MULTI-SCALE PARCEL DIVE (20.5 - 29.0s) =====
+          const op4 = setSceneWindow(scenes[3], t, 20.3, 29.1);
+          if (op4 > 0.001) {
+            const diveP = smoothstep(23.45, 24.45, t);
+            const zoomPush =
+              t < 23.45
+                ? lerp(1.0, 1.03, smoothstep(20.5, 23.4, t))
+                : t < 24.6
+                  ? lerp(1.14, 1.0, easeOutExpo((t - 23.45) / 1.15))
+                  : lerp(1.0, 1.025, smoothstep(24.6, 28.9, t));
+
+            elS4Frame.style.transform = `scale(${zoomPush.toFixed(4)})`;
+            elS4ImgCorridor.style.opacity = String(1 - diveP);
+            elS4ImgParcel.style.opacity = String(diveP);
+            elS4Coord.textContent =
+              t < 23.6
+                ? "Northern Virginia Corridor · z 9.2 · 38.9800°N, 77.4800°W"
+                : "Equinix Ashburn Campus · z 15.8 · 39.0164°N, 77.4591°W";
+            setCard(elS4C1, (t - 24.6) / 0.75, 22);
+          }
+
+          // ===== SCENE 5: LIVE FEDERAL TELEMETRY (29.0 - 36.5s) =====
+          const op5 = setSceneWindow(scenes[4], t, 28.8, 36.6);
+          if (op5 > 0.001) {
+            setCard(elS5L, (t - 29.0) / 0.75, 28);
+            setCard(elS5R, (t - 29.25) / 0.75, 28);
+            elS5Ts.forEach((el, idx) => setCard(el, (t - (29.55 + idx * 0.2)) / 0.65, 22));
+          }
+
+          // ===== SCENE 6: SYMMETRIC PROVENANCE, MATRIX & CLI (36.5 - 44.0s) =====
+          const op6 = setSceneWindow(scenes[5], t, 36.3, 44.1);
+          if (op6 > 0.001) {
+            setCard(elS6L, (t - 36.5) / 0.75, 28);
+            setCard(elS6TR, (t - 36.75) / 0.75, 28);
+            setCard(elS6Cli, (t - 37.0) / 0.75, 28);
+
+            const cmdFull = "bun run cli summary";
+            const typedLen = Math.floor(clamp01((t - 37.5) / 1.1) * cmdFull.length);
+            const cmdShown = cmdFull.slice(0, typedLen);
+            const showOut = t >= 38.75;
+            const showCurl = t >= 39.4;
+
+            let html = `<span class="cli-cmd">$ ${cmdShown}</span>${typedLen < cmdFull.length ? "_" : ""}`;
+            if (showOut) {
+              html += `\n<span class="cli-ok">→ 45 campuses · 7,728 MW operational · 31,401 MW planned · 15 contested · 32 undisclosed water</span>`;
+            }
+            if (showCurl) {
+              html += `\n<span class="cli-cmd">$ curl "https://gridline.misty-step.workers.dev/api/facilities?iso=PJM&amp;format=csv"</span>`;
+            }
+            elS6CliText.innerHTML = html;
+          }
+
+          // ===== SCENE 7: END SLATE (44.0 - 50.0s) =====
+          const op7 = setSceneWindow(scenes[6], t, 43.8, 50.5);
+          if (op7 > 0.001) {
+            setCard(elS7Brand, (t - 44.05) / 0.85, 36);
+            setCard(elS7Tag, (t - 44.3) / 0.85, 26);
+            setCard(elS7Links, (t - 44.6) / 0.85, 24);
+            setCard(elS7Specs, (t - 44.85) / 0.85, 20);
+          }
+
+          updateCursor(t);
+        };
+
+        async function init() {
+          const res = await fetch("/.cache/geo-summary.json");
+          const geo = await res.json();
+
+          // Build Scene 1 & Scene 7 vector SVG geometry from real ISO & facility coords
+          const svgNS = "http://www.w3.org/2000/svg";
+
+          for (const iso of geo.isoPaths) {
+            const p = document.createElementNS(svgNS, "path");
+            p.setAttribute("d", iso.d);
+            p.setAttribute("fill", "#38bdf8");
+            p.setAttribute("fill-opacity", "0");
+            p.setAttribute("stroke", "rgba(56, 189, 248, 0.55)");
+            p.setAttribute("stroke-width", "1.4");
+            p.setAttribute("stroke-linejoin", "round");
+            elS1Svg.appendChild(p);
+            const len = p.getTotalLength();
+            p.style.strokeDasharray = `${len} ${len}`;
+            p.style.strokeDashoffset = `${len}`;
+            isoSvgPaths.push({ el: p, len });
+
+            // Subtle copy in Scene 7 background
+            const p7 = document.createElementNS(svgNS, "path");
+            p7.setAttribute("d", iso.d);
+            p7.setAttribute("fill", "none");
+            p7.setAttribute("stroke", "rgba(56, 189, 248, 0.55)");
+            p7.setAttribute("stroke-width", "1.2");
+            elS7BgSvg.appendChild(p7);
+          }
+
+          const sortedFacs = [...geo.facilities].sort((a, b) => a.x - b.x);
+          sortedFacs.forEach((f, idx) => {
+            const isWarn = f.status === "contested" || f.status === "moratorium";
+            const isOp = f.status === "operational" || f.status === "expanding";
+            const color = isWarn ? "#fbbf24" : isOp ? "#34d399" : "#38bdf8";
+            const r = Math.max(4.5, Math.min(16, 4 + Math.sqrt(Math.max(50, f.plannedMw)) * 0.16));
+
+            const ring = document.createElementNS(svgNS, "circle");
+            ring.setAttribute("cx", String(f.x));
+            ring.setAttribute("cy", String(f.y));
+            ring.setAttribute("r", String(r));
+            ring.setAttribute("fill", "none");
+            ring.setAttribute("stroke", color);
+            ring.setAttribute("stroke-width", "1.8");
+            ring.setAttribute("opacity", "0");
+            elS1Svg.appendChild(ring);
+
+            const dot = document.createElementNS(svgNS, "circle");
+            dot.setAttribute("cx", String(f.x));
+            dot.setAttribute("cy", String(f.y));
+            dot.setAttribute("r", String(r));
+            dot.setAttribute("fill", color);
+            dot.setAttribute("fill-opacity", "0.88");
+            dot.setAttribute("stroke", "#070b11");
+            dot.setAttribute("stroke-width", "1.2");
+            dot.setAttribute("opacity", "0");
+            elS1Svg.appendChild(dot);
+
+            facilityNodes.push({
+              dot,
+              ring,
+              r,
+              delay: 1.05 + (idx / Math.max(1, sortedFacs.length - 1)) * 1.45,
+            });
+          });
+
+          // Ensure all <img> plates finish decoding before setting __gridlineReady
+          const imgs = Array.from(document.querySelectorAll("img"));
+          await Promise.all(
+            imgs.map(
+              (img) =>
+                img.complete
+                  ? img.decode().catch(() => {})
+                  : new Promise((resLoad) => {
+                      img.onload = () => img.decode().catch(() => {}).finally(resLoad);
+                      img.onerror = resLoad;
+                    }),
+            ),
+          );
+
+          window.setFrame(0, 60);
+          window.__gridlineReady = true;
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>

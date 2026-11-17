@@ -1,5 +1,5 @@
 {
-  "name": "us-datacenter-atlas",
+  "name": "gridline",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -12,7 +12,10 @@
     "typecheck": "tsc --noEmit",
     "test": "bun test",
     "cli": "bun run scripts/cli.ts",
-    "deploy": "bun run build && wrangler deploy"
+    "deploy": "bun run build && wrangler deploy",
+    "video:plates": "bun run video/capture-plates.ts",
+    "video:audio": "bun run video/audio.ts",
+    "video:render": "bun run video/render.ts"
   },
   "dependencies": {
     "lucide-react": "^0.511.0",
@@ -27,6 +30,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
+    "playwright-core": "^1.65.1",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "wrangler": "^4.16.1"

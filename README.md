@@ -2,6 +2,10 @@
 
 An interactive multi-scale geospatial atlas of major US data center campuses (`operational`, `expanding`, `under_construction`, `permitted`, `proposed`, `contested`, and `moratorium`), combining verified power/grid interconnection records, cooling & water disclosures, regulatory dockets, balanced proponent/critic evidence, and live NOAA/USGS/Federal Register telemetry.
 
+- **Live Deployment:** https://gridline.misty-step.workers.dev
+- **Repository:** https://github.com/misty-step/gridline
+- **Launch Film (`v0.1.0`):** Attached to GitHub Release `v0.1.0` and reproducible locally via `video/` (`1920x1080`, `60 fps`)
+
 ## Architecture
 
 - **Frontend (`src/client/`)**: React 19, TypeScript, and MapLibre GL JS across three semantic zoom tiers (National ISO/Market clusters, Regional Corridor glyphs, and Parcel Footprint inspection over Vector, Esri Satellite, or USGS National Map imagery).
@@ -55,10 +59,15 @@ bun run cli live <facility-id>
 | `GET /api/telemetry/live?facilityId=<id>` | Live NOAA wet-bulb + USGS discharge for one campus (`?refresh=1` bypasses cache) |
 | `GET /api/regulatory/live` | Live Federal Register filings matching `"data center" electric` |
 
-## Deployment
+## Deployment & Launch Video
 
 ```bash
 bun run deploy
+
+# Reproduce the 1080p60 promo launch video into out/gridline-launch.mp4
+bun run video:audio
+bun run video:plates
+bun run video:render
 ```
 
 See [SPEC.md](SPEC.md), [DESIGN.md](DESIGN.md), and [ADR 0001](docs/decisions/0001-stack-and-architecture.md) for system invariants and design specifications.

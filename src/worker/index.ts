@@ -336,7 +336,7 @@ export async function handleRequest(
     );
     return jsonResponse({
       status: "ok",
-      service: "us-datacenter-atlas",
+      service: "gridline",
       environment: env.ENVIRONMENT ?? "production",
       release: env.RELEASE ?? "0.1.0",
       facilityCount: dataset.facilities.length,

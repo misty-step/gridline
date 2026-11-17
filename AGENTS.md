@@ -1,4 +1,4 @@
-# AGENTS.md — Working Guide for Gridline (`us-datacenter-atlas`)
+# AGENTS.md — Working Guide for Gridline (`gridline`)
 
 ## Architecture & Source of Truth
 

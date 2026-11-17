@@ -26,6 +26,6 @@ We record an explicit stack selection of **TypeScript + React 19 + MapLibre GL J
 
 ## Consequences
 
-- Single deployment target (`us-datacenter-atlas` Worker) serves UI assets, filtered GeoJSON/CSV exports, and live telemetry without separate origin servers.
+- Single deployment target (`gridline` Worker) serves UI assets, filtered GeoJSON/CSV exports, and live telemetry without separate origin servers.
 - Every metric carries explicit epistemic provenance (`measured | permitted | filed | disclosed | estimated | undisclosed`) enforced in automated tests and build verification.
 - Local verification is deterministic via `bun test`, `tsc --noEmit`, `vite build`, and `wrangler dev`.

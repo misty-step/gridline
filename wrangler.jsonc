@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "us-datacenter-atlas",
+  "name": "gridline",
   "account_id": "b069014f6a46558ea9146fb6c4ff8f6c",
   "main": "src/worker/index.ts",
   "compatibility_date": "2026-10-01",
