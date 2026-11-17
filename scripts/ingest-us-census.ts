@@ -25,9 +25,9 @@ import {
   validateIsoRegions,
 } from "../src/shared/validate.ts";
 
-const USER_AGENT = "GridlineCensus/1.0 (ops@mistystep.io)";
+const USER_AGENT = "UndercurrentCensus/1.1 (ops@mistystep.io)";
 const USE_CACHE = process.argv.includes("--cache");
-const CACHE_DIR = resolve(tmpdir(), "gridline-census-cache");
+const CACHE_DIR = resolve(tmpdir(), "undercurrent-census-cache");
 const ROOT_DIR = resolve(dirname(new URL(import.meta.url).pathname), "..");
 const DATA_DIR = resolve(ROOT_DIR, "src/data");
 const PUBLIC_FOOTPRINTS_PATH = resolve(ROOT_DIR, "public/data/footprints-us.geojson");
@@ -754,7 +754,7 @@ interface WorkingCampus {
 
 async function main(): Promise<void> {
   const startedAt = new Date().toISOString();
-  console.log("==> Gridline 50-State + DC US Census Ingestion");
+  console.log("==> Undercurrent 50-state + DC census ingestion");
 
   // 1. Load curated local inputs
   const eastLegacy = JSON.parse(

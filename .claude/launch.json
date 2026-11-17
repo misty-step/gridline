@@ -1,0 +1,7 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    { "name": "worker", "runtimeExecutable": "bun", "runtimeArgs": ["run", "dev:worker"], "port": 8788 },
+    { "name": "client", "runtimeExecutable": "bun", "runtimeArgs": ["run", "dev"], "port": 5173 }
+  ]
+}

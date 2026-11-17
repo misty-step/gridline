@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.1.0 — 2026-11-17
+
+### Changed
+- **Renamed to Undercurrent.** New wordmark and mark (two crossing currents), page title, CLI banner, export filenames (`undercurrent-campuses.csv`/`.geojson`), outbound user agents, and `localStorage` key. The repository, Worker name and D1 database name are unchanged ([ADR 0003](docs/decisions/0003-rename-to-undercurrent.md)).
+- **New design system.** Replaced the borrowed "NERV // MAGI" theme with an identity of its own: amber for power, cyan for water, solid for verified, hatched for reported-only, neutral chrome. Removed chamfered clip-paths, scanlines, corner brackets and amber-on-everything borders. Light-theme status colors now meet WCAG AA on every surface.
+- **View ledger.** The directory opens with operating, verified planned and reported-only capacity as three separate figures and a proportional bar, plus disclosed water and counts of undisclosed and contested campuses.
+- **Readable map.** Cluster callouts name the hub and label each figure; hubs with no public capacity show their site count instead of `0 MW`. The legend is generated from the map palette so it cannot drift from the marks. The position readout is plain coordinates.
+- **Plain language throughout.** Lens names are Capacity, Water, Grid and Activity. The live view's freshness strip says what each stream is and whether it is live, stale or degraded. Filing dates are formatted, and filings link to campuses by name instead of raw id.
+- **Theme follows the OS by default** and is no longer written into shared links.
+
+### Added
+- `bun run capture` (`scripts/capture-ui.ts`): screenshots named UI states and fails on console errors.
+- `tests/tokens.test.ts`: fails if the map paint palette differs from `tokens.css`.
+
+### Removed
+- The `video/` launch-film pipeline, which rendered the old brand.
+- 471-line token file reduced to a single dark block (the duplicated `prefers-color-scheme` copy was unreachable), and three unused tokens dropped.
+
 ## 1.0.0 — 2026-11-16
 
 ### Added

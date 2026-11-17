@@ -143,27 +143,27 @@ export const LENS_OPTIONS: {
 }[] = [
   {
     id: "capacity",
-    label: "Capacity & Lifecycle",
+    label: "Capacity",
     shortLabel: "Capacity",
-    mobileLabel: "Cap",
+    mobileLabel: "MW",
   },
   {
     id: "water",
-    label: "Water & Cooling Stress",
+    label: "Water",
     shortLabel: "Water",
     mobileLabel: "H2O",
   },
   {
     id: "grid",
-    label: "Grid & Live Dispatch",
+    label: "Grid",
     shortLabel: "Grid",
     mobileLabel: "Grid",
   },
   {
     id: "activity",
-    label: "Proposals & Pulse",
+    label: "Activity",
     shortLabel: "Activity",
-    mobileLabel: "Pulse",
+    mobileLabel: "New",
   },
 ];
 
@@ -205,92 +205,94 @@ export interface MapColorPalette {
   activityGlow: string;
 }
 
-export const NERV_DARK_MAP_PALETTE: MapColorPalette = {
+// Map paint cannot read CSS custom properties, so these mirror tokens.css.
+// tests/tokens.test.ts fails if a value here differs from its token.
+export const DARK_MAP_PALETTE: MapColorPalette = {
   lifecycle: {
-    operational: "#39ff88",
-    expanding: "#00e5ff",
-    under_construction: "#38bdf8",
-    permitted: "#ff9e2c",
-    proposed: "#c084fc",
-    contested: "#ffb300",
-    moratorium: "#ff4d4d",
+    operational: "#3ddc97",
+    expanding: "#2dd4bf",
+    under_construction: "#6cb2ff",
+    permitted: "#8f9bff",
+    proposed: "#b79cff",
+    contested: "#ff8a3d",
+    moratorium: "#ff5a5f",
   },
   stress: {
-    low: "#39ff88",
-    low_medium: "#00e5ff",
-    medium_high: "#ffb300",
-    high: "#ff7b00",
-    extremely_high: "#ff3b30",
+    low: "#3ddc97",
+    low_medium: "#2dd4bf",
+    medium_high: "#e6c84a",
+    high: "#ff8a3d",
+    extremely_high: "#ff5a5f",
   },
   grid: {
-    energized: "#39ff88",
-    phased_energization: "#00e5ff",
-    interconnection_queue: "#38bdf8",
-    transmission_upgrade_pending: "#ffb300",
-    ferc_or_puc_contested: "#ff3b30",
+    energized: "#3ddc97",
+    phased_energization: "#2dd4bf",
+    interconnection_queue: "#6cb2ff",
+    transmission_upgrade_pending: "#e6c84a",
+    ferc_or_puc_contested: "#ff5a5f",
   },
   tier: {
-    flagship: "#ff7b00",
-    registry: "#00e5ff",
-    provisional: "#c084fc",
+    flagship: "#ffbe45",
+    registry: "#b4c0cf",
+    provisional: "#b79cff",
   },
   zones: {
-    boundary: "#ff7b00",
-    operational: "#39ff88",
-    expansion: "#c084fc",
-    substation: "#ffb300",
-    cooling: "#00e5ff",
+    boundary: "#ffb020",
+    operational: "#3ddc97",
+    expansion: "#b79cff",
+    substation: "#e6c84a",
+    cooling: "#38c8ff",
   },
-  border: "#f6f1e7",
-  accent: "#ff7b00",
-  warnRing: "#ffb300",
-  moratoriumRing: "#ff4d4d",
-  undisclosedRing: "#ff4d4d",
-  activityGlow: "#ff9e2c",
+  border: "#e9eef5",
+  accent: "#ffb020",
+  warnRing: "#ff8a3d",
+  moratoriumRing: "#ff5a5f",
+  undisclosedRing: "#ff5a5f",
+  activityGlow: "#ffb020",
 };
 
-export const GEHIRN_LIGHT_MAP_PALETTE: MapColorPalette = {
+export const LIGHT_MAP_PALETTE: MapColorPalette = {
   lifecycle: {
-    operational: "#065f46",
-    expanding: "#155e75",
-    under_construction: "#1e40af",
-    permitted: "#5b21b6",
-    proposed: "#475569",
-    contested: "#92400e",
-    moratorium: "#b91c1c",
+    operational: "#07663f",
+    expanding: "#07655d",
+    under_construction: "#1d5fc4",
+    permitted: "#4347c9",
+    proposed: "#6b4fc0",
+    contested: "#9c3f0e",
+    moratorium: "#c02626",
   },
   stress: {
-    low: "#065f46",
-    low_medium: "#155e75",
-    medium_high: "#92400e",
-    high: "#c2410c",
-    extremely_high: "#b91c1c",
+    low: "#07663f",
+    low_medium: "#07655d",
+    medium_high: "#7a5c00",
+    high: "#9c3f0e",
+    extremely_high: "#c02626",
   },
   grid: {
-    energized: "#065f46",
-    phased_energization: "#155e75",
-    interconnection_queue: "#1e40af",
-    transmission_upgrade_pending: "#92400e",
-    ferc_or_puc_contested: "#b91c1c",
+    energized: "#07663f",
+    phased_energization: "#07655d",
+    interconnection_queue: "#1d5fc4",
+    transmission_upgrade_pending: "#7a5c00",
+    ferc_or_puc_contested: "#c02626",
   },
   tier: {
-    flagship: "#9a3412",
-    registry: "#155e75",
-    provisional: "#5b21b6",
+    flagship: "#8f4e00",
+    registry: "#333d4b",
+    provisional: "#6b4fc0",
   },
   zones: {
-    boundary: "#c2410c",
-    operational: "#065f46",
-    expansion: "#5b21b6",
-    substation: "#92400e",
-    cooling: "#155e75",
+    boundary: "#a85d00",
+    operational: "#07663f",
+    expansion: "#6b4fc0",
+    substation: "#7a5c00",
+    cooling: "#0b6a94",
   },
-  border: "#141018",
-  accent: "#c2410c",
-  warnRing: "#92400e",
-  moratoriumRing: "#b91c1c",
-  undisclosedRing: "#b91c1c",
-  activityGlow: "#c2410c",
+  border: "#0d1420",
+  accent: "#a85d00",
+  warnRing: "#9c3f0e",
+  moratoriumRing: "#c02626",
+  undisclosedRing: "#c02626",
+  activityGlow: "#a85d00",
 };
 
 export function getMapPalette(
@@ -298,9 +300,9 @@ export function getMapPalette(
   resolvedTheme: ResolvedTheme,
 ): MapColorPalette {
   if (basemap === "vector" && resolvedTheme === "light") {
-    return GEHIRN_LIGHT_MAP_PALETTE;
+    return LIGHT_MAP_PALETTE;
   }
-  return NERV_DARK_MAP_PALETTE;
+  return DARK_MAP_PALETTE;
 }
 
 export const TIER_MACRO_MAX_ZOOM = 5.8;

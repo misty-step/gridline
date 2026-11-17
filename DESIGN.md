@@ -1,165 +1,241 @@
-# Gridline Design System (`DESIGN.md` — `v1.0.0` // `NERV // MAGI TACTICAL CARTOGRAPHY`)
+# Undercurrent design system
 
-All design tokens in this document match [src/client/styles/tokens.css](src/client/styles/tokens.css) **1:1**. Light mode (**GEHIRN // NERV TECHNICAL SCHEMATIC PAPER**) is `:root` (active when `data-resolved-theme="light"` or OS light under `"system"`); dark mode (**NERV CRT // CENTRAL DOGMA**) is the initial unconfigured fallback and applies via `:root[data-resolved-theme="dark"]` and `@media (prefers-color-scheme: dark)` when `data-resolved-theme` is not `"light"`.
+Every token below exists in [src/client/styles/tokens.css](src/client/styles/tokens.css) with the same name and value, and nothing is declared here that the stylesheet omits. `./scripts/check doctor` fails if the two drift.
 
-## NERV // MAGI Tactical Cartography Grammar
+## Identity
 
-- **Condensed Matisse-Inspired Display + Technical Mono Hierarchy**: Primary telemetry titles, region callouts, and dossier headers pair high-contrast condensed serif display typography (`--font-display`, `"Noto Serif Display"`, weights `700–900`, tight tracking) with neutral UI sans (`--font-sans`) and tabular precision monospace (`--font-mono` with `font-variant-numeric: tabular-nums`) on every MW, MGD, MGY, PUE, acreage, `ft3/s`, `°C`/`°F`, coordinate, fuel share, and docket/registry code.
-- **Rectilinear Phosphor Wireframes & Chamfered Corners**: Tactical instrument panels, badges, switches, and modals replace soft rounded pills with crisp `1px–3px` radii (`--radius-xs` through `--radius-full`), high-contrast phosphor wireframe rules (`--border-default`, `--border-strong`), and optional `45deg` chamfered corner clips on primary command frames and MAGI consensus panels.
-- **Semantic-Only Hazard Caution Stripes**: Diagonal NERV hazard stripes (`--hazard-stripe-amber` and `--hazard-stripe-crimson`) are strictly reserved for semantic alerts—`contested` status, `moratorium` zones, `severe` grid/watershed alerts, and `undisclosed` water warnings—never applied decoratively to healthy metrics.
-- **Atmospheric CRT & Drafting Grid Layer**: `--scanline-overlay` provides an ultra-subtle `<= 3.5%` opacity horizontal CRT raster / drafting line texture on terminal backdrop surfaces without reducing text contrast, disabled cleanly under reduced-motion preferences when animated scan effects are paused.
-- **MAGI Tri-Core Freshness Consensus Strip**: Live observatory headers surface three synchronized diagnostic status cells—`PHYSICS` (NOAA/USGS/EIA `<= 60 min`), `FILINGS` (Federal Register/SEC/PeeringDB `<= 24 hr`), and `CENSUS` (National Spatial Index `<= 7 days`)—reporting `LIVE`, `STALE`, or `DEGRADED` consensus state directly without fabricated numbers.
+Undercurrent maps the two currents every data center draws on: electric power and water. The visual system is built on that pair.
 
-## Spatial Architecture & Shell Principles
+- **Amber is power, cyan is water.** `--power` colors megawatt and gigawatt figures, `--water` colors gallons. Neither hue is used for decoration, so a colored number always tells you which resource it measures.
+- **Verified is solid, reported is hatched.** Capacity that rests on a permit, filing, disclosure or measurement is drawn as a solid fill. Capacity that only appears in press reports or unpermitted proposals is drawn with `--hatch-reported` and the proposed violet, and it is never added into a verified total.
+- **Hazard stripes mean something is wrong.** `--hazard-stripe-amber` and `--hazard-stripe-crimson` appear only on contested or moratorium status, active litigation, and stale or degraded live data.
+- **Quiet chrome, loud data.** Surfaces are near-black (dark) or chart paper (light) with neutral hairline borders. Color is reserved for the data and for one primary action per surface.
+- **Plain words.** Labels are sentence case and say what a thing is ("Water undisclosed", "No traced footprint"). No code names, no slash-separated jargon.
 
-- **Single Command Bar**: One `48px` (`--topbar-height`) top command bar houses Gridline NERV reticle identity, `/` search omnibox, the 4-mode analytical lens switcher (`Capacity & Lifecycle`, `Water & Cooling Stress`, `Grid & Live Dispatch`, `Live Activity & Proposals`), corridor quick-jumps (`Region ▾`), `Live Pulse`, `Export`, and theme cycling (`Dark` / `Light` / `System`); basemap selection (`Vector`, `Satellite`, `USGS`) lives directly on the map canvas.
-- **Flex-Sibling Workspace & Conditional Virtualized Directory (`>= 1280px`)**: The collapsible directory rail (`312px`), interactive map canvas (`flex: 1`), and facility dossier (`456px`) sit as non-overlapping flex siblings with `ResizeObserver` synchronization. The directory rail applies conditional list virtualization for thousands of national campuses while surfacing separated Verified MW vs. Reported/Proposed MW totals and a one-action `Verified Only` toggle.
-- **Focused Mutual Exclusion (`< 1280px`) & Mobile Peek Sheet (`<= 768px`)**: Below `1280px`, opening a facility dossier collapses the directory rail cleanly into a single-click return pill; on narrow phones (`<= 768px`), facility inspection uses a 2-detent bottom sheet (`peek 42%` / `expanded 88%`) snapping automatically to `peek` on `Inspect Parcel`, with `>= 44px` touch controls.
+Theme follows the operating system by default; the top bar cycles dark, light and auto. The choice is stored in `localStorage` and never written into shared links.
 
-## Typography & Scale
+## Layout
 
-- Font families:
-  - `--font-display`: `"Noto Serif Display", Georgia, "Times New Roman", serif`
-  - `--font-sans`: `"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`
-  - `--font-mono`: `"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace`
-- Type sizes & line heights:
-  - `--text-2xs`: `10px`
-  - `--text-xs`: `11px`
-  - `--text-sm`: `12px`
-  - `--text-base`: `13px`
-  - `--text-md`: `14px`
-  - `--text-lg`: `16px`
-  - `--text-xl`: `18px`
-  - `--leading-tight`: `1.2`
-  - `--leading-snug`: `1.35`
-  - `--leading-normal`: `1.5`
+- **One top bar** (`--topbar-height`): wordmark, search (`/` focuses it), the four lenses (Capacity, Water, Grid, Activity), Jump to, Live, Export, theme.
+- **Three columns at 1280px and wider**: directory rail (`--rail-width`), map, campus dossier (`--drawer-width`). They are flex siblings and never overlap.
+- **Below 1280px** opening a dossier collapses the rail to a single button. **At 768px and below** the dossier is a two-stop bottom sheet (42% and 88% of the viewport) and touch targets are at least 44px.
+- **The rail opens with the view ledger**: operating, verified planned and reported-only capacity for the campuses in the current map view, a proportional bar of the three, then disclosed water and counts of undisclosed and contested campuses.
+- **Map overlays use the HUD tokens**, which stay dark in both themes so they read over paper, dark vector tiles and satellite imagery. The legend is generated from the same palette object that paints the map, so the two cannot disagree.
 
-## Radii, Spacing, Layout & Z-Index
+## Typography
 
-| Category | Token | Value |
+| Token | Value |
+| --- | --- |
+| `--font-display` | gradient, see `tokens.css` |
+| `--font-sans` | gradient, see `tokens.css` |
+| `--font-mono` | gradient, see `tokens.css` |
+
+`--font-display` (Archivo, slightly expanded) is for the wordmark, campus names and modal titles. `--font-sans` is for interface text. `--font-mono` with tabular figures is for every quantity, coordinate and identifier.
+
+| Token | Value |
+| --- | --- |
+| `--text-2xs` | `10px` |
+| `--text-xs` | `11px` |
+| `--text-sm` | `12px` |
+| `--text-base` | `13px` |
+| `--text-md` | `14px` |
+| `--text-lg` | `16px` |
+| `--text-xl` | `18px` |
+| `--text-2xl` | `26px` |
+| `--leading-tight` | `1.2` |
+| `--leading-snug` | `1.35` |
+| `--leading-normal` | `1.5` |
+
+## Radii, spacing, layout, motion, z-index
+
+| Token | Value |
+| --- | --- |
+| `--radius-xs` | `2px` |
+| `--radius-sm` | `3px` |
+| `--radius-md` | `4px` |
+| `--radius-lg` | `6px` |
+| `--radius-full` | `999px` |
+| `--space-1` | `4px` |
+| `--space-2` | `8px` |
+| `--space-3` | `12px` |
+| `--space-4` | `16px` |
+| `--space-5` | `20px` |
+| `--space-6` | `24px` |
+| `--space-8` | `32px` |
+| `--topbar-height` | `48px` |
+| `--rail-width` | `320px` |
+| `--drawer-width` | `456px` |
+| `--ease-out` | `cubic-bezier(0.23, 1, 0.32, 1)` |
+| `--duration-fast` | `120ms` |
+| `--duration-base` | `180ms` |
+| `--z-map` | `0` |
+| `--z-hud` | `10` |
+| `--z-controls` | `20` |
+| `--z-rail` | `30` |
+| `--z-drawer` | `40` |
+| `--z-topbar` | `50` |
+| `--z-popover` | `60` |
+| `--z-modal` | `70` |
+| `--z-tooltip` | `80` |
+
+Motion is limited to state feedback: hover and press transitions at `--duration-fast`, the ledger bar and modal entrance at `--duration-base` with `--ease-out`. Data stays still while it is being read. `prefers-reduced-motion: reduce` removes transitions, animations and map fly-to easing.
+
+## Surfaces, borders, text, accent
+
+| Token | Light | Dark |
 | --- | --- | --- |
-| Radii | `--radius-xs` | `1px` |
-| Radii | `--radius-sm` | `2px` |
-| Radii | `--radius-md` | `2px` |
-| Radii | `--radius-lg` | `3px` |
-| Radii | `--radius-full` | `2px` |
-| Spacing | `--space-1` | `4px` |
-| Spacing | `--space-2` | `8px` |
-| Spacing | `--space-3` | `12px` |
-| Spacing | `--space-4` | `16px` |
-| Spacing | `--space-5` | `20px` |
-| Spacing | `--space-6` | `24px` |
-| Spacing | `--space-8` | `32px` |
-| Layout | `--topbar-height` | `48px` |
-| Layout | `--rail-width` | `312px` |
-| Layout | `--drawer-width` | `456px` |
-| Z-Index | `--z-map` | `0` |
-| Z-Index | `--z-hud` | `10` |
-| Z-Index | `--z-controls` | `20` |
-| Z-Index | `--z-rail` | `30` |
-| Z-Index | `--z-drawer` | `40` |
-| Z-Index | `--z-topbar` | `50` |
-| Z-Index | `--z-popover` | `60` |
-| Z-Index | `--z-modal` | `70` |
-| Z-Index | `--z-tooltip` | `80` |
+| `--bg-canvas` | `#e6e9ed` | `#05080c` |
+| `--bg-surface` | `#f5f6f8` | `#0a0f15` |
+| `--bg-surface-elevated` | `#ffffff` | `#101721` |
+| `--bg-surface-glass` | `rgba(245, 246, 248, 0.94)` | `rgba(10, 15, 21, 0.92)` |
+| `--bg-surface-hover` | `#ebeef2` | `#162030` |
+| `--bg-surface-active` | `#dfe4ea` | `#1c2a3d` |
+| `--bg-inset` | `#eceef2` | `#070b10` |
+| `--border-subtle` | `rgba(16, 24, 40, 0.1)` | `rgba(160, 188, 220, 0.1)` |
+| `--border-default` | `rgba(16, 24, 40, 0.2)` | `rgba(160, 188, 220, 0.18)` |
+| `--border-strong` | `rgba(16, 24, 40, 0.52)` | `rgba(160, 188, 220, 0.52)` |
+| `--border-focus` | `#a85d00` | `#ffb020` |
+| `--text-primary` | `#0d1420` | `#e9eef5` |
+| `--text-secondary` | `#333d4b` | `#b4c0cf` |
+| `--text-muted` | `#5a6675` | `#8492a5` |
+| `--text-inverse` | `#ffffff` | `#05080c` |
+| `--accent-primary` | `#a85d00` | `#ffb020` |
+| `--accent-primary-hover` | `#8a4b00` | `#ffc247` |
+| `--accent-primary-muted` | `rgba(168, 93, 0, 0.12)` | `rgba(255, 176, 32, 0.14)` |
+| `--accent-primary-text` | `#8f4e00` | `#ffbe45` |
+| `--shadow-sm` | `0 1px 2px rgba(16, 24, 40, 0.08)` | `0 1px 2px rgba(0, 0, 0, 0.5)` |
+| `--shadow-md` | `0 4px 14px rgba(16, 24, 40, 0.12), 0 1px 3px rgba(16, 24, 40, 0.08)` | `0 6px 18px rgba(0, 0, 0, 0.6)` |
+| `--shadow-lg` | `0 18px 44px rgba(16, 24, 40, 0.2), 0 4px 12px rgba(16, 24, 40, 0.1)` | `0 22px 48px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(160, 188, 220, 0.08)` |
 
-## Surface, Border, Text, Accent & Map HUD Tokens
+## The two currents
 
-| Token | Light (`GEHIRN // NERV TECHNICAL SCHEMATIC PAPER`) | Dark (`NERV CRT // CENTRAL DOGMA`) |
+| Token | Light | Dark |
 | --- | --- | --- |
-| `--bg-canvas` | `#eae4d7` | `#060508` |
-| `--bg-surface` | `#f6f2e8` | `#0d0b12` |
-| `--bg-surface-elevated` | `#fcfaf4` | `#15111d` |
-| `--bg-surface-glass` | `rgba(246, 242, 232, 0.94)` | `rgba(13, 11, 18, 0.92)` |
-| `--bg-surface-hover` | `#ece6d8` | `#1d1728` |
-| `--bg-surface-active` | `#dfd7c5` | `#271f36` |
-| `--bg-inset` | `#e4decb` | `#09070d` |
-| `--border-subtle` | `rgba(20, 16, 24, 0.12)` | `rgba(255, 145, 0, 0.16)` |
-| `--border-default` | `rgba(20, 16, 24, 0.48)` | `rgba(255, 145, 0, 0.34)` |
-| `--border-strong` | `rgba(20, 16, 24, 0.60)` | `rgba(255, 152, 0, 0.72)` |
-| `--border-focus` | `#c2410c` | `#ff9800` |
-| `--text-primary` | `#141018` | `#f6f1e7` |
-| `--text-secondary` | `#312938` | `#d1c6b4` |
-| `--text-muted` | `#554b5e` | `#9e917d` |
-| `--text-inverse` | `#fcfaf4` | `#060508` |
-| `--accent-primary` | `#c2410c` | `#ff7b00` |
-| `--accent-primary-hover` | `#9a3412` | `#ff9800` |
-| `--accent-primary-muted` | `rgba(194, 65, 12, 0.12)` | `rgba(255, 123, 0, 0.16)` |
-| `--accent-primary-text` | `#9a3412` | `#ff9e2c` |
-| `--shadow-sm` | `0 1px 2px rgba(20, 16, 24, 0.08), 0 1px 3px rgba(20, 16, 24, 0.1)` | `0 1px 2px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 145, 0, 0.12)` |
-| `--shadow-md` | `0 4px 12px rgba(20, 16, 24, 0.12), 0 1px 3px rgba(20, 16, 24, 0.08)` | `0 6px 18px rgba(0, 0, 0, 0.72), 0 0 14px rgba(255, 123, 0, 0.08)` |
-| `--shadow-lg` | `0 14px 34px rgba(20, 16, 24, 0.18), 0 4px 12px rgba(20, 16, 24, 0.1)` | `0 20px 44px rgba(0, 0, 0, 0.85), 0 0 24px rgba(255, 123, 0, 0.12)` |
-| `--hud-bg` | `rgba(13, 11, 18, 0.92)` | `rgba(13, 11, 18, 0.92)` |
-| `--hud-border` | `rgba(255, 145, 0, 0.42)` | `rgba(255, 145, 0, 0.42)` |
-| `--hud-text` | `#f6f1e7` | `#f6f1e7` |
-| `--hud-text-muted` | `#d1c6b4` | `#d1c6b4` |
+| `--power` | `#8f4e00` | `#ffb020` |
+| `--water` | `#0b6a94` | `#38c8ff` |
 
-## Semantic Lifecycle Status Tokens
+## Map HUD
 
-| Status | Color Token | Background Token | Border Token |
-| --- | --- | --- | --- |
-| `operational` | `--status-operational` (`#065f46` / `#39ff88`) | `--status-operational-bg` (`rgba(6, 95, 70, 0.11)` / `rgba(57, 255, 136, 0.14)`) | `--status-operational-border` (`rgba(6, 95, 70, 0.38)` / `rgba(57, 255, 136, 0.42)`) |
-| `expanding` | `--status-expanding` (`#155e75` / `#00e5ff`) | `--status-expanding-bg` (`rgba(21, 94, 117, 0.11)` / `rgba(0, 229, 255, 0.14)`) | `--status-expanding-border` (`rgba(21, 94, 117, 0.38)` / `rgba(0, 229, 255, 0.42)`) |
-| `under_construction` | `--status-under-construction` (`#1e40af` / `#38bdf8`) | `--status-under-construction-bg` (`rgba(30, 64, 175, 0.11)` / `rgba(56, 189, 248, 0.15)`) | `--status-under-construction-border` (`rgba(30, 64, 175, 0.38)` / `rgba(56, 189, 248, 0.44)`) |
-| `permitted` | `--status-permitted` (`#5b21b6` / `#ff9e2c`) | `--status-permitted-bg` (`rgba(91, 33, 182, 0.11)` / `rgba(255, 123, 0, 0.15)`) | `--status-permitted-border` (`rgba(91, 33, 182, 0.38)` / `rgba(255, 152, 0, 0.45)`) |
-| `proposed` | `--status-proposed` (`#475569` / `#c084fc`) | `--status-proposed-bg` (`rgba(71, 85, 105, 0.11)` / `rgba(192, 132, 252, 0.16)`) | `--status-proposed-border` (`rgba(71, 85, 105, 0.38)` / `rgba(192, 132, 252, 0.44)`) |
-| `contested` | `--status-contested` (`#92400e` / `#ffb300`) | `--status-contested-bg` (`rgba(180, 83, 9, 0.12)` / `rgba(255, 179, 0, 0.15)`) | `--status-contested-border` (`rgba(146, 64, 14, 0.44)` / `rgba(255, 179, 0, 0.48)`) |
-| `moratorium` | `--status-moratorium` (`#b91c1c` / `#ff4d4d`) | `--status-moratorium-bg` (`rgba(185, 28, 28, 0.12)` / `rgba(255, 59, 48, 0.16)`) | `--status-moratorium-border` (`rgba(185, 28, 28, 0.44)` / `rgba(255, 59, 48, 0.5)`) |
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--hud-bg` | `rgba(8, 12, 17, 0.9)` | `rgba(8, 12, 17, 0.9)` |
+| `--hud-border` | `rgba(160, 188, 220, 0.26)` | `rgba(160, 188, 220, 0.26)` |
+| `--hud-text` | `#e9eef5` | `#e9eef5` |
+| `--hud-text-muted` | `#a9b6c6` | `#a9b6c6` |
+| `--hud-power` | `#ffb020` | `#ffb020` |
+| `--hud-water` | `#38c8ff` | `#38c8ff` |
+| `--hud-ok` | `#3ddc97` | `#3ddc97` |
+| `--hud-proposed` | `#b79cff` | `#b79cff` |
+| `--hud-warn` | `#ff8a3d` | `#ff8a3d` |
+| `--hud-crit` | `#ff5a5f` | `#ff5a5f` |
 
-## Epistemic Provenance, Thermal Regime, Watershed, Grid, Tier, Fuel Mix & Tactical Overlay Tokens
+## Lifecycle status
 
-- **Epistemic Provenance**:
-  - `--epistemic-measured` (`#065f46` / `#39ff88`), `--epistemic-measured-bg` (`rgba(6, 95, 70, 0.11)` / `rgba(57, 255, 136, 0.14)`)
-  - `--epistemic-permitted` (`#1e40af` / `#ff9e2c`), `--epistemic-permitted-bg` (`rgba(30, 64, 175, 0.11)` / `rgba(255, 123, 0, 0.15)`)
-  - `--epistemic-filed` (`#5b21b6` / `#38bdf8`), `--epistemic-filed-bg` (`rgba(91, 33, 182, 0.11)` / `rgba(56, 189, 248, 0.15)`)
-  - `--epistemic-disclosed` (`#155e75` / `#00e5ff`), `--epistemic-disclosed-bg` (`rgba(21, 94, 117, 0.11)` / `rgba(0, 229, 255, 0.14)`)
-  - `--epistemic-estimated` (`#92400e` / `#ffb300`), `--epistemic-estimated-bg` (`rgba(180, 83, 9, 0.12)` / `rgba(255, 179, 0, 0.15)`)
-  - `--epistemic-reported` (`#9a3412` / `#ff9e2c`), `--epistemic-reported-bg` (`rgba(194, 65, 12, 0.12)` / `rgba(255, 123, 0, 0.15)`), `--epistemic-reported-border` (`rgba(154, 52, 18, 0.42)` / `rgba(255, 179, 0, 0.45)`) — light mode achieves `5.91:1` contrast over elevated tinted pills on `#fcfaf4`; strictly distinguishes reported press/unconfirmed MW from verified sums
-  - `--epistemic-undisclosed` (`#b91c1c` / `#ff4d4d`), `--epistemic-undisclosed-bg` (`rgba(185, 28, 28, 0.12)` / `rgba(255, 59, 48, 0.16)`)
-- **Live Thermal Regime**:
-  - `--thermal-free` (`#065f46` / `#39ff88`), `--thermal-free-bg` (`rgba(6, 95, 70, 0.11)` / `rgba(57, 255, 136, 0.14)`)
-  - `--thermal-adiabatic` (`#92400e` / `#ffb300`), `--thermal-adiabatic-bg` (`rgba(180, 83, 9, 0.12)` / `rgba(255, 179, 0, 0.15)`)
-  - `--thermal-peak` (`#b91c1c` / `#ff4d4d`), `--thermal-peak-bg` (`rgba(185, 28, 28, 0.12)` / `rgba(255, 59, 48, 0.16)`)
-  - `--thermal-unavailable` (`#554b5e` / `#9e917d`), `--thermal-unavailable-bg` (`rgba(85, 75, 94, 0.12)` / `rgba(158, 145, 125, 0.15)`)
-- **Watershed Baseline Stress**:
-  - `--stress-low` (`#065f46` / `#39ff88`)
-  - `--stress-low-medium` (`#155e75` / `#00e5ff`)
-  - `--stress-medium-high` (`#92400e` / `#ffb300`)
-  - `--stress-high` (`#c2410c` / `#ff7b00`)
-  - `--stress-extremely-high` (`#b91c1c` / `#ff3b30`)
-- **Grid Interconnection Status**:
-  - `--grid-energized` (`#065f46` / `#39ff88`)
-  - `--grid-phased` (`#155e75` / `#00e5ff`)
-  - `--grid-queue` (`#1e40af` / `#38bdf8`)
-  - `--grid-contested` (`#b91c1c` / `#ff3b30`)
-  - `--grid-upgrade` (`#92400e` / `#ffb300`)
-- **Parcel Footprint Zones** (real surveyed `building` and `campus` structure footprints alongside audited sub-zones):
-  - `--zone-boundary` (`#c2410c` / `#ff7b00`)
-  - `--zone-operational` (`#065f46` / `#39ff88`)
-  - `--zone-expansion` (`#5b21b6` / `#c084fc`)
-  - `--zone-substation` (`#92400e` / `#ffb300`)
-  - `--zone-cooling` (`#155e75` / `#00e5ff`)
-- **Catalog Tier Visual Grammar**:
-  - `--tier-flagship` (`#9a3412` / `#ff7b00`) — audited flagship campuses; full core ring + solid phosphor amber wireframe + dossier citation badge
-  - `--tier-registry` (`#155e75` / `#00e5ff`) — national registry campuses fused from IM3/PeeringDB/EPA; medium-weight pattern-blue node + crisp outer border
-  - `--tier-provisional` (`#5b21b6` / `#c084fc`) — provisional filings & announcements; dashed Unit-01 violet perimeter beacon + `"Provisional"` pill
-- **ISO Live Dispatch Fuel Mix Bars**:
-  - `--fuel-nuclear` (`#5b21b6` / `#c084fc`)
-  - `--fuel-gas` (`#c2410c` / `#ff7b00`)
-  - `--fuel-coal` (`#312938` / `#9e917d`)
-  - `--fuel-wind` (`#065f46` / `#39ff88`)
-  - `--fuel-solar` (`#854d0e` / `#ffb300`)
-  - `--fuel-hydro` (`#155e75` / `#00e5ff`)
-- **Live Pulse, Semantic Hazard Stripes & Scanlines**:
-  - `--pulse-delta-glow` (`rgba(194, 65, 12, 0.3)` / `rgba(255, 123, 0, 0.44)`)
-  - `--hazard-stripe-amber` (diagonal `45deg` caution gradient for `contested` / `estimated` / alert frames)
-  - `--hazard-stripe-crimson` (diagonal `45deg` emergency gradient for `moratorium` / `severe` / `undisclosed` alerts)
-  - `--scanline-overlay` (horizontal `3px` drafting/CRT scan texture for terminal framing)
+Each status also has its own glyph shape in `.status-glyph--*`, so status never depends on color alone.
 
-## Multi-Scale Cartography, Optical Reticle & Accessibility Rules
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--status-operational` | `#07663f` | `#3ddc97` |
+| `--status-operational-bg` | `rgba(7, 102, 63, 0.1)` | `rgba(61, 220, 151, 0.12)` |
+| `--status-operational-border` | `rgba(7, 102, 63, 0.36)` | `rgba(61, 220, 151, 0.36)` |
+| `--status-expanding` | `#07655d` | `#2dd4bf` |
+| `--status-expanding-bg` | `rgba(7, 101, 93, 0.1)` | `rgba(45, 212, 191, 0.12)` |
+| `--status-expanding-border` | `rgba(7, 101, 93, 0.36)` | `rgba(45, 212, 191, 0.36)` |
+| `--status-under-construction` | `#1d5fc4` | `#6cb2ff` |
+| `--status-under-construction-bg` | `rgba(29, 95, 196, 0.1)` | `rgba(108, 178, 255, 0.13)` |
+| `--status-under-construction-border` | `rgba(29, 95, 196, 0.36)` | `rgba(108, 178, 255, 0.38)` |
+| `--status-permitted` | `#4347c9` | `#8f9bff` |
+| `--status-permitted-bg` | `rgba(67, 71, 201, 0.1)` | `rgba(143, 155, 255, 0.14)` |
+| `--status-permitted-border` | `rgba(67, 71, 201, 0.36)` | `rgba(143, 155, 255, 0.4)` |
+| `--status-proposed` | `#6b4fc0` | `#b79cff` |
+| `--status-proposed-bg` | `rgba(107, 79, 192, 0.1)` | `rgba(183, 156, 255, 0.14)` |
+| `--status-proposed-border` | `rgba(107, 79, 192, 0.36)` | `rgba(183, 156, 255, 0.4)` |
+| `--status-contested` | `#9c3f0e` | `#ff8a3d` |
+| `--status-contested-bg` | `rgba(156, 63, 14, 0.11)` | `rgba(255, 138, 61, 0.14)` |
+| `--status-contested-border` | `rgba(156, 63, 14, 0.42)` | `rgba(255, 138, 61, 0.46)` |
+| `--status-moratorium` | `#c02626` | `#ff5a5f` |
+| `--status-moratorium-bg` | `rgba(192, 38, 38, 0.11)` | `rgba(255, 90, 95, 0.14)` |
+| `--status-moratorium-border` | `rgba(192, 38, 38, 0.42)` | `rgba(255, 90, 95, 0.46)` |
 
-- **Constellation vs. Corridor Pill Hierarchy (`Macro z 3.0–5.8`)**: All 50-state + DC campuses render as a luminous WebGL constellation (`2–4px` points colored by active lens and tier) beneath ISO territory outlines and proportional market-cluster rings. Collision-culled rectilinear corridor pills sit cleanly atop major hubs without overlapping neighboring hubs and separate verified MW from `reported`/proposed MW when present.
-- **Four Analytical Lenses (`z 3.0–18.5`)**: `Capacity & Lifecycle`, `Water & Cooling Stress`, `Grid & Live Dispatch` (ISO balancing-authority demand, generation, interchange, and stacked fuel-mix bars via `--fuel-nuclear`, `--fuel-gas`, `--fuel-coal`, `--fuel-wind`, `--fuel-solar`, and `--fuel-hydro`), and `Live Activity & Proposals` (filtering/pulsing sites within `24h | 7d | 30d | 90d | all` via `--pulse-delta-glow`) maintain exact 1:1 `.map-legend-pill` parity across every tier and lens.
-- **Parcel Inspection & `point_only` Optical Crosshair Reticle (`z 12.2–18.5`)**: Campuses with `verified_polygons` render real traced footprints (`building`, `campus`, `operational_hall`, `planned_expansion`, `substation_yard`, `cooling_yard`) using `--zone-boundary`, `--zone-operational`, `--zone-expansion`, `--zone-substation`, and `--zone-cooling`. Campuses marked `point_only` render a crisp GeoFront-style concentric optical crosshair locator reticle (`--accent-primary`) with an honest `"No Traced Building Footprint"` notice—never synthetic rectangles.
-- **Live Pulse Modal**: Consolidates live ISO dispatch snapshots (with stacked fuel-mix bars and tabular MW shares) alongside filterable streams from DOE/FERC/EPA/NRC Federal Register dockets, SEC EDGAR filings, and PeeringDB colocation deltas, surfacing explicit `stale` or `degraded` banners when upstreams fail.
-- **Accessibility & Contrast**: All light-mode text tokens achieve `>= 4.9:1` contrast over tinted pills on `#fcfaf4`, all dark-mode phosphor text achieves `>= 4.8:1` on `#15111d`, interactive boundaries maintain `>= 3:1` contrast (`--border-strong` clears `4.7:1` in both themes), `:focus-visible` outlines use `--border-focus`, keyboard shortcuts work cleanly (`/` focuses search without inserting a slash, `Escape` closes drawers/modals and restores opener focus, `aria-modal="true"` traps focus), and `prefers-reduced-motion: reduce` disables transitions, pulses, and animated raster effects. Map HUD overlays use `--hud-bg` / `--hud-text` / `--hud-border` for WCAG AA legibility over Light Vector, Dark Vector, Esri World Imagery, and USGS Imagery basemaps.
+## Epistemic provenance
+
+How a figure is known. `undisclosed` always renders as the word "Undisclosed", never as zero.
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--epistemic-measured` | `#07663f` | `#3ddc97` |
+| `--epistemic-measured-bg` | `rgba(7, 102, 63, 0.1)` | `rgba(61, 220, 151, 0.12)` |
+| `--epistemic-permitted` | `#1d5fc4` | `#6cb2ff` |
+| `--epistemic-permitted-bg` | `rgba(29, 95, 196, 0.1)` | `rgba(108, 178, 255, 0.13)` |
+| `--epistemic-filed` | `#4347c9` | `#8f9bff` |
+| `--epistemic-filed-bg` | `rgba(67, 71, 201, 0.1)` | `rgba(143, 155, 255, 0.14)` |
+| `--epistemic-disclosed` | `#07655d` | `#2dd4bf` |
+| `--epistemic-disclosed-bg` | `rgba(7, 101, 93, 0.1)` | `rgba(45, 212, 191, 0.12)` |
+| `--epistemic-estimated` | `#7a5c00` | `#e6c84a` |
+| `--epistemic-estimated-bg` | `rgba(122, 92, 0, 0.12)` | `rgba(230, 200, 74, 0.13)` |
+| `--epistemic-reported` | `#9c3f0e` | `#ff8a3d` |
+| `--epistemic-reported-bg` | `rgba(156, 63, 14, 0.11)` | `rgba(255, 138, 61, 0.14)` |
+| `--epistemic-reported-border` | `rgba(156, 63, 14, 0.42)` | `rgba(255, 138, 61, 0.46)` |
+| `--epistemic-undisclosed` | `#c02626` | `#ff5a5f` |
+| `--epistemic-undisclosed-bg` | `rgba(192, 38, 38, 0.11)` | `rgba(255, 90, 95, 0.14)` |
+
+## Thermal regime, watershed stress, grid interconnection
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--thermal-free` | `#07663f` | `#3ddc97` |
+| `--thermal-free-bg` | `rgba(7, 102, 63, 0.1)` | `rgba(61, 220, 151, 0.12)` |
+| `--thermal-adiabatic` | `#7a5c00` | `#e6c84a` |
+| `--thermal-adiabatic-bg` | `rgba(122, 92, 0, 0.12)` | `rgba(230, 200, 74, 0.13)` |
+| `--thermal-peak` | `#c02626` | `#ff5a5f` |
+| `--thermal-peak-bg` | `rgba(192, 38, 38, 0.11)` | `rgba(255, 90, 95, 0.14)` |
+| `--thermal-unavailable` | `#5a6675` | `#8492a5` |
+| `--thermal-unavailable-bg` | `rgba(90, 102, 117, 0.12)` | `rgba(132, 146, 165, 0.14)` |
+| `--stress-low` | `#07663f` | `#3ddc97` |
+| `--stress-low-medium` | `#07655d` | `#2dd4bf` |
+| `--stress-medium-high` | `#7a5c00` | `#e6c84a` |
+| `--stress-high` | `#9c3f0e` | `#ff8a3d` |
+| `--stress-extremely-high` | `#c02626` | `#ff5a5f` |
+| `--grid-energized` | `#07663f` | `#3ddc97` |
+| `--grid-phased` | `#07655d` | `#2dd4bf` |
+| `--grid-queue` | `#1d5fc4` | `#6cb2ff` |
+| `--grid-contested` | `#c02626` | `#ff5a5f` |
+| `--grid-upgrade` | `#7a5c00` | `#e6c84a` |
+
+## Parcel zones, catalog tier, fuel mix
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--zone-boundary` | `#a85d00` | `#ffb020` |
+| `--zone-operational` | `#07663f` | `#3ddc97` |
+| `--zone-expansion` | `#6b4fc0` | `#b79cff` |
+| `--zone-substation` | `#7a5c00` | `#e6c84a` |
+| `--zone-cooling` | `#0b6a94` | `#38c8ff` |
+| `--tier-flagship` | `#8f4e00` | `#ffbe45` |
+| `--tier-registry` | `#333d4b` | `#b4c0cf` |
+| `--tier-provisional` | `#6b4fc0` | `#b79cff` |
+| `--fuel-nuclear` | `#6b4fc0` | `#b79cff` |
+| `--fuel-gas` | `#9c3f0e` | `#ff8a3d` |
+| `--fuel-coal` | `#4a5563` | `#7b8696` |
+| `--fuel-wind` | `#07663f` | `#3ddc97` |
+| `--fuel-solar` | `#8a6a00` | `#ffd23f` |
+| `--fuel-hydro` | `#0b6a94` | `#38c8ff` |
+
+## Semantic patterns
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--hazard-stripe-amber` | gradient, see `tokens.css` | gradient, see `tokens.css` |
+| `--hazard-stripe-crimson` | gradient, see `tokens.css` | gradient, see `tokens.css` |
+| `--hatch-reported` | gradient, see `tokens.css` | gradient, see `tokens.css` |
+
+## Map palette
+
+MapLibre paint properties cannot read CSS custom properties, so `DARK_MAP_PALETTE` and `LIGHT_MAP_PALETTE` in [src/client/lib/constants.ts](src/client/lib/constants.ts) repeat the lifecycle, stress, grid, tier and zone hex values above. `tests/tokens.test.ts` fails if they differ. The light palette is used only on the light vector basemap; imagery basemaps always use the dark palette.
+
+## Accessibility
+
+- Text, status and provenance colors meet WCAG AA (4.5:1) on every surface token in both themes. `--border-strong` meets 3:1 and marks form field boundaries.
+- `:focus-visible` draws a 2px `--border-focus` outline on every interactive element.
+- `/` focuses search, `Escape` closes the open popover, modal or dossier and returns focus to what opened it, and modals trap focus.
+- Status, tier and provenance are always stated in text beside any color or pattern.

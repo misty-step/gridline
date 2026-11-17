@@ -230,7 +230,7 @@ export function App() {
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.setAttribute("data-resolved-theme", resolvedTheme);
     try {
-      window.localStorage.setItem("gridline:theme", theme);
+      window.localStorage.setItem("undercurrent:theme", theme);
     } catch {
       // ignore storage failures
     }
@@ -758,7 +758,7 @@ export function App() {
           {bundleError && (
             <div className="workspace-error-banner" role="alert">
               <AlertTriangle size={15} aria-hidden="true" />
-              <span>Failed to load infrastructure atlas: {bundleError}</span>
+              <span>Could not load the campus index: {bundleError}</span>
               <button
                 type="button"
                 className="workspace-retry-btn"
@@ -771,8 +771,8 @@ export function App() {
           )}
 
           {bundleLoading && facilities.length === 0 && (
-            <div className="workspace-loading-pill mono" aria-live="polite">
-              INITIALIZING 50-STATE MAGI OBSERVATORY...
+            <div className="workspace-loading-pill" aria-live="polite">
+              Loading campuses…
             </div>
           )}
 
@@ -793,19 +793,21 @@ export function App() {
 
               <div className="map-collapsed-stats mono" aria-label="Viewport totals">
                 <span className="map-stat-op">
-                  {formatGwOrMw(viewportMetrics.verifiedOperationalMw)} op
+                  {formatGwOrMw(viewportMetrics.verifiedOperationalMw)} operating
                 </span>
                 <span className="hud-sep" aria-hidden="true">
                   ·
                 </span>
-                <span>{formatGwOrMw(viewportMetrics.verifiedPlannedMw)} plan</span>
+                <span className="map-stat-plan">
+                  {formatGwOrMw(viewportMetrics.verifiedPlannedMw)} planned
+                </span>
                 {viewportMetrics.reportedOrProposedMw > 0 && (
                   <>
                     <span className="hud-sep" aria-hidden="true">
                       ·
                     </span>
                     <span className="map-stat-prop">
-                      +{formatGwOrMw(viewportMetrics.reportedOrProposedMw)} prop
+                      +{formatGwOrMw(viewportMetrics.reportedOrProposedMw)} reported
                     </span>
                   </>
                 )}
@@ -912,6 +914,7 @@ export function App() {
         onPulseWindowChange={handlePulseWindowChange}
         onRefresh={handleRefreshPulse}
         onSelectFacilityById={handleSelectFacilityById}
+        facilityNameById={(id) => facilities.find((f) => f.id === id)?.name}
         onClose={() => setPulseModalOpen(false)}
       />
     </div>

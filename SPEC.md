@@ -1,12 +1,12 @@
-# Gridline — US Data Center Infrastructure & Live Grid Observatory Specification
+# Undercurrent — Specification
 
-Gridline is a national cartographic observatory mapping operational, expanding, permitted, proposed, contested, and moratorium-affected data center campuses across all 50 US states and the District of Columbia alongside live regional electric grid dispatch, meteorological wet-bulb telemetry, basin streamgauge discharge, federal and corporate evidence streams, and epistemic provenance records.
+Undercurrent is a live atlas of the power and water behind US data centers. It maps operational, expanding, permitted, proposed, contested, and moratorium-affected data center campuses across all 50 US states and the District of Columbia alongside live regional electric grid dispatch, meteorological wet-bulb telemetry, basin streamgauge discharge, federal and corporate evidence streams, and epistemic provenance records.
 
 For architecture decisions, see [ADR 0001](docs/decisions/0001-stack-and-architecture.md) and [ADR 0002](docs/decisions/0002-comprehensive-census-and-live-observatory.md). For visual tokens and surface rules, see [DESIGN.md](DESIGN.md).
 
 ## Purpose
 
-Gridline provides researchers, grid planners, municipal reviewers, journalists, and operators with a single auditable system of record for US data center infrastructure that:
+Undercurrent provides researchers, grid planners, municipal reviewers, journalists, and operators with a single auditable system of record for US data center infrastructure that:
 
 1. Combines a 50-state + DC spatial census of hyperscale, colocation, AI compute, and enterprise campuses with verified building and campus geometry where mapped.
 2. Pairs static infrastructure inventories with continuous live telemetry from regional electric grids, nearest weather stations, and streamgauges.
@@ -15,10 +15,10 @@ Gridline provides researchers, grid planners, municipal reviewers, journalists, 
 
 ## Non-Goals
 
-- **No Non-Commercial or Restricted Bulk Scraping:** Gridline excludes datasets or bulk exports carrying non-commercial restrictions (such as FracTracker) or opaque licensing.
-- **No Synthetic Geometry or Filler Prose:** Gridline never fabricates parcel rectangles around unmapped coordinates and never generates templated stakeholder commentary on facilities lacking primary documentary evidence.
-- **No Fabricated Live Telemetry:** Gridline never interpolates or substitutes synthetic weather, river discharge, grid dispatch, or filing records when upstream services time out or fail.
-- **No Sub-Minute SCADA or Proprietary Trading Telemetry:** Gridline tracks public grid balancing-authority dispatch, public regulatory dockets, and public environmental observations rather than sub-second substation telemetry or proprietary locational marginal pricing feeds.
+- **No Non-Commercial or Restricted Bulk Scraping:** Undercurrent excludes datasets or bulk exports carrying non-commercial restrictions (such as FracTracker) or opaque licensing.
+- **No Synthetic Geometry or Filler Prose:** Undercurrent never fabricates parcel rectangles around unmapped coordinates and never generates templated stakeholder commentary on facilities lacking primary documentary evidence.
+- **No Fabricated Live Telemetry:** Undercurrent never interpolates or substitutes synthetic weather, river discharge, grid dispatch, or filing records when upstream services time out or fail.
+- **No Sub-Minute SCADA or Proprietary Trading Telemetry:** Undercurrent tracks public grid balancing-authority dispatch, public regulatory dockets, and public environmental observations rather than sub-second substation telemetry or proprietary locational marginal pricing feeds.
 
 ## Terms
 
@@ -56,23 +56,25 @@ Gridline provides researchers, grid planners, municipal reviewers, journalists, 
 
 ### Four Analytical Lenses
 
-1. **Capacity & Lifecycle:** Encodes `Lifecycle Status` and verified operational vs. planned MW capacity, distinguishing `flagship`, `registry`, and `provisional` tiers via geometric hierarchy and framing `contested` and `moratorium` sites with outer dashed/double halos independent of color perception.
-2. **Water & Cooling Stress:** Encodes cooling architecture and watershed baseline stress (`low` through `extremely_high`), marking `undisclosed` water operators with a distinct dashed warning ring and explicit `Undisclosed by Operator` labels.
-3. **Grid & Live Dispatch:** Encodes utility interconnection status alongside live `ISO/RTO Region` load, net generation, interchange, and generation fuel-mix bars (`nuclear`, `gas`, `coal`, `wind`, `solar`, `hydro`).
-4. **Live Activity & Proposals:** Highlights campuses and regions experiencing recent `Activity Delta` (`24h`, `7d`, `30d`, `90d`, `all`) across regulatory filings, corporate disclosures, colocation registry changes, and `provisional` proposals with subtle delta emphasis.
+1. **Capacity:** Encodes `Lifecycle Status` and verified operational vs. planned MW capacity, distinguishing `flagship`, `registry`, and `provisional` tiers via geometric hierarchy and framing `contested` and `moratorium` sites with outer dashed/double halos independent of color perception.
+2. **Water:** Encodes cooling architecture and watershed baseline stress (`low` through `extremely_high`), marking `undisclosed` water operators with a distinct dashed warning ring and explicit `Undisclosed by Operator` labels.
+3. **Grid:** Encodes utility interconnection status alongside live `ISO/RTO Region` load, net generation, interchange, and generation fuel-mix bars (`nuclear`, `gas`, `coal`, `wind`, `solar`, `hydro`).
+4. **Activity:** Highlights campuses and regions experiencing recent `Activity Delta` (`24h`, `7d`, `30d`, `90d`, `all`) across regulatory filings, corporate disclosures, colocation registry changes, and `provisional` proposals with subtle delta emphasis.
 
 ### Three Semantic Zoom Tiers
 
-1. **Macro National (`z 3.0–5.8`):** Renders the full 50-state + DC luminous campus constellation overlaid with interactive `ISO/RTO Region` boundaries and dynamically computed market-cluster proportional rings. Collision-culled corridor callout pills display verified operational MW, verified planned MW, separated reported/proposed MW when present, and facility counts without overlapping neighboring hubs. Selecting a cluster zooms smoothly into its regional corridor.
+1. **Macro National (`z 3.0–5.8`):** Renders the full 50-state + DC luminous campus constellation overlaid with interactive `ISO/RTO Region` boundaries and dynamically computed market-cluster proportional rings. Collision-culled cluster callouts name each hub and show its verified planned MW, reported MW as a separate labeled figure when present, and its site count, without overlapping neighboring hubs. A hub with no public capacity figure shows its site count alone rather than `0 MW`. Selecting a cluster zooms smoothly into its regional corridor.
 2. **Regional Corridor (`z 5.8–12.2`):** Renders individual campus glyphs scaled by capacity with inner operational cores, tier-distinct visual treatments for `flagship`, `registry`, and `provisional` campuses, and non-color indicators for `contested`, `moratorium`, and `undisclosed` water sites. Hover previews display name, tier, MW split, water/cooling posture, and live wet-bulb thermal regime.
 3. **Granular Parcel Inspection (`z 12.2–18.5`):** Lazily reveals real traced `Structure Footprint` sub-zones (`building`, `campus`, `operational_hall`, `planned_expansion`, `substation_yard`, `cooling_yard`), scale bars, live cursor/center coordinates, and one-click `z ~16` high-resolution satellite/orthophoto parcel inspection. For `point_only` campuses, the map displays a coordinate locator reticle and explicit unmapped-geometry notice rather than invented parcel boundaries.
 
-### Workspace Choreography, Search, Comparison & Live Pulse
+### Workspace, Search, Comparison & Live View
 
 - **Responsive Single-Panel & Mobile-Peek Choreography:** On wide viewports (`>= 1280px`), the directory rail, interactive map canvas, and facility dossier operate as non-overlapping flex siblings. Below `1280px`, opening a dossier collapses the directory rail cleanly into a single-click return pill so the map remains unobstructed. On narrow mobile viewports (`<= 768px`), campus inspection uses a 2-detent bottom sheet (`peek` at `42%` height, `expanded` at `88%` height) that automatically snaps to `peek` when triggering parcel inspection, with `>= 44px` touch targets throughout.
-- **Virtualized Directory & Multi-Faceted Filtering:** The directory searches across campus names, cities, counties, states, operators, developers, utilities, tenants, registry identifiers, and permit dockets, virtualizing long lists for smooth scrolling across thousands of national campuses. Filters cover `Verified Only`, `Catalog Tier`, `Lifecycle Status`, `ISO/RTO Region`, `Cooling Architecture`, `Contested / Moratorium Only`, `Undisclosed Water Only`, `Activity Delta` window, and sort order. A synchronized viewport telemetry summary continuously separates verified operational MW, verified planned MW, and reported/proposed MW for the active map bounds and filter set.
+- **Theme & Shared Links:** The interface offers dark and light themes and follows the operating-system setting until the user chooses one. A shared link reproduces the map view, lens, basemap, filters, selected campus, and pinned comparison, and never carries the sender's theme.
+- **Plain Language:** Interface labels state what a thing is in ordinary words; raw enum values, internal identifiers, and code names never appear in user-facing copy.
+- **Virtualized Directory & Multi-Faceted Filtering:** The directory searches across campus names, cities, counties, states, operators, developers, utilities, tenants, registry identifiers, and permit dockets, virtualizing long lists for smooth scrolling across thousands of national campuses. Filters cover `Verified Only`, `Catalog Tier`, `Lifecycle Status`, `ISO/RTO Region`, `Cooling Architecture`, `Contested / Moratorium Only`, `Undisclosed Water Only`, `Activity Delta` window, and sort order. A view ledger at the top of the directory continuously states verified operating MW, verified planned MW, and reported-only MW for the active map bounds and filter set as three separate figures with a proportional bar in which reported-only capacity is hatched, followed by disclosed peak water and the counts of campuses with undisclosed water and with contested or moratorium status.
 - **Side-by-Side Comparison Matrix:** Users can pin 2 to 3 campuses into a persistent dock and open an accessible comparison matrix contrasting tier, lifecycle, verified vs. reported MW, interconnection posture, water disclosures, cooling architecture, watershed stress, live weather/wet-bulb telemetry, live streamgauge discharge, regional grid snapshot, and permitting posture.
-- **Unified Live Pulse View:** A dedicated observatory modal unifies live regional electric grid dispatch and fuel-mix snapshots across all 9 ISO/RTO regions with filtered `Evidence Signal` streams from DOE/FERC/EPA/NRC federal dockets, SEC corporate filings, and PeeringDB colocation registry deltas, filterable by stream and `Activity Delta` window.
+- **Live View:** A dedicated modal opens with a freshness strip stating `live`, `stale`, or `degraded` for each of the three data streams, then unifies live regional electric grid dispatch and fuel-mix snapshots across all 9 ISO/RTO regions with filtered `Evidence Signal` streams from DOE/FERC/EPA/NRC federal dockets, SEC corporate filings, and PeeringDB colocation registry deltas, filterable by stream and `Activity Delta` window. Filings matched to a campus link to it by campus name.
 
 ## Dossier & Epistemic Evidence Contract
 
@@ -94,4 +96,4 @@ Gridline provides researchers, grid planners, municipal reviewers, journalists, 
 ### Export & CLI Parity
 
 - **Dataset Exports:** Filtered campus datasets export as RFC 4180 CSV and RFC 7946 GeoJSON preserving `Catalog Tier`, `Footprint Coverage`, separated verified vs. reported capacity fields, `Epistemic Status` columns, registry identifiers, and live anchor identifiers.
-- **Headless CLI Parity:** A command-line interface exposes full parity with the web observatory for national fleet summaries (with separated verified vs. reported MW totals), multi-faceted filtered queries across all 50 states + DC, complete single-campus inspection, live weather/hydrology/grid snapshot fetches, and unified `Live Pulse` signal queries in both human-readable tables and structured machine-readable output.
+- **Headless CLI Parity:** A command-line interface exposes full parity with the web observatory for national fleet summaries (with separated verified vs. reported MW totals), multi-faceted filtered queries across all 50 states + DC, complete single-campus inspection, live weather/hydrology/grid snapshot fetches, and live filing signal queries in both human-readable tables and structured machine-readable output.

@@ -68,7 +68,7 @@ describe("bundled US data center dataset", () => {
       d1Bound: boolean;
     };
     expect(health.status).toBe("ok");
-    expect(health.release).toBe("1.0.0");
+    expect(health.release).toBe("1.1.0");
     expect(health.facilityCount).toBe(ALL_INDEX_ITEMS.length);
     expect(health.statesCovered).toBeGreaterThanOrEqual(24);
     expect(health.verifiedOperationalMwTotal).toBeGreaterThan(0);

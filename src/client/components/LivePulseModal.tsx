@@ -20,6 +20,7 @@ import {
   computeCleanSharePct,
   formatGw,
   formatNumber,
+  formatDate,
   formatTimestamp,
   PULSE_STREAM_LABELS,
 } from "../lib/format";
@@ -37,6 +38,7 @@ interface LivePulseModalProps {
   onPulseWindowChange: (window: ActivityWindow) => void;
   onRefresh: () => void;
   onSelectFacilityById: (facilityId: string) => void;
+  facilityNameById: (facilityId: string) => string | undefined;
   onClose: () => void;
 }
 
@@ -52,6 +54,35 @@ function evaluateCensusStatus(
   return ageDays <= 7 ? "live" : "stale";
 }
 
+const STATUS_LABELS = { live: "Live", stale: "Stale", degraded: "Degraded" } as const;
+
+function FreshnessCell({
+  label,
+  budget,
+  status,
+  detail,
+}: {
+  label: string;
+  budget: string;
+  status: keyof typeof STATUS_LABELS;
+  detail: string;
+}) {
+  return (
+    <div className={`freshness-cell freshness-cell--${status}`}>
+      <dt>
+        {label} <span className="freshness-budget">{budget}</span>
+      </dt>
+      <dd>
+        <span className="freshness-state">
+          <span className={`pulse-status-dot pulse-status-dot--${status}`} aria-hidden="true" />
+          {STATUS_LABELS[status]}
+        </span>
+        <span className="freshness-detail">{detail}</span>
+      </dd>
+    </div>
+  );
+}
+
 export function LivePulseModal({
   open,
   gridFeed,
@@ -63,6 +94,7 @@ export function LivePulseModal({
   onPulseWindowChange,
   onRefresh,
   onSelectFacilityById,
+  facilityNameById,
   onClose,
 }: LivePulseModalProps) {
   const panelRef = useModalDialog(open, onClose);
@@ -119,11 +151,8 @@ export function LivePulseModal({
           <div className="modal-title-group">
             <Radio size={16} aria-hidden="true" />
             <h2 id="pulse-modal-title" className="modal-title">
-              Live Observatory Pulse
+              Live
             </h2>
-            <span className="modal-count mono">
-              MAGI // DISPATCH &amp; EVIDENCE STREAMS
-            </span>
           </div>
 
           <div className="modal-head-actions">
@@ -138,63 +167,51 @@ export function LivePulseModal({
                 className={loading ? "spin" : ""}
                 aria-hidden="true"
               />
-              <span>{loading ? "Syncing..." : "Refresh"}</span>
+              <span>Refresh</span>
             </button>
             <button
               type="button"
               className="drawer-close-btn"
               onClick={onClose}
-              aria-label="Close Live Observatory Pulse"
+              aria-label="Close live view"
             >
               <X size={16} aria-hidden="true" />
             </button>
           </div>
         </div>
 
-        {/* MAGI Tri-Core Consensus Freshness Strip */}
-        <div
-          className="magi-consensus-strip"
-          aria-label="MAGI Tri-Core Freshness Consensus"
-        >
-          <div className={`magi-core magi-core--${physicsStatus}`}>
-            <div className="magi-core-top mono">
-              <span className={`pulse-status-dot pulse-status-dot--${physicsStatus}`} />
-              <span>MAGI·01 // PHYSICS &lt;=60M</span>
-              <span className="magi-state">{physicsStatus.toUpperCase()}</span>
-            </div>
-            <div className="magi-core-sub mono">
-              {gridFeed?.fetchedAt
-                ? `EIA Grid ${formatTimestamp(gridFeed.fetchedAt)}`
-                : "EIA dispatch endpoint unavailable"}
-            </div>
-          </div>
-
-          <div className={`magi-core magi-core--${filingsStatus}`}>
-            <div className="magi-core-top mono">
-              <span className={`pulse-status-dot pulse-status-dot--${filingsStatus}`} />
-              <span>MAGI·02 // FILINGS &lt;=24H</span>
-              <span className="magi-state">{filingsStatus.toUpperCase()}</span>
-            </div>
-            <div className="magi-core-sub mono">
-              {pulseFeed?.fetchedAt
-                ? `Dockets & SEC ${formatTimestamp(pulseFeed.fetchedAt)}`
-                : "Fetching live filings..."}
-            </div>
-          </div>
-
-          <div className={`magi-core magi-core--${censusStatus}`}>
-            <div className="magi-core-top mono">
-              <span className={`pulse-status-dot pulse-status-dot--${censusStatus}`} />
-              <span>MAGI·03 // CENSUS &lt;=7D</span>
-              <span className="magi-state">{censusStatus.toUpperCase()}</span>
-            </div>
-            <div className="magi-core-sub mono">
-              {fleetSummary
-                ? `${formatNumber(fleetSummary.totalFacilities)} campuses · ${fleetSummary.statesCovered} jurisdictions`
-                : "Index loaded"}
-            </div>
-          </div>
-        </div>
+        <dl className="freshness-strip" aria-label="Data freshness">
+          <FreshnessCell
+            label="Grid, weather, rivers"
+            budget="hourly"
+            status={physicsStatus}
+            detail={
+              gridFeed?.fetchedAt
+                ? `Updated ${formatTimestamp(gridFeed.fetchedAt)}`
+                : "Grid dispatch unavailable"
+            }
+          />
+          <FreshnessCell
+            label="Filings"
+            budget="daily"
+            status={filingsStatus}
+            detail={
+              pulseFeed?.fetchedAt
+                ? `Updated ${formatTimestamp(pulseFeed.fetchedAt)}`
+                : "Fetching filings…"
+            }
+          />
+          <FreshnessCell
+            label="Campus census"
+            budget="weekly"
+            status={censusStatus}
+            detail={
+              fleetSummary
+                ? `${formatNumber(fleetSummary.totalFacilities)} campuses · ${fleetSummary.statesCovered} states and DC`
+                : "Index loaded"
+            }
+          />
+        </dl>
 
         <div className="modal-body pulse-modal-body">
           {/* 9-ISO Live Electric Dispatch Grid */}
@@ -206,7 +223,7 @@ export function LivePulseModal({
               <div className="pulse-section-title-wrap">
                 <Zap size={14} aria-hidden="true" />
                 <h3 id="pulse-grid-heading" className="pulse-section-title">
-                  9-ISO Live Electric Dispatch &amp; Fuel Mix
+                  Grid dispatch by region
                 </h3>
               </div>
               {gridFeed?.sourceUrl && (
@@ -214,7 +231,7 @@ export function LivePulseModal({
                   href={gridFeed.sourceUrl}
                   className="live-ext-link"
                 >
-                  EIA API v2
+                  Source: EIA
                 </SafeExternalLink>
               )}
             </div>
@@ -223,7 +240,7 @@ export function LivePulseModal({
               <div className="degraded-banner" role="alert">
                 <AlertTriangle size={14} aria-hidden="true" />
                 <div>
-                  <strong>Live Grid Dispatch Unavailable:</strong>{" "}
+                  <strong>Grid dispatch unavailable.</strong>{" "}
                   {gridFeed?.error ||
                     "Regional EIA balancing-authority snapshot endpoint did not return live telemetry."}
                 </div>
@@ -257,7 +274,7 @@ export function LivePulseModal({
 
                         <div className="iso-dispatch-metrics mono">
                           <span>
-                            Gen: {snap ? formatGw(snap.netGenerationMw) : "—"}
+                            {snap ? `${formatGw(snap.netGenerationMw)} generating` : "—"}
                           </span>
                           <span>
                             {cleanPct !== null ? `${cleanPct}% clean` : status}
@@ -332,10 +349,10 @@ export function LivePulseModal({
               >
                 {(
                   [
-                    { id: "all", label: "All Signals" },
+                    { id: "all", label: "All filings" },
                     { id: "federal_register", label: "Federal Register" },
-                    { id: "sec_edgar", label: "SEC EDGAR 8-K/10-Q" },
-                    { id: "peeringdb", label: "PeeringDB Deltas" },
+                    { id: "sec_edgar", label: "SEC filings" },
+                    { id: "peeringdb", label: "PeeringDB changes" },
                   ] as const
                 ).map((tab) => {
                   const streamStat =
@@ -371,9 +388,9 @@ export function LivePulseModal({
               <div
                 className="pulse-window-group"
                 role="group"
-                aria-label="Activity Delta window"
+                aria-label="Publication window"
               >
-                <span className="pulse-window-label mono">DELTA</span>
+                <span className="pulse-window-label">Published in</span>
                 {ACTIVITY_WINDOW_OPTIONS.map((opt) => (
                   <button
                     key={opt.id}
@@ -394,24 +411,24 @@ export function LivePulseModal({
               <div className="degraded-banner" role="alert">
                 <AlertTriangle size={14} aria-hidden="true" />
                 <div>
-                  <strong>Evidence Stream Degraded:</strong>{" "}
+                  <strong>Some filings are missing.</strong>{" "}
                   {error ||
                     pulseFeed?.error ||
-                    "One or more live filing streams failed or exceeded freshness budget; remaining verified streams are shown."}
+                    "One or more sources failed or are out of date. Filings from the sources that responded are shown."}
                 </div>
               </div>
             )}
 
             {loading && !pulseFeed && (
               <div className="modal-loading">
-                Synchronizing Federal Register, SEC EDGAR, and PeeringDB streams...
+                Loading filings from the Federal Register, SEC EDGAR and PeeringDB…
               </div>
             )}
 
             {pulseFeed && filteredItems.length === 0 && !loading && (
               <div className="modal-empty">
-                No evidence signals match the active stream and{" "}
-                {pulseWindow === "all" ? "all-time" : pulseWindow} delta window.
+                No filings from this source
+                {pulseWindow === "all" ? "" : ` in the last ${pulseWindow}`}.
               </div>
             )}
 
@@ -449,7 +466,9 @@ export function LivePulseModal({
                           <span>PDF</span>
                         </SafeExternalLink>
                       )}
-                      <span className="reg-date mono">{item.publishedAt}</span>
+                      <time className="reg-date mono" dateTime={item.publishedAt}>
+                        {formatDate(item.publishedAt)}
+                      </time>
                     </div>
 
                     <h4 className="reg-item-title">
@@ -487,7 +506,7 @@ export function LivePulseModal({
                               onClose();
                             }}
                           >
-                            Inspect: {fid}
+                            {facilityNameById(fid) ?? "Open campus"}
                           </button>
                         ))}
                       </div>

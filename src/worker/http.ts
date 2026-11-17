@@ -1,7 +1,7 @@
 import type { ActivityWindow } from "../shared/types.ts";
 
-export const OBSERVATORY_USER_AGENT = "GridlineObservatory/1.0 (ops@mistystep.io)";
-export const ATLAS_USER_AGENT = "(GridlineAtlas, contact@mistystep.io)";
+export const OBSERVATORY_USER_AGENT = "Undercurrent/1.1 (ops@mistystep.io)";
+export const ATLAS_USER_AGENT = "(Undercurrent, contact@mistystep.io)";
 export const DEFAULT_TIMEOUT_MS = 4500;
 
 interface CfCacheStorage {

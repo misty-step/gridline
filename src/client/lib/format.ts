@@ -102,6 +102,19 @@ export function formatTempPair(
   return `${dec1Formatter.format(tempF)}°F (${dec1Formatter.format(tempC)}°C)`;
 }
 
+/** Calendar date for filings, which are published as a day, not an instant. */
+export function formatDate(iso: string | null): string {
+  if (!iso) return "Undated";
+  const dt = new Date(iso);
+  if (Number.isNaN(dt.getTime())) return iso;
+  return dt.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export function formatTimestamp(iso: string | null): string {
   if (!iso) return "Unavailable";
   const dt = new Date(iso);
@@ -118,7 +131,7 @@ export function formatTimestamp(iso: string | null): string {
 export const LIFECYCLE_LABELS: Record<LifecycleStatus, string> = {
   operational: "Operational",
   expanding: "Expanding",
-  under_construction: "Under Construction",
+  under_construction: "Building",
   permitted: "Permitted",
   proposed: "Proposed",
   contested: "Contested",
@@ -233,11 +246,6 @@ export const CATALOG_TIER_LABELS: Record<CatalogTier, string> = {
   provisional: "Provisional Proposal",
 };
 
-export const CATALOG_TIER_BADGES: Record<CatalogTier, string> = {
-  flagship: "FLAGSHIP DOSSIER",
-  registry: "VERIFIED REGISTRY",
-  provisional: "PROVISIONAL PROPOSAL",
-};
 
 export const CATALOG_TIER_SHORT_LABELS: Record<CatalogTier, string> = {
   flagship: "Flagship",
@@ -299,8 +307,5 @@ export function formatGw(mw: number | null | undefined): string {
 export function formatCoordHud(lng: number, lat: number, zoom: number): string {
   const latDir = lat >= 0 ? "N" : "S";
   const lngDir = lng >= 0 ? "E" : "W";
-  const latStr = Math.abs(lat).toFixed(2).padStart(5, "0");
-  const lngStr = Math.abs(lng).toFixed(2).padStart(6, "0");
-  const zStr = zoom.toFixed(1).padStart(4, "0");
-  return `[Z:${zStr} // ${latStr}°${latDir} ${lngStr}°${lngDir}]`;
+  return `${Math.abs(lat).toFixed(2)}°${latDir} ${Math.abs(lng).toFixed(2)}°${lngDir} · z${zoom.toFixed(1)}`;
 }

@@ -15,7 +15,7 @@ import {
   writeCachedJson,
 } from "./http.ts";
 
-const GRID_CACHE_KEY = "https://gridline-cache.internal/v1/grid/live";
+const GRID_CACHE_KEY = "https://undercurrent-cache.internal/v1/grid/live";
 const GRID_CACHE_TTL_SECONDS = 1800; // 30 minutes (within <= 60 min Live Physics SLA)
 const GRID_SLA_MS = 60 * 60 * 1000;
 const GRID_FRESH_D1_MS = 30 * 60 * 1000;

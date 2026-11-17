@@ -42,7 +42,7 @@ check_token_parity() {
 }
 
 cmd_doctor() {
-  echo "==> Gridline Doctor"
+  echo "==> Undercurrent doctor"
   command -v bun >/dev/null || { echo "FAIL: bun not found"; exit 1; }
   command -v git >/dev/null || { echo "FAIL: git not found"; exit 1; }
   echo "bun: $(bun --version)"
@@ -65,6 +65,7 @@ cmd_doctor() {
     README.md
     docs/decisions/0001-stack-and-architecture.md
     docs/decisions/0002-comprehensive-census-and-live-observatory.md
+    docs/decisions/0003-rename-to-undercurrent.md
     migrations/0001_live_observatory.sql
     src/shared/types.ts
     src/shared/fleet.ts
@@ -93,7 +94,7 @@ cmd_doctor() {
 }
 
 cmd_fast() {
-  echo "==> Gridline Fast Checks"
+  echo "==> Undercurrent fast checks"
   echo "--- [1/4] TypeScript typecheck"
   bun run typecheck
   echo "--- [2/4] Bun tests"
@@ -106,7 +107,7 @@ cmd_fast() {
 }
 
 cmd_verify() {
-  echo "==> Gridline Full Verification"
+  echo "==> Undercurrent full verification"
   cmd_fast
 
   echo "--- [5/7] Live upstream dataset & URL verification (--network)"
@@ -129,7 +130,7 @@ cmd_verify() {
   echo "--- [7/7] Local wrangler dev HTTP smoke test"
   local port=8799
   local insp_port=9239
-  local log_file="/tmp/gridline-wrangler-verify.log"
+  local log_file="/tmp/undercurrent-wrangler-verify.log"
   rm -f "$log_file"
 
   ./node_modules/.bin/wrangler dev --ip 127.0.0.1 --port "$port" --inspector-port "$insp_port" --local --show-interactive-dev-session false >"$log_file" 2>&1 &
@@ -159,7 +160,7 @@ cmd_verify() {
   fi
 
   local base="http://127.0.0.1:${port}"
-  curl -fsS "${base}/api/health" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.status !== "ok" || d.release !== "1.0.0" || d.facilityCount < 2200 || d.statesCovered !== 51) process.exit(1); console.log("GET /api/health OK:", d.facilityCount, "facilities,", d.statesCovered, "jurisdictions, d1Bound=", d.d1Bound);'
+  curl -fsS "${base}/api/health" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.status !== "ok" || d.release !== "1.1.0" || d.facilityCount < 2200 || d.statesCovered !== 51) process.exit(1); console.log("GET /api/health OK:", d.facilityCount, "facilities,", d.statesCovered, "jurisdictions, d1Bound=", d.d1Bound);'
   curl -fsS "${base}/api/facilities" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.facilities) || (d.summary?.totalFacilities ?? 0) < 2200 || d.isoRegions?.features?.length !== 9) process.exit(1); console.log("GET /api/facilities OK:", d.facilities.length, "index items, summary=", d.summary.totalFacilities);'
   curl -fsS "${base}/api/facilities?view=legacy&tier=flagship" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (!Array.isArray(d.facilities) || !d.footprints?.features?.length || d.isoRegions?.features?.length !== 9) process.exit(1); console.log("GET /api/facilities?view=legacy&tier=flagship OK:", d.facilities.length, "flagships,", d.footprints.features.length, "footprints");'
   curl -fsS "${base}/api/facilities?format=geojson" | bun -e 'const d = JSON.parse(await Bun.stdin.text()); if (d.type !== "FeatureCollection" || d.features.length < 2200) process.exit(1); console.log("GET /api/facilities?format=geojson OK:", d.features.length, "features");'

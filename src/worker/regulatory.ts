@@ -10,7 +10,7 @@ import {
 
 const FEDERAL_REGISTER_URL =
   "https://www.federalregister.gov/api/v1/documents.json?per_page=15&order=newest&conditions%5Bterm%5D=%22data+center%22+electric&conditions%5Bagencies%5D%5B%5D=energy-department&conditions%5Bagencies%5D%5B%5D=federal-energy-regulatory-commission&conditions%5Bagencies%5D%5B%5D=environmental-protection-agency&conditions%5Bagencies%5D%5B%5D=nuclear-regulatory-commission";
-const CACHE_KEY = "https://gridline-cache.internal/v2/regulatory/federal-register";
+const CACHE_KEY = "https://undercurrent-cache.internal/v2/regulatory/federal-register";
 const CACHE_TTL_SECONDS = 1800;
 
 export interface RegulatoryFetchOptions {

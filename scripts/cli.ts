@@ -13,7 +13,7 @@ import { ALL_PULSE_STREAMS, fetchLivePulseFeed } from "../src/worker/pulse.ts";
 import { fetchFacilityTelemetry } from "../src/worker/telemetry.ts";
 
 function printHelp(): void {
-  console.log(`Gridline CLI — US Data Center Infrastructure & Live Observatory
+  console.log(`Undercurrent CLI — the power and water behind US data centers
 
 Usage:
   bun run cli summary [--json]

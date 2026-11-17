@@ -1,9 +1,9 @@
 {
-  "name": "gridline",
-  "version": "1.0.0",
+  "name": "undercurrent",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
-  "description": "Gridline — US Data Center Infrastructure, Water/Power Footprint & Live Telemetry Atlas",
+  "description": "Undercurrent \u2014 a live atlas of the power and water behind US data centers",
   "scripts": {
     "dev": "vite",
     "dev:worker": "wrangler dev --port 8788",
@@ -14,9 +14,7 @@
     "cli": "bun run scripts/cli.ts",
     "ingest": "bun run scripts/ingest-us-census.ts",
     "deploy": "bun run build && wrangler deploy",
-    "video:plates": "bun run video/capture-plates.ts",
-    "video:audio": "bun run video/audio.ts",
-    "video:render": "bun run video/render.ts"
+    "capture": "bun run scripts/capture-ui.ts"
   },
   "dependencies": {
     "lucide-react": "^0.511.0",

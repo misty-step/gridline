@@ -49,6 +49,73 @@ interface DirectoryRailProps {
   onFitFilteredBounds: () => void;
 }
 
+/**
+ * Totals for the campuses in the current map view. Verified capacity and
+ * reported (unverified) capacity are never summed into one figure: the bar
+ * draws reported capacity hatched, beside the verified segments.
+ */
+function ViewLedger({ metrics }: { metrics: ViewportMetrics }) {
+  const op = metrics.verifiedOperationalMw;
+  const planned = Math.max(metrics.verifiedPlannedMw, op);
+  const reported = metrics.reportedOrProposedMw;
+  const total = planned + reported;
+  const pct = (mw: number) => (total > 0 ? `${(mw / total) * 100}%` : "0%");
+
+  return (
+    <section className="ledger" aria-label="Totals for campuses in view">
+      <dl className="ledger-figures">
+        <div className="ledger-figure ledger-figure--op">
+          <dd className="mono">{formatGwOrMw(op)}</dd>
+          <dt>operating</dt>
+        </div>
+        <div className="ledger-figure ledger-figure--plan">
+          <dd className="mono">{formatGwOrMw(planned)}</dd>
+          <dt>verified planned</dt>
+        </div>
+        <div className="ledger-figure ledger-figure--reported">
+          <dd className="mono">+{formatGwOrMw(reported)}</dd>
+          <dt>reported only</dt>
+        </div>
+      </dl>
+
+      <div className="ledger-bar" aria-hidden="true">
+        <span className="ledger-bar-op" style={{ width: pct(op) }} />
+        <span className="ledger-bar-plan" style={{ width: pct(planned - op) }} />
+        <span className="ledger-bar-reported" style={{ width: pct(reported) }} />
+      </div>
+
+      <p className="ledger-line">
+        <span className="ledger-water mono">
+          {formatNumber(metrics.disclosedPeakWaterMgd, 1)} MGD
+        </span>{" "}
+        peak water disclosed
+        {metrics.undisclosedWaterCount > 0 && (
+          <>
+            {" · "}
+            <span className="ledger-undisclosed">
+              <span className="mono">{formatNumber(metrics.undisclosedWaterCount)}</span>{" "}
+              undisclosed
+            </span>
+          </>
+        )}
+      </p>
+      <p className="ledger-line">
+        <span className="mono">{metrics.statesCovered}</span>{" "}
+        {metrics.statesCovered === 1 ? "state" : "states"}
+        {metrics.contestedOrMoratoriumCount > 0 && (
+          <>
+            {" · "}
+            <span className="ledger-contested">
+              <span className="mono">{metrics.contestedOrMoratoriumCount}</span> contested
+              or under moratorium
+            </span>
+          </>
+        )}
+      </p>
+    </section>
+  );
+}
+
 export function DirectoryRail({
   onCollapse,
   visibleFacilities,
@@ -172,15 +239,16 @@ export function DirectoryRail({
   return (
     <aside className="rail" aria-label="Facility directory and filters">
       <div className="rail-header">
-        <div className="rail-title-row">
-          <span className="rail-title">Directory</span>
-          <span className="rail-count mono">
-            {formatNumber(visibleFacilities.length)}
-            {visibleFacilities.length !== totalFilteredCount
-              ? ` / ${formatNumber(totalFilteredCount)}`
-              : ""}
-          </span>
-        </div>
+        <h2 className="rail-title">
+          <span className="mono">{formatNumber(visibleFacilities.length)}</span>{" "}
+          {visibleFacilities.length === 1 ? "campus" : "campuses"} in view
+          {visibleFacilities.length !== totalFilteredCount && (
+            <span className="rail-title-of mono">
+              {" "}
+              of {formatNumber(totalFilteredCount)}
+            </span>
+          )}
+        </h2>
         <div className="rail-header-actions">
           {anyFilters && (
             <button
@@ -197,7 +265,7 @@ export function DirectoryRail({
             type="button"
             className="rail-collapse-btn"
             onClick={onCollapse}
-            aria-label="Collapse directory rail"
+            aria-label="Collapse directory"
             title="Collapse directory"
           >
             <ChevronLeft size={16} aria-hidden="true" />
@@ -205,64 +273,7 @@ export function DirectoryRail({
         </div>
       </div>
 
-      {/* Separated Fleet Telemetry Header: Verified Fleet vs. Proposals */}
-      <div
-        className="rail-summary"
-        aria-label="Viewport verified fleet and proposal totals"
-        title={`Disclosed peak water in view: ${formatNumber(viewportMetrics.disclosedPeakWaterMgd, 1)} MGD`}
-      >
-        <div className="rail-fleet-row">
-          <span className="rail-fleet-tag mono">VERIFIED FLEET</span>
-          <span className="rail-fleet-stats mono">
-            <strong>{formatNumber(viewportMetrics.verifiedFacilityCount)}</strong>
-            <span className="meta-dot"> · </span>
-            <span className="rail-summary-v--op">
-              {formatGwOrMw(viewportMetrics.verifiedOperationalMw)} op
-            </span>
-            <span className="meta-dot"> · </span>
-            <span>{formatGwOrMw(viewportMetrics.verifiedPlannedMw)} plan</span>
-            <span className="meta-dot"> · </span>
-            <span>
-              {viewportMetrics.statesCovered}{" "}
-              {viewportMetrics.statesCovered === 51
-                ? "states/DC"
-                : viewportMetrics.statesCovered === 1
-                  ? "state"
-                  : "states"}
-            </span>
-          </span>
-        </div>
-
-        <div className="rail-fleet-row rail-fleet-row--sub">
-          <span className="rail-fleet-tag rail-fleet-tag--prop mono">PROPOSALS</span>
-          <span className="rail-fleet-stats mono">
-            <span className="rail-summary-v--prop">
-              {formatNumber(viewportMetrics.proposedFacilityCount)} · +
-              {formatGwOrMw(viewportMetrics.reportedOrProposedMw)}
-            </span>
-            <span className="meta-dot"> · </span>
-            <span
-              className={
-                viewportMetrics.contestedOrMoratoriumCount > 0
-                  ? "rail-summary-v--warn"
-                  : ""
-              }
-            >
-              {viewportMetrics.contestedOrMoratoriumCount} contested
-            </span>
-            <span className="meta-dot"> · </span>
-            <span
-              className={
-                viewportMetrics.undisclosedWaterCount > 0
-                  ? "rail-summary-v--undisclosed"
-                  : ""
-              }
-            >
-              {formatNumber(viewportMetrics.undisclosedWaterCount)} no H2O
-            </span>
-          </span>
-        </div>
-      </div>
+      <ViewLedger metrics={viewportMetrics} />
 
       <div className="rail-controls">
         <div className="rail-quick-row">
@@ -282,7 +293,7 @@ export function DirectoryRail({
               })
             }
           >
-            Verified
+            Verified only
           </button>
           <button
             type="button"
@@ -325,7 +336,7 @@ export function DirectoryRail({
               })
             }
           >
-            No H2O
+            Water undisclosed
           </button>
         </div>
 
@@ -641,33 +652,37 @@ export function DirectoryRail({
                     </div>
 
                     <div className="facility-card-metrics">
-                      <div className="facility-mw-readout mono">
-                        <span className="mw-op">
-                          {f.operationalMw !== null ? `${Math.round(opMw)}` : "—"}
-                        </span>
-                        <span className="mw-sep">/</span>
-                        <span
-                          className={`mw-plan${
-                            f.totalPlannedMwEpistemic === "reported"
-                              ? " mw-plan--reported"
-                              : ""
-                          }`}
-                        >
-                          {formatMw(f.totalPlannedMw)}
-                        </span>
-                      </div>
+                      {f.operationalMw === null && f.totalPlannedMw === null ? (
+                        <div className="facility-readout-none">Capacity not public</div>
+                      ) : (
+                        <div className="facility-mw-readout mono">
+                          <span className="mw-op">
+                            {f.operationalMw !== null ? `${Math.round(opMw)}` : "—"}
+                          </span>
+                          <span className="mw-sep">/</span>
+                          <span
+                            className={`mw-plan${
+                              f.totalPlannedMwEpistemic === "reported"
+                                ? " mw-plan--reported"
+                                : ""
+                            }`}
+                          >
+                            {formatMw(f.totalPlannedMw)}
+                          </span>
+                        </div>
+                      )}
 
-                      <div
-                        className={`facility-water-readout mono${
-                          undisclosedWater ? " facility-water-readout--undisclosed" : ""
-                        }`}
-                      >
-                        {formatWaterSummary(
-                          f.peakOrAvgWaterMgd,
-                          f.annualWaterMgy,
-                          f.waterEpistemic,
-                        )}
-                      </div>
+                      {undisclosedWater ? (
+                        <div className="facility-readout-none">Water undisclosed</div>
+                      ) : (
+                        <div className="facility-water-readout mono">
+                          {formatWaterSummary(
+                            f.peakOrAvgWaterMgd,
+                            f.annualWaterMgy,
+                            f.waterEpistemic,
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     <div className="mw-bar" aria-hidden="true">

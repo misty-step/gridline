@@ -139,7 +139,7 @@ export async function fetchStationWeather(
 ): Promise<LiveStationWeather> {
   const normalized = stationId.trim().toUpperCase();
   const sourceUrl = `https://api.weather.gov/stations/${encodeURIComponent(normalized)}/observations?limit=5`;
-  const cacheKey = `https://gridline-cache.internal/v1/weather/${encodeURIComponent(normalized)}`;
+  const cacheKey = `https://undercurrent-cache.internal/v1/weather/${encodeURIComponent(normalized)}`;
 
   if (!opts.refresh) {
     const cached = await readCachedJson<LiveStationWeather>(cacheKey);
@@ -332,7 +332,7 @@ export async function fetchBasinHydrology(
 ): Promise<LiveBasinHydrology> {
   const normalized = siteId.trim();
   const sourceUrl = buildUsgsSingleSourceUrl(normalized);
-  const cacheKey = `https://gridline-cache.internal/v1/hydrology/${encodeURIComponent(normalized)}`;
+  const cacheKey = `https://undercurrent-cache.internal/v1/hydrology/${encodeURIComponent(normalized)}`;
 
   if (!opts.refresh) {
     const cached = await readCachedJson<LiveBasinHydrology>(cacheKey);
@@ -395,7 +395,7 @@ async function fetchBatchedBasinHydrology(
   if (!opts.refresh) {
     const cachedEntries = await Promise.all(
       siteIds.map(async (siteId) => {
-        const cacheKey = `https://gridline-cache.internal/v1/hydrology/${encodeURIComponent(siteId)}`;
+        const cacheKey = `https://undercurrent-cache.internal/v1/hydrology/${encodeURIComponent(siteId)}`;
         return { siteId, cached: await readCachedJson<LiveBasinHydrology>(cacheKey) };
       }),
     );
@@ -472,7 +472,7 @@ async function fetchBatchedBasinHydrology(
         const parsed = parseUsgsFeatureToHydrology(siteId, bySite.get(siteId));
         gauges[siteId] = parsed;
         if (parsed.status === "live") {
-          const cacheKey = `https://gridline-cache.internal/v1/hydrology/${encodeURIComponent(siteId)}`;
+          const cacheKey = `https://undercurrent-cache.internal/v1/hydrology/${encodeURIComponent(siteId)}`;
           await writeCachedJson(cacheKey, parsed, CACHE_TTL_SECONDS);
         }
       }),

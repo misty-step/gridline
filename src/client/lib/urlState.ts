@@ -86,7 +86,7 @@ export function readInitialUrlState(): ParsedUrlState {
       view: DEFAULT_VIEW,
       basemap: "vector",
       lens: "capacity",
-      theme: "dark",
+      theme: "system",
       filters: DEFAULT_FILTERS,
       compareIds: [],
     };
@@ -117,9 +117,9 @@ export function readInitialUrlState(): ParsedUrlState {
       ? rawLens
       : "capacity";
 
-  let storedTheme: ThemeMode = "dark";
+  let storedTheme: ThemeMode = "system";
   try {
-    const val = window.localStorage.getItem("gridline:theme");
+    const val = window.localStorage.getItem("undercurrent:theme");
     if (val === "light" || val === "dark" || val === "system") storedTheme = val;
   } catch {
     // ignore storage errors
@@ -203,7 +203,6 @@ export function writeUrlState(state: {
   if (state.view.pitch > 1) params.set("pitch", String(Math.round(state.view.pitch)));
   if (state.basemap !== "vector") params.set("basemap", state.basemap);
   if (state.lens !== "capacity") params.set("lens", state.lens);
-  if (state.theme !== "dark") params.set("theme", state.theme);
 
   if (state.filters.q.trim()) params.set("q", state.filters.q.trim());
   if (state.filters.statuses.length > 0) {

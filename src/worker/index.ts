@@ -529,9 +529,9 @@ export async function handleRequest(
     const summary = ctx.baseSummary;
     return jsonResponse({
       status: "ok",
-      service: "gridline",
+      service: "undercurrent",
       environment: env.ENVIRONMENT ?? "production",
-      release: env.RELEASE ?? "1.0.0",
+      release: env.RELEASE ?? "1.1.0",
       facilityCount: summary.totalFacilities,
       statesCovered: summary.statesCovered,
       verifiedOperationalMwTotal: summary.verifiedOperationalMwTotal,
@@ -560,7 +560,7 @@ export async function handleRequest(
         status: 200,
         headers: {
           "Content-Type": "text/csv; charset=utf-8",
-          "Content-Disposition": 'attachment; filename="gridline-facilities.csv"',
+          "Content-Disposition": 'attachment; filename="undercurrent-campuses.csv"',
           "Cache-Control": "no-store",
           ...CORS_HEADERS,
         },
@@ -573,7 +573,7 @@ export async function handleRequest(
           status: 200,
           headers: {
             "Content-Type": "application/geo+json; charset=utf-8",
-            "Content-Disposition": 'attachment; filename="gridline-facilities.geojson"',
+            "Content-Disposition": 'attachment; filename="undercurrent-campuses.geojson"',
             "Cache-Control": "no-store",
             ...CORS_HEADERS,
           },

@@ -64,6 +64,7 @@ import type {
   ZoomTier,
 } from "../lib/types";
 import { StatusPill, TierBadge } from "./EpistemicBadge";
+import { MapLegend } from "./MapLegend";
 
 export interface MapFlyRequest {
   center?: [number, number];
@@ -128,9 +129,9 @@ function getZoomTier(zoom: number): ZoomTier {
 }
 
 function getZoomTierLabel(tier: ZoomTier): string {
-  if (tier === "macro") return "MACRO NATIONAL";
-  if (tier === "regional") return "REGIONAL CORRIDOR";
-  return "PARCEL INSPECTION";
+  if (tier === "macro") return "National";
+  if (tier === "regional") return "Regional";
+  return "Parcel";
 }
 
 function buildRasterStyle(
@@ -140,7 +141,7 @@ function buildRasterStyle(
   return {
     version: 8,
     sources: {
-      "gridline-raster": {
+      "basemap-raster": {
         type: "raster",
         tiles,
         tileSize: 256,
@@ -150,9 +151,9 @@ function buildRasterStyle(
     },
     layers: [
       {
-        id: "gridline-raster-layer",
+        id: "basemap-raster-layer",
         type: "raster",
-        source: "gridline-raster",
+        source: "basemap-raster",
         paint: {
           "raster-saturation": -0.08,
         },
@@ -197,7 +198,7 @@ function createDashedRingImage(
 
   ctx.clearRect(0, 0, size, size);
   ctx.lineWidth = 4.2;
-  ctx.strokeStyle = "rgba(6, 5, 8, 0.84)";
+  ctx.strokeStyle = "rgba(5, 8, 12, 0.84)";
   ctx.setLineDash(dash);
   ctx.beginPath();
   ctx.arc(cx, cy, 24, 0, Math.PI * 2);
@@ -226,35 +227,35 @@ function ensureProceduralIcons(map: maplibregl.Map): void {
   if (!map.hasImage("halo-contested")) {
     map.addImage(
       "halo-contested",
-      createDashedRingImage("#ffb300", [7, 5], false),
+      createDashedRingImage("#ff8a3d", [7, 5], false),
       { pixelRatio: 2 },
     );
   }
   if (!map.hasImage("halo-moratorium")) {
     map.addImage(
       "halo-moratorium",
-      createDashedRingImage("#ff4d4d", [5, 4], true),
+      createDashedRingImage("#ff5a5f", [5, 4], true),
       { pixelRatio: 2 },
     );
   }
   if (!map.hasImage("ring-undisclosed-water")) {
     map.addImage(
       "ring-undisclosed-water",
-      createDashedRingImage("#ff4d4d", [4, 4], false),
+      createDashedRingImage("#ff5a5f", [4, 4], false),
       { pixelRatio: 2 },
     );
   }
   if (!map.hasImage("halo-provisional")) {
     map.addImage(
       "halo-provisional",
-      createDashedRingImage("#c084fc", [5, 5], false),
+      createDashedRingImage("#b79cff", [5, 5], false),
       { pixelRatio: 2 },
     );
   }
   if (!map.hasImage("halo-activity-target")) {
     map.addImage(
       "halo-activity-target",
-      createDashedRingImage("#ff9e2c", [8, 4], false),
+      createDashedRingImage("#ffb020", [8, 4], false),
       { pixelRatio: 2 },
     );
   }
@@ -319,7 +320,7 @@ function buildFacilityColorExpression(
       palette.stress.high,
       "extremely_high",
       palette.stress.extremely_high,
-      "#9e917d",
+      "#8492a5",
     ];
   }
   if (lens === "grid") {
@@ -336,7 +337,7 @@ function buildFacilityColorExpression(
       palette.grid.transmission_upgrade_pending,
       "ferc_or_puc_contested",
       palette.grid.ferc_or_puc_contested,
-      "#9e917d",
+      "#8492a5",
     ];
   }
   if (lens === "activity") {
@@ -354,7 +355,7 @@ function buildFacilityColorExpression(
         palette.tier.provisional,
         palette.activityGlow,
       ],
-      "#9e917d",
+      "#8492a5",
     ];
   }
   return [
@@ -378,7 +379,7 @@ function buildFacilityColorExpression(
       palette.lifecycle.contested,
       "moratorium",
       palette.lifecycle.moratorium,
-      "#9e917d",
+      "#8492a5",
     ],
   ];
 }
@@ -401,7 +402,7 @@ function buildClusterOuterColorExpression(
       palette.stress.high,
       "extremely_high",
       palette.stress.extremely_high,
-      "#9e917d",
+      "#8492a5",
     ];
   }
   if (lens === "grid") {
@@ -418,7 +419,7 @@ function buildClusterOuterColorExpression(
       palette.grid.transmission_upgrade_pending,
       "ferc_or_puc_contested",
       palette.grid.ferc_or_puc_contested,
-      "#9e917d",
+      "#8492a5",
     ];
   }
   if (lens === "activity") {
@@ -426,7 +427,7 @@ function buildClusterOuterColorExpression(
       "case",
       [">", ["get", "recentActivityCount"], 0],
       palette.activityGlow,
-      "#9e917d",
+      "#8492a5",
     ];
   }
   return [
@@ -1989,7 +1990,7 @@ export function MapCanvas({
 
   const tier = getZoomTier(zoom);
 
-  // Render <= 22 collision-culled chamfered DOM Cluster Callout pills in Macro National Tier (z < 5.8)
+  // Render <= 22 collision-culled DOM cluster callouts in Macro National Tier (z < 5.8)
   renderClusterMarkersRef.current = () => {
     const map = mapRef.current;
     clusterMarkersRef.current.forEach((m) => m.remove());
@@ -2036,24 +2037,43 @@ export function MapCanvas({
 
       const shortName = formatShortClusterName(c.clusterName);
       const activeLens = lensRef.current;
-      let metaText = `${formatGwOrMw(c.plannedMw)} · ${c.facilityCount}`;
-      if (c.reportedOrProposedMw > 0 && activeLens === "capacity") {
-        metaText = `${formatGwOrMw(c.plannedMw)} +${formatGwOrMw(c.reportedOrProposedMw)} · ${c.facilityCount}`;
+      const sites = `${c.facilityCount} ${c.facilityCount === 1 ? "site" : "sites"}`;
+      // Each part is [text, tone]; tone picks the HUD color for that figure.
+      let metaParts: Array<[string, string]> =
+        c.plannedMw > 0
+          ? [[formatGwOrMw(c.plannedMw), "power"], [sites, ""]]
+          : [[sites, ""]];
+      if (activeLens === "capacity" && c.reportedOrProposedMw > 0) {
+        metaParts.splice(c.plannedMw > 0 ? 1 : 0, 0, [
+          `+${formatGwOrMw(c.reportedOrProposedMw)} reported`,
+          "proposed",
+        ]);
       } else if (activeLens === "water") {
-        metaText =
+        metaParts =
           c.undisclosedWaterCount === c.facilityCount
-            ? `${c.facilityCount}/${c.facilityCount} Undisclosed`
-            : c.undisclosedWaterCount > 0
-              ? `${formatNumber(c.disclosedWaterMgd, 1)} MGD · ${c.undisclosedWaterCount} NDA`
-              : `${formatNumber(c.disclosedWaterMgd, 1)} MGD · ${c.facilityCount}`;
+            ? [["Water undisclosed", "crit"], [sites, ""]]
+            : [
+                [`${formatNumber(c.disclosedWaterMgd, 1)} MGD`, "water"],
+                c.undisclosedWaterCount > 0
+                  ? [`${c.undisclosedWaterCount} undisclosed`, "crit"]
+                  : [sites, ""],
+              ];
       } else if (activeLens === "grid") {
-        metaText = `${c.primaryIso} · ${formatGwOrMw(c.plannedMw + c.reportedOrProposedMw)}`;
+        const gridMw = c.plannedMw + c.reportedOrProposedMw;
+        metaParts = [
+          [c.primaryIso, ""],
+          gridMw > 0 ? [formatGwOrMw(gridMw), "power"] : [sites, ""],
+        ];
       } else if (activeLens === "activity") {
-        metaText = `${c.recentActivityCount} active · ${c.facilityCount} total`;
+        metaParts = [
+          [`${c.recentActivityCount} active`, c.recentActivityCount > 0 ? "power" : ""],
+          [sites, ""],
+        ];
       }
+      const metaText = metaParts.map(([text]) => text).join(" · ");
 
       const estChars = Math.max(shortName.length, metaText.length);
-      const boxW = Math.max(118, Math.min(182, estChars * 6.6 + 24));
+      const boxW = Math.max(96, Math.min(230, estChars * 6.3 + 22));
       const boxH = 38;
 
       const candidates: Array<{
@@ -2144,7 +2164,13 @@ export function MapCanvas({
 
       const metaSpan = document.createElement("span");
       metaSpan.className = "cluster-pill-meta mono";
-      metaSpan.textContent = metaText;
+      metaParts.forEach(([text, tone], i) => {
+        if (i > 0) metaSpan.append(" · ");
+        const part = document.createElement("span");
+        if (tone) part.className = `hud-tone--${tone}`;
+        part.textContent = text;
+        metaSpan.append(part);
+      });
 
       el.appendChild(nameSpan);
       el.appendChild(metaSpan);
@@ -2192,7 +2218,7 @@ export function MapCanvas({
     };
   }, [clusters, tier, lens]);
 
-  // NERV Optical Target Reticle over imagery for point_only campuses at parcel zoom (z >= 11.8)
+  // Locator reticle over imagery for point_only campuses at parcel zoom (z >= 11.8)
   const showPointReticle = useMemo(() => {
     if (zoom < LAZY_FOOTPRINTS_ZOOM || !selectedFacility) return false;
     const hasMatchingFootprint = visibleFootprintsGeoJson.features.some(
@@ -2211,11 +2237,11 @@ export function MapCanvas({
     if (!map || !showPointReticle || !selectedFacility) return;
 
     const root = document.createElement("div");
-    root.className = "nerv-optical-reticle";
+    root.className = "point-reticle";
     root.setAttribute("aria-hidden", "true");
 
     root.innerHTML = `
-      <svg class="nerv-reticle-svg" width="144" height="144" viewBox="0 0 144 144">
+      <svg class="point-reticle-svg" width="144" height="144" viewBox="0 0 144 144">
         <circle cx="72" cy="72" r="56" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="6 4" opacity="0.78" />
         <circle cx="72" cy="72" r="34" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.92" />
         <circle cx="72" cy="72" r="6" fill="none" stroke="currentColor" stroke-width="1.8" />
@@ -2223,8 +2249,8 @@ export function MapCanvas({
         <path d="M22 22h14M22 22v14M122 22h-14M122 22v14M22 122h14M22 122v-14M122 122h-14M122 122v-14" stroke="currentColor" stroke-width="1.8" fill="none" />
         <polygon points="72,56 88,72 72,88 56,72" fill="none" stroke="currentColor" stroke-width="1.1" opacity="0.72" />
       </svg>
-      <div class="nerv-reticle-badge mono">
-        OPEN GIS FOOTPRINT UNMAPPED // COORDINATE VERIFIED
+      <div class="point-reticle-badge mono">
+        No traced footprint · location verified
       </div>
     `;
 
@@ -2328,15 +2354,6 @@ export function MapCanvas({
         aria-label="Interactive US Data Center Infrastructure Map"
       />
 
-      {/* NERV CRT 4-corner amber reticle L-brackets + subtle drafting scanline overlay */}
-      <div className="map-stage-brackets" aria-hidden="true">
-        <span className="map-bracket map-bracket--tl" />
-        <span className="map-bracket map-bracket--tr" />
-        <span className="map-bracket map-bracket--bl" />
-        <span className="map-bracket map-bracket--br" />
-      </div>
-      <div className="map-scanline-overlay" aria-hidden="true" />
-
       {/* Mobile-Only Map Floating Lens & Basemap Strip */}
       <div
         className="map-mobile-bar"
@@ -2383,7 +2400,7 @@ export function MapCanvas({
           role="group"
           aria-label="Activity Radar Window"
         >
-          <span className="map-activity-tag mono">PULSE DELTA</span>
+          <span className="map-activity-tag">Activity in</span>
           {RADAR_WINDOW_OPTIONS.map((opt) => (
             <button
               key={opt.id}
@@ -2406,10 +2423,12 @@ export function MapCanvas({
           className="map-grid-telemetry-bar mono"
           aria-label="Live ISO dispatch summary"
         >
+          <span className="map-grid-label">Live demand · clean share</span>
           {liveGridRegionsSummary.map((row) => (
             <span key={row.iso} className="map-grid-iso-chip">
-              <strong>{row.iso}</strong> {row.demandGw}
-              {row.cleanPct !== null ? ` · ${row.cleanPct}%` : ""}
+              <strong>{row.iso}</strong>{" "}
+              <span className="hud-tone--power">{row.demandGw}</span>
+              {row.cleanPct !== null ? ` ${row.cleanPct}%` : ""}
             </span>
           ))}
         </div>
@@ -2453,9 +2472,6 @@ export function MapCanvas({
 
         <div className="map-hud-pill" aria-live="polite">
           <span className="hud-tier mono">{getZoomTierLabel(tier)}</span>
-          <span className="hud-sep" aria-hidden="true">
-            //
-          </span>
           <span className="hud-coord mono">
             {formatCoordHud(cursorCoord[0], cursorCoord[1], zoom)}
           </span>
@@ -2466,8 +2482,7 @@ export function MapCanvas({
           <div className="map-point-only-hud mono">
             <Crosshair size={12} aria-hidden="true" />
             <span>
-              {selectedFacility.name}: OPEN GIS FOOTPRINT UNMAPPED // COORDINATE
-              VERIFIED
+              No traced footprint for {selectedFacility.name}. Location is verified.
             </span>
           </div>
         )}
@@ -2484,238 +2499,14 @@ export function MapCanvas({
         Legend
       </button>
 
-      {/* Compact Contextual Legend Pill (1:1 parity across all 3 tiers & 4 lenses) */}
-      <div
-        className={`map-legend-pill${
-          mobileLegendOpen ? " map-legend-pill--mobile-open" : ""
-        }`}
-        aria-label="Map symbology key"
-      >
-        {tier === "macro" && lens === "capacity" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--op" />
-              Operational Core
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--plan" />
-              Planned MW
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--cyan" />
-              Registry Colocation
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--provisional" />
-              Provisional
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--warn" />
-              Contested Hub
-            </span>
-          </>
-        )}
-
-        {tier === "macro" && lens === "water" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--op" />
-              Low
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--cyan" />
-              Low–Med
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--warn" />
-              Med–High
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--high" />
-              High / Extreme
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--undisclosed" />
-              Undisclosed (&gt;=20MW / Flagship)
-            </span>
-          </>
-        )}
-
-        {tier === "macro" && lens === "grid" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--op" />
-              Energized
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--cyan" />
-              Phased
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--const" />
-              Queue
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--warn" />
-              Tx Upgrade
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--crit" />
-              Contested
-            </span>
-            <span className="legend-item">
-              <span className="legend-swatch legend-swatch--iso" />
-              Live ISO Stress
-            </span>
-          </>
-        )}
-
-        {tier === "macro" && lens === "activity" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--amber" />
-              Recent Delta / Building
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--provisional" />
-              Provisional / Proposed
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--warn" />
-              Contested / Moratorium
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--dim" />
-              Static Baseline (16%)
-            </span>
-          </>
-        )}
-
-        {tier === "regional" && lens === "capacity" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--op" />
-              Operational
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--cyan" />
-              Expanding / Registry
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--const" />
-              Building
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--amber" />
-              Permitted
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--provisional" />
-              Provisional / Proposed
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--dashed" />
-              Contested / Moratorium
-            </span>
-          </>
-        )}
-
-        {tier === "regional" && lens === "water" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--op" />
-              Low
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--cyan" />
-              Low–Med
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--warn" />
-              Med–High
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--high" />
-              High / Extreme
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--undisclosed" />
-              Undisclosed (&gt;=20MW / Flagship)
-            </span>
-          </>
-        )}
-
-        {tier === "regional" && lens === "grid" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--op" />
-              Energized
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--cyan" />
-              Phased
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--const" />
-              Queue
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--warn" />
-              Tx Upgrade
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--crit" />
-              FERC / PUC Contested
-            </span>
-          </>
-        )}
-
-        {tier === "regional" && lens === "activity" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--amber" />
-              Active Delta ({radarWindow})
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--provisional" />
-              Provisional / Proposed
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--warn" />
-              Contested / Moratorium
-            </span>
-            <span className="legend-item">
-              <span className="legend-dot legend-dot--dim" />
-              Baseline Fleet (16%)
-            </span>
-          </>
-        )}
-
-        {tier === "parcel" && (
-          <>
-            <span className="legend-item">
-              <span className="legend-swatch legend-swatch--hall" />
-              Hall / Building (2.5D)
-            </span>
-            <span className="legend-item">
-              <span className="legend-swatch legend-swatch--exp" />
-              Planned Expansion
-            </span>
-            <span className="legend-item">
-              <span className="legend-swatch legend-swatch--sub" />
-              Substation
-            </span>
-            <span className="legend-item">
-              <span className="legend-swatch legend-swatch--cool" />
-              Cooling Yard
-            </span>
-            <span className="legend-item">
-              <span className="legend-ring legend-ring--reticle" />
-              Point Only Reticle
-            </span>
-          </>
-        )}
-      </div>
+      <MapLegend
+        tier={tier}
+        lens={lens}
+        palette={palette}
+        radarWindow={radarWindow}
+        onPaper={basemap === "vector" && resolvedTheme === "light"}
+        mobileOpen={mobileLegendOpen}
+      />
 
       {/* Floating Facility Hover Card (ALL 3 zoom tiers: constellation dots & regional glyphs) */}
       {hoveredFacility && (
@@ -2744,7 +2535,7 @@ export function MapCanvas({
           </div>
           <div className="hover-card-grid mono">
             <div>
-              <span className="hover-k">Op / Plan</span>
+              <span className="hover-k">Operating / planned MW</span>
               <span className="hover-v">
                 {hoveredFacility.facility.operationalMw !== null
                   ? Math.round(hoveredFacility.facility.operationalMw)
@@ -2752,12 +2543,12 @@ export function MapCanvas({
                 {" / "}
                 {formatMw(hoveredFacility.facility.totalPlannedMw)}
                 {hoveredFacility.facility.totalPlannedMwEpistemic === "reported"
-                  ? " (Rep)"
+                  ? " reported"
                   : ""}
               </span>
             </div>
             <div>
-              <span className="hover-k">Peak Water</span>
+              <span className="hover-k">Peak water</span>
               <span
                 className={`hover-v${
                   isUndisclosedWater(hoveredFacility.facility)
@@ -2853,7 +2644,7 @@ export function MapCanvas({
           </div>
           <div className="hover-card-grid mono">
             <div>
-              <span className="hover-k">Verified Op / Plan</span>
+              <span className="hover-k">Verified op / plan</span>
               <span className="hover-v">
                 {formatGwOrMw(hoveredCluster.cluster.operationalMw)} /{" "}
                 {formatGwOrMw(hoveredCluster.cluster.plannedMw)}
@@ -2862,11 +2653,11 @@ export function MapCanvas({
             <div>
               <span className="hover-k">
                 {lens === "grid"
-                  ? "Grid Bottleneck"
+                  ? "Grid status"
                   : hoveredCluster.cluster.reportedOrProposedMw > 0 &&
                       lens === "capacity"
-                    ? "Proposed Pipeline"
-                    : "Peak Water"}
+                    ? "Reported pipeline"
+                    : "Peak water"}
               </span>
               <span
                 className={`hover-v${
@@ -2920,7 +2711,7 @@ export function MapCanvas({
             }}
           >
             <div className="hover-card-head">
-              <strong className="mono">ISO // {hoveredIso.id}</strong>
+              <strong>{hoveredIso.id}</strong>
               <span className="iso-stress-tag">
                 Stress: {hoveredIso.gridStressLevel}
               </span>
@@ -2929,7 +2720,7 @@ export function MapCanvas({
             <div className="hover-card-grid mono">
               <div>
                 <span className="hover-k">
-                  {hoveredIso.gridSnapshot ? "EIA Live Demand" : "Sites in Filter"}
+                  {hoveredIso.gridSnapshot ? "Live demand (EIA)" : "Sites in filter"}
                 </span>
                 <span className="hover-v">
                   {hoveredIso.gridSnapshot
@@ -2939,7 +2730,7 @@ export function MapCanvas({
               </div>
               <div>
                 <span className="hover-k">
-                  {hoveredIso.gridSnapshot ? "Clean Gen Share" : "Planned Load"}
+                  {hoveredIso.gridSnapshot ? "Clean generation" : "Planned load"}
                 </span>
                 <span className="hover-v">
                   {hoveredIso.gridSnapshot

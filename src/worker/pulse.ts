@@ -22,7 +22,7 @@ import {
 } from "./http.ts";
 import { fetchRegulatoryFeed, stripHtmlTags } from "./regulatory.ts";
 
-const PULSE_CACHE_KEY = "https://gridline-cache.internal/v2/pulse/live";
+const PULSE_CACHE_KEY = "https://undercurrent-cache.internal/v2/pulse/live";
 const PULSE_CACHE_TTL_SECONDS = 1800; // 30 minutes
 const PULSE_SLA_MS = 24 * 60 * 60 * 1000;
 const PULSE_FRESH_D1_MS = 30 * 60 * 1000;

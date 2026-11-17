@@ -471,7 +471,7 @@ describe("Worker API endpoints", () => {
       d1Bound: boolean;
     };
     expect(body.status).toBe("ok");
-    expect(body.release).toBe("1.0.0");
+    expect(body.release).toBe("1.1.0");
     expect(body.facilityCount).toBe(4);
     expect(body.statesCovered).toBe(4);
     expect(body.verifiedOperationalMwTotal).toBe(200);
@@ -792,7 +792,7 @@ describe("Worker API endpoints", () => {
       { dataset, fetchFn: makeMockFetch({ secObservedUa }) },
     );
     expect(pulseRes.status).toBe(200);
-    expect(secObservedUa[0]).toBe("GridlineObservatory/1.0 (ops@mistystep.io)");
+    expect(secObservedUa[0]).toBe("Undercurrent/1.1 (ops@mistystep.io)");
 
     const pulseFeed = (await pulseRes.json()) as LivePulseFeed;
     expect(pulseFeed.status).toBe("live");

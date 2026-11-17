@@ -1,14 +1,16 @@
 /*
- * Gridline — Design Tokens (NERV // MAGI TACTICAL CARTOGRAPHY)
- * Single source of truth for colors, typography, surfaces, semantic statuses,
- * epistemic badges, thermal regimes, watershed stress, grid fuel mix, radii,
- * tactical hazard stripes, CRT scanlines, spacing, and z-index.
- * Synchronized 1:1 with DESIGN.md.
+ * Undercurrent design tokens. The only place colors, type, radii, spacing,
+ * layout sizes and z-index are defined. DESIGN.md mirrors this file 1:1
+ * (`./scripts/check doctor` enforces it).
+ *
+ * Two hues carry the product: amber is electric power, cyan is water.
+ * Everything else is neutral or a semantic status.
  */
 
 :root {
   /* Typography */
-  --font-display: "Noto Serif Display", Georgia, "Times New Roman", serif;
+  --font-display: "Archivo", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
@@ -21,17 +23,18 @@
   --text-md: 14px;
   --text-lg: 16px;
   --text-xl: 18px;
+  --text-2xl: 26px;
 
   --leading-tight: 1.2;
   --leading-snug: 1.35;
   --leading-normal: 1.5;
 
-  /* Rectilinear Tactical Radii */
-  --radius-xs: 1px;
-  --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 3px;
-  --radius-full: 2px;
+  /* Radii */
+  --radius-xs: 2px;
+  --radius-sm: 3px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-full: 999px;
 
   /* Spacing */
   --space-1: 4px;
@@ -42,12 +45,17 @@
   --space-6: 24px;
   --space-8: 32px;
 
-  /* Layout Dimensions */
+  /* Layout */
   --topbar-height: 48px;
-  --rail-width: 312px;
+  --rail-width: 320px;
   --drawer-width: 456px;
 
-  /* Z-Index Scale */
+  /* Motion */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+
+  /* Z-index */
   --z-map: 0;
   --z-hud: 10;
   --z-controls: 20;
@@ -58,414 +66,281 @@
   --z-modal: 70;
   --z-tooltip: 80;
 
-  /* Light Theme Defaults (GEHIRN // NERV TECHNICAL SCHEMATIC PAPER) */
-  --bg-canvas: #eae4d7;
-  --bg-surface: #f6f2e8;
-  --bg-surface-elevated: #fcfaf4;
-  --bg-surface-glass: rgba(246, 242, 232, 0.94);
-  --bg-surface-hover: #ece6d8;
-  --bg-surface-active: #dfd7c5;
-  --bg-inset: #e4decb;
+  /* Light theme: chart paper */
+  --bg-canvas: #e6e9ed;
+  --bg-surface: #f5f6f8;
+  --bg-surface-elevated: #ffffff;
+  --bg-surface-glass: rgba(245, 246, 248, 0.94);
+  --bg-surface-hover: #ebeef2;
+  --bg-surface-active: #dfe4ea;
+  --bg-inset: #eceef2;
 
-  --border-subtle: rgba(20, 16, 24, 0.12);
-  --border-default: rgba(20, 16, 24, 0.48);
-  --border-strong: rgba(20, 16, 24, 0.60);
-  --border-focus: #c2410c;
+  --border-subtle: rgba(16, 24, 40, 0.1);
+  --border-default: rgba(16, 24, 40, 0.2);
+  --border-strong: rgba(16, 24, 40, 0.52);
+  --border-focus: #a85d00;
 
-  --text-primary: #141018;
-  --text-secondary: #312938;
-  --text-muted: #554b5e;
-  --text-inverse: #fcfaf4;
+  --text-primary: #0d1420;
+  --text-secondary: #333d4b;
+  --text-muted: #5a6675;
+  --text-inverse: #ffffff;
 
-  --accent-primary: #c2410c;
-  --accent-primary-hover: #9a3412;
-  --accent-primary-muted: rgba(194, 65, 12, 0.12);
-  --accent-primary-text: #9a3412;
+  --accent-primary: #a85d00;
+  --accent-primary-hover: #8a4b00;
+  --accent-primary-muted: rgba(168, 93, 0, 0.12);
+  --accent-primary-text: #8f4e00;
 
-  --shadow-sm: 0 1px 2px rgba(20, 16, 24, 0.08), 0 1px 3px rgba(20, 16, 24, 0.1);
-  --shadow-md: 0 4px 12px rgba(20, 16, 24, 0.12), 0 1px 3px rgba(20, 16, 24, 0.08);
-  --shadow-lg: 0 14px 34px rgba(20, 16, 24, 0.18), 0 4px 12px rgba(20, 16, 24, 0.1);
+  /* The two currents */
+  --power: #8f4e00;
+  --water: #0b6a94;
 
-  /* High-Contrast Tactical Map HUD (legible on vector paper, dark CRT, and satellite imagery) */
-  --hud-bg: rgba(13, 11, 18, 0.92);
-  --hud-border: rgba(255, 145, 0, 0.42);
-  --hud-text: #f6f1e7;
-  --hud-text-muted: #d1c6b4;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 4px 14px rgba(16, 24, 40, 0.12), 0 1px 3px rgba(16, 24, 40, 0.08);
+  --shadow-lg: 0 18px 44px rgba(16, 24, 40, 0.2), 0 4px 12px rgba(16, 24, 40, 0.1);
 
-  /* Semantic Lifecycle Statuses (WCAG AA >= 4.5:1 over tinted fills on #fcfaf4) */
-  --status-operational: #065f46;
-  --status-operational-bg: rgba(6, 95, 70, 0.11);
-  --status-operational-border: rgba(6, 95, 70, 0.38);
+  /* Map HUD: always dark so it reads over paper, dark vector and imagery */
+  --hud-bg: rgba(8, 12, 17, 0.9);
+  --hud-border: rgba(160, 188, 220, 0.26);
+  --hud-text: #e9eef5;
+  --hud-text-muted: #a9b6c6;
+  --hud-power: #ffb020;
+  --hud-water: #38c8ff;
+  --hud-ok: #3ddc97;
+  --hud-proposed: #b79cff;
+  --hud-warn: #ff8a3d;
+  --hud-crit: #ff5a5f;
 
-  --status-expanding: #155e75;
-  --status-expanding-bg: rgba(21, 94, 117, 0.11);
-  --status-expanding-border: rgba(21, 94, 117, 0.38);
+  /* Lifecycle status */
+  --status-operational: #07663f;
+  --status-operational-bg: rgba(7, 102, 63, 0.1);
+  --status-operational-border: rgba(7, 102, 63, 0.36);
 
-  --status-under-construction: #1e40af;
-  --status-under-construction-bg: rgba(30, 64, 175, 0.11);
-  --status-under-construction-border: rgba(30, 64, 175, 0.38);
+  --status-expanding: #07655d;
+  --status-expanding-bg: rgba(7, 101, 93, 0.1);
+  --status-expanding-border: rgba(7, 101, 93, 0.36);
 
-  --status-permitted: #5b21b6;
-  --status-permitted-bg: rgba(91, 33, 182, 0.11);
-  --status-permitted-border: rgba(91, 33, 182, 0.38);
+  --status-under-construction: #1d5fc4;
+  --status-under-construction-bg: rgba(29, 95, 196, 0.1);
+  --status-under-construction-border: rgba(29, 95, 196, 0.36);
 
-  --status-proposed: #475569;
-  --status-proposed-bg: rgba(71, 85, 105, 0.11);
-  --status-proposed-border: rgba(71, 85, 105, 0.38);
+  --status-permitted: #4347c9;
+  --status-permitted-bg: rgba(67, 71, 201, 0.1);
+  --status-permitted-border: rgba(67, 71, 201, 0.36);
 
-  --status-contested: #92400e;
-  --status-contested-bg: rgba(180, 83, 9, 0.12);
-  --status-contested-border: rgba(146, 64, 14, 0.44);
+  --status-proposed: #6b4fc0;
+  --status-proposed-bg: rgba(107, 79, 192, 0.1);
+  --status-proposed-border: rgba(107, 79, 192, 0.36);
 
-  --status-moratorium: #b91c1c;
-  --status-moratorium-bg: rgba(185, 28, 28, 0.12);
-  --status-moratorium-border: rgba(185, 28, 28, 0.44);
+  --status-contested: #9c3f0e;
+  --status-contested-bg: rgba(156, 63, 14, 0.11);
+  --status-contested-border: rgba(156, 63, 14, 0.42);
 
-  /* Epistemic Provenance Tones (WCAG AA verified) */
-  --epistemic-measured: #065f46;
-  --epistemic-measured-bg: rgba(6, 95, 70, 0.11);
-  --epistemic-permitted: #1e40af;
-  --epistemic-permitted-bg: rgba(30, 64, 175, 0.11);
-  --epistemic-filed: #5b21b6;
-  --epistemic-filed-bg: rgba(91, 33, 182, 0.11);
-  --epistemic-disclosed: #155e75;
-  --epistemic-disclosed-bg: rgba(21, 94, 117, 0.11);
-  --epistemic-estimated: #92400e;
-  --epistemic-estimated-bg: rgba(180, 83, 9, 0.12);
-  --epistemic-reported: #9a3412;
-  --epistemic-reported-bg: rgba(194, 65, 12, 0.12);
-  --epistemic-reported-border: rgba(154, 52, 18, 0.42);
-  --epistemic-undisclosed: #b91c1c;
-  --epistemic-undisclosed-bg: rgba(185, 28, 28, 0.12);
+  --status-moratorium: #c02626;
+  --status-moratorium-bg: rgba(192, 38, 38, 0.11);
+  --status-moratorium-border: rgba(192, 38, 38, 0.42);
 
-  /* Live Thermal Regime Tones */
-  --thermal-free: #065f46;
-  --thermal-free-bg: rgba(6, 95, 70, 0.11);
-  --thermal-adiabatic: #92400e;
-  --thermal-adiabatic-bg: rgba(180, 83, 9, 0.12);
-  --thermal-peak: #b91c1c;
-  --thermal-peak-bg: rgba(185, 28, 28, 0.12);
-  --thermal-unavailable: #554b5e;
-  --thermal-unavailable-bg: rgba(85, 75, 94, 0.12);
+  /* Epistemic provenance */
+  --epistemic-measured: #07663f;
+  --epistemic-measured-bg: rgba(7, 102, 63, 0.1);
+  --epistemic-permitted: #1d5fc4;
+  --epistemic-permitted-bg: rgba(29, 95, 196, 0.1);
+  --epistemic-filed: #4347c9;
+  --epistemic-filed-bg: rgba(67, 71, 201, 0.1);
+  --epistemic-disclosed: #07655d;
+  --epistemic-disclosed-bg: rgba(7, 101, 93, 0.1);
+  --epistemic-estimated: #7a5c00;
+  --epistemic-estimated-bg: rgba(122, 92, 0, 0.12);
+  --epistemic-reported: #9c3f0e;
+  --epistemic-reported-bg: rgba(156, 63, 14, 0.11);
+  --epistemic-reported-border: rgba(156, 63, 14, 0.42);
+  --epistemic-undisclosed: #c02626;
+  --epistemic-undisclosed-bg: rgba(192, 38, 38, 0.11);
 
-  /* Watershed Baseline Stress Tones */
-  --stress-low: #065f46;
-  --stress-low-medium: #155e75;
-  --stress-medium-high: #92400e;
-  --stress-high: #c2410c;
-  --stress-extremely-high: #b91c1c;
+  /* Live thermal regime */
+  --thermal-free: #07663f;
+  --thermal-free-bg: rgba(7, 102, 63, 0.1);
+  --thermal-adiabatic: #7a5c00;
+  --thermal-adiabatic-bg: rgba(122, 92, 0, 0.12);
+  --thermal-peak: #c02626;
+  --thermal-peak-bg: rgba(192, 38, 38, 0.11);
+  --thermal-unavailable: #5a6675;
+  --thermal-unavailable-bg: rgba(90, 102, 117, 0.12);
 
-  /* Grid Interconnection Tones */
-  --grid-energized: #065f46;
-  --grid-phased: #155e75;
-  --grid-queue: #1e40af;
-  --grid-contested: #b91c1c;
-  --grid-upgrade: #92400e;
+  /* Watershed baseline stress */
+  --stress-low: #07663f;
+  --stress-low-medium: #07655d;
+  --stress-medium-high: #7a5c00;
+  --stress-high: #9c3f0e;
+  --stress-extremely-high: #c02626;
 
-  /* Parcel Footprint Zone Colors */
-  --zone-boundary: #c2410c;
-  --zone-operational: #065f46;
-  --zone-expansion: #5b21b6;
-  --zone-substation: #92400e;
-  --zone-cooling: #155e75;
+  /* Grid interconnection */
+  --grid-energized: #07663f;
+  --grid-phased: #07655d;
+  --grid-queue: #1d5fc4;
+  --grid-contested: #c02626;
+  --grid-upgrade: #7a5c00;
 
-  /* Catalog Tier Tones */
-  --tier-flagship: #9a3412;
-  --tier-registry: #155e75;
-  --tier-provisional: #5b21b6;
+  /* Parcel footprint zones */
+  --zone-boundary: #a85d00;
+  --zone-operational: #07663f;
+  --zone-expansion: #6b4fc0;
+  --zone-substation: #7a5c00;
+  --zone-cooling: #0b6a94;
 
-  /* ISO Live Dispatch Fuel Mix Tones */
-  --fuel-nuclear: #5b21b6;
-  --fuel-gas: #c2410c;
-  --fuel-coal: #312938;
-  --fuel-wind: #065f46;
-  --fuel-solar: #854d0e;
-  --fuel-hydro: #155e75;
+  /* Catalog tier */
+  --tier-flagship: #8f4e00;
+  --tier-registry: #333d4b;
+  --tier-provisional: #6b4fc0;
 
-  /* Live Pulse, Semantic Hazard Stripes & Drafting Grid Overlay */
-  --pulse-delta-glow: rgba(194, 65, 12, 0.3);
+  /* Fuel mix */
+  --fuel-nuclear: #6b4fc0;
+  --fuel-gas: #9c3f0e;
+  --fuel-coal: #4a5563;
+  --fuel-wind: #07663f;
+  --fuel-solar: #8a6a00;
+  --fuel-hydro: #0b6a94;
+
+  /* Semantic hazard stripes */
   --hazard-stripe-amber: repeating-linear-gradient(
     -45deg,
-    rgba(146, 64, 14, 0.14) 0 6px,
-    rgba(146, 64, 14, 0.03) 6px 12px
+    rgba(156, 63, 14, 0.13) 0 6px,
+    rgba(156, 63, 14, 0.03) 6px 12px
   );
   --hazard-stripe-crimson: repeating-linear-gradient(
     -45deg,
-    rgba(185, 28, 28, 0.14) 0 6px,
-    rgba(185, 28, 28, 0.03) 6px 12px
+    rgba(192, 38, 38, 0.13) 0 6px,
+    rgba(192, 38, 38, 0.03) 6px 12px
   );
-  --scanline-overlay: repeating-linear-gradient(
-    0deg,
-    rgba(20, 16, 24, 0.025) 0 1px,
-    transparent 1px 3px
+  /* Hatch that marks reported, unverified capacity wherever it is drawn */
+  --hatch-reported: repeating-linear-gradient(
+    -45deg,
+    var(--status-proposed) 0 2px,
+    transparent 2px 5px
   );
 }
 
-/* Dark Theme Override (NERV CRT // CENTRAL DOGMA) */
+/* Dark theme: deepwater */
 :root[data-resolved-theme="dark"] {
-  --bg-canvas: #060508;
-  --bg-surface: #0d0b12;
-  --bg-surface-elevated: #15111d;
-  --bg-surface-glass: rgba(13, 11, 18, 0.92);
-  --bg-surface-hover: #1d1728;
-  --bg-surface-active: #271f36;
-  --bg-inset: #09070d;
+  --bg-canvas: #05080c;
+  --bg-surface: #0a0f15;
+  --bg-surface-elevated: #101721;
+  --bg-surface-glass: rgba(10, 15, 21, 0.92);
+  --bg-surface-hover: #162030;
+  --bg-surface-active: #1c2a3d;
+  --bg-inset: #070b10;
 
-  --border-subtle: rgba(255, 145, 0, 0.16);
-  --border-default: rgba(255, 145, 0, 0.34);
-  --border-strong: rgba(255, 152, 0, 0.72);
-  --border-focus: #ff9800;
+  --border-subtle: rgba(160, 188, 220, 0.1);
+  --border-default: rgba(160, 188, 220, 0.18);
+  --border-strong: rgba(160, 188, 220, 0.52);
+  --border-focus: #ffb020;
 
-  --text-primary: #f6f1e7;
-  --text-secondary: #d1c6b4;
-  --text-muted: #9e917d;
-  --text-inverse: #060508;
+  --text-primary: #e9eef5;
+  --text-secondary: #b4c0cf;
+  --text-muted: #8492a5;
+  --text-inverse: #05080c;
 
-  --accent-primary: #ff7b00;
-  --accent-primary-hover: #ff9800;
-  --accent-primary-muted: rgba(255, 123, 0, 0.16);
-  --accent-primary-text: #ff9e2c;
+  --accent-primary: #ffb020;
+  --accent-primary-hover: #ffc247;
+  --accent-primary-muted: rgba(255, 176, 32, 0.14);
+  --accent-primary-text: #ffbe45;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 145, 0, 0.12);
-  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.72), 0 0 14px rgba(255, 123, 0, 0.08);
-  --shadow-lg: 0 20px 44px rgba(0, 0, 0, 0.85), 0 0 24px rgba(255, 123, 0, 0.12);
+  --power: #ffb020;
+  --water: #38c8ff;
 
-  --hud-bg: rgba(13, 11, 18, 0.92);
-  --hud-border: rgba(255, 145, 0, 0.42);
-  --hud-text: #f6f1e7;
-  --hud-text-muted: #d1c6b4;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 22px 48px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(160, 188, 220, 0.08);
 
-  --status-operational: #39ff88;
-  --status-operational-bg: rgba(57, 255, 136, 0.14);
-  --status-operational-border: rgba(57, 255, 136, 0.42);
+  --status-operational: #3ddc97;
+  --status-operational-bg: rgba(61, 220, 151, 0.12);
+  --status-operational-border: rgba(61, 220, 151, 0.36);
 
-  --status-expanding: #00e5ff;
-  --status-expanding-bg: rgba(0, 229, 255, 0.14);
-  --status-expanding-border: rgba(0, 229, 255, 0.42);
+  --status-expanding: #2dd4bf;
+  --status-expanding-bg: rgba(45, 212, 191, 0.12);
+  --status-expanding-border: rgba(45, 212, 191, 0.36);
 
-  --status-under-construction: #38bdf8;
-  --status-under-construction-bg: rgba(56, 189, 248, 0.15);
-  --status-under-construction-border: rgba(56, 189, 248, 0.44);
+  --status-under-construction: #6cb2ff;
+  --status-under-construction-bg: rgba(108, 178, 255, 0.13);
+  --status-under-construction-border: rgba(108, 178, 255, 0.38);
 
-  --status-permitted: #ff9e2c;
-  --status-permitted-bg: rgba(255, 123, 0, 0.15);
-  --status-permitted-border: rgba(255, 152, 0, 0.45);
+  --status-permitted: #8f9bff;
+  --status-permitted-bg: rgba(143, 155, 255, 0.14);
+  --status-permitted-border: rgba(143, 155, 255, 0.4);
 
-  --status-proposed: #c084fc;
-  --status-proposed-bg: rgba(192, 132, 252, 0.16);
-  --status-proposed-border: rgba(192, 132, 252, 0.44);
+  --status-proposed: #b79cff;
+  --status-proposed-bg: rgba(183, 156, 255, 0.14);
+  --status-proposed-border: rgba(183, 156, 255, 0.4);
 
-  --status-contested: #ffb300;
-  --status-contested-bg: rgba(255, 179, 0, 0.15);
-  --status-contested-border: rgba(255, 179, 0, 0.48);
+  --status-contested: #ff8a3d;
+  --status-contested-bg: rgba(255, 138, 61, 0.14);
+  --status-contested-border: rgba(255, 138, 61, 0.46);
 
-  --status-moratorium: #ff4d4d;
-  --status-moratorium-bg: rgba(255, 59, 48, 0.16);
-  --status-moratorium-border: rgba(255, 59, 48, 0.5);
+  --status-moratorium: #ff5a5f;
+  --status-moratorium-bg: rgba(255, 90, 95, 0.14);
+  --status-moratorium-border: rgba(255, 90, 95, 0.46);
 
-  --epistemic-measured: #39ff88;
-  --epistemic-measured-bg: rgba(57, 255, 136, 0.14);
-  --epistemic-permitted: #ff9e2c;
-  --epistemic-permitted-bg: rgba(255, 123, 0, 0.15);
-  --epistemic-filed: #38bdf8;
-  --epistemic-filed-bg: rgba(56, 189, 248, 0.15);
-  --epistemic-disclosed: #00e5ff;
-  --epistemic-disclosed-bg: rgba(0, 229, 255, 0.14);
-  --epistemic-estimated: #ffb300;
-  --epistemic-estimated-bg: rgba(255, 179, 0, 0.15);
-  --epistemic-reported: #ff9e2c;
-  --epistemic-reported-bg: rgba(255, 123, 0, 0.15);
-  --epistemic-reported-border: rgba(255, 179, 0, 0.45);
-  --epistemic-undisclosed: #ff4d4d;
-  --epistemic-undisclosed-bg: rgba(255, 59, 48, 0.16);
+  --epistemic-measured: #3ddc97;
+  --epistemic-measured-bg: rgba(61, 220, 151, 0.12);
+  --epistemic-permitted: #6cb2ff;
+  --epistemic-permitted-bg: rgba(108, 178, 255, 0.13);
+  --epistemic-filed: #8f9bff;
+  --epistemic-filed-bg: rgba(143, 155, 255, 0.14);
+  --epistemic-disclosed: #2dd4bf;
+  --epistemic-disclosed-bg: rgba(45, 212, 191, 0.12);
+  --epistemic-estimated: #e6c84a;
+  --epistemic-estimated-bg: rgba(230, 200, 74, 0.13);
+  --epistemic-reported: #ff8a3d;
+  --epistemic-reported-bg: rgba(255, 138, 61, 0.14);
+  --epistemic-reported-border: rgba(255, 138, 61, 0.46);
+  --epistemic-undisclosed: #ff5a5f;
+  --epistemic-undisclosed-bg: rgba(255, 90, 95, 0.14);
 
-  --thermal-free: #39ff88;
-  --thermal-free-bg: rgba(57, 255, 136, 0.14);
-  --thermal-adiabatic: #ffb300;
-  --thermal-adiabatic-bg: rgba(255, 179, 0, 0.15);
-  --thermal-peak: #ff4d4d;
-  --thermal-peak-bg: rgba(255, 59, 48, 0.16);
-  --thermal-unavailable: #9e917d;
-  --thermal-unavailable-bg: rgba(158, 145, 125, 0.15);
+  --thermal-free: #3ddc97;
+  --thermal-free-bg: rgba(61, 220, 151, 0.12);
+  --thermal-adiabatic: #e6c84a;
+  --thermal-adiabatic-bg: rgba(230, 200, 74, 0.13);
+  --thermal-peak: #ff5a5f;
+  --thermal-peak-bg: rgba(255, 90, 95, 0.14);
+  --thermal-unavailable: #8492a5;
+  --thermal-unavailable-bg: rgba(132, 146, 165, 0.14);
 
-  --stress-low: #39ff88;
-  --stress-low-medium: #00e5ff;
-  --stress-medium-high: #ffb300;
-  --stress-high: #ff7b00;
-  --stress-extremely-high: #ff3b30;
+  --stress-low: #3ddc97;
+  --stress-low-medium: #2dd4bf;
+  --stress-medium-high: #e6c84a;
+  --stress-high: #ff8a3d;
+  --stress-extremely-high: #ff5a5f;
 
-  --grid-energized: #39ff88;
-  --grid-phased: #00e5ff;
-  --grid-queue: #38bdf8;
-  --grid-contested: #ff3b30;
-  --grid-upgrade: #ffb300;
+  --grid-energized: #3ddc97;
+  --grid-phased: #2dd4bf;
+  --grid-queue: #6cb2ff;
+  --grid-contested: #ff5a5f;
+  --grid-upgrade: #e6c84a;
 
-  --zone-boundary: #ff7b00;
-  --zone-operational: #39ff88;
-  --zone-expansion: #c084fc;
-  --zone-substation: #ffb300;
-  --zone-cooling: #00e5ff;
+  --zone-boundary: #ffb020;
+  --zone-operational: #3ddc97;
+  --zone-expansion: #b79cff;
+  --zone-substation: #e6c84a;
+  --zone-cooling: #38c8ff;
 
-  --tier-flagship: #ff7b00;
-  --tier-registry: #00e5ff;
-  --tier-provisional: #c084fc;
+  --tier-flagship: #ffbe45;
+  --tier-registry: #b4c0cf;
+  --tier-provisional: #b79cff;
 
-  --fuel-nuclear: #c084fc;
-  --fuel-gas: #ff7b00;
-  --fuel-coal: #9e917d;
-  --fuel-wind: #39ff88;
-  --fuel-solar: #ffb300;
-  --fuel-hydro: #00e5ff;
+  --fuel-nuclear: #b79cff;
+  --fuel-gas: #ff8a3d;
+  --fuel-coal: #7b8696;
+  --fuel-wind: #3ddc97;
+  --fuel-solar: #ffd23f;
+  --fuel-hydro: #38c8ff;
 
-  --pulse-delta-glow: rgba(255, 123, 0, 0.44);
   --hazard-stripe-amber: repeating-linear-gradient(
     -45deg,
-    rgba(255, 179, 0, 0.2) 0 6px,
-    rgba(255, 179, 0, 0.04) 6px 12px
+    rgba(255, 138, 61, 0.2) 0 6px,
+    rgba(255, 138, 61, 0.04) 6px 12px
   );
   --hazard-stripe-crimson: repeating-linear-gradient(
     -45deg,
-    rgba(255, 59, 48, 0.22) 0 6px,
-    rgba(255, 59, 48, 0.04) 6px 12px
+    rgba(255, 90, 95, 0.22) 0 6px,
+    rgba(255, 90, 95, 0.04) 6px 12px
   );
-  --scanline-overlay: repeating-linear-gradient(
-    0deg,
-    rgba(255, 123, 0, 0.035) 0 1px,
-    transparent 1px 3px
-  );
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-resolved-theme="light"]) {
-    --bg-canvas: #060508;
-    --bg-surface: #0d0b12;
-    --bg-surface-elevated: #15111d;
-    --bg-surface-glass: rgba(13, 11, 18, 0.92);
-    --bg-surface-hover: #1d1728;
-    --bg-surface-active: #271f36;
-    --bg-inset: #09070d;
-
-    --border-subtle: rgba(255, 145, 0, 0.16);
-    --border-default: rgba(255, 145, 0, 0.34);
-    --border-strong: rgba(255, 152, 0, 0.72);
-    --border-focus: #ff9800;
-
-    --text-primary: #f6f1e7;
-    --text-secondary: #d1c6b4;
-    --text-muted: #9e917d;
-    --text-inverse: #060508;
-
-    --accent-primary: #ff7b00;
-    --accent-primary-hover: #ff9800;
-    --accent-primary-muted: rgba(255, 123, 0, 0.16);
-    --accent-primary-text: #ff9e2c;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 145, 0, 0.12);
-    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.72), 0 0 14px rgba(255, 123, 0, 0.08);
-    --shadow-lg: 0 20px 44px rgba(0, 0, 0, 0.85), 0 0 24px rgba(255, 123, 0, 0.12);
-
-    --hud-bg: rgba(13, 11, 18, 0.92);
-    --hud-border: rgba(255, 145, 0, 0.42);
-    --hud-text: #f6f1e7;
-    --hud-text-muted: #d1c6b4;
-
-    --status-operational: #39ff88;
-    --status-operational-bg: rgba(57, 255, 136, 0.14);
-    --status-operational-border: rgba(57, 255, 136, 0.42);
-
-    --status-expanding: #00e5ff;
-    --status-expanding-bg: rgba(0, 229, 255, 0.14);
-    --status-expanding-border: rgba(0, 229, 255, 0.42);
-
-    --status-under-construction: #38bdf8;
-    --status-under-construction-bg: rgba(56, 189, 248, 0.15);
-    --status-under-construction-border: rgba(56, 189, 248, 0.44);
-
-    --status-permitted: #ff9e2c;
-    --status-permitted-bg: rgba(255, 123, 0, 0.15);
-    --status-permitted-border: rgba(255, 152, 0, 0.45);
-
-    --status-proposed: #c084fc;
-    --status-proposed-bg: rgba(192, 132, 252, 0.16);
-    --status-proposed-border: rgba(192, 132, 252, 0.44);
-
-    --status-contested: #ffb300;
-    --status-contested-bg: rgba(255, 179, 0, 0.15);
-    --status-contested-border: rgba(255, 179, 0, 0.48);
-
-    --status-moratorium: #ff4d4d;
-    --status-moratorium-bg: rgba(255, 59, 48, 0.16);
-    --status-moratorium-border: rgba(255, 59, 48, 0.5);
-
-    --epistemic-measured: #39ff88;
-    --epistemic-measured-bg: rgba(57, 255, 136, 0.14);
-    --epistemic-permitted: #ff9e2c;
-    --epistemic-permitted-bg: rgba(255, 123, 0, 0.15);
-    --epistemic-filed: #38bdf8;
-    --epistemic-filed-bg: rgba(56, 189, 248, 0.15);
-    --epistemic-disclosed: #00e5ff;
-    --epistemic-disclosed-bg: rgba(0, 229, 255, 0.14);
-    --epistemic-estimated: #ffb300;
-    --epistemic-estimated-bg: rgba(255, 179, 0, 0.15);
-    --epistemic-reported: #ff9e2c;
-    --epistemic-reported-bg: rgba(255, 123, 0, 0.15);
-    --epistemic-reported-border: rgba(255, 179, 0, 0.45);
-    --epistemic-undisclosed: #ff4d4d;
-    --epistemic-undisclosed-bg: rgba(255, 59, 48, 0.16);
-
-    --thermal-free: #39ff88;
-    --thermal-free-bg: rgba(57, 255, 136, 0.14);
-    --thermal-adiabatic: #ffb300;
-    --thermal-adiabatic-bg: rgba(255, 179, 0, 0.15);
-    --thermal-peak: #ff4d4d;
-    --thermal-peak-bg: rgba(255, 59, 48, 0.16);
-    --thermal-unavailable: #9e917d;
-    --thermal-unavailable-bg: rgba(158, 145, 125, 0.15);
-
-    --stress-low: #39ff88;
-    --stress-low-medium: #00e5ff;
-    --stress-medium-high: #ffb300;
-    --stress-high: #ff7b00;
-    --stress-extremely-high: #ff3b30;
-
-    --grid-energized: #39ff88;
-    --grid-phased: #00e5ff;
-    --grid-queue: #38bdf8;
-    --grid-contested: #ff3b30;
-    --grid-upgrade: #ffb300;
-
-    --zone-boundary: #ff7b00;
-    --zone-operational: #39ff88;
-    --zone-expansion: #c084fc;
-    --zone-substation: #ffb300;
-    --zone-cooling: #00e5ff;
-
-    --tier-flagship: #ff7b00;
-    --tier-registry: #00e5ff;
-    --tier-provisional: #c084fc;
-
-    --fuel-nuclear: #c084fc;
-    --fuel-gas: #ff7b00;
-    --fuel-coal: #9e917d;
-    --fuel-wind: #39ff88;
-    --fuel-solar: #ffb300;
-    --fuel-hydro: #00e5ff;
-
-    --pulse-delta-glow: rgba(255, 123, 0, 0.44);
-    --hazard-stripe-amber: repeating-linear-gradient(
-      -45deg,
-      rgba(255, 179, 0, 0.2) 0 6px,
-      rgba(255, 179, 0, 0.04) 6px 12px
-    );
-    --hazard-stripe-crimson: repeating-linear-gradient(
-      -45deg,
-      rgba(255, 59, 48, 0.22) 0 6px,
-      rgba(255, 59, 48, 0.04) 6px 12px
-    );
-    --scanline-overlay: repeating-linear-gradient(
-      0deg,
-      rgba(255, 123, 0, 0.035) 0 1px,
-      transparent 1px 3px
-    );
-  }
 }

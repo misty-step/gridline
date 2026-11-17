@@ -1,4 +1,4 @@
--- Gridline Live Observatory D1 Schema (v1.0)
+-- Undercurrent live observatory D1 schema (v1.0)
 -- Persists live infrastructure pulse signals, EIA regional grid dispatch snapshots, and cron ingest runs.
 
 CREATE TABLE IF NOT EXISTS live_signals (

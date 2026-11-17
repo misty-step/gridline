@@ -319,7 +319,7 @@ export function FacilityDrawer({
               <span className="meta-dot" aria-hidden="true">
                 ·
               </span>
-              <span className="mono">ISO // {indexItem.isoRegion}</span>
+              <span className="mono">{indexItem.isoRegion}</span>
             </div>
           </div>
 
@@ -369,10 +369,10 @@ export function FacilityDrawer({
               type="button"
               className="drawer-btn drawer-btn--primary"
               onClick={() => onInspectParcel(indexItem)}
-              title="Fly to z15.8 Satellite + 2.5D Parcel Inspection"
+              title="Zoom to the site on satellite imagery"
             >
               <Satellite size={13} aria-hidden="true" />
-              <span>Inspect Parcel</span>
+              <span>View site</span>
             </button>
 
             <button
@@ -394,34 +394,32 @@ export function FacilityDrawer({
               type="button"
               className="drawer-btn"
               onClick={handleCopyLink}
-              title="Copy shareable URL"
+              title="Copy a link to this campus"
             >
               {copiedLink ? (
                 <Check size={13} aria-hidden="true" />
               ) : (
                 <Copy size={13} aria-hidden="true" />
               )}
-              <span>{copiedLink ? "Copied" : "Copy Link"}</span>
+              <span>{copiedLink ? "Copied" : "Copy link"}</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* Semantic-Only NERV Hazard Caution Stripe */}
+      {/* Hazard stripe: only for moratorium, litigation or contested status */}
       {(isMoratoriumHazard || isContestedHazard) && (
         <div
-          className={`nerv-hazard-banner ${
-            isMoratoriumHazard
-              ? "nerv-hazard-banner--crimson"
-              : "nerv-hazard-banner--amber"
-          } mono`}
+          className={`hazard-banner ${
+            isMoratoriumHazard ? "hazard-banner--crimson" : "hazard-banner--amber"
+          }`}
           role="status"
         >
           <AlertTriangle size={13} aria-hidden="true" />
           <span>
             {isMoratoriumHazard
-              ? "ALERT // MORATORIUM OR ACTIVE LITIGATION RECORDED"
-              : "CAUTION // CONTESTED PERMIT OR COMMUNITY OPPOSITION"}
+              ? "Moratorium or active litigation on record"
+              : "Contested permit or organized local opposition"}
           </span>
         </div>
       )}
@@ -433,7 +431,7 @@ export function FacilityDrawer({
           aria-label="Core facility capacity and water KPIs"
         >
           <KpiStatCell
-            label="Operational"
+            label="Operating"
             metric={facility?.power.operationalMw}
             fallbackText={formatMw(indexItem.operationalMw)}
             fallbackProv={EPISTEMIC_LABELS[indexItem.operationalMwEpistemic]}
@@ -444,7 +442,7 @@ export function FacilityDrawer({
             onJumpToSource={handleJumpToSource}
           />
           <KpiStatCell
-            label="Total Planned"
+            label="Planned"
             metric={facility?.power.totalPlannedMw}
             fallbackText={formatMw(indexItem.totalPlannedMw)}
             fallbackProv={EPISTEMIC_LABELS[indexItem.totalPlannedMwEpistemic]}
@@ -455,7 +453,7 @@ export function FacilityDrawer({
             onJumpToSource={handleJumpToSource}
           />
           <KpiStatCell
-            label="Peak Water"
+            label="Peak water"
             metric={facility?.waterAndCooling.peakOrAvgWaterMgd}
             fallbackText={formatWaterSummary(
               indexItem.peakOrAvgWaterMgd,
@@ -473,8 +471,8 @@ export function FacilityDrawer({
           <KpiStatCell
             label="Design PUE"
             metric={facility?.waterAndCooling.pue}
-            fallbackText={detailLoading ? "Loading..." : "Undisclosed"}
-            fallbackProv={detailLoading ? "Hydrating" : "Undisclosed"}
+            fallbackText={detailLoading ? "…" : "Undisclosed"}
+            fallbackProv={detailLoading ? "Loading" : "Undisclosed"}
             isUndisclosedFallback={!detailLoading}
             onJumpToSource={handleJumpToSource}
           />
@@ -488,7 +486,7 @@ export function FacilityDrawer({
           <div className="live-strip-head">
             <div className="live-panel-title-wrap">
               <Thermometer size={13} aria-hidden="true" />
-              <span className="live-panel-title">Live Telemetry</span>
+              <span className="live-panel-title">Live conditions</span>
               {weather && (
                 <span className={`thermal-pill thermal-pill--${regimeKey}`}>
                   {THERMAL_REGIME_LABELS[regimeKey] ?? regimeKey}
@@ -518,7 +516,7 @@ export function FacilityDrawer({
                   className={isTelemetryLoading ? "spin" : ""}
                   aria-hidden="true"
                 />
-                <span>{isTelemetryLoading ? "..." : "Refresh"}</span>
+                <span>Refresh</span>
               </button>
             </div>
           </div>
@@ -527,7 +525,7 @@ export function FacilityDrawer({
             <div className="degraded-banner" role="alert">
               <AlertTriangle size={14} aria-hidden="true" />
               <div>
-                <strong>Upstream Telemetry Degraded:</strong>{" "}
+                <strong>Live data degraded.</strong>{" "}
                 {refreshError ||
                   weather?.error ||
                   hydrology?.error ||
@@ -538,17 +536,17 @@ export function FacilityDrawer({
 
           <div className="live-strip-metrics mono">
             <div className="live-strip-stat">
-              <span className="live-k">Dry-Bulb</span>
+              <span className="live-k">Air temp</span>
               <span className="live-v">
                 {weather
                   ? formatTempPair(weather.tempF, weather.tempC)
                   : isTelemetryLoading
-                    ? "Loading..."
+                    ? "…"
                     : "Unavailable"}
               </span>
             </div>
             <div className="live-strip-stat">
-              <span className="live-k">Stull Wet-Bulb</span>
+              <span className="live-k">Wet-bulb</span>
               <span className="live-v">
                 {weather
                   ? formatTempPair(weather.wetBulbF, weather.wetBulbC)
@@ -560,12 +558,12 @@ export function FacilityDrawer({
               </span>
             </div>
             <div className="live-strip-stat">
-              <span className="live-k">Basin Flow</span>
+              <span className="live-k">River flow</span>
               <span className="live-v">
                 {hydrology
                   ? formatDischargeCfs(hydrology.dischargeCfs)
                   : isTelemetryLoading
-                    ? "Loading..."
+                    ? "…"
                     : "Unavailable"}
               </span>
             </div>
@@ -591,7 +589,7 @@ export function FacilityDrawer({
                     className={`pulse-status-dot pulse-status-dot--${gridSnapshot.status}`}
                     aria-hidden="true"
                   />
-                  ISO // {gridSnapshot.isoRegion} DISPATCH
+                  {gridSnapshot.isoRegion} grid
                 </span>
                 <span className="live-grid-meta mono">
                   {formatGw(gridSnapshot.demandMw)} load ·{" "}
@@ -632,13 +630,13 @@ export function FacilityDrawer({
         >
           <div className="section-heading">
             <Database size={14} aria-hidden="true" />
-            <h3 id="sec-registry-signals">Registry &amp; Spatial Signals</h3>
+            <h3 id="sec-registry-signals">Registry records</h3>
             <FootprintCoveragePill coverage={indexItem.footprintCoverage} />
           </div>
 
           <dl className="spec-list">
             <div className="spec-row">
-              <dt>Footprint Geometry</dt>
+              <dt>Footprint</dt>
               <dd>
                 {indexItem.footprintCoverage === "verified_polygons" ? (
                   <span className="mono">
@@ -652,9 +650,8 @@ export function FacilityDrawer({
                       : ""}
                   </span>
                 ) : (
-                  <span className="point-only-notice mono">
-                    OPEN GIS FOOTPRINT UNMAPPED // COORDINATE VERIFIED (no
-                    synthetic box)
+                  <span className="point-only-notice">
+                    No traced footprint. Location verified.
                   </span>
                 )}
               </dd>
@@ -716,7 +713,7 @@ export function FacilityDrawer({
 
             {indexItem.sourceTags.length > 0 && (
               <div className="spec-row">
-                <dt>Provenance Tags</dt>
+                <dt>Datasets</dt>
                 <dd className="tag-list">
                   {indexItem.sourceTags.map((tag) => (
                     <span key={tag} className="registry-tag mono">
@@ -733,14 +730,14 @@ export function FacilityDrawer({
           <div className="degraded-banner" role="alert">
             <AlertTriangle size={14} aria-hidden="true" />
             <div>
-              <strong>Dossier Detail Unavailable:</strong> {detailError}
+              <strong>Details unavailable.</strong> {detailError}
             </div>
           </div>
         )}
 
         {detailLoading && !facility && (
-          <div className="drawer-loading-note mono">
-            Hydrating full dossier permits, sources &amp; telemetry...
+          <div className="drawer-loading-note">
+            Loading permits, sources and stakeholder evidence…
           </div>
         )}
 

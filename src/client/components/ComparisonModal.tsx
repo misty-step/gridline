@@ -94,7 +94,7 @@ export function CompareDock({
         >
           <GitCompareArrows size={13} aria-hidden="true" />
           <span>
-            {pinnedFacilities.length < 2 ? "Pin 1 more to compare" : "Compare Matrix"}
+            {pinnedFacilities.length < 2 ? "Pin 1 more to compare" : "Compare"}
           </span>
         </button>
         <button
@@ -153,15 +153,14 @@ export function ComparisonModal({
           <div className="modal-title-group">
             <GitCompareArrows size={16} aria-hidden="true" />
             <h2 id="compare-modal-title" className="modal-title">
-              Side-by-Side Facility Comparison
+              Compare campuses
             </h2>
-            <span className="modal-count mono">{facilities.length} campuses</span>
           </div>
           <button
             type="button"
             className="drawer-close-btn"
             onClick={onClose}
-            aria-label="Close comparison matrix"
+            aria-label="Close comparison"
           >
             <X size={16} aria-hidden="true" />
           </button>
@@ -171,7 +170,7 @@ export function ComparisonModal({
           <table className="compare-table">
             <thead>
               <tr>
-                <th>Metric / Dimension</th>
+                <th><span className="sr-only">Metric</span></th>
                 {facilities.map((f) => (
                   <th key={f.id}>
                     <div className="compare-col-head">
@@ -211,7 +210,7 @@ export function ComparisonModal({
                           }}
                         >
                           <Satellite size={11} aria-hidden="true" />
-                          <span>Inspect</span>
+                          <span>View site</span>
                         </button>
                       </div>
                     </div>
@@ -221,7 +220,7 @@ export function ComparisonModal({
             </thead>
             <tbody>
               <tr>
-                <th>Operational MW</th>
+                <th>Operating MW</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -235,7 +234,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Total Planned MW</th>
+                <th>Planned MW</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -249,7 +248,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Utility &amp; Interconnection</th>
+                <th>Utility and interconnection</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -265,7 +264,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Regional Grid Dispatch</th>
+                <th>Regional grid, live</th>
                 {facilities.map((f) => {
                   const snap =
                     detailsById[f.id]?.gridSnapshot ??
@@ -280,21 +279,21 @@ export function ComparisonModal({
                       </div>
                       <div className="compare-sub-note mono">
                         {snap
-                          ? `${cleanPct !== null ? `${cleanPct}% clean` : snap.status} · ${snap.status.toUpperCase()}`
-                          : "Live grid snapshot pending"}
+                          ? `${cleanPct !== null ? `${cleanPct}% clean · ` : ""}${snap.status}`
+                          : "Grid data unavailable"}
                       </div>
                     </td>
                   );
                 })}
               </tr>
               <tr>
-                <th>Cooling Architecture</th>
+                <th>Cooling</th>
                 {facilities.map((f) => (
                   <td key={f.id}>{COOLING_LABELS[f.coolingArchitecture]}</td>
                 ))}
               </tr>
               <tr>
-                <th>Peak / Avg Water</th>
+                <th>Peak water</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -320,7 +319,7 @@ export function ComparisonModal({
                   return (
                     <td key={f.id}>
                       <div className="compare-cell-val mono">
-                        {rec ? formatMetricValue(rec.waterAndCooling.pue) : "Hydrating..."}
+                        {rec ? formatMetricValue(rec.waterAndCooling.pue) : "…"}
                       </div>
                       {rec && <InlineProvenance status={rec.waterAndCooling.pue.epistemic} />}
                     </td>
@@ -328,7 +327,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Watershed &amp; Stress</th>
+                <th>Watershed stress</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -346,7 +345,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Live Wet-Bulb &amp; Regime</th>
+                <th>Wet-bulb, live</th>
                 {facilities.map((f) => {
                   const st =
                     detailsById[f.id]?.telemetry.weather ?? stations[f.nwsStationId];
@@ -364,14 +363,14 @@ export function ComparisonModal({
                           </span>
                         </>
                       ) : (
-                        <span className="compare-sub-note">Station pending</span>
+                        <span className="compare-sub-note">Station data unavailable</span>
                       )}
                     </td>
                   );
                 })}
               </tr>
               <tr>
-                <th>Live USGS Gauge</th>
+                <th>River flow, live</th>
                 {facilities.map((f) => {
                   const g =
                     detailsById[f.id]?.telemetry.hydrology ?? gauges[f.usgsGaugeSiteId];
@@ -388,7 +387,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Footprint &amp; Area</th>
+                <th>Footprint and area</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -408,7 +407,7 @@ export function ComparisonModal({
                 })}
               </tr>
               <tr>
-                <th>Regulatory &amp; Permits</th>
+                <th>Permits</th>
                 {facilities.map((f) => {
                   const rec = detailsById[f.id]?.facility;
                   return (
@@ -416,8 +415,8 @@ export function ComparisonModal({
                       <div>
                         {rec?.regulatory.permittingStage ??
                           (f.moratoriumOrLitigationActive
-                            ? "Active Litigation / Moratorium"
-                            : "Standard Regulatory Record")}
+                            ? "Active litigation or moratorium"
+                            : "No litigation on record")}
                       </div>
                       <div className="compare-sub-note mono">
                         {rec

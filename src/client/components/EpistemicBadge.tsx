@@ -7,7 +7,6 @@ import type {
   LifecycleStatus,
 } from "@shared/types";
 import {
-  CATALOG_TIER_BADGES,
   CATALOG_TIER_LABELS,
   CATALOG_TIER_SHORT_LABELS,
   EPISTEMIC_LABELS,
@@ -43,10 +42,10 @@ export function TierBadge({
 }) {
   return (
     <span
-      className={`tier-badge tier-badge--${tier}${compact ? " tier-badge--compact" : ""} mono`}
-      title={`Catalog Tier: ${CATALOG_TIER_LABELS[tier]}`}
+      className={`tier-badge tier-badge--${tier}${compact ? " tier-badge--compact" : ""}`}
+      title={CATALOG_TIER_LABELS[tier]}
     >
-      {compact ? CATALOG_TIER_SHORT_LABELS[tier].toUpperCase() : CATALOG_TIER_BADGES[tier]}
+      {compact ? CATALOG_TIER_SHORT_LABELS[tier] : CATALOG_TIER_LABELS[tier]}
     </span>
   );
 }
@@ -58,10 +57,10 @@ export function FootprintCoveragePill({
 }) {
   return (
     <span
-      className={`coverage-pill coverage-pill--${coverage} mono`}
+      className={`coverage-pill coverage-pill--${coverage}`}
       title={FOOTPRINT_COVERAGE_LABELS[coverage]}
     >
-      {coverage === "verified_polygons" ? "VERIFIED POLYGONS" : "POINT ONLY"}
+      {coverage === "verified_polygons" ? "Traced footprint" : "Location only"}
     </span>
   );
 }
@@ -80,7 +79,7 @@ export function EpistemicPill({ status }: { status: EpistemicStatus }) {
 export function SourceRefButton({
   sourceId,
   onJumpToSource,
-  label = "src",
+  label = "source",
 }: {
   sourceId: string;
   onJumpToSource?: (sourceId: string) => void;
@@ -98,7 +97,7 @@ export function SourceRefButton({
       title={`Inspect primary source ${sourceId}`}
       aria-label={`Jump to source ${sourceId}`}
     >
-      [{label}]
+      {label}
     </button>
   );
 }

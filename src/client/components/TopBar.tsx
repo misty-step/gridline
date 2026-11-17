@@ -132,61 +132,25 @@ export function TopBar({
 
   const csvUrl = buildFacilityExportUrl("csv", filters);
   const geojsonUrl = buildFacilityExportUrl("geojson", filters);
-  const activeCorridor =
-    CORRIDOR_PRESETS.find((c) => c.id === activeCorridorId) ?? null;
 
   return (
     <header className="topbar" role="banner">
       <div className="topbar-left">
-        <div
-          className="brand-mark"
-          title="Gridline // MAGI — 50-State US Data Center Infrastructure & Live Observatory"
-        >
+        <div className="brand-mark">
           <svg
             className="brand-glyph"
-            width="18"
-            height="18"
-            viewBox="0 0 32 32"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            strokeWidth="2.4"
+            strokeLinecap="round"
             aria-hidden="true"
           >
-            <rect
-              x="2"
-              y="2"
-              width="28"
-              height="28"
-              rx="1"
-              fill="none"
-              stroke="var(--accent-primary)"
-              strokeWidth="1.8"
-            />
-            <circle
-              cx="16"
-              cy="16"
-              r="7.5"
-              fill="none"
-              stroke="var(--accent-primary)"
-              strokeOpacity="0.6"
-              strokeWidth="1.4"
-            />
-            <path
-              d="M16 4v4.5M16 23.5V28M4 16h4.5M23.5 16H28"
-              stroke="var(--accent-primary)"
-              strokeWidth="1.5"
-              strokeLinecap="square"
-            />
-            <path
-              d="M8.5 16h3.5l2-4.5 3 9 2-4.5h4.5"
-              fill="none"
-              stroke="var(--status-operational)"
-              strokeWidth="2.1"
-              strokeLinecap="square"
-              strokeLinejoin="miter"
-            />
+            <path d="M2 9C5 4 8 4 12 9s7 5 10 0" stroke="var(--power)" />
+            <path d="M2 15c3 5 6 5 10 0s7-5 10 0" stroke="var(--water)" />
           </svg>
-          <span className="brand-wordmark">
-            <span className="brand-name">GRIDLINE</span>
-            <span className="brand-sub mono">// MAGI</span>
-          </span>
+          <span className="brand-name">Undercurrent</span>
         </div>
 
         <div className="omnibox">
@@ -251,10 +215,10 @@ export function TopBar({
             }}
             aria-expanded={corridorOpen}
             aria-haspopup="menu"
-            title="Jump to regional corridor"
+            title="Jump to a region"
           >
             <Compass size={13} aria-hidden="true" />
-            <span>{activeCorridor ? activeCorridor.label : "Corridors"}</span>
+            <span>Jump to</span>
             <ChevronDown size={12} aria-hidden="true" />
           </button>
           {corridorOpen && (
@@ -287,10 +251,10 @@ export function TopBar({
           type="button"
           className="topbar-action-btn topbar-pulse-btn"
           onClick={onOpenPulse}
-          title="Live Observatory Pulse — 9-ISO Dispatch, Federal Register, SEC EDGAR & PeeringDB"
+          title="Live grid dispatch and new filings"
         >
           <Radio size={13} aria-hidden="true" />
-          <span>Live Pulse</span>
+          <span>Live</span>
           {pulseStatus && (
             <span
               className={`pulse-status-dot pulse-status-dot--${pulseStatus}`}
@@ -322,7 +286,7 @@ export function TopBar({
             <div className="topbar-popover export-popover" role="menu">
               <a
                 href={csvUrl}
-                download="gridline-facilities.csv"
+                download="undercurrent-campuses.csv"
                 className="export-item"
                 role="menuitem"
                 onClick={() => setExportOpen(false)}
@@ -337,7 +301,7 @@ export function TopBar({
               </a>
               <a
                 href={geojsonUrl}
-                download="gridline-facilities.geojson"
+                download="undercurrent-campuses.geojson"
                 className="export-item"
                 role="menuitem"
                 onClick={() => setExportOpen(false)}
@@ -417,7 +381,7 @@ export function TopBar({
             >
               <span className="popover-item-inline">
                 <Radio size={14} aria-hidden="true" />
-                <span>Live Pulse</span>
+                <span>Live</span>
               </span>
               {pulseCount !== null && pulseCount > 0 && (
                 <span className="topbar-badge mono">{pulseCount}</span>
@@ -438,7 +402,7 @@ export function TopBar({
 
             <a
               href={csvUrl}
-              download="gridline-facilities.csv"
+              download="undercurrent-campuses.csv"
               role="menuitem"
               className="popover-item"
               onClick={() => setMobileToolsOpen(false)}
@@ -451,7 +415,7 @@ export function TopBar({
 
             <a
               href={geojsonUrl}
-              download="gridline-facilities.geojson"
+              download="undercurrent-campuses.geojson"
               role="menuitem"
               className="popover-item"
               onClick={() => setMobileToolsOpen(false)}
