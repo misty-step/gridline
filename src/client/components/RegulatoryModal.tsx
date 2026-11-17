@@ -1,6 +1,7 @@
 import { AlertTriangle, FileText, Radio, RefreshCw, X } from "lucide-react";
 import type { LiveRegulatoryFeed } from "@shared/types";
 import { formatTimestamp } from "../lib/format";
+import { useModalDialog } from "../lib/useModalDialog";
 import { SafeExternalLink } from "./EpistemicBadge";
 
 interface RegulatoryModalProps {
@@ -20,6 +21,8 @@ export function RegulatoryModal({
   onRefresh,
   onClose,
 }: RegulatoryModalProps) {
+  const panelRef = useModalDialog(open, onClose);
+
   if (!open) return null;
 
   const isDegraded = Boolean(error) || feed?.status === "degraded";
@@ -34,14 +37,14 @@ export function RegulatoryModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="modal-panel">
+      <div className="modal-panel" ref={panelRef} tabIndex={-1}>
         <div className="modal-header">
           <div className="modal-title-group">
             <Radio size={16} aria-hidden="true" />
             <h2 id="reg-modal-title" className="modal-title">
               Federal Regulatory Pulse
             </h2>
-            <span className="modal-count">Federal Register (FERC / DOE / EPA)</span>
+            <span className="modal-count">DOE · FERC · EPA · NRC</span>
           </div>
 
           <div className="modal-head-actions">
@@ -112,6 +115,16 @@ export function RegulatoryModal({
                   <div className="reg-item-meta">
                     <span className="reg-doc-num mono">{item.documentNumber}</span>
                     <span className="reg-type">{item.type}</span>
+                    {item.pdfUrl && (
+                      <SafeExternalLink
+                        href={item.pdfUrl}
+                        className="reg-pdf-pill"
+                        showIcon={false}
+                      >
+                        <FileText size={11} aria-hidden="true" />
+                        <span>PDF</span>
+                      </SafeExternalLink>
+                    )}
                     <span className="reg-date mono">{item.publicationDate}</span>
                   </div>
 
@@ -134,18 +147,6 @@ export function RegulatoryModal({
                   {item.abstract && (
                     <p className="reg-abstract">{item.abstract}</p>
                   )}
-
-                  <div className="reg-item-links">
-                    <SafeExternalLink href={item.htmlUrl} className="reg-link-btn">
-                      Federal Register Page
-                    </SafeExternalLink>
-                    {item.pdfUrl && (
-                      <SafeExternalLink href={item.pdfUrl} className="reg-link-btn">
-                        <FileText size={11} aria-hidden="true" />
-                        <span>PDF Filing</span>
-                      </SafeExternalLink>
-                    )}
-                  </div>
                 </li>
               ))}
             </ul>

@@ -3,6 +3,7 @@ import type {
   FacilityRecord,
   IsoRegion,
   LifecycleStatus,
+  WatershedStress,
 } from "@shared/types";
 import type {
   FilterState,
@@ -157,6 +158,14 @@ export function computeViewportMetrics(
   };
 }
 
+const WATERSHED_STRESS_RANK: Record<WatershedStress, number> = {
+  low: 1,
+  low_medium: 2,
+  medium_high: 3,
+  high: 4,
+  extremely_high: 5,
+};
+
 export function buildMarketClusters(
   facilities: FacilityRecord[],
 ): MarketClusterSummary[] {
@@ -177,22 +186,38 @@ export function buildMarketClusters(
     let plannedMw = 0;
     let contestedCount = 0;
     let undisclosedWaterCount = 0;
+    let disclosedWaterMgd = 0;
+    let maxWatershedStress: WatershedStress = "low";
+    let maxStressRank = 0;
     let minLon = Infinity;
     let minLat = Infinity;
     let maxLon = -Infinity;
     let maxLat = -Infinity;
     const isoCount = new Map<IsoRegion, number>();
+    const gridMw = new Map<string, number>();
 
     for (const f of items) {
       const [lon, lat] = f.coordinates;
-      const w = Math.max(f.power.totalPlannedMw.value ?? 50, 50);
+      const w = Math.max(f.power.totalPlannedMw.value ?? f.power.operationalMw.value ?? 50, 50);
       weightSum += w;
       lonSum += lon * w;
       latSum += lat * w;
       operationalMw += f.power.operationalMw.value ?? 0;
       plannedMw += f.power.totalPlannedMw.value ?? f.power.operationalMw.value ?? 0;
       if (isContestedOrMoratorium(f)) contestedCount += 1;
-      if (isUndisclosedWater(f)) undisclosedWaterCount += 1;
+      if (isUndisclosedWater(f)) {
+        undisclosedWaterCount += 1;
+      } else {
+        disclosedWaterMgd += f.waterAndCooling.peakOrAvgWaterMgd.value ?? 0;
+      }
+      const stressRank = WATERSHED_STRESS_RANK[f.waterAndCooling.watershedStress] ?? 1;
+      if (stressRank > maxStressRank) {
+        maxStressRank = stressRank;
+        maxWatershedStress = f.waterAndCooling.watershedStress;
+      }
+      const gridKey = f.power.interconnectionStatus;
+      gridMw.set(gridKey, (gridMw.get(gridKey) ?? 0) + w);
+
       if (lon < minLon) minLon = lon;
       if (lat < minLat) minLat = lat;
       if (lon > maxLon) maxLon = lon;
@@ -209,6 +234,15 @@ export function buildMarketClusters(
       }
     }
 
+    let dominantGridStatus: string = items[0].power.interconnectionStatus;
+    let bestGridMw = -1;
+    for (const [status, mw] of gridMw.entries()) {
+      if (mw > bestGridMw) {
+        bestGridMw = mw;
+        dominantGridStatus = status;
+      }
+    }
+
     summaries.push({
       clusterName,
       coordinates: [lonSum / weightSum, latSum / weightSum],
@@ -217,6 +251,9 @@ export function buildMarketClusters(
       plannedMw: Math.round(plannedMw),
       contestedCount,
       undisclosedWaterCount,
+      disclosedWaterMgd: Math.round(disclosedWaterMgd * 100) / 100,
+      maxWatershedStress,
+      dominantGridStatus,
       primaryIso,
       bounds: [minLon, minLat, maxLon, maxLat],
     });
@@ -249,6 +286,9 @@ export function buildMarketClustersGeoJson(
           plannedMw: c.plannedMw,
           contestedCount: c.contestedCount,
           undisclosedWaterCount: c.undisclosedWaterCount,
+          disclosedWaterMgd: c.disclosedWaterMgd,
+          maxWatershedStress: c.maxWatershedStress,
+          dominantGridStatus: c.dominantGridStatus,
           primaryIso: c.primaryIso,
           radiusOuter,
           radiusInner,

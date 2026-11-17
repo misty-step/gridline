@@ -658,7 +658,7 @@
       "operationalMw": {
         "value": 0,
         "unit": "MW",
-        "epistemic": "measured",
+        "epistemic": "disclosed",
         "asOf": "2026-07-02",
         "basis": "Zero energized MW; all rezoning approvals were ruled void ab initio before construction",
         "sourceId": "src-fox5-pwc"

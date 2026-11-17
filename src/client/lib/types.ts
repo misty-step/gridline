@@ -3,6 +3,7 @@ import type {
   FacilityRecord,
   IsoRegion,
   LifecycleStatus,
+  WatershedStress,
 } from "@shared/types";
 
 export type ThemeMode = "system" | "light" | "dark";
@@ -57,8 +58,16 @@ export interface MarketClusterSummary {
   plannedMw: number;
   contestedCount: number;
   undisclosedWaterCount: number;
+  disclosedWaterMgd: number;
+  maxWatershedStress: WatershedStress;
+  dominantGridStatus: string;
   primaryIso: IsoRegion;
   bounds: MapBoundsTuple;
+}
+
+export interface HoveredClusterState {
+  cluster: MarketClusterSummary;
+  point: { x: number; y: number };
 }
 
 export interface HoveredFacilityState {

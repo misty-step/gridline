@@ -21,6 +21,13 @@ export const ESRI_WORLD_IMAGERY_TILES =
 export const USGS_IMAGERY_TILES =
   "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}";
 
+export const US_CONTIGUOUS_BOUNDS: [number, number, number, number] = [
+  -124.8,
+  24.4,
+  -66.9,
+  49.4,
+];
+
 export const DEFAULT_VIEW: MapViewState = {
   lng: -96.4,
   lat: 38.5,

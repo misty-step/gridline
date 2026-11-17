@@ -1,12 +1,11 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
+  Check,
   ChevronLeft,
-  ChevronRight,
   Crosshair,
   Filter,
   GitCompareArrows,
   RotateCcw,
-  Satellite,
 } from "lucide-react";
 import type { FacilityRecord } from "@shared/types";
 import {
@@ -18,64 +17,74 @@ import {
 import { hasActiveFilters, isUndisclosedWater, toggleArrayItem } from "../lib/filters";
 import {
   COOLING_SHORT_LABELS,
+  formatGwOrMw,
   formatMw,
+  formatNumber,
   formatWaterMgd,
   LIFECYCLE_LABELS,
 } from "../lib/format";
-import type { FilterState, SortKey } from "../lib/types";
+import type { FilterState, SortKey, ViewportMetrics } from "../lib/types";
 import { StatusPill } from "./EpistemicBadge";
 
 interface DirectoryRailProps {
-  open: boolean;
-  onToggleOpen: () => void;
+  onCollapse: () => void;
   visibleFacilities: FacilityRecord[];
   totalFilteredCount: number;
+  viewportMetrics: ViewportMetrics;
   filters: FilterState;
   onFiltersChange: (next: FilterState) => void;
   onResetFilters: () => void;
   selectedFacilityId: string | null;
   onSelectFacility: (facility: FacilityRecord) => void;
-  onInspectParcel: (facility: FacilityRecord) => void;
   compareIds: string[];
   onToggleCompare: (facilityId: string) => void;
   onFitFilteredBounds: () => void;
 }
 
 export function DirectoryRail({
-  open,
-  onToggleOpen,
+  onCollapse,
   visibleFacilities,
   totalFilteredCount,
+  viewportMetrics,
   filters,
   onFiltersChange,
   onResetFilters,
   selectedFacilityId,
   onSelectFacility,
-  onInspectParcel,
   compareIds,
   onToggleCompare,
   onFitFilteredBounds,
 }: DirectoryRailProps) {
-  const [filtersExpanded, setFiltersExpanded] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const filterWrapRef = useRef<HTMLDivElement>(null);
+  const filterBtnRef = useRef<HTMLButtonElement>(null);
 
   const chipFilterCount =
     filters.statuses.length + filters.isos.length + filters.coolings.length;
   const anyFilters = hasActiveFilters(filters);
 
-  if (!open) {
-    return (
-      <button
-        type="button"
-        className="rail-collapsed-tab"
-        onClick={onToggleOpen}
-        aria-label="Open facility directory and filters"
-      >
-        <ChevronRight size={14} aria-hidden="true" />
-        <span>Directory</span>
-        <span className="rail-tab-count mono">{visibleFacilities.length}</span>
-      </button>
-    );
-  }
+  useEffect(() => {
+    if (!filtersOpen) return;
+    function handleOutside(e: MouseEvent) {
+      if (filterWrapRef.current && !filterWrapRef.current.contains(e.target as Node)) {
+        setFiltersOpen(false);
+      }
+    }
+    function handleEsc(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        e.stopPropagation();
+        setFiltersOpen(false);
+        filterBtnRef.current?.focus();
+      }
+    }
+    document.addEventListener("mousedown", handleOutside);
+    document.addEventListener("keydown", handleEsc, { capture: true });
+    return () => {
+      document.removeEventListener("mousedown", handleOutside);
+      document.removeEventListener("keydown", handleEsc, { capture: true });
+    };
+  }, [filtersOpen]);
 
   return (
     <aside className="rail" aria-label="Facility directory and filters">
@@ -104,12 +113,56 @@ export function DirectoryRail({
           <button
             type="button"
             className="rail-collapse-btn"
-            onClick={onToggleOpen}
+            onClick={onCollapse}
             aria-label="Collapse directory rail"
             title="Collapse directory"
           >
-            <ChevronLeft size={15} aria-hidden="true" />
+            <ChevronLeft size={16} aria-hidden="true" />
           </button>
+        </div>
+      </div>
+
+      {/* Synchronized Viewport Totals (lives inside Directory instead of a full-width top bar) */}
+      <div
+        className="rail-summary"
+        aria-label="Viewport infrastructure totals"
+        title={`Disclosed peak water in view: ${formatNumber(viewportMetrics.disclosedPeakWaterMgd, 1)} MGD`}
+      >
+        <div className="rail-summary-item">
+          <span className="rail-summary-k">Op</span>
+          <span className="rail-summary-v rail-summary-v--op mono">
+            {formatGwOrMw(viewportMetrics.operationalMw)}
+          </span>
+        </div>
+        <div className="rail-summary-item">
+          <span className="rail-summary-k">Plan</span>
+          <span className="rail-summary-v mono">
+            {formatGwOrMw(viewportMetrics.plannedMw)}
+          </span>
+        </div>
+        <div className="rail-summary-item">
+          <span className="rail-summary-k">Contested</span>
+          <span
+            className={`rail-summary-v mono${
+              viewportMetrics.contestedOrMoratoriumCount > 0
+                ? " rail-summary-v--warn"
+                : ""
+            }`}
+          >
+            {viewportMetrics.contestedOrMoratoriumCount}
+          </span>
+        </div>
+        <div className="rail-summary-item">
+          <span className="rail-summary-k">No H2O Data</span>
+          <span
+            className={`rail-summary-v mono${
+              viewportMetrics.undisclosedWaterCount > 0
+                ? " rail-summary-v--undisclosed"
+                : ""
+            }`}
+          >
+            {viewportMetrics.undisclosedWaterCount}
+          </span>
         </div>
       </div>
 
@@ -125,7 +178,7 @@ export function DirectoryRail({
               onFiltersChange({ ...filters, contestedOnly: !filters.contestedOnly })
             }
           >
-            Contested / Moratorium
+            Contested
           </button>
           <button
             type="button"
@@ -144,14 +197,16 @@ export function DirectoryRail({
           </button>
         </div>
 
-        <div className="rail-sort-row">
+        <div className="rail-sort-row" ref={filterWrapRef}>
           <button
+            ref={filterBtnRef}
             type="button"
             className={`filter-drawer-btn${
-              filtersExpanded || chipFilterCount > 0 ? " filter-drawer-btn--active" : ""
+              filtersOpen || chipFilterCount > 0 ? " filter-drawer-btn--active" : ""
             }`}
-            aria-expanded={filtersExpanded}
-            onClick={() => setFiltersExpanded((prev) => !prev)}
+            aria-expanded={filtersOpen}
+            aria-haspopup="dialog"
+            onClick={() => setFiltersOpen((prev) => !prev)}
           >
             <Filter size={12} aria-hidden="true" />
             <span>Filters</span>
@@ -176,110 +231,131 @@ export function DirectoryRail({
               ))}
             </select>
           </label>
+
+          {filtersOpen && (
+            <div
+              className="filter-popover"
+              role="dialog"
+              aria-label="Multi-facet facility filters"
+            >
+              <div className="filter-group">
+                <div className="filter-group-label">Lifecycle</div>
+                <div className="filter-chips">
+                  {LIFECYCLE_ORDER.map((st) => {
+                    const active = filters.statuses.includes(st);
+                    return (
+                      <button
+                        key={st}
+                        type="button"
+                        className={`chip-btn${active ? " chip-btn--active" : ""}`}
+                        aria-pressed={active}
+                        onClick={() =>
+                          onFiltersChange({
+                            ...filters,
+                            statuses: toggleArrayItem(filters.statuses, st),
+                          })
+                        }
+                      >
+                        {LIFECYCLE_LABELS[st]}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <div className="filter-group-label">ISO / RTO</div>
+                <div className="filter-chips">
+                  {ISO_ORDER.map((iso) => {
+                    const active = filters.isos.includes(iso);
+                    return (
+                      <button
+                        key={iso}
+                        type="button"
+                        className={`chip-btn mono${active ? " chip-btn--active" : ""}`}
+                        aria-pressed={active}
+                        onClick={() =>
+                          onFiltersChange({
+                            ...filters,
+                            isos: toggleArrayItem(filters.isos, iso),
+                          })
+                        }
+                      >
+                        {iso}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="filter-group">
+                <div className="filter-group-label">Cooling Architecture</div>
+                <div className="filter-chips">
+                  {COOLING_ORDER.map((cool) => {
+                    const active = filters.coolings.includes(cool);
+                    return (
+                      <button
+                        key={cool}
+                        type="button"
+                        className={`chip-btn${active ? " chip-btn--active" : ""}`}
+                        aria-pressed={active}
+                        onClick={() =>
+                          onFiltersChange({
+                            ...filters,
+                            coolings: toggleArrayItem(filters.coolings, cool),
+                          })
+                        }
+                      >
+                        {COOLING_SHORT_LABELS[cool]}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-
-        {filtersExpanded && (
-          <div className="filter-panel">
-            <div className="filter-group">
-              <div className="filter-group-label">Lifecycle</div>
-              <div className="filter-chips">
-                {LIFECYCLE_ORDER.map((st) => {
-                  const active = filters.statuses.includes(st);
-                  return (
-                    <button
-                      key={st}
-                      type="button"
-                      className={`chip-btn${active ? " chip-btn--active" : ""}`}
-                      aria-pressed={active}
-                      onClick={() =>
-                        onFiltersChange({
-                          ...filters,
-                          statuses: toggleArrayItem(filters.statuses, st),
-                        })
-                      }
-                    >
-                      {LIFECYCLE_LABELS[st]}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="filter-group">
-              <div className="filter-group-label">ISO / RTO</div>
-              <div className="filter-chips">
-                {ISO_ORDER.map((iso) => {
-                  const active = filters.isos.includes(iso);
-                  return (
-                    <button
-                      key={iso}
-                      type="button"
-                      className={`chip-btn mono${active ? " chip-btn--active" : ""}`}
-                      aria-pressed={active}
-                      onClick={() =>
-                        onFiltersChange({
-                          ...filters,
-                          isos: toggleArrayItem(filters.isos, iso),
-                        })
-                      }
-                    >
-                      {iso}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="filter-group">
-              <div className="filter-group-label">Cooling Architecture</div>
-              <div className="filter-chips">
-                {COOLING_ORDER.map((cool) => {
-                  const active = filters.coolings.includes(cool);
-                  return (
-                    <button
-                      key={cool}
-                      type="button"
-                      className={`chip-btn${active ? " chip-btn--active" : ""}`}
-                      aria-pressed={active}
-                      onClick={() =>
-                        onFiltersChange({
-                          ...filters,
-                          coolings: toggleArrayItem(filters.coolings, cool),
-                        })
-                      }
-                    >
-                      {COOLING_SHORT_LABELS[cool]}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="rail-list" role="list">
         {visibleFacilities.length === 0 ? (
           <div className="rail-empty">
-            <p className="rail-empty-title">No facilities in current viewport</p>
-            {totalFilteredCount > 0 ? (
-              <button
-                type="button"
-                className="rail-empty-action"
-                onClick={onFitFilteredBounds}
-              >
-                <Crosshair size={13} aria-hidden="true" />
-                <span>Zoom to {totalFilteredCount} matching sites</span>
-              </button>
+            {totalFilteredCount === 0 ? (
+              <>
+                <p className="rail-empty-title">
+                  {filters.q.trim()
+                    ? `No campuses match "${filters.q.trim()}"`
+                    : "No campuses match the active filters"}
+                </p>
+                <p className="rail-empty-sub">
+                  Clear or relax your search query and facet filters to restore results.
+                </p>
+                <button
+                  type="button"
+                  className="rail-empty-action"
+                  onClick={onResetFilters}
+                >
+                  <RotateCcw size={13} aria-hidden="true" />
+                  <span>Reset all filters</span>
+                </button>
+              </>
             ) : (
-              <button
-                type="button"
-                className="rail-empty-action"
-                onClick={onResetFilters}
-              >
-                <RotateCcw size={13} aria-hidden="true" />
-                <span>Clear active filters</span>
-              </button>
+              <>
+                <p className="rail-empty-title">
+                  0 of {totalFilteredCount} matching campuses in current view
+                </p>
+                <p className="rail-empty-sub">
+                  Matching sites lie outside the current map bounds.
+                </p>
+                <button
+                  type="button"
+                  className="rail-empty-action"
+                  onClick={onFitFilteredBounds}
+                >
+                  <Crosshair size={13} aria-hidden="true" />
+                  <span>Zoom to {totalFilteredCount} matching sites</span>
+                </button>
+              </>
             )}
           </div>
         ) : (
@@ -301,17 +377,11 @@ export function DirectoryRail({
                   isSelected ? " facility-card--selected" : ""
                 }`}
               >
-                <div
+                <button
+                  type="button"
                   className="facility-card-main"
-                  role="button"
-                  tabIndex={0}
                   onClick={() => onSelectFacility(f)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      onSelectFacility(f);
-                    }
-                  }}
+                  aria-current={isSelected ? "true" : undefined}
                 >
                   <div className="facility-card-top">
                     <h3 className="facility-card-name">{f.name}</h3>
@@ -342,7 +412,9 @@ export function DirectoryRail({
                           : "—"}
                       </span>
                       <span className="mw-sep">/</span>
-                      <span className="mw-plan">{formatMw(f.power.totalPlannedMw.value)}</span>
+                      <span className="mw-plan">
+                        {formatMw(f.power.totalPlannedMw.value)}
+                      </span>
                     </div>
 
                     <div
@@ -360,44 +432,34 @@ export function DirectoryRail({
                       style={{ width: `${opRatio}%` }}
                     />
                   </div>
-                </div>
+                </button>
 
-                <div className="facility-card-actions">
-                  <button
-                    type="button"
-                    className="card-action-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onInspectParcel(f);
-                    }}
-                    title="Inspect parcel in Satellite z16 2.5D view"
-                  >
-                    <Satellite size={12} aria-hidden="true" />
-                    <span>Inspect Parcel</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className={`card-action-btn${
-                      isPinned ? " card-action-btn--pinned" : ""
-                    }`}
-                    disabled={compareFull}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleCompare(f.id);
-                    }}
-                    title={
-                      compareFull
-                        ? "Maximum 3 facilities pinned for comparison"
-                        : isPinned
-                          ? "Remove from comparison"
-                          : "Add to side-by-side comparison"
-                    }
-                  >
+                <button
+                  type="button"
+                  className={`card-pin-btn${isPinned ? " card-pin-btn--pinned" : ""}`}
+                  disabled={compareFull}
+                  onClick={() => onToggleCompare(f.id)}
+                  aria-label={
+                    compareFull
+                      ? `Compare limit reached for ${f.name}`
+                      : isPinned
+                        ? `Unpin ${f.name} from comparison`
+                        : `Pin ${f.name} for comparison`
+                  }
+                  title={
+                    compareFull
+                      ? "Maximum 3 facilities pinned"
+                      : isPinned
+                        ? "Remove from comparison"
+                        : "Pin to comparison"
+                  }
+                >
+                  {isPinned ? (
+                    <Check size={12} aria-hidden="true" />
+                  ) : (
                     <GitCompareArrows size={12} aria-hidden="true" />
-                    <span>{isPinned ? "Pinned" : "+ Compare"}</span>
-                  </button>
-                </div>
+                  )}
+                </button>
               </article>
             );
           })

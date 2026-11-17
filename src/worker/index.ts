@@ -338,7 +338,7 @@ export async function handleRequest(
       status: "ok",
       service: "gridline",
       environment: env.ENVIRONMENT ?? "production",
-      release: env.RELEASE ?? "0.1.0",
+      release: env.RELEASE ?? "0.2.0",
       facilityCount: dataset.facilities.length,
       operationalMwTotal,
       plannedMwTotal,

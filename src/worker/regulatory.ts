@@ -1,8 +1,8 @@
 import type { LiveRegulatoryFeed, LiveRegulatoryItem } from "../shared/types.ts";
 
 const FEDERAL_REGISTER_URL =
-  "https://www.federalregister.gov/api/v1/documents.json?per_page=15&order=newest&conditions%5Bterm%5D=%22data+center%22+electric";
-const CACHE_KEY = "https://gridline-cache.internal/v1/regulatory/federal-register";
+  "https://www.federalregister.gov/api/v1/documents.json?per_page=15&order=newest&conditions%5Bterm%5D=%22data+center%22+electric&conditions%5Bagencies%5D%5B%5D=energy-department&conditions%5Bagencies%5D%5B%5D=federal-energy-regulatory-commission&conditions%5Bagencies%5D%5B%5D=environmental-protection-agency&conditions%5Bagencies%5D%5B%5D=nuclear-regulatory-commission";
+const CACHE_KEY = "https://gridline-cache.internal/v2/regulatory/federal-register";
 const CACHE_TTL_SECONDS = 1800;
 const DEFAULT_TIMEOUT_MS = 4500;
 const USER_AGENT = "(GridlineAtlas, contact@mistystep.io)";
@@ -27,7 +27,11 @@ function getEdgeCache(): Cache | undefined {
 
 function stripHtmlTags(input: string | null | undefined): string {
   if (!input) return "";
-  return input.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  return input
+    .replace(/<[^>]+>/g, "")
+    .replace(/[•○■▪]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 interface FederalRegisterResponse {

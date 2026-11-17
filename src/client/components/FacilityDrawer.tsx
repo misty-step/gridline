@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import {
   AlertTriangle,
   Check,
+  ChevronDown,
+  ChevronUp,
   Copy,
   Droplets,
   FileText,
@@ -24,6 +26,7 @@ import type {
 import { fetchLiveFacilityTelemetry } from "../lib/api";
 import {
   COOLING_LABELS,
+  EPISTEMIC_LABELS,
   formatDischargeCfs,
   formatMetricValue,
   formatNumber,
@@ -48,9 +51,53 @@ interface FacilityDrawerProps {
   summaryHydrology?: LiveBasinHydrology;
   isPinnedCompare: boolean;
   compareDisabled: boolean;
+  mobileDetent: "peek" | "expanded";
+  onToggleMobileDetent: () => void;
   onToggleCompare: (facilityId: string) => void;
   onInspectParcel: (facility: FacilityRecord) => void;
   onClose: () => void;
+}
+
+function KpiStatCell({
+  label,
+  metric,
+  onJumpToSource,
+}: {
+  label: string;
+  metric: MetricValue;
+  onJumpToSource: (id: string) => void;
+}) {
+  const isUndisclosed =
+    metric.epistemic === "undisclosed" || metric.value === null;
+  const shortVal = isUndisclosed
+    ? "Undisclosed"
+    : metric.unit === "PUE" || metric.unit === "ratio"
+      ? formatNumber(metric.value, 2)
+      : formatMetricValue(metric);
+
+  return (
+    <div
+      className={`drawer-kpi-cell${isUndisclosed ? " drawer-kpi-cell--undisclosed" : ""}`}
+      title={`${metric.basis}${metric.asOf ? ` (${metric.asOf})` : ""}`}
+    >
+      <div className="drawer-kpi-label">{label}</div>
+      <div
+        className={`drawer-kpi-value mono${
+          isUndisclosed ? " drawer-kpi-value--undisclosed" : ""
+        }`}
+      >
+        {shortVal}
+      </div>
+      <div className="drawer-kpi-meta">
+        {isUndisclosed ? (
+          <EpistemicPill status="undisclosed" />
+        ) : (
+          <span className="drawer-kpi-prov">{EPISTEMIC_LABELS[metric.epistemic]}</span>
+        )}
+        <SourceRefButton sourceId={metric.sourceId} onJumpToSource={onJumpToSource} />
+      </div>
+    </div>
+  );
 }
 
 function MetricRow({
@@ -65,8 +112,8 @@ function MetricRow({
   const isUndisclosed =
     metric.epistemic === "undisclosed" || metric.value === null;
   return (
-    <div className={`metric-card${isUndisclosed ? " metric-card--undisclosed" : ""}`}>
-      <div className="metric-card-top">
+    <div className={`metric-row${isUndisclosed ? " metric-row--undisclosed" : ""}`}>
+      <div className="metric-row-top">
         <span className="metric-label">{label}</span>
         <div className="metric-badges">
           <EpistemicPill status={metric.epistemic} />
@@ -76,7 +123,7 @@ function MetricRow({
       <div className={`metric-value mono${isUndisclosed ? " metric-value--undisclosed" : ""}`}>
         {formatMetricValue(metric)}
       </div>
-      <div className="metric-basis" title={metric.basis}>
+      <div className="metric-basis">
         {metric.basis}
         {metric.asOf ? ` (${metric.asOf})` : ""}
       </div>
@@ -90,6 +137,8 @@ export function FacilityDrawer({
   summaryHydrology,
   isPinnedCompare,
   compareDisabled,
+  mobileDetent,
+  onToggleMobileDetent,
   onToggleCompare,
   onInspectParcel,
   onClose,
@@ -103,12 +152,16 @@ export function FacilityDrawer({
   const [highlightedSourceId, setHighlightedSourceId] = useState<string | null>(
     null,
   );
+  const [perspectiveTab, setPerspectiveTab] = useState<"all" | "proponent" | "critic">(
+    "all",
+  );
 
   useEffect(() => {
     const controller = new AbortController();
     setLiveTelemetry(null);
     setTelemetryError(null);
     setTelemetryLoading(true);
+    setPerspectiveTab("all");
 
     fetchLiveFacilityTelemetry(facility.id, false, controller.signal)
       .then((res) => {
@@ -176,7 +229,7 @@ export function FacilityDrawer({
 
   return (
     <aside
-      className="drawer"
+      className={`drawer${mobileDetent === "peek" ? " drawer--peek" : " drawer--expanded"}`}
       aria-label={`Facility dossier: ${facility.name}`}
     >
       <div className="drawer-header">
@@ -198,15 +251,39 @@ export function FacilityDrawer({
             </div>
           </div>
 
-          <button
-            type="button"
-            className="drawer-close-btn"
-            onClick={onClose}
-            aria-label="Close facility dossier"
-            title="Close (Esc)"
-          >
-            <X size={16} aria-hidden="true" />
-          </button>
+          <div className="drawer-head-right">
+            <button
+              type="button"
+              className="drawer-detent-btn"
+              onClick={onToggleMobileDetent}
+              aria-label={
+                mobileDetent === "peek"
+                  ? "Expand full facility dossier"
+                  : "Minimize dossier to inspect map"
+              }
+            >
+              {mobileDetent === "peek" ? (
+                <>
+                  <ChevronUp size={15} aria-hidden="true" />
+                  <span>Full</span>
+                </>
+              ) : (
+                <>
+                  <ChevronDown size={15} aria-hidden="true" />
+                  <span>Map</span>
+                </>
+              )}
+            </button>
+            <button
+              type="button"
+              className="drawer-close-btn"
+              onClick={onClose}
+              aria-label="Close facility dossier"
+              title="Close (Esc)"
+            >
+              <X size={16} aria-hidden="true" />
+            </button>
+          </div>
         </div>
 
         <div className="drawer-actions-bar">
@@ -256,13 +333,35 @@ export function FacilityDrawer({
       </div>
 
       <div className="drawer-body">
-        <p className="drawer-summary">{facility.summary}</p>
+        {/* Executive KPI Strip Above Prose */}
+        <section className="drawer-kpi-strip" aria-label="Core facility capacity and water KPIs">
+          <KpiStatCell
+            label="Operational"
+            metric={facility.power.operationalMw}
+            onJumpToSource={handleJumpToSource}
+          />
+          <KpiStatCell
+            label="Total Planned"
+            metric={facility.power.totalPlannedMw}
+            onJumpToSource={handleJumpToSource}
+          />
+          <KpiStatCell
+            label="Peak Water"
+            metric={facility.waterAndCooling.peakOrAvgWaterMgd}
+            onJumpToSource={handleJumpToSource}
+          />
+          <KpiStatCell
+            label="Design PUE"
+            metric={facility.waterAndCooling.pue}
+            onJumpToSource={handleJumpToSource}
+          />
+        </section>
 
-        {/* Live Telemetry Panel */}
-        <section className="live-panel" aria-label="Live station and watershed telemetry">
-          <div className="live-panel-header">
+        {/* Compact Single-Band Live Environmental Telemetry */}
+        <section className="live-strip" aria-label="Live station and watershed telemetry">
+          <div className="live-strip-head">
             <div className="live-panel-title-wrap">
-              <Thermometer size={14} aria-hidden="true" />
+              <Thermometer size={13} aria-hidden="true" />
               <span className="live-panel-title">Live Telemetry</span>
               {weather && (
                 <span className={`thermal-pill thermal-pill--${regimeKey}`}>
@@ -270,19 +369,32 @@ export function FacilityDrawer({
                 </span>
               )}
             </div>
-            <button
-              type="button"
-              className="live-refresh-btn"
-              onClick={handleRefreshTelemetry}
-              disabled={telemetryLoading}
-            >
-              <RefreshCw
-                size={12}
-                className={telemetryLoading ? "spin" : ""}
-                aria-hidden="true"
-              />
-              <span>{telemetryLoading ? "Updating..." : "Refresh"}</span>
-            </button>
+
+            <div className="live-strip-actions">
+              {weather && (
+                <SafeExternalLink href={weather.sourceUrl} className="live-ext-link">
+                  NOAA {facility.waterAndCooling.nwsStationId}
+                </SafeExternalLink>
+              )}
+              {hydrology && (
+                <SafeExternalLink href={hydrology.sourceUrl} className="live-ext-link">
+                  USGS {facility.waterAndCooling.usgsGaugeSiteId}
+                </SafeExternalLink>
+              )}
+              <button
+                type="button"
+                className="live-refresh-btn"
+                onClick={handleRefreshTelemetry}
+                disabled={telemetryLoading}
+              >
+                <RefreshCw
+                  size={11}
+                  className={telemetryLoading ? "spin" : ""}
+                  aria-hidden="true"
+                />
+                <span>{telemetryLoading ? "..." : "Refresh"}</span>
+              </button>
+            </div>
           </div>
 
           {isDegraded && (
@@ -298,101 +410,48 @@ export function FacilityDrawer({
             </div>
           )}
 
-          <div className="live-grid">
-            <div className="live-card">
-              <div className="live-card-head">
-                <span className="live-card-label">
-                  NOAA Station <span className="mono">{facility.waterAndCooling.nwsStationId}</span>
-                </span>
-                {weather && (
-                  <SafeExternalLink href={weather.sourceUrl} className="live-ext-link">
-                    NOAA
-                  </SafeExternalLink>
-                )}
-              </div>
-
-              <div className="live-kv-grid">
-                <div>
-                  <div className="live-k">Dry-Bulb Temp</div>
-                  <div className="live-v mono">
-                    {weather
-                      ? formatTempPair(weather.tempF, weather.tempC)
-                      : telemetryLoading
-                        ? "Loading..."
-                        : "Unavailable"}
-                  </div>
-                </div>
-                <div>
-                  <div className="live-k">Relative Humidity</div>
-                  <div className="live-v mono">
-                    {weather?.relativeHumidityPct !== null &&
-                    weather?.relativeHumidityPct !== undefined
-                      ? `${formatNumber(weather.relativeHumidityPct, 0)}%`
-                      : "Unavailable"}
-                  </div>
-                </div>
-                <div>
-                  <div className="live-k">Stull Wet-Bulb</div>
-                  <div className="live-v mono">
-                    {weather
-                      ? formatTempPair(weather.wetBulbF, weather.wetBulbC)
-                      : "Unavailable"}
-                  </div>
-                </div>
-                <div>
-                  <div className="live-k">Observed</div>
-                  <div className="live-v live-v--small mono">
-                    {formatTimestamp(weather?.observedAt ?? null)}
-                  </div>
-                </div>
-              </div>
+          <div className="live-strip-metrics mono">
+            <div className="live-strip-stat">
+              <span className="live-k">Dry-Bulb</span>
+              <span className="live-v">
+                {weather
+                  ? formatTempPair(weather.tempF, weather.tempC)
+                  : telemetryLoading
+                    ? "Loading..."
+                    : "Unavailable"}
+              </span>
             </div>
-
-            <div className="live-card">
-              <div className="live-card-head">
-                <span className="live-card-label">
-                  USGS Gauge <span className="mono">{facility.waterAndCooling.usgsGaugeSiteId}</span>
-                </span>
-                {hydrology && (
-                  <SafeExternalLink href={hydrology.sourceUrl} className="live-ext-link">
-                    USGS
-                  </SafeExternalLink>
-                )}
-              </div>
-
-              <div className="live-kv-grid">
-                <div>
-                  <div className="live-k">Stream Discharge</div>
-                  <div className="live-v mono">
-                    {hydrology
-                      ? formatDischargeCfs(hydrology.dischargeCfs)
-                      : telemetryLoading
-                        ? "Loading..."
-                        : "Unavailable"}
-                  </div>
-                </div>
-                <div>
-                  <div className="live-k">Observed</div>
-                  <div className="live-v live-v--small mono">
-                    {formatTimestamp(hydrology?.observedAt ?? null)}
-                  </div>
-                </div>
-                <div className="live-span-2">
-                  <div className="live-k">Monitoring Station</div>
-                  <div className="live-v live-v--small">
-                    {hydrology?.siteName || facility.waterAndCooling.watershedName}
-                  </div>
-                </div>
-              </div>
+            <div className="live-strip-stat">
+              <span className="live-k">Stull Wet-Bulb</span>
+              <span className="live-v">
+                {weather ? formatTempPair(weather.wetBulbF, weather.wetBulbC) : "Unavailable"}
+                {weather?.relativeHumidityPct !== null &&
+                weather?.relativeHumidityPct !== undefined
+                  ? ` (${formatNumber(weather.relativeHumidityPct, 0)}% RH)`
+                  : ""}
+              </span>
+            </div>
+            <div className="live-strip-stat">
+              <span className="live-k">Basin Flow</span>
+              <span className="live-v">
+                {hydrology
+                  ? formatDischargeCfs(hydrology.dischargeCfs)
+                  : telemetryLoading
+                    ? "Loading..."
+                    : "Unavailable"}
+              </span>
             </div>
           </div>
 
-          {liveTelemetry?.fetchedAt && (
-            <div className="live-fetched-at mono">
-              Fetched {formatTimestamp(liveTelemetry.fetchedAt)}
-            </div>
-          )}
+          <div className="live-strip-foot">
+            <span>{hydrology?.siteName || facility.waterAndCooling.watershedName}</span>
+            {weather?.observedAt && (
+              <span className="mono">Obs {formatTimestamp(weather.observedAt)}</span>
+            )}
+          </div>
         </section>
+
+        <p className="drawer-summary">{facility.summary}</p>
 
         {/* Section 1: Power & Grid Interconnection */}
         <section className="dossier-section" aria-labelledby="sec-power">
@@ -401,7 +460,7 @@ export function FacilityDrawer({
             <h3 id="sec-power">Power &amp; Grid Interconnection</h3>
           </div>
 
-          <div className="metric-grid">
+          <div className="metric-stack">
             <MetricRow
               label="Operational Capacity"
               metric={facility.power.operationalMw}
@@ -459,7 +518,7 @@ export function FacilityDrawer({
             <h3 id="sec-water">Water &amp; Cooling Architecture</h3>
           </div>
 
-          <div className="metric-grid">
+          <div className="metric-stack">
             <MetricRow
               label="Peak / Avg Water"
               metric={facility.waterAndCooling.peakOrAvgWaterMgd}
@@ -507,7 +566,7 @@ export function FacilityDrawer({
             <h3 id="sec-regulatory">Regulatory Status &amp; Permitting</h3>
           </div>
 
-          <div className="metric-grid">
+          <div className="metric-stack">
             <MetricRow
               label="Parcel Acreage"
               metric={facility.parcel.acreage}
@@ -589,6 +648,25 @@ export function FacilityDrawer({
           <div className="section-heading">
             <Users size={14} aria-hidden="true" />
             <h3 id="sec-stakeholders">Stakeholders &amp; Perspectives</h3>
+            <div className="persp-filter-tabs" role="group" aria-label="Filter perspectives">
+              {(["all", "proponent", "critic"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  type="button"
+                  className={`persp-tab-btn${
+                    perspectiveTab === tab ? " persp-tab-btn--active" : ""
+                  }`}
+                  onClick={() => setPerspectiveTab(tab)}
+                  aria-pressed={perspectiveTab === tab}
+                >
+                  {tab === "all"
+                    ? "Both"
+                    : tab === "proponent"
+                      ? "Proponents"
+                      : "Critics"}
+                </button>
+              ))}
+            </div>
           </div>
 
           <dl className="spec-list">
@@ -620,48 +698,52 @@ export function FacilityDrawer({
             </div>
           </dl>
 
-          <div className="perspectives-grid">
-            <div className="perspective-col perspective-col--proponent">
-              <div className="perspective-head">
-                <Scale size={13} aria-hidden="true" />
-                <h4>Industry &amp; Economic Case (Proponents)</h4>
+          <div className="perspectives-stack">
+            {(perspectiveTab === "all" || perspectiveTab === "proponent") && (
+              <div className="perspective-block perspective-block--proponent">
+                <div className="perspective-head">
+                  <Scale size={13} aria-hidden="true" />
+                  <h4>Industry &amp; Economic Case (Proponents)</h4>
+                </div>
+                <ul className="perspective-list">
+                  {facility.perspectives.proponent.map((pt, idx) => (
+                    <li key={idx} className="perspective-item">
+                      <div className="perspective-claim">
+                        {pt.claim}{" "}
+                        <SourceRefButton
+                          sourceId={pt.sourceId}
+                          onJumpToSource={handleJumpToSource}
+                        />
+                      </div>
+                      <p className="perspective-evidence">{pt.evidence}</p>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="perspective-list">
-                {facility.perspectives.proponent.map((pt, idx) => (
-                  <li key={idx} className="perspective-item">
-                    <div className="perspective-claim">
-                      {pt.claim}{" "}
-                      <SourceRefButton
-                        sourceId={pt.sourceId}
-                        onJumpToSource={handleJumpToSource}
-                      />
-                    </div>
-                    <p className="perspective-evidence">{pt.evidence}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            )}
 
-            <div className="perspective-col perspective-col--critic">
-              <div className="perspective-head">
-                <AlertTriangle size={13} aria-hidden="true" />
-                <h4>Grid, Ratepayer &amp; Environmental Scrutiny (Critics)</h4>
+            {(perspectiveTab === "all" || perspectiveTab === "critic") && (
+              <div className="perspective-block perspective-block--critic">
+                <div className="perspective-head">
+                  <AlertTriangle size={13} aria-hidden="true" />
+                  <h4>Grid, Ratepayer &amp; Environmental Scrutiny (Critics)</h4>
+                </div>
+                <ul className="perspective-list">
+                  {facility.perspectives.critic.map((pt, idx) => (
+                    <li key={idx} className="perspective-item">
+                      <div className="perspective-claim">
+                        {pt.claim}{" "}
+                        <SourceRefButton
+                          sourceId={pt.sourceId}
+                          onJumpToSource={handleJumpToSource}
+                        />
+                      </div>
+                      <p className="perspective-evidence">{pt.evidence}</p>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="perspective-list">
-                {facility.perspectives.critic.map((pt, idx) => (
-                  <li key={idx} className="perspective-item">
-                    <div className="perspective-claim">
-                      {pt.claim}{" "}
-                      <SourceRefButton
-                        sourceId={pt.sourceId}
-                        onJumpToSource={handleJumpToSource}
-                      />
-                    </div>
-                    <p className="perspective-evidence">{pt.evidence}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            )}
           </div>
         </section>
 

@@ -194,3 +194,26 @@ export const ZONE_KIND_LABELS: Record<string, string> = {
   substation_yard: "Dedicated Substation Yard",
   cooling_yard: "Cooling & Water Plant Yard",
 };
+
+const CLUSTER_SHORT_NAMES: Record<string, string> = {
+  "East Valley Phoenix (Elliot Road Corridor)": "East Valley Phoenix",
+  "Kansas City Metro Southern Corridor": "Kansas City South",
+  "Central Washington Hydro Corridor": "Central Washington",
+  "Eastern Oregon Columbia Basin": "Columbia Basin (OR)",
+  "Northeast Louisiana AI Megasite": "NE Louisiana",
+  "Omaha–Council Bluffs Metro": "Omaha–Council Bluffs",
+  "Silicon Valley (Santa Clara)": "Silicon Valley",
+  "San Antonio / Medina Corridor": "San Antonio",
+  "Northern Nevada (TRIC)": "Northern Nevada",
+};
+
+export function formatShortClusterName(clusterName: string): string {
+  if (CLUSTER_SHORT_NAMES[clusterName]) {
+    return CLUSTER_SHORT_NAMES[clusterName];
+  }
+  const stripped = clusterName
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/\s+(AI Megasite|Metro|Hydro Corridor|Corridor)$/i, "")
+    .trim();
+  return stripped || clusterName;
+}

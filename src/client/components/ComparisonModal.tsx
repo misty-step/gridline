@@ -1,11 +1,13 @@
 import { GitCompareArrows, Satellite, Trash2, X } from "lucide-react";
 import type {
+  EpistemicStatus,
   FacilityRecord,
   LiveBasinHydrology,
   LiveStationWeather,
 } from "@shared/types";
 import {
   COOLING_LABELS,
+  EPISTEMIC_LABELS,
   formatDischargeCfs,
   formatMetricValue,
   formatNumber,
@@ -14,7 +16,20 @@ import {
   THERMAL_REGIME_LABELS,
   WATERSHED_STRESS_LABELS,
 } from "../lib/format";
+import { useModalDialog } from "../lib/useModalDialog";
 import { EpistemicPill, StatusPill } from "./EpistemicBadge";
+
+function InlineProvenance({ status }: { status: EpistemicStatus }) {
+  if (status === "undisclosed") {
+    return <EpistemicPill status="undisclosed" />;
+  }
+  return (
+    <span className="compare-prov" title={`Provenance tier: ${EPISTEMIC_LABELS[status]}`}>
+      <span className={`compare-prov-dot compare-prov-dot--${status}`} aria-hidden="true" />
+      {EPISTEMIC_LABELS[status]}
+    </span>
+  );
+}
 
 interface CompareDockProps {
   pinnedFacilities: FacilityRecord[];
@@ -32,7 +47,11 @@ export function CompareDock({
   if (pinnedFacilities.length === 0) return null;
 
   return (
-    <div className="compare-dock" role="region" aria-label="Pinned facilities for comparison">
+    <div
+      className="compare-dock"
+      role="region"
+      aria-label="Pinned facilities for comparison"
+    >
       <div className="compare-dock-items">
         <span className="compare-dock-label mono">
           Compare {pinnedFacilities.length}/3
@@ -101,6 +120,8 @@ export function ComparisonModal({
   onSelectFacility,
   onInspectParcel,
 }: ComparisonModalProps) {
+  const panelRef = useModalDialog(facilities.length >= 2, onClose);
+
   if (facilities.length < 2) return null;
 
   return (
@@ -113,7 +134,7 @@ export function ComparisonModal({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="modal-panel modal-panel--wide">
+      <div className="modal-panel modal-panel--wide" ref={panelRef} tabIndex={-1}>
         <div className="modal-header">
           <div className="modal-title-group">
             <GitCompareArrows size={16} aria-hidden="true" />
@@ -191,7 +212,7 @@ export function ComparisonModal({
                     <div className="compare-cell-val mono">
                       {formatMetricValue(f.power.operationalMw)}
                     </div>
-                    <EpistemicPill status={f.power.operationalMw.epistemic} />
+                    <InlineProvenance status={f.power.operationalMw.epistemic} />
                   </td>
                 ))}
               </tr>
@@ -202,7 +223,7 @@ export function ComparisonModal({
                     <div className="compare-cell-val mono">
                       {formatMetricValue(f.power.totalPlannedMw)}
                     </div>
-                    <EpistemicPill status={f.power.totalPlannedMw.epistemic} />
+                    <InlineProvenance status={f.power.totalPlannedMw.epistemic} />
                   </td>
                 ))}
               </tr>
@@ -248,7 +269,9 @@ export function ComparisonModal({
                     <div className="compare-cell-val mono">
                       {formatMetricValue(f.waterAndCooling.peakOrAvgWaterMgd)}
                     </div>
-                    <EpistemicPill status={f.waterAndCooling.peakOrAvgWaterMgd.epistemic} />
+                    <InlineProvenance
+                      status={f.waterAndCooling.peakOrAvgWaterMgd.epistemic}
+                    />
                   </td>
                 ))}
               </tr>
@@ -259,7 +282,9 @@ export function ComparisonModal({
                     <div className="compare-cell-val mono">
                       {formatMetricValue(f.waterAndCooling.annualWaterMgy)}
                     </div>
-                    <EpistemicPill status={f.waterAndCooling.annualWaterMgy.epistemic} />
+                    <InlineProvenance
+                      status={f.waterAndCooling.annualWaterMgy.epistemic}
+                    />
                   </td>
                 ))}
               </tr>
@@ -270,7 +295,7 @@ export function ComparisonModal({
                     <div className="compare-cell-val mono">
                       {formatMetricValue(f.waterAndCooling.pue)}
                     </div>
-                    <EpistemicPill status={f.waterAndCooling.pue.epistemic} />
+                    <InlineProvenance status={f.waterAndCooling.pue.epistemic} />
                   </td>
                 ))}
               </tr>

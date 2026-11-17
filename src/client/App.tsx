@@ -5,7 +5,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { AlertTriangle, RefreshCw } from "lucide-react";
+import { AlertTriangle, ChevronRight, RefreshCw } from "lucide-react";
 import type {
   CampusFootprintProps,
   FacilityRecord,
@@ -19,21 +19,20 @@ import { DirectoryRail } from "./components/DirectoryRail";
 import { FacilityDrawer } from "./components/FacilityDrawer";
 import { MapCanvas, type MapFlyRequest } from "./components/MapCanvas";
 import { RegulatoryModal } from "./components/RegulatoryModal";
-import { TelemetryRibbon } from "./components/TelemetryRibbon";
 import { TopBar } from "./components/TopBar";
 import {
   fetchFacilitiesBundle,
   fetchLiveRegulatory,
   fetchTelemetrySummary,
 } from "./lib/api";
-import { DEFAULT_FILTERS } from "./lib/constants";
+import { DEFAULT_FILTERS, US_CONTIGUOUS_BOUNDS } from "./lib/constants";
 import {
   computeViewportMetrics,
   filterFacilities,
   isFacilityInBounds,
 } from "./lib/filters";
+import { formatGwOrMw } from "./lib/format";
 import type {
-  AnalyticalLens,
   BasemapMode,
   CorridorPreset,
   FilterState,
@@ -65,8 +64,12 @@ function getSystemPrefersDark(): boolean {
   return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
-function isNarrowViewport(): boolean {
+function isMobileViewport(): boolean {
   return typeof window !== "undefined" && window.innerWidth <= 768;
+}
+
+function isSinglePanelViewport(): boolean {
+  return typeof window !== "undefined" && window.innerWidth < 1280;
 }
 
 export function App() {
@@ -103,14 +106,17 @@ export function App() {
   const [previousBasemap, setPreviousBasemap] = useState<BasemapMode | null>(
     null,
   );
-  const [lens, setLens] = useState<AnalyticalLens>(initial.lens);
+  const [lens, setLens] = useState(initial.lens);
   const [filters, setFilters] = useState<FilterState>(initial.filters);
   const [selectedFacilityId, setSelectedFacilityId] = useState<string | null>(
     initial.facilityId,
   );
   const [compareIds, setCompareIds] = useState<string[]>(initial.compareIds);
   const [compareModalOpen, setCompareModalOpen] = useState(false);
-  const [railOpen, setRailOpen] = useState<boolean>(() => !isNarrowViewport());
+  const [railOpen, setRailOpen] = useState<boolean>(() => !isMobileViewport());
+  const [mobileDetent, setMobileDetent] = useState<"peek" | "expanded">(
+    "expanded",
+  );
 
   const [mapView, setMapView] = useState<MapViewState>(initial.view);
   const [mapBounds, setMapBounds] = useState<MapBoundsTuple | null>(null);
@@ -118,6 +124,7 @@ export function App() {
   const [flyRequest, setFlyRequest] = useState<MapFlyRequest | null>(null);
   const flyNonceRef = useRef(0);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
+  const slashShortcutArmedUntilRef = useRef(0);
 
   // Listen for OS prefers-color-scheme changes
   useEffect(() => {
@@ -126,6 +133,19 @@ export function App() {
     const onChange = (e: MediaQueryListEvent) => setSystemDark(e.matches);
     mq.addEventListener("change", onChange);
     return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  // Sync rail collapse when viewport transitions across mobile / compact breakpoints
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mqMobile = window.matchMedia("(max-width: 768px)");
+    const onMobileChange = (e: MediaQueryListEvent) => {
+      if (e.matches) {
+        setRailOpen(false);
+      }
+    };
+    mqMobile.addEventListener("change", onMobileChange);
+    return () => mqMobile.removeEventListener("change", onMobileChange);
   }, []);
 
   // Sync theme attributes to <html> & localStorage
@@ -199,7 +219,7 @@ export function App() {
     return loadInitialData();
   }, [loadInitialData]);
 
-  // Keyboard shortcuts: `/` focuses search, `Escape` closes drawers/modals
+  // Global keyboard shortcuts (`/` focuses search without inserting slash; Escape closes drawer)
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       const target = e.target as HTMLElement | null;
@@ -212,20 +232,18 @@ export function App() {
 
       if (e.key === "/" && !isEditing && !e.metaKey && !e.ctrlKey && !e.altKey) {
         e.preventDefault();
-        searchInputRef.current?.focus();
-        searchInputRef.current?.select();
+        e.stopPropagation();
+        slashShortcutArmedUntilRef.current = performance.now() + 300;
+        window.requestAnimationFrame(() => {
+          searchInputRef.current?.focus();
+          searchInputRef.current?.select();
+        });
         return;
       }
 
       if (e.key === "Escape") {
-        if (regModalOpen) {
-          setRegModalOpen(false);
-          return;
-        }
-        if (compareModalOpen) {
-          setCompareModalOpen(false);
-          return;
-        }
+        // Modal dialogs manage their own Escape handling & opener focus restoration
+        if (regModalOpen || compareModalOpen) return;
         if (selectedFacilityId) {
           setSelectedFacilityId(null);
           return;
@@ -235,8 +253,8 @@ export function App() {
         }
       }
     }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown, { capture: true });
+    return () => window.removeEventListener("keydown", handleKeyDown, { capture: true });
   }, [regModalOpen, compareModalOpen, selectedFacilityId]);
 
   // Debounced URL search param synchronization
@@ -284,7 +302,6 @@ export function App() {
     [compareIds, facilities],
   );
 
-  // Close comparison modal whenever fewer than 2 facilities remain pinned
   useEffect(() => {
     if (compareIds.length < 2 && compareModalOpen) {
       setCompareModalOpen(false);
@@ -299,7 +316,8 @@ export function App() {
   const handleSelectFacility = useCallback(
     (facility: FacilityRecord) => {
       setSelectedFacilityId(facility.id);
-      if (isNarrowViewport()) {
+      setMobileDetent("expanded");
+      if (isSinglePanelViewport()) {
         setRailOpen(false);
       }
       if (!isFacilityInBounds(facility, mapBounds) || mapView.zoom < 6) {
@@ -316,9 +334,8 @@ export function App() {
   const handleInspectParcel = useCallback(
     (facility: FacilityRecord) => {
       setSelectedFacilityId(facility.id);
-      if (isNarrowViewport()) {
-        setRailOpen(false);
-      }
+      setRailOpen(false);
+      setMobileDetent("peek");
       if (basemap !== "satellite") {
         setPreviousBasemap(basemap);
         setBasemap("satellite");
@@ -345,9 +362,23 @@ export function App() {
     setPreviousBasemap(null);
   }, [previousBasemap]);
 
+  const handleCycleTheme = useCallback(() => {
+    setTheme((prev) =>
+      prev === "system" ? "light" : prev === "light" ? "dark" : "system",
+    );
+  }, []);
+
   const handleSelectCorridor = useCallback(
     (preset: CorridorPreset) => {
       setActiveCorridorId(preset.id);
+      if (preset.id === "us") {
+        triggerFly({
+          bounds: US_CONTIGUOUS_BOUNDS,
+          zoom: 5.5,
+          pitch: 0,
+        });
+        return;
+      }
       triggerFly({
         center: preset.center,
         zoom: preset.zoom,
@@ -435,96 +466,160 @@ export function App() {
   const handleToggleRail = useCallback(() => {
     setRailOpen((prev) => {
       const next = !prev;
-      if (next && isNarrowViewport()) {
+      if (next && isSinglePanelViewport()) {
         setSelectedFacilityId(null);
       }
       return next;
     });
   }, []);
 
+  const handleSearchChange = useCallback(
+    (nextQ: string) => {
+      if (
+        performance.now() <= slashShortcutArmedUntilRef.current &&
+        (nextQ === "/" || nextQ === `${filters.q}/`)
+      ) {
+        slashShortcutArmedUntilRef.current = 0;
+        if (searchInputRef.current) {
+          searchInputRef.current.value = filters.q;
+        }
+        return;
+      }
+      slashShortcutArmedUntilRef.current = 0;
+      setFilters((prev) => ({ ...prev, q: nextQ }));
+    },
+    [filters.q],
+  );
+
   return (
     <div className="app-shell">
       <TopBar
         searchInputRef={searchInputRef}
         filters={filters}
-        onSearchChange={(q) => setFilters((prev) => ({ ...prev, q }))}
+        onSearchChange={handleSearchChange}
         lens={lens}
         onLensChange={setLens}
-        basemap={basemap}
-        onBasemapChange={handleBasemapChange}
-        previousBasemap={previousBasemap}
-        onRestoreBasemap={handleRestoreBasemap}
+        activeCorridorId={activeCorridorId}
+        onSelectCorridor={handleSelectCorridor}
         theme={theme}
-        onThemeChange={setTheme}
+        onCycleTheme={handleCycleTheme}
         onOpenRegulatory={handleOpenRegulatory}
         regulatoryCount={regFeed?.items.length ?? null}
       />
 
-      <TelemetryRibbon
-        metrics={viewportMetrics}
-        activeCorridorId={activeCorridorId}
-        onSelectCorridor={handleSelectCorridor}
-      />
-
       <main
-        className={`workspace${railOpen ? " workspace--rail-open" : ""}${
-          selectedFacility ? " workspace--drawer-open" : ""
-        }`}
+        className={`workspace${selectedFacility ? " workspace--drawer-open" : ""}`}
       >
-        {bundleError && (
-          <div className="workspace-error-banner" role="alert">
-            <AlertTriangle size={15} aria-hidden="true" />
-            <span>Failed to load infrastructure atlas: {bundleError}</span>
-            <button
-              type="button"
-              className="workspace-retry-btn"
-              onClick={loadInitialData}
-            >
-              <RefreshCw size={12} aria-hidden="true" />
-              <span>Retry</span>
-            </button>
-          </div>
+        {railOpen && (
+          <DirectoryRail
+            onCollapse={handleToggleRail}
+            visibleFacilities={visibleFacilities}
+            totalFilteredCount={filteredFacilities.length}
+            viewportMetrics={viewportMetrics}
+            filters={filters}
+            onFiltersChange={setFilters}
+            onResetFilters={() => setFilters(DEFAULT_FILTERS)}
+            selectedFacilityId={selectedFacilityId}
+            onSelectFacility={handleSelectFacility}
+            compareIds={compareIds}
+            onToggleCompare={handleToggleCompare}
+            onFitFilteredBounds={handleFitFilteredBounds}
+          />
         )}
 
-        {bundleLoading && facilities.length === 0 && (
-          <div className="workspace-loading-pill" aria-live="polite">
-            Loading US facility telemetry...
-          </div>
-        )}
+        <div
+          className={`map-stage${
+            pinnedFacilities.length > 0 ? " map-stage--has-compare" : ""
+          }`}
+        >
+          {bundleError && (
+            <div className="workspace-error-banner" role="alert">
+              <AlertTriangle size={15} aria-hidden="true" />
+              <span>Failed to load infrastructure atlas: {bundleError}</span>
+              <button
+                type="button"
+                className="workspace-retry-btn"
+                onClick={loadInitialData}
+              >
+                <RefreshCw size={12} aria-hidden="true" />
+                <span>Retry</span>
+              </button>
+            </div>
+          )}
 
-        <MapCanvas
-          facilities={filteredFacilities}
-          footprints={footprints}
-          isoRegions={isoRegions}
-          stations={stations}
-          selectedFacilityId={selectedFacilityId}
-          basemap={basemap}
-          resolvedTheme={resolvedTheme}
-          lens={lens}
-          initialView={initial.view}
-          flyRequest={flyRequest}
-          railOpen={railOpen}
-          drawerOpen={Boolean(selectedFacility)}
-          hasCompareDock={pinnedFacilities.length > 0}
-          onSelectFacility={handleSelectFacility}
-          onViewChange={handleViewChange}
-        />
+          {bundleLoading && facilities.length === 0 && (
+            <div className="workspace-loading-pill" aria-live="polite">
+              Loading US facility telemetry...
+            </div>
+          )}
 
-        <DirectoryRail
-          open={railOpen}
-          onToggleOpen={handleToggleRail}
-          visibleFacilities={visibleFacilities}
-          totalFilteredCount={filteredFacilities.length}
-          filters={filters}
-          onFiltersChange={setFilters}
-          onResetFilters={() => setFilters(DEFAULT_FILTERS)}
-          selectedFacilityId={selectedFacilityId}
-          onSelectFacility={handleSelectFacility}
-          onInspectParcel={handleInspectParcel}
-          compareIds={compareIds}
-          onToggleCompare={handleToggleCompare}
-          onFitFilteredBounds={handleFitFilteredBounds}
-        />
+          {!railOpen && (
+            <div className="map-collapsed-bar">
+              <button
+                type="button"
+                className="rail-collapsed-tab"
+                onClick={handleToggleRail}
+                aria-label="Open facility directory and filters"
+              >
+                <ChevronRight size={14} aria-hidden="true" />
+                <span>Directory</span>
+                <span className="rail-tab-count mono">{visibleFacilities.length}</span>
+              </button>
+
+              <div className="map-collapsed-stats mono" aria-label="Viewport totals">
+                <span className="map-stat-op">
+                  {formatGwOrMw(viewportMetrics.operationalMw)} op
+                </span>
+                <span className="hud-sep" aria-hidden="true">
+                  ·
+                </span>
+                <span>{formatGwOrMw(viewportMetrics.plannedMw)} plan</span>
+                <span className="hud-sep" aria-hidden="true">
+                  ·
+                </span>
+                <span className="map-stat-warn">
+                  {viewportMetrics.contestedOrMoratoriumCount} contested
+                </span>
+              </div>
+            </div>
+          )}
+
+          <MapCanvas
+            facilities={filteredFacilities}
+            footprints={footprints}
+            isoRegions={isoRegions}
+            stations={stations}
+            selectedFacilityId={selectedFacilityId}
+            basemap={basemap}
+            previousBasemap={previousBasemap}
+            onBasemapChange={handleBasemapChange}
+            onRestoreBasemap={handleRestoreBasemap}
+            resolvedTheme={resolvedTheme}
+            lens={lens}
+            onLensChange={setLens}
+            initialView={initial.view}
+            fitUsOnLoad={!initial.hasExplicitCoords && !initial.facilityId}
+            flyRequest={flyRequest}
+            railOpen={railOpen}
+            drawerOpen={Boolean(selectedFacility)}
+            mobileDetent={mobileDetent}
+            hasCompareDock={pinnedFacilities.length > 0}
+            onSelectFacility={handleSelectFacility}
+            onViewChange={handleViewChange}
+          />
+
+          <CompareDock
+            pinnedFacilities={pinnedFacilities}
+            onRemove={(id) =>
+              setCompareIds((prev) => prev.filter((item) => item !== id))
+            }
+            onClear={() => {
+              setCompareIds([]);
+              setCompareModalOpen(false);
+            }}
+            onOpenMatrix={() => setCompareModalOpen(true)}
+          />
+        </div>
 
         {selectedFacility && (
           <FacilityDrawer
@@ -535,23 +630,15 @@ export function App() {
             }
             isPinnedCompare={compareIds.includes(selectedFacility.id)}
             compareDisabled={compareIds.length >= 3}
+            mobileDetent={mobileDetent}
+            onToggleMobileDetent={() =>
+              setMobileDetent((d) => (d === "peek" ? "expanded" : "peek"))
+            }
             onToggleCompare={handleToggleCompare}
             onInspectParcel={handleInspectParcel}
             onClose={() => setSelectedFacilityId(null)}
           />
         )}
-
-        <CompareDock
-          pinnedFacilities={pinnedFacilities}
-          onRemove={(id) =>
-            setCompareIds((prev) => prev.filter((item) => item !== id))
-          }
-          onClear={() => {
-            setCompareIds([]);
-            setCompareModalOpen(false);
-          }}
-          onOpenMatrix={() => setCompareModalOpen(true)}
-        />
       </main>
 
       {compareModalOpen && (
