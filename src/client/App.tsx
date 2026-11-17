@@ -505,6 +505,7 @@ export function App() {
           flyRequest={flyRequest}
           railOpen={railOpen}
           drawerOpen={Boolean(selectedFacility)}
+          hasCompareDock={pinnedFacilities.length > 0}
           onSelectFacility={handleSelectFacility}
           onViewChange={handleViewChange}
         />

@@ -41,6 +41,7 @@ import type {
   HoveredIsoState,
   MapBoundsTuple,
   MapViewState,
+  MarketClusterSummary,
   ResolvedTheme,
   ZoomTier,
 } from "../lib/types";
@@ -71,6 +72,7 @@ interface MapCanvasProps {
   flyRequest: MapFlyRequest | null;
   railOpen: boolean;
   drawerOpen: boolean;
+  hasCompareDock?: boolean;
   onSelectFacility: (facility: FacilityRecord) => void;
   onViewChange: (view: MapViewState, bounds: MapBoundsTuple) => void;
 }
@@ -277,6 +279,7 @@ export function MapCanvas({
   flyRequest,
   railOpen,
   drawerOpen,
+  hasCompareDock = false,
   onSelectFacility,
   onViewChange,
 }: MapCanvasProps) {
@@ -284,6 +287,9 @@ export function MapCanvas({
   const mapRef = useRef<maplibregl.Map | null>(null);
   const clusterMarkersRef = useRef<maplibregl.Marker[]>([]);
   const hoveredIsoIdRef = useRef<string | null>(null);
+  const pointerOverMapRef = useRef<boolean>(false);
+  const clustersRef = useRef<MarketClusterSummary[]>([]);
+  const renderClusterMarkersRef = useRef<() => void>(() => {});
 
   const [zoom, setZoom] = useState<number>(initialView.zoom);
   const [cursorCoord, setCursorCoord] = useState<[number, number]>([
@@ -313,6 +319,7 @@ export function MapCanvas({
   drawerOpenRef.current = drawerOpen;
 
   const clusters = useMemo(() => buildMarketClusters(facilities), [facilities]);
+  clustersRef.current = clusters;
   const clustersGeoJson = useMemo(
     () => buildMarketClustersGeoJson(clusters),
     [clusters],
@@ -917,6 +924,10 @@ export function MapCanvas({
       const b = map.getBounds();
       const z = map.getZoom();
       setZoom(z);
+      if (!pointerOverMapRef.current) {
+        setCursorCoord([c.lng, c.lat]);
+      }
+      renderClusterMarkersRef.current();
       onViewChangeRef.current(
         {
           lng: c.lng,
@@ -940,11 +951,19 @@ export function MapCanvas({
 
     map.on("move", () => {
       setZoom(map.getZoom());
+      if (!pointerOverMapRef.current) {
+        const c = map.getCenter();
+        setCursorCoord([c.lng, c.lat]);
+      }
     });
 
     map.on("moveend", emitBounds);
+    map.on("resize", () => {
+      renderClusterMarkersRef.current();
+    });
 
     map.on("mousemove", (e) => {
+      pointerOverMapRef.current = true;
       setCursorCoord([e.lngLat.lng, e.lngLat.lat]);
 
       const queryLayers = [
@@ -1048,6 +1067,9 @@ export function MapCanvas({
     });
 
     map.on("mouseleave", () => {
+      pointerOverMapRef.current = false;
+      const c = map.getCenter();
+      setCursorCoord([c.lng, c.lat]);
       setHoveredFacility(null);
       setHoveredFootprint(null);
       setHoveredIso(null);
@@ -1175,16 +1197,58 @@ export function MapCanvas({
   ]);
 
   // Render crisp DOM Cluster Callout pills in Macro National Tier (z < 5.8)
+  // with deterministic screen-space collision culling
   const tier = getZoomTier(zoom);
 
-  useEffect(() => {
+  renderClusterMarkersRef.current = () => {
     const map = mapRef.current;
     clusterMarkersRef.current.forEach((m) => m.remove());
     clusterMarkersRef.current = [];
-    if (!map || tier !== "macro") return;
+    if (!map || map.getZoom() >= TIER_MACRO_MAX_ZOOM) return;
 
+    const canvasW = containerRef.current?.clientWidth ?? 1280;
+    const canvasH = containerRef.current?.clientHeight ?? 800;
+    const sorted = [...clustersRef.current].sort(
+      (a, b) =>
+        b.plannedMw - a.plannedMw ||
+        b.facilityCount - a.facilityCount ||
+        a.clusterName.localeCompare(b.clusterName),
+    );
+
+    const placed: Array<{
+      left: number;
+      top: number;
+      right: number;
+      bottom: number;
+    }> = [];
     const markers: maplibregl.Marker[] = [];
-    for (const c of clusters) {
+
+    for (const c of sorted) {
+      const pt = map.project(c.coordinates);
+      if (pt.x < -40 || pt.x > canvasW + 40 || pt.y < -24 || pt.y > canvasH + 24) {
+        continue;
+      }
+      const boxW = Math.max(136, Math.min(176, c.clusterName.length * 6.8 + 24));
+      const boxH = 34;
+      const box = {
+        left: pt.x - boxW / 2 - 4,
+        right: pt.x + boxW / 2 + 4,
+        top: pt.y + 10,
+        bottom: pt.y + 10 + boxH + 4,
+      };
+
+      const collides = placed.some(
+        (other) =>
+          !(
+            box.right < other.left ||
+            box.left > other.right ||
+            box.bottom < other.top ||
+            box.top > other.bottom
+          ),
+      );
+      if (collides) continue;
+      placed.push(box);
+
       const el = document.createElement("button");
       el.type = "button";
       el.className = `cluster-pill-marker${
@@ -1228,8 +1292,13 @@ export function MapCanvas({
     }
 
     clusterMarkersRef.current = markers;
+  };
+
+  useEffect(() => {
+    renderClusterMarkersRef.current();
     return () => {
-      markers.forEach((m) => m.remove());
+      clusterMarkersRef.current.forEach((m) => m.remove());
+      clusterMarkersRef.current = [];
     };
   }, [clusters, tier]);
 
@@ -1237,6 +1306,7 @@ export function MapCanvas({
   useEffect(() => {
     const map = mapRef.current;
     if (!map || !flyRequest) return;
+    pointerOverMapRef.current = false;
 
     const isMobile =
       typeof window !== "undefined" && window.innerWidth <= 768;
@@ -1265,6 +1335,7 @@ export function MapCanvas({
     }
 
     if (flyRequest.center) {
+      setCursorCoord(flyRequest.center);
       map.flyTo({
         center: flyRequest.center,
         zoom: flyRequest.zoom ?? map.getZoom(),
@@ -1293,7 +1364,7 @@ export function MapCanvas({
     <div
       className={`map-wrapper${railOpen ? " map-wrapper--rail-open" : ""}${
         drawerOpen ? " map-wrapper--drawer-open" : ""
-      }`}
+      }${hasCompareDock ? " map-wrapper--has-compare" : ""}`}
     >
       <div
         ref={containerRef}

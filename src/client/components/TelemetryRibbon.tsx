@@ -32,14 +32,14 @@ export function TelemetryRibbon({
         </div>
         <div className="ribbon-divider" aria-hidden="true" />
         <div className="ribbon-stat">
-          <span className="ribbon-stat-label">Planned Pipeline</span>
+          <span className="ribbon-stat-label">Planned</span>
           <span className="ribbon-stat-val mono">
             {formatGwOrMw(metrics.plannedMw)}
           </span>
         </div>
         <div className="ribbon-divider" aria-hidden="true" />
         <div className="ribbon-stat">
-          <span className="ribbon-stat-label">Contested / Moratorium</span>
+          <span className="ribbon-stat-label">Contested</span>
           <span
             className={`ribbon-stat-val mono${
               metrics.contestedOrMoratoriumCount > 0 ? " ribbon-stat-val--warn" : ""
@@ -50,7 +50,7 @@ export function TelemetryRibbon({
         </div>
         <div className="ribbon-divider" aria-hidden="true" />
         <div className="ribbon-stat">
-          <span className="ribbon-stat-label">Disclosed Peak Water</span>
+          <span className="ribbon-stat-label">Peak Water</span>
           <span className="ribbon-stat-val mono">
             {formatNumber(metrics.disclosedPeakWaterMgd, 1)} MGD
           </span>

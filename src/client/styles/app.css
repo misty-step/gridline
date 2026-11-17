@@ -368,7 +368,9 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  flex-wrap: wrap;
+  row-gap: 4px;
+  column-gap: var(--space-3);
   min-height: var(--ribbon-height);
   padding: 5px var(--space-3);
   background: var(--bg-surface-elevated);
@@ -378,7 +380,7 @@ button {
 .ribbon-metrics {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: 10px;
   overflow-x: auto;
   scrollbar-width: none;
   flex-shrink: 1;
@@ -440,7 +442,7 @@ button {
 
 .corridor-pill {
   height: 24px;
-  padding: 0 9px;
+  padding: 0 8px;
   font-size: var(--text-xs);
   font-weight: 500;
   color: var(--text-secondary);
@@ -584,8 +586,8 @@ button {
 /* Map HUD & Legend Pills */
 .map-hud-pill {
   position: absolute;
-  bottom: 12px;
-  left: 52px;
+  top: 12px;
+  right: 12px;
   z-index: var(--z-hud);
   display: inline-flex;
   align-items: center;
@@ -599,11 +601,11 @@ button {
   border-radius: var(--radius-md);
   backdrop-filter: blur(8px);
   pointer-events: none;
-  transition: left 0.18s ease;
+  transition: right 0.18s ease;
 }
 
-.map-wrapper--rail-open .map-hud-pill {
-  left: calc(var(--rail-width) + 52px);
+.map-wrapper--drawer-open .map-hud-pill {
+  right: calc(var(--drawer-width) + 12px);
 }
 
 .hud-tier {
@@ -621,7 +623,7 @@ button {
 
 .map-legend-pill {
   position: absolute;
-  bottom: 46px;
+  bottom: 38px;
   left: 12px;
   z-index: var(--z-hud);
   display: inline-flex;
@@ -637,11 +639,15 @@ button {
   border-radius: var(--radius-md);
   backdrop-filter: blur(8px);
   pointer-events: none;
-  transition: left 0.18s ease;
+  transition: left 0.18s ease, bottom 0.18s ease;
 }
 
 .map-wrapper--rail-open .map-legend-pill {
   left: calc(var(--rail-width) + 12px);
+}
+
+.map-wrapper--has-compare .map-legend-pill {
+  bottom: 92px;
 }
 
 .legend-item {
@@ -2128,14 +2134,14 @@ button {
 
 .compare-dock {
   position: absolute;
-  bottom: 14px;
+  bottom: 12px;
   left: calc(50% + (var(--rail-offset, 0px) - var(--drawer-offset, 0px)) / 2);
   transform: translateX(-50%);
   z-index: var(--z-controls);
   display: flex;
   align-items: center;
   gap: 10px;
-  max-width: calc(100% - var(--rail-offset, 0px) - var(--drawer-offset, 0px) - 24px);
+  max-width: calc(100% - var(--rail-offset, 0px) - var(--drawer-offset, 0px) - 110px);
   padding: 7px 10px;
   background: var(--bg-surface);
   border: 1px solid var(--border-strong);
@@ -2577,8 +2583,23 @@ button {
     --drawer-width: 100%;
   }
 
+  .topbar-controls {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 6px;
+  }
+
+  .ribbon-metrics {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    gap: 6px;
+  }
+
+  .ribbon-divider {
+    display: none;
+  }
+
   .map-wrapper--rail-open .maplibregl-ctrl-bottom-left,
-  .map-wrapper--rail-open .map-hud-pill,
   .map-wrapper--rail-open .map-legend-pill {
     left: 12px;
   }
@@ -2587,10 +2608,14 @@ button {
     right: 0;
   }
 
+  .map-wrapper--drawer-open .map-hud-pill {
+    right: 12px;
+  }
+
   .map-hud-pill {
-    left: 48px;
-    bottom: 10px;
-    max-width: calc(100% - 148px);
+    top: 12px;
+    right: 12px;
+    max-width: calc(100% - 140px);
     overflow: hidden;
   }
 
