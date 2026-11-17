@@ -1,4 +1,5 @@
 import type {
+  FacilityIndexItem,
   FacilityRecord,
   LiveBasinHydrology,
   LiveFacilityTelemetry,
@@ -10,77 +11,74 @@ import {
   classifyThermalRegime,
   computeWetBulbC,
 } from "../shared/wetbulb.ts";
+import type { TelemetryFetchOptions } from "./env.ts";
+import {
+  ATLAS_USER_AGENT,
+  DEFAULT_TIMEOUT_MS,
+  fetchWithTimeout,
+  readCachedJson,
+  round1,
+  round2,
+  writeCachedJson,
+} from "./http.ts";
 
-const USER_AGENT = "(GridlineAtlas, contact@mistystep.io)";
-const DEFAULT_TIMEOUT_MS = 4500;
+export type { TelemetryFetchOptions } from "./env.ts";
+
 const CACHE_TTL_SECONDS = 900;
-const SUMMARY_CONCURRENCY = 8;
+const SUMMARY_CONCURRENCY = 6;
+const SUMMARY_MAX_NOAA_STATIONS = 18;
+const SUMMARY_MAX_USGS_GAUGES = 25;
 
-export interface TelemetryFetchOptions {
-  refresh?: boolean;
-  fetchFn?: typeof fetch;
-  timeoutMs?: number;
-}
+export type TelemetryFacilityLike = FacilityRecord | FacilityIndexItem;
 
-interface CfCacheStorage {
-  default?: Cache;
-}
-
-function getEdgeCache(): Cache | undefined {
-  try {
-    return (globalThis as unknown as { caches?: CfCacheStorage }).caches?.default;
-  } catch {
-    return undefined;
+function extractAnchors(facility: TelemetryFacilityLike): {
+  id: string;
+  nwsStationId: string;
+  usgsGaugeSiteId: string;
+  priorityScore: number;
+} {
+  if ("waterAndCooling" in facility) {
+    const tierScore =
+      facility.catalogTier === "provisional"
+        ? 200
+        : facility.catalogTier === "registry"
+          ? 10
+          : 1000;
+    const mw =
+      facility.power.totalPlannedMw.value ?? facility.power.operationalMw.value ?? 20;
+    const contested =
+      facility.lifecycleStatus === "contested" ||
+      facility.lifecycleStatus === "moratorium" ||
+      facility.regulatory.moratoriumOrLitigationActive
+        ? 100
+        : 0;
+    return {
+      id: facility.id,
+      nwsStationId: facility.waterAndCooling.nwsStationId.trim().toUpperCase(),
+      usgsGaugeSiteId: facility.waterAndCooling.usgsGaugeSiteId.trim(),
+      priorityScore: tierScore + Math.min(2000, Math.max(0, mw)) + contested,
+    };
   }
-}
 
-async function readCachedJson<T>(cacheKey: string): Promise<T | null> {
-  const cache = getEdgeCache();
-  if (!cache) return null;
-  try {
-    const match = await cache.match(new Request(cacheKey));
-    if (!match) return null;
-    return (await match.json()) as T;
-  } catch {
-    return null;
-  }
-}
-
-async function writeCachedJson<T>(
-  cacheKey: string,
-  payload: T,
-  ttlSeconds: number,
-): Promise<void> {
-  const cache = getEdgeCache();
-  if (!cache) return;
-  try {
-    const res = new Response(JSON.stringify(payload), {
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Cache-Control": `public, max-age=${ttlSeconds}`,
-      },
-    });
-    await cache.put(new Request(cacheKey), res);
-  } catch {
-    // Cache writes are best-effort; ignore local/test runtime cache failures.
-  }
-}
-
-const round1 = (value: number): number => Math.round(value * 10) / 10;
-
-async function fetchWithTimeout(
-  url: string,
-  init: RequestInit,
-  timeoutMs: number,
-  fetchFn: typeof fetch,
-): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetchFn(url, { ...init, signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
-  }
+  const tierScore =
+    facility.catalogTier === "provisional"
+      ? 200
+      : facility.catalogTier === "registry"
+        ? 10
+        : 1000;
+  const mw = facility.totalPlannedMw ?? facility.operationalMw ?? 20;
+  const contested =
+    facility.lifecycleStatus === "contested" ||
+    facility.lifecycleStatus === "moratorium" ||
+    facility.moratoriumOrLitigationActive
+      ? 100
+      : 0;
+  return {
+    id: facility.id,
+    nwsStationId: facility.nwsStationId.trim().toUpperCase(),
+    usgsGaugeSiteId: facility.usgsGaugeSiteId.trim(),
+    priorityScore: tierScore + Math.min(2000, Math.max(0, mw)) + contested,
+  };
 }
 
 interface NwsObservationPayload {
@@ -112,7 +110,7 @@ export async function fetchStationWeather(
       sourceUrl,
       {
         headers: {
-          "User-Agent": USER_AGENT,
+          "User-Agent": ATLAS_USER_AGENT,
           Accept: "application/geo+json",
         },
       },
@@ -212,16 +210,80 @@ export async function fetchStationWeather(
   }
 }
 
+interface UsgsFeatureProperties {
+  monitoring_location_id?: string;
+  monitoring_location_name?: string;
+  site_name?: string;
+  statistic_id?: string;
+  time?: string;
+  value?: string | number | null;
+}
+
 interface UsgsOgcFeatureCollection {
   features?: Array<{
-    properties?: {
-      monitoring_location_id?: string;
-      monitoring_location_name?: string;
-      site_name?: string;
-      time?: string;
-      value?: string | number | null;
-    };
+    properties?: UsgsFeatureProperties;
   }>;
+}
+
+function buildUsgsSingleSourceUrl(siteId: string): string {
+  return `https://api.waterdata.usgs.gov/ogcapi/v0/collections/latest-continuous/items?f=json&monitoring_location_id=USGS-${encodeURIComponent(siteId)}&parameter_code=00060&limit=1`;
+}
+
+function buildDegradedHydrology(
+  siteId: string,
+  error: string,
+  partial?: { siteName?: string | null; observedAt?: string | null },
+): LiveBasinHydrology {
+  return {
+    siteId,
+    siteName: partial?.siteName ?? null,
+    observedAt: partial?.observedAt ?? null,
+    dischargeCfs: null,
+    unit: "ft3/s",
+    sourceUrl: buildUsgsSingleSourceUrl(siteId),
+    status: "degraded",
+    error,
+  };
+}
+
+function parseUsgsFeatureToHydrology(
+  siteId: string,
+  props: UsgsFeatureProperties | undefined,
+): LiveBasinHydrology {
+  if (!props) {
+    return buildDegradedHydrology(
+      siteId,
+      `No active parameter 00060 discharge reading for USGS-${siteId}`,
+    );
+  }
+
+  const rawVal = props.value;
+  const parsedVal =
+    rawVal === null || rawVal === undefined || rawVal === "" ? Number.NaN : Number(rawVal);
+  const observedAt = typeof props.time === "string" ? props.time : null;
+  const siteName =
+    props.monitoring_location_name ??
+    props.site_name ??
+    props.monitoring_location_id ??
+    null;
+
+  if (!Number.isFinite(parsedVal)) {
+    return buildDegradedHydrology(
+      siteId,
+      `USGS-${siteId} returned non-numeric discharge value`,
+      { siteName, observedAt },
+    );
+  }
+
+  return {
+    siteId,
+    siteName,
+    observedAt,
+    dischargeCfs: round2(parsedVal),
+    unit: "ft3/s",
+    sourceUrl: buildUsgsSingleSourceUrl(siteId),
+    status: "live",
+  };
 }
 
 export async function fetchBasinHydrology(
@@ -229,7 +291,7 @@ export async function fetchBasinHydrology(
   opts: TelemetryFetchOptions = {},
 ): Promise<LiveBasinHydrology> {
   const normalized = siteId.trim();
-  const sourceUrl = `https://api.waterdata.usgs.gov/ogcapi/v0/collections/latest-continuous/items?f=json&monitoring_location_id=USGS-${encodeURIComponent(normalized)}&parameter_code=00060&limit=1`;
+  const sourceUrl = buildUsgsSingleSourceUrl(normalized);
   const cacheKey = `https://gridline-cache.internal/v1/hydrology/${encodeURIComponent(normalized)}`;
 
   if (!opts.refresh) {
@@ -245,7 +307,7 @@ export async function fetchBasinHydrology(
       sourceUrl,
       {
         headers: {
-          "User-Agent": USER_AGENT,
+          "User-Agent": ATLAS_USER_AGENT,
           Accept: "application/geo+json, application/json",
         },
       },
@@ -254,67 +316,21 @@ export async function fetchBasinHydrology(
     );
 
     if (!res.ok) {
-      return {
-        siteId: normalized,
-        siteName: null,
-        observedAt: null,
-        dischargeCfs: null,
-        unit: "ft3/s",
-        sourceUrl,
-        status: "degraded",
-        error: `USGS Water Data API returned HTTP ${res.status}`,
-      };
+      return buildDegradedHydrology(
+        normalized,
+        `USGS Water Data API returned HTTP ${res.status}`,
+      );
     }
 
     const body = (await res.json()) as UsgsOgcFeatureCollection;
-    const props = body?.features?.[0]?.properties;
-    if (!props) {
-      return {
-        siteId: normalized,
-        siteName: null,
-        observedAt: null,
-        dischargeCfs: null,
-        unit: "ft3/s",
-        sourceUrl,
-        status: "degraded",
-        error: `No active parameter 00060 discharge reading for USGS-${normalized}`,
-      };
+    const result = parseUsgsFeatureToHydrology(
+      normalized,
+      body?.features?.[0]?.properties,
+    );
+
+    if (result.status === "live") {
+      await writeCachedJson(cacheKey, result, CACHE_TTL_SECONDS);
     }
-
-    const rawVal = props.value;
-    const parsedVal =
-      rawVal === null || rawVal === undefined || rawVal === "" ? Number.NaN : Number(rawVal);
-    const observedAt = typeof props.time === "string" ? props.time : null;
-    const siteName =
-      props.monitoring_location_name ??
-      props.site_name ??
-      props.monitoring_location_id ??
-      null;
-
-    if (!Number.isFinite(parsedVal)) {
-      return {
-        siteId: normalized,
-        siteName,
-        observedAt,
-        dischargeCfs: null,
-        unit: "ft3/s",
-        sourceUrl,
-        status: "degraded",
-        error: `USGS-${normalized} returned non-numeric discharge value`,
-      };
-    }
-
-    const result: LiveBasinHydrology = {
-      siteId: normalized,
-      siteName,
-      observedAt,
-      dischargeCfs: Math.round(parsedVal * 100) / 100,
-      unit: "ft3/s",
-      sourceUrl,
-      status: "live",
-    };
-
-    await writeCachedJson(cacheKey, result, CACHE_TTL_SECONDS);
     return result;
   } catch (err) {
     const message =
@@ -324,30 +340,131 @@ export async function fetchBasinHydrology(
           : err.message
         : "Unknown USGS Water Data error";
 
-    return {
-      siteId: normalized,
-      siteName: null,
-      observedAt: null,
-      dischargeCfs: null,
-      unit: "ft3/s",
-      sourceUrl,
-      status: "degraded",
-      error: message,
-    };
+    return buildDegradedHydrology(normalized, message);
   }
 }
 
+async function fetchBatchedBasinHydrology(
+  siteIds: string[],
+  opts: TelemetryFetchOptions = {},
+): Promise<Record<string, LiveBasinHydrology>> {
+  const gauges: Record<string, LiveBasinHydrology> = {};
+  if (siteIds.length === 0) return gauges;
+
+  const uncached: string[] = [];
+  if (!opts.refresh) {
+    const cachedEntries = await Promise.all(
+      siteIds.map(async (siteId) => {
+        const cacheKey = `https://gridline-cache.internal/v1/hydrology/${encodeURIComponent(siteId)}`;
+        return { siteId, cached: await readCachedJson<LiveBasinHydrology>(cacheKey) };
+      }),
+    );
+    for (const entry of cachedEntries) {
+      if (entry.cached) {
+        gauges[entry.siteId] = entry.cached;
+      } else {
+        uncached.push(entry.siteId);
+      }
+    }
+  } else {
+    uncached.push(...siteIds);
+  }
+
+  if (uncached.length === 0) {
+    return gauges;
+  }
+
+  const fetchFn = opts.fetchFn ?? fetch;
+  const timeoutMs = opts.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const monitoringIdsParam = uncached
+    .map((id) => `USGS-${encodeURIComponent(id)}`)
+    .join(",");
+  const batchUrl =
+    `https://api.waterdata.usgs.gov/ogcapi/v0/collections/latest-continuous/items` +
+    `?f=json&monitoring_location_id=${monitoringIdsParam}&parameter_code=00060&limit=100`;
+
+  try {
+    const res = await fetchWithTimeout(
+      batchUrl,
+      {
+        headers: {
+          "User-Agent": ATLAS_USER_AGENT,
+          Accept: "application/geo+json, application/json",
+        },
+      },
+      timeoutMs,
+      fetchFn,
+    );
+
+    if (!res.ok) {
+      for (const siteId of uncached) {
+        gauges[siteId] = buildDegradedHydrology(
+          siteId,
+          `USGS Water Data API returned HTTP ${res.status}`,
+        );
+      }
+      return gauges;
+    }
+
+    const body = (await res.json()) as UsgsOgcFeatureCollection;
+    const features = Array.isArray(body?.features) ? body.features : [];
+    const bySite = new Map<string, UsgsFeatureProperties>();
+
+    for (const feat of features) {
+      const props = feat?.properties;
+      const rawLoc = props?.monitoring_location_id?.trim() ?? "";
+      const siteId = rawLoc.replace(/^USGS-/i, "");
+      if (!siteId) continue;
+
+      const existing = bySite.get(siteId);
+      if (!existing) {
+        bySite.set(siteId, props!);
+        continue;
+      }
+      // Prefer instantaneous statistic 00011 when multiple series are returned.
+      if (props?.statistic_id === "00011" && existing.statistic_id !== "00011") {
+        bySite.set(siteId, props);
+      }
+    }
+
+    await Promise.all(
+      uncached.map(async (siteId) => {
+        const parsed = parseUsgsFeatureToHydrology(siteId, bySite.get(siteId));
+        gauges[siteId] = parsed;
+        if (parsed.status === "live") {
+          const cacheKey = `https://gridline-cache.internal/v1/hydrology/${encodeURIComponent(siteId)}`;
+          await writeCachedJson(cacheKey, parsed, CACHE_TTL_SECONDS);
+        }
+      }),
+    );
+  } catch (err) {
+    const message =
+      err instanceof Error
+        ? err.name === "AbortError"
+          ? `USGS Water Data API timed out after ${timeoutMs}ms`
+          : err.message
+        : "Unknown USGS Water Data error";
+
+    for (const siteId of uncached) {
+      gauges[siteId] = buildDegradedHydrology(siteId, message);
+    }
+  }
+
+  return gauges;
+}
+
 export async function fetchFacilityTelemetry(
-  facility: FacilityRecord,
+  facility: TelemetryFacilityLike,
   opts: TelemetryFetchOptions = {},
 ): Promise<LiveFacilityTelemetry> {
+  const anchors = extractAnchors(facility);
   const [weather, hydrology] = await Promise.all([
-    fetchStationWeather(facility.waterAndCooling.nwsStationId, opts),
-    fetchBasinHydrology(facility.waterAndCooling.usgsGaugeSiteId, opts),
+    fetchStationWeather(anchors.nwsStationId, opts),
+    fetchBasinHydrology(anchors.usgsGaugeSiteId, opts),
   ]);
 
   return {
-    facilityId: facility.id,
+    facilityId: anchors.id,
     fetchedAt: new Date().toISOString(),
     weather,
     hydrology,
@@ -375,35 +492,70 @@ async function mapWithConcurrency<T, R>(
     }
   }
 
-  const runners = Array.from({ length: Math.min(concurrency, items.length) }, () =>
-    runNext(),
+  const runners = Array.from(
+    { length: Math.min(concurrency, items.length) },
+    () => runNext(),
   );
   await Promise.all(runners);
   return results;
 }
 
+function rankPriorityAnchors(facilities: TelemetryFacilityLike[]): {
+  topStations: string[];
+  topGauges: string[];
+} {
+  const stationScores = new Map<string, number>();
+  const gaugeScores = new Map<string, number>();
+
+  for (const fac of facilities) {
+    const { nwsStationId, usgsGaugeSiteId, priorityScore } = extractAnchors(fac);
+    if (nwsStationId) {
+      stationScores.set(
+        nwsStationId,
+        (stationScores.get(nwsStationId) ?? 0) + priorityScore,
+      );
+    }
+    if (usgsGaugeSiteId) {
+      gaugeScores.set(
+        usgsGaugeSiteId,
+        (gaugeScores.get(usgsGaugeSiteId) ?? 0) + priorityScore,
+      );
+    }
+  }
+
+  const topStations = Array.from(stationScores.entries())
+    .sort((a, b) => (b[1] !== a[1] ? b[1] - a[1] : a[0].localeCompare(b[0])))
+    .slice(0, SUMMARY_MAX_NOAA_STATIONS)
+    .map(([id]) => id);
+
+  const topGauges = Array.from(gaugeScores.entries())
+    .sort((a, b) => (b[1] !== a[1] ? b[1] - a[1] : a[0].localeCompare(b[0])))
+    .slice(0, SUMMARY_MAX_USGS_GAUGES)
+    .map(([id]) => id);
+
+  return { topStations, topGauges };
+}
+
+/**
+ * Fetches priority corridor NOAA station weather (<= 18 HTTP fetches) and
+ * batched USGS streamgauge hydrology (1 single OGC request for <= 25 gauges),
+ * staying strictly <= 20 upstream subrequests per Worker invocation.
+ */
 export async function fetchTelemetrySummary(
-  facilities: FacilityRecord[],
+  facilities: TelemetryFacilityLike[],
   opts: TelemetryFetchOptions = {},
 ): Promise<TelemetrySummaryApiResponse> {
-  const uniqueStations = Array.from(
-    new Set(facilities.map((f) => f.waterAndCooling.nwsStationId.trim().toUpperCase())),
-  );
-  const uniqueGauges = Array.from(
-    new Set(facilities.map((f) => f.waterAndCooling.usgsGaugeSiteId.trim())),
-  );
+  const { topStations, topGauges } = rankPriorityAnchors(facilities);
 
-  const [stationSettled, gaugeSettled] = await Promise.all([
-    mapWithConcurrency(uniqueStations, SUMMARY_CONCURRENCY, (stationId) =>
+  const [stationSettled, gauges] = await Promise.all([
+    mapWithConcurrency(topStations, SUMMARY_CONCURRENCY, (stationId) =>
       fetchStationWeather(stationId, opts),
     ),
-    mapWithConcurrency(uniqueGauges, SUMMARY_CONCURRENCY, (siteId) =>
-      fetchBasinHydrology(siteId, opts),
-    ),
+    fetchBatchedBasinHydrology(topGauges, opts),
   ]);
 
   const stations: Record<string, LiveStationWeather> = {};
-  uniqueStations.forEach((stationId, idx) => {
+  topStations.forEach((stationId, idx) => {
     const entry = stationSettled[idx];
     if (entry.status === "fulfilled") {
       stations[stationId] = entry.value;
@@ -420,26 +572,9 @@ export async function fetchTelemetrySummary(
         sourceUrl: `https://api.weather.gov/stations/${encodeURIComponent(stationId)}/observations/latest`,
         status: "degraded",
         error:
-          entry.reason instanceof Error ? entry.reason.message : "Failed to fetch station",
-      };
-    }
-  });
-
-  const gauges: Record<string, LiveBasinHydrology> = {};
-  uniqueGauges.forEach((siteId, idx) => {
-    const entry = gaugeSettled[idx];
-    if (entry.status === "fulfilled") {
-      gauges[siteId] = entry.value;
-    } else {
-      gauges[siteId] = {
-        siteId,
-        siteName: null,
-        observedAt: null,
-        dischargeCfs: null,
-        unit: "ft3/s",
-        sourceUrl: `https://api.waterdata.usgs.gov/ogcapi/v0/collections/latest-continuous/items?f=json&monitoring_location_id=USGS-${encodeURIComponent(siteId)}&parameter_code=00060&limit=1`,
-        status: "degraded",
-        error: entry.reason instanceof Error ? entry.reason.message : "Failed to fetch gauge",
+          entry.reason instanceof Error
+            ? entry.reason.message
+            : "Failed to fetch station",
       };
     }
   });
